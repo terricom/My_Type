@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">種天菜</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="login_facebook">Facebook 登入</string>
+    <string name="setting_dream_board">你的夢想版是空的 \n 快去設置吧！</string>
+</resources>
