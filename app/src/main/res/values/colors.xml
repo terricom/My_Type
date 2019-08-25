@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorAllTransparent">#00FFFFFF</color>
     <color name="colorTransparent">#30FFFFFF</color>
     <color name="blue_facebook">#3b5998</color>
+    <color name="black_3f3a3a">#3f3a3a</color>
 
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <menu xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          tools:showIn="navigation_view">
+
+                <item
+                        android:id="@+id/nav_dream_board"
+                        android:icon="@drawable/icon_my_type"
+                        android:title="夢想版" />
+                <item
+                        android:id="@+id/nav_log_out"
+                        android:icon="@drawable/icon_my_type"
+                        android:title="登出" />
+    </menu>
+
+</menu>

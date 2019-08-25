@@ -20,7 +20,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/greet_background"
                 app:layout_constraintBottom_toBottomOf="@+id/greet_background" android:layout_marginTop="8dp"
-                android:layout_marginBottom="50dp"/>
+                android:layout_marginBottom="160dp"/>
         <TextView
                 android:text="@string/setting_dream_board"
                 android:layout_width="wrap_content"
@@ -30,6 +30,16 @@
                 android:fontFamily="@font/noto_sans" android:textSize="18sp"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintTop_toTopOf="@+id/transparent_background"
-                app:layout_constraintBottom_toBottomOf="@+id/transparent_background"/>
+                app:layout_constraintBottom_toBottomOf="@+id/transparent_background" android:textAlignment="center"/>
+        <Button
+                android:text="@string/upload_dream_board"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:fontFamily="@font/noto_sans"
+                android:textStyle="bold"
+                android:id="@+id/upload_photo" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/setting_dream_board"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="70dp" android:background="@drawable/round_coners_four"
+                android:layout_marginEnd="70dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

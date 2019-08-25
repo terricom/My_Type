@@ -4,4 +4,17 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="transparent_30_percent">0.8</dimen>
     <dimen name="size_my_type">30sp</dimen>
+    <!-- Bottom Navigation -->
+    <dimen name="height_bottom_nav_view_main">56dp</dimen>
+    <dimen name="size_bottom_nav_icon">36dp</dimen>
+    <!-- Toolbar -->
+    <dimen name="height_toolbar">80dp</dimen>
+    <dimen name="height_status_bar_origin">24dp</dimen>
+
+    <!-- Nav view of Drawer -->
+    <dimen name="width_drawer">304dp</dimen>
+
+    <!-- General -->
+    <dimen name="elevation_all">4dp</dimen>
+    <dimen name="height_all_bottom_layout">80dp</dimen>
 </resources>
