@@ -5,7 +5,7 @@
     <data>
         <import type="android.view.View"/>
         <import type="android.text.TextUtils"/>
-        <!--<variable name="viewModel" type="app.appworks.school.stylish.MainViewModel"/>-->
+        <variable name="viewModel" type="com.terricom.mytype.MainViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

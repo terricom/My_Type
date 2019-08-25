@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">種天菜</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
     <string name="login_facebook">Facebook 登入</string>
     <string name="setting_dream_board">你的夢想版是空的 \n 快上傳你的夢想吧！</string>
     <string name="upload_dream_board">上傳夢想版</string>
@@ -11,4 +9,14 @@
     <string name="diary_title_sleep_time">天菜今天有睡好嗎？</string>
     <string name="diary_title_mood_memo">心情小記</string>
     <string name="diary_title_nutrient">補充營養</string>
+    <string name="linechart_tab_title_calendar">日曆檢視</string>
+    <string name="linechart_tab_title_week">週變化</string>
+    <string name="linechart_tab_title_month">月變化</string>
+    <string name="title_foodie">食記</string>
+    <string name="title_diary">日記</string>
+    <string name="title_linechart">觀察日誌</string>
+    <string name="title_harvest">天菜收成</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

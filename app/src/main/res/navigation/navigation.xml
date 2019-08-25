@@ -10,6 +10,21 @@
     <action android:id="@+id/navigate_to_foodie_fragment" app:destination="@id/foodieFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_diary_fragment" app:destination="@id/diaryFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_linechart_fragment" app:destination="@id/linechartFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_harvest_fragment" app:destination="@id/harvestFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
+    <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
+              android:label="LinechartFragment"/>
+    <fragment android:id="@+id/harvestFragment" android:name="com.terricom.mytype.harvest.HarvestFragment"
+              android:label="HarvestFragment"/>
+    <fragment android:id="@+id/dreamboardReminder" android:name="com.terricom.mytype.dreamboard.DreamboardReminder"
+              android:label="DreamboardReminder"/>
 </navigation>
