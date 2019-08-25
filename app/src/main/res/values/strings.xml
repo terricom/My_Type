@@ -6,4 +6,9 @@
     <string name="login_facebook">Facebook 登入</string>
     <string name="setting_dream_board">你的夢想版是空的 \n 快上傳你的夢想吧！</string>
     <string name="upload_dream_board">上傳夢想版</string>
+    <string name="foodie_hello">Hi 今天吃得好嗎？</string>
+    <string name="foodie_save">儲存</string>
+    <string name="diary_title_sleep_time">天菜今天有睡好嗎？</string>
+    <string name="diary_title_mood_memo">心情小記</string>
+    <string name="diary_title_nutrient">補充營養</string>
 </resources>

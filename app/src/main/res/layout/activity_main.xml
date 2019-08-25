@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -13,7 +12,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_toolbar"
-            android:background="@color/colorAllTransparent"
+            android:background="@color/colorTransparent"
             android:elevation="@dimen/elevation_all"
             app:navigationIcon="@drawable/toolbar_menu"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +29,6 @@
                 android:letterSpacing="0.15"
                 android:textSize="20sp"
                 android:textStyle="bold"
-
                 android:layout_gravity="center"
                 tools:visibility="visible"
                 tools:text="Stylish"/>
@@ -41,7 +39,6 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-
     <fragment
             android:id="@+id/myNavHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -50,8 +47,8 @@
             app:navGraph="@navigation/navigation"
             app:defaultNavHost="true"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_nav_view" app:layout_constraintHorizontal_bias="0.6"/>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -59,8 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/height_bottom_nav_view_main"
             app:itemIconSize="@dimen/size_bottom_nav_icon"
-            android:background="@color/colorAllTransparent"
-            android:backgroundTint="@color/colorAllTransparent"
+            android:background="@color/colorTransparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

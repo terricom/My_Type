@@ -17,4 +17,9 @@
     <!-- General -->
     <dimen name="elevation_all">4dp</dimen>
     <dimen name="height_all_bottom_layout">80dp</dimen>
+
+    <!-- Dialog Padding -->
+    <dimen name="dialog_padding">10dp</dimen>
+
+
 </resources>

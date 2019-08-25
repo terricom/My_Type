@@ -7,6 +7,7 @@ import android.view.Gravity
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.terricom.mytype.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ class MainActivity : BaseActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_food_record -> {
+                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_diary -> {

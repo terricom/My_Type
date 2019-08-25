@@ -8,5 +8,7 @@
     <color name="colorTransparent">#30FFFFFF</color>
     <color name="blue_facebook">#3b5998</color>
     <color name="black_3f3a3a">#3f3a3a</color>
+    <color name="colorOrangeSave">#C8FF8C00</color>
+    <color name="colorBananna">#E6FFD500</color>
 
 </resources>

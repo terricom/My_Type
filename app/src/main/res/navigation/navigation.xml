@@ -5,4 +5,11 @@
 
     <fragment android:id="@+id/loginFragment" android:name="com.terricom.mytype.login.LoginFragment"
               android:label="LoginFragment"/>
+    <fragment android:id="@+id/foodieFragment" android:name="com.terricom.mytype.foodie.FoodieFragment"
+              android:label="FoodieFragment"/>
+    <action android:id="@+id/navigate_to_foodie_fragment" app:destination="@id/foodieFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
+              android:label="DiaryFragment"/>
 </navigation>
