@@ -11,5 +11,6 @@
     <color name="colorOrangeSave">#C8FF8C00</color>
     <color name="colorBananna">#E6FFD500</color>
     <color name="colorMyType">#209387</color>
+    <color name="colorButton">#D5D5D5</color>
 
 </resources>

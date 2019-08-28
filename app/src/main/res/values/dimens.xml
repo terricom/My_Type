@@ -18,12 +18,19 @@
     <dimen name="elevation_all">4dp</dimen>
     <dimen name="height_all_bottom_layout">80dp</dimen>
     <dimen name="text_content">14sp</dimen>
+    <dimen name="text_content_title">16sp</dimen>
 
     <!-- Dialog Padding -->
     <dimen name="dialog_padding">10dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+
+    <!-- Foodie -->
+    <dimen name="foodie_button_width">50dp</dimen>
+    <dimen name="foodie_button_height">40dp</dimen>
+
+
 
 
 </resources>
