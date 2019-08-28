@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import com.terricom.mytype.MainActivity
+import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class ReferenceDialog: AppCompatDialogFragment() {
 
@@ -19,7 +23,9 @@ class ReferenceDialog: AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler().postDelayed({ this.dismiss() }, 5000)
+        Handler().postDelayed({ this.dismiss()
+            findNavController().navigate(NavigationDirections.navigateToFoodieFragment())
+            (activity as MainActivity).toolbar.visibility = View.VISIBLE}, 3000)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

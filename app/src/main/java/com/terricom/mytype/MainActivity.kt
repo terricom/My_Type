@@ -80,6 +80,7 @@ class MainActivity : BaseActivity() {
                 R.id.harvestFragment -> CurrentFragmentType.HARVEST
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
+                R.id.referenceDialog -> CurrentFragmentType.REF
                 else -> viewModel.currentFragmentType.value
             }
         }
