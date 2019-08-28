@@ -317,6 +317,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/button_background" android:layout_marginBottom="56dp"
+                android:backgroundTint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:paddingBottom="@dimen/elevation_all"
                 android:paddingTop="@dimen/elevation_all"

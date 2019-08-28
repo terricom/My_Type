@@ -5,12 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.terricom.mytype.databinding.FragmentAddFoodieBinding
+import androidx.navigation.fragment.findNavController
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 
 class FoodieFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentAddFoodieBinding.inflate(inflater)
+        val binding = FragmentFoodieRecordBinding.inflate(inflater)
+
+        binding.buttonFoodieShowInfo.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
+        }
 
         return binding.root
     }

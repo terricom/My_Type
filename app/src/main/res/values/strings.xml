@@ -24,5 +24,11 @@
     <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
     <string name="foodie_title_nutrition">選擇營養</string>
     <string name="foodie_add_food">新增</string>
+    <string name="shape_weight">體重</string>
+    <string name="shape_body_fat">體脂</string>
+    <string name="shape_body_water">含水量</string>
+    <string name="shape_muscle">肌肉量</string>
+    <string name="shape_tdee">日代謝</string>
+    <string name="shape_body_age">體年齡</string>
 
 </resources>

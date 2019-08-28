@@ -79,6 +79,7 @@ class MainActivity : BaseActivity() {
                 R.id.linechartFragment -> CurrentFragmentType.LINECHART
                 R.id.harvestFragment -> CurrentFragmentType.HARVEST
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
+                R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -89,7 +90,7 @@ class MainActivity : BaseActivity() {
                 hideBottomNavView()
                 hideToolbar()
             }
-            if (it.value == App.instance?.getString(R.string.title_foodie)){
+            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) ){
                 hideBottomNavView()
             }
         })

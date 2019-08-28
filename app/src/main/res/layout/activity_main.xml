@@ -25,7 +25,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@color/colorWhite"
                 android:layout_gravity="center" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:elevation="@dimen/elevation_all"/>
 
         <TextView
                 android:id="@+id/text_toolbar_title"
@@ -41,7 +42,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/toolbar"
                 app:layout_constraintStart_toStartOf="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="@+id/toolbar"
-                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"/>
+                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"
+                android:elevation="5dp"/>
 
         <fragment
                 android:id="@+id/myNavHostFragment"

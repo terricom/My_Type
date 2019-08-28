@@ -19,6 +19,12 @@
     <action android:id="@+id/navigate_to_harvest_fragment" app:destination="@id/harvestFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_shape_record_fragment" app:destination="@id/shaperecordFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_reference_dialog" app:destination="@id/referenceDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -27,4 +33,8 @@
               android:label="HarvestFragment"/>
     <fragment android:id="@+id/dreamboardReminder" android:name="com.terricom.mytype.dreamboard.DreamboardReminder"
               android:label="DreamboardReminder"/>
+    <fragment android:id="@+id/shaperecordFragment" android:name="com.terricom.mytype.shaperecord.ShapeRecordFragment"
+              android:label="ShaperecordFragment"/>
+    <fragment android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
+              android:label="ReferenceDialog"/>
 </navigation>

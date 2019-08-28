@@ -16,4 +16,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="MessageDialog">
+        <item name="android:windowBackground">@color/translucent_80</item>
+    </style>
+
 </resources>
