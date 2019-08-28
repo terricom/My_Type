@@ -12,11 +12,15 @@
     <string name="linechart_tab_title_calendar">日曆檢視</string>
     <string name="linechart_tab_title_week">週變化</string>
     <string name="linechart_tab_title_month">月變化</string>
-    <string name="title_foodie">食記</string>
+    <string name="title_foodie">新增食記</string>
     <string name="title_diary">日記</string>
-    <string name="title_linechart">觀察日誌</string>
-    <string name="title_harvest">天菜收成</string>
+    <string name="title_linechart">累積</string>
+    <string name="title_harvest">成果</string>
+    <string name="title_shape_record">新增成果</string>
+    <string name="title_profile">個人</string>
+    <string name="title_dream_puzzle">夢想拼圖</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
 
 </resources>

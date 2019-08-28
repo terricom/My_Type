@@ -3,21 +3,25 @@
 
     <item
             android:id="@+id/navigation_food_record"
-            android:icon="@drawable/icon_food_record"
-            android:title=""/>
+            android:icon="@drawable/icon_diary"
+            android:title="@string/title_diary"/>
 
     <item
             android:id="@+id/navigation_diary"
-            android:icon="@drawable/icon_diary"
+            android:icon="@drawable/icon_sand_glass"
+            android:title="@string/title_linechart"/>
+
+    <item
+            android:id="@+id/navigation_nothing"
             android:title=""/>
 
     <item
             android:id="@+id/navigation_line_chart"
-            android:icon="@drawable/icon_line_chart"
-            android:title=""/>
+            android:icon="@drawable/icon_shape"
+            android:title="@string/title_harvest"/>
     <item
             android:id="@+id/navigation_harvest"
-            android:icon="@drawable/icon_harvest"
-            android:title=""/>
+            android:icon="@drawable/icon_profile"
+            android:title="@string/title_profile"/>
 
 </menu>

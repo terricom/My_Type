@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -6,7 +6,7 @@
     <dimen name="size_my_type">30sp</dimen>
     <!-- Bottom Navigation -->
     <dimen name="height_bottom_nav_view_main">56dp</dimen>
-    <dimen name="size_bottom_nav_icon">36dp</dimen>
+    <dimen name="size_bottom_nav_icon">25dp</dimen>
     <!-- Toolbar -->
     <dimen name="height_toolbar">80dp</dimen>
     <dimen name="height_status_bar_origin">24dp</dimen>
@@ -17,9 +17,13 @@
     <!-- General -->
     <dimen name="elevation_all">4dp</dimen>
     <dimen name="height_all_bottom_layout">80dp</dimen>
+    <dimen name="text_content">14sp</dimen>
 
     <!-- Dialog Padding -->
     <dimen name="dialog_padding">10dp</dimen>
+
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
 
 
 </resources>

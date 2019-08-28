@@ -10,13 +10,13 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "29.0.0"
+    buildToolsVersion "29.0.1"
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "com.terricom.mytype"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         multiDexEnabled true
@@ -110,10 +110,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Notification
-    implementation "com.android.support:support-compat:28.0.0"
+    implementation 'androidx.core:core:1.0.0'
 
 
     implementation "androidx.multidex:multidex:$multidex_version"
+
+    //FAB
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
+    implementation 'uk.co.markormesher:android-fab:2.5.0'
 
 
 }

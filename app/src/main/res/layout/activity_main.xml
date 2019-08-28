@@ -17,67 +17,62 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_toolbar"
-            android:background="@color/colorTransparent"
-            android:elevation="@dimen/elevation_all"
-            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.LOGIN ||viewModel.currentFragmentType == CurrentFragmentType.DREAMBOARD ||viewModel.currentFragmentType == CurrentFragmentType.DREAMBOARD_REMINDER ? View.GONE : View.VISIBLE}"
-            app:navigationIcon="@drawable/toolbar_menu"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="1.0">
-
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/colorWhite"
+                android:layout_gravity="center" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
                 android:id="@+id/text_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorMyType"
                 android:letterSpacing="0.15"
                 android:textSize="20sp"
-                android:text="@{viewModel.currentFragmentType.value}"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:visibility="visible"
-                tools:text="Stylish" tools:layout_editor_absoluteY="24dp" tools:layout_editor_absoluteX="173dp"/>
+                tools:text="Stylish"
+                app:layout_constraintEnd_toEndOf="@+id/toolbar"
+                app:layout_constraintStart_toStartOf="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="@+id/toolbar"
+                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"/>
+
+        <fragment
+                android:id="@+id/myNavHostFragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:navGraph="@navigation/navigation"
+                app:defaultNavHost="true"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav_view"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_bottom_nav_view_main"
+                app:itemIconSize="@dimen/size_bottom_nav_icon"
+                android:background="@color/colorMyType"
+                app:itemIconTint="@color/colorWhite"
+                app:itemTextColor="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:menu="@menu/bottom_nav_menu">
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
-    </androidx.appcompat.widget.Toolbar>
-
-
-    <fragment
-            android:id="@+id/myNavHostFragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:navGraph="@navigation/navigation"
-            app:defaultNavHost="true"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintBottom_toBottomOf="@id/bottom_nav_view" app:layout_constraintHorizontal_bias="0.6"/>
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav_view"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_bottom_nav_view_main"
-            app:itemIconSize="@dimen/size_bottom_nav_icon"
-            android:background="@color/colorTransparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/bottom_nav_menu"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.google.android.material.navigation.NavigationView
-                android:id="@+id/drawerNavView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:fitsSystemWindows="true"
-                app:menu="@menu/drawer_nav_menu"/>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
