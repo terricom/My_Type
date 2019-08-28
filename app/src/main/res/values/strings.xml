@@ -6,9 +6,9 @@
     <string name="upload_dream_board">上傳夢想版</string>
     <string name="foodie_hello">Hi 今天吃得好嗎？</string>
     <string name="foodie_save">儲存</string>
-    <string name="diary_title_sleep_time">天菜今天有睡好嗎？</string>
+    <string name="diary_title_sleep_time">睡眠時間</string>
     <string name="diary_title_mood_memo">心情小記</string>
-    <string name="diary_title_nutrient">補充營養</string>
+    <string name="diary_title_nutrient">營養補充</string>
     <string name="linechart_tab_title_calendar">日曆檢視</string>
     <string name="linechart_tab_title_week">週變化</string>
     <string name="linechart_tab_title_month">月變化</string>
@@ -30,5 +30,8 @@
     <string name="shape_muscle">肌肉量</string>
     <string name="shape_tdee">日代謝</string>
     <string name="shape_body_age">體年齡</string>
+    <string name="diary_title_today_record">今日食記</string>
+    <string name="diary_title_today_compliment">今日成就</string>
+
 
 </resources>
