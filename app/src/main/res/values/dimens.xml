@@ -39,6 +39,10 @@
     <dimen name="standard_155">155dp</dimen>
     <dimen name="standard_0">0dp</dimen>
 
+    <dimen name="default_screen_padding">16dp</dimen>
+    <dimen name="_12sdp">12dp</dimen>
+    <dimen name="_16sdp">16dp</dimen>
+    <dimen name="_1sdp">1dp</dimen>
 
 
 

@@ -172,6 +172,14 @@ class MainActivity : BaseActivity() {
             binding.fabLayout2.visibility = View.INVISIBLE }, 300)
     }
 
+//    override fun onCalendarNextPressed() {
+//        smartCustomCalendar.updateCalendar()
+//    }
+//
+//    override fun onCalendarPreviousPressed() {
+//        smartCustomCalendar.updateCalendar()
+//    }
+
 
 
 

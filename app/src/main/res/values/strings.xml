@@ -41,6 +41,14 @@
     <string name="profile_title_my_goal">我的目標</string>
     <string name="profile_button_logout">登出</string>
     <string name="profile_title_my_menu">我的菜單</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+
 
 
 </resources>

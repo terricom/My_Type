@@ -30,5 +30,11 @@
         <item name="colorSecondary">@color/colorMyType</item>
     </style>
 
+    <style name="HorizontalBreakLine">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/_1sdp</item>
+        <item name="android:background">@color/colorButton</item>
+    </style>
+
 
 </resources>

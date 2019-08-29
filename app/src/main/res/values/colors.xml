@@ -14,6 +14,10 @@
     <color name="colorMyType">#209387</color>
     <color name="colorButton">#D5D5D5</color>
     <color name="translucent_80">#cc000000</color>
-
+    <color name="calendar_highlight">#209387</color>
+    <color name="calendar_date_disable">#646464</color>
+    <color name="calendar_date_enable_normal">#000000</color>
+    <color name="calendar_background_item_enable">#FFFFFF</color>
+    <color name="calendar_background_item_disable">#C9BFBF</color>
 
 </resources>
