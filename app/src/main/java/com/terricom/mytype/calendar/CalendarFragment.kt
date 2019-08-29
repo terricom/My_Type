@@ -1,4 +1,4 @@
-package com.terricom.mytype.linechart
+package com.terricom.mytype.calendar
 
 import android.content.Context
 import android.util.AttributeSet
@@ -14,7 +14,7 @@ import com.terricom.mytype.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyCustomCalendarView : ConstraintLayout, MyCalendarAdapter.ListenerCellSelect {
+class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     companion object {
         const val MAX_DAY_COUNT = 35
@@ -53,7 +53,7 @@ class MyCustomCalendarView : ConstraintLayout, MyCalendarAdapter.ListenerCellSel
 
         context?.let {
             val inflater = it.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.view_my_calendar, this, true)
+            inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
             txtDate = findViewById(R.id.itemDate)
@@ -109,11 +109,11 @@ class MyCustomCalendarView : ConstraintLayout, MyCalendarAdapter.ListenerCellSel
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val calendarAdapter = MyCalendarAdapter().apply {
+        val calendarAdapter = CalendarAdapter().apply {
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
-            this.listener = this@MyCustomCalendarView
+            this.listener = this@CalendarFragment
         }
 
         gridRecycler.adapter = calendarAdapter
@@ -123,7 +123,7 @@ class MyCustomCalendarView : ConstraintLayout, MyCalendarAdapter.ListenerCellSel
 
 
     override fun onDateSelect(selectDate: Date) {
-        val tempAdapter = gridRecycler.adapter as MyCalendarAdapter
+        val tempAdapter = gridRecycler.adapter as CalendarAdapter
         tempAdapter.selectedDate = selectDate
         tempAdapter.notifyDataSetChanged()
 

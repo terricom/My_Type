@@ -1,4 +1,4 @@
-package com.terricom.mytype.linechart
+package com.terricom.mytype.calendar
 
 import android.content.Context
 import android.util.AttributeSet

@@ -1,4 +1,4 @@
-package com.terricom.mytype.linechart
+package com.terricom.mytype.calendar
 
 import android.graphics.Typeface
 import android.graphics.Typeface.BOLD
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
 import java.util.*
 
-class MyCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val recordDate = view.findViewById<ImageView>(R.id.date_record)
@@ -22,12 +22,12 @@ class MyCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
                    dateSelected : Date?,
-                   listener: MyCalendarAdapter.ListenerCellSelect? = null
+                   listener: CalendarAdapter.ListenerCellSelect? = null
     ){
         resetViewDefault()
 
-        val showingMonth = showingDate.get(Calendar.MONTH) + 1
-        val showingYear = showingDate.get(Calendar.YEAR)
+        val viewMonth = showingDate.get(Calendar.MONTH) + 1
+        val viewYear = showingDate.get(Calendar.YEAR)
 
         val currentDateTime = Calendar.getInstance()
         currentDateTime.time = currentDateInput
@@ -37,14 +37,14 @@ class MyCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val currentYear = currentDateTime.get(Calendar.YEAR)
 
         var selectedDay = -1
-        var selectedMonth = -1
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
-            selectedMonth = selectedDateTime.get(Calendar.MONTH)
         }
 
-        if(currentMonth != showingMonth || currentYear != showingYear){
+        if(currentMonth != viewMonth || currentYear != viewYear){
+            recordDate.visibility = View.INVISIBLE
+            puzzleDate.visibility = View.INVISIBLE
             monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorAllTransparent, null))
             cellDateLayout.setBackgroundColor(
                 ResourcesCompat.getColor(
@@ -54,6 +54,8 @@ class MyCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
             )
         } else if(selectedDay == currentDay ){
+            recordDate.visibility = View.VISIBLE
+            puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(
@@ -63,16 +65,11 @@ class MyCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
 
         } else {
+            recordDate.visibility = View.VISIBLE
             monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorMyType, null))
             cellDateLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.calendar_date,null)
 
-//            cellDateLayout.setBackgroundColor(
-//                ResourcesCompat.getColor(
-//                    context.resources,
-//                    R.color.calendar_background_item_enable,
-//                    null
-//                )
-//            )
+
             itemView.setOnClickListener{
                 listener?.let { eventHandler ->
                     eventHandler.onDateSelect(currentDateInput)

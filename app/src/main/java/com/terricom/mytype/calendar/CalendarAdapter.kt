@@ -1,4 +1,4 @@
-package com.terricom.mytype.linechart
+package com.terricom.mytype.calendar
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
 import java.util.*
 
-class MyCalendarAdapter : RecyclerView.Adapter<MyCalendarViewHolder>() {
+class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
 
     lateinit var listDates: ArrayList<Date>
     lateinit var context: Context
@@ -16,17 +16,17 @@ class MyCalendarAdapter : RecyclerView.Adapter<MyCalendarViewHolder>() {
     var listener: ListenerCellSelect? = null
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, size: Int): MyCalendarViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.view_my_calendar_item, parent, false)
-        return MyCalendarViewHolder(view)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day, parent, false)
+        return CalendarViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return listDates.size
     }
 
-    override fun onBindViewHolder(viewHolder: MyCalendarViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: CalendarViewHolder, position: Int) {
         viewHolder.myBindView(
             listDates[position],
             showingDateCalendar,

@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.LinechartCalendarBinding
 import kotlinx.android.synthetic.main.linechart_calendar.*
 import java.util.*
 
 
-class CalendarLinechart : Fragment(), MyCustomCalendarView.EventBetweenCalendarAndFragment {
+class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFragment {
 
     private val viewModel: CalendarLinechartViewModel by lazy {
         ViewModelProviders.of(this).get(CalendarLinechartViewModel::class.java)
@@ -28,13 +29,6 @@ class CalendarLinechart : Fragment(), MyCustomCalendarView.EventBetweenCalendarA
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-
-//        binding.calendarView2.setOnDateChangeListener { calendarView, i, j, k ->
-//            Log.i("Terri", "binding.calendarView2.setOnDateChangeListener year = $i + date = $k" )
-//            if (j<10){
-//                viewModel.setDate("$i.0$j.$k")
-//            }else viewModel.setDate("$i.$j.$k")
-//        }
 
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.updateCalendar()

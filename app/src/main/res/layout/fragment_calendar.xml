@@ -27,7 +27,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:background="?selectableItemBackgroundBorderless"
-                android:src="@mipmap/ic_arrow_left"/>
+                android:src="@mipmap/ic_arrow_left" android:tint="@color/colorMyType"/>
 
         <!-- date title -->
         <TextView
@@ -38,9 +38,10 @@
                 android:layout_toLeftOf="@+id/toNext"
                 android:layout_toRightOf="@+id/toBack"
                 android:gravity="center"
-                android:text="2018 / 12"
+                android:text="2018.12"
                 android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="#222222"/>
+                android:textColor="@color/colorMyType"
+                android:letterSpacing="0.15" android:textStyle="bold"/>
 
         <!-- next button -->
         <ImageView
@@ -52,7 +53,7 @@
                 android:layout_centerVertical="true"
                 android:background="?selectableItemBackgroundBorderless"
                 android:src="@mipmap/ic_forward"
-                android:visibility="invisible"/>
+                android:visibility="invisible" android:tint="@color/colorMyType"/>
     </RelativeLayout>
 
     <!-- days header -->
