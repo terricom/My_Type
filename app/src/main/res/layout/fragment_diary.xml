@@ -321,6 +321,7 @@
                 <com.google.android.material.chip.ChipGroup
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                         app:layout_constraintTop_toBottomOf="@+id/diary_title_nutrient"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp"

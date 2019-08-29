@@ -1,14 +1,15 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <!--<style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <!--<style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorMyType</item>
+        <item name="colorSecondary">@color/colorMyType</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,5 +20,15 @@
     <style name="MessageDialog">
         <item name="android:windowBackground">@color/translucent_80</item>
     </style>
+
+
+    <style name="MyFloatingActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/MyFabOverlay</item>
+    </style>
+
+    <style name="MyFabOverlay">
+        <item name="colorSecondary">@color/colorMyType</item>
+    </style>
+
 
 </resources>

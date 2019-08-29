@@ -58,7 +58,7 @@ dependencies {
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     kapt "androidx.room:room-compiler:$version_room"
@@ -115,9 +115,9 @@ dependencies {
 
     implementation "androidx.multidex:multidex:$multidex_version"
 
-    //FAB
-    implementation 'com.getbase:floatingactionbutton:1.10.1'
-    implementation 'uk.co.markormesher:android-fab:2.5.0'
+//    //FAB
+//    implementation 'com.getbase:floatingactionbutton:1.10.1'
+//    implementation 'uk.co.markormesher:android-fab:2.5.0'
 
     implementation 'ir.farshid_roohi:linegraph:0.1.1'
 

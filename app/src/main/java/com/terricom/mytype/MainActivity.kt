@@ -1,6 +1,7 @@
 package com.terricom.mytype
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,7 +13,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.terricom.mytype.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
+
+
+
 
 class MainActivity : BaseActivity() {
 
@@ -23,6 +29,8 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
+    var isFABOpen: Boolean = false
+
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -65,6 +73,31 @@ class MainActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
+        val fab = findViewById<View>(R.id.fab) as FloatingActionButton
+
+        fab.setOnClickListener {
+            if (!isFABOpen) {
+                showFABMenu()
+            } else {
+                closeFABMenu()
+            }
+        }
+        binding.fab1.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment())
+        }
+
+        binding.fab2.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+        }
+
+        binding.fabLayout1.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment())
+        }
+        binding.fabLayout2.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+        }
+
+
         setupNavController()
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -91,9 +124,11 @@ class MainActivity : BaseActivity() {
             if (it.value == ""){
                 hideBottomNavView()
                 hideToolbar()
+                hideFABView()
             }
             if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) ){
                 hideBottomNavView()
+                hideFABView()
             }
         })
     }
@@ -105,6 +140,38 @@ class MainActivity : BaseActivity() {
     fun hideBottomNavView(){
         binding.bottomNavView.visibility = View.GONE
     }
+
+    fun hideFABView(){
+        binding.fab.visibility = View.GONE
+        binding.fabLayout1.visibility = View.GONE
+        binding.fabLayout2.visibility = View.GONE
+        binding.fab1.visibility = View.GONE
+        binding.fab2.visibility = View.GONE
+    }
+
+
+    private fun showFABMenu() {
+        isFABOpen = true
+        fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+        binding.fab1.visibility = View.VISIBLE
+        binding.fab2.visibility = View.VISIBLE
+        binding.fabLayout1.visibility = View.VISIBLE
+        binding.fabLayout2.visibility = View.VISIBLE
+
+
+    }
+
+    private fun closeFABMenu() {
+        isFABOpen = false
+        fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
+
+        Handler().postDelayed({
+            binding.fabLayout1.visibility = View.INVISIBLE
+            binding.fabLayout2.visibility = View.INVISIBLE }, 300)
+    }
+
 
 
 
