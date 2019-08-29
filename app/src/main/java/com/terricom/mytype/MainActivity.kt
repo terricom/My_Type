@@ -16,8 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.terricom.mytype.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import java.util.*
 
 
 class MainActivity : BaseActivity() {
@@ -30,6 +29,7 @@ class MainActivity : BaseActivity() {
     private var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
     var isFABOpen: Boolean = false
+    val time = Calendar.getInstance().time
 
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

@@ -12,8 +12,12 @@ import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class FoodieFragment: Fragment() {
+
+    val time = Calendar.getInstance().time
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
@@ -15,8 +16,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class ShapeRecordFragment: Fragment() {
 
+    private val viewModel: ShapeRecordViewModel by lazy {
+        ViewModelProviders.of(this).get(ShapeRecordViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentShapeRecordBinding.inflate(inflater)
+
+        binding.viewModel = viewModel
+        binding.calendarView.setOnDateChangeListener { calendarView, i, j, k ->
+            if (j<10){
+                viewModel.setDate("$i.0$j.$k")
+            }else viewModel.setDate("$i.$j.$k")
+        }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
