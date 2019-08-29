@@ -16,7 +16,7 @@
     <action android:id="@+id/navigate_to_linechart_fragment" app:destination="@id/linechartFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
-    <action android:id="@+id/navigate_to_harvest_fragment" app:destination="@id/harvestFragment"
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     <action android:id="@+id/navigate_to_shape_record_fragment" app:destination="@id/shaperecordFragment"
@@ -25,11 +25,14 @@
     <action android:id="@+id/navigate_to_reference_dialog" app:destination="@id/referenceDialog"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_achivement_fragment" app:destination="@id/achivementFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
               android:label="LinechartFragment"/>
-    <fragment android:id="@+id/harvestFragment" android:name="com.terricom.mytype.harvest.HarvestFragment"
+    <fragment android:id="@+id/profileFragment" android:name="com.terricom.mytype.profile.ProfileFragment"
               android:label="HarvestFragment"/>
     <fragment android:id="@+id/dreamboardReminder" android:name="com.terricom.mytype.dreamboard.DreamboardReminder"
               android:label="DreamboardReminder"/>
@@ -37,4 +40,6 @@
               android:label="ShaperecordFragment"/>
     <fragment android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
               android:label="ReferenceDialog"/>
+    <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"
+              android:label="AchivementFragment"/>
 </navigation>

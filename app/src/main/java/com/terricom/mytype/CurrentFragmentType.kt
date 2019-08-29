@@ -8,5 +8,6 @@ enum class CurrentFragmentType(val value: String) {
     LOGIN(""),
     DREAMBOARD(App.instance?.getString(R.string.title_foodie) as String),
     SHAPE_RECORD(App.instance?.getString(R.string.title_shape_record) as String),
-    REF("")
+    REF(""),
+    PROFILE(App.instance?.getString(R.string.title_profile) as String)
 }

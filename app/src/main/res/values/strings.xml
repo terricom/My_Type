@@ -32,6 +32,15 @@
     <string name="shape_body_age">體年齡</string>
     <string name="diary_title_today_record">今日食記</string>
     <string name="diary_title_today_compliment">今日成就</string>
+    <string name="achivement_tab_list">紀錄表</string>
+    <string name="achivement_tab_week">週變化</string>
+    <string name="achivement_tab_month">月變化</string>
+    <string name="achivement_title_date">日期</string>
+    <string name="achivement_title_target">目標</string>
+    <string name="achivement_title_steps">距離</string>
+    <string name="profile_title_my_goal">我的目標</string>
+    <string name="profile_button_logout">登出</string>
+    <string name="profile_title_my_menu">我的菜單</string>
 
 
 </resources>

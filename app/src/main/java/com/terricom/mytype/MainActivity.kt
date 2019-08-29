@@ -32,14 +32,14 @@ class MainActivity : BaseActivity() {
             }
             R.id.navigation_diary -> {
                 findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLinechartFragment())
-
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_line_chart -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToHarvestFragment())
+                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToAchivementFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_harvest -> {
+                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -77,10 +77,11 @@ class MainActivity : BaseActivity() {
                 R.id.foodieFragment -> CurrentFragmentType.FOODIE
                 R.id.diaryFragment -> CurrentFragmentType.DIARY
                 R.id.linechartFragment -> CurrentFragmentType.LINECHART
-                R.id.harvestFragment -> CurrentFragmentType.HARVEST
+                R.id.achivementFragment -> CurrentFragmentType.HARVEST
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
                 R.id.referenceDialog -> CurrentFragmentType.REF
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
                 else -> viewModel.currentFragmentType.value
             }
         }
