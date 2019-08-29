@@ -11,10 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
+import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.linechart_calendar.*
+import java.util.*
 
-class ShapeRecordFragment: Fragment() {
+class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragment {
 
     private val viewModel: ShapeRecordViewModel by lazy {
         ViewModelProviders.of(this).get(ShapeRecordViewModel::class.java)
@@ -24,11 +27,6 @@ class ShapeRecordFragment: Fragment() {
         val binding = FragmentShapeRecordBinding.inflate(inflater)
 
         binding.viewModel = viewModel
-        binding.calendarView.setOnDateChangeListener { calendarView, i, j, k ->
-            if (j<10){
-                viewModel.setDate("$i.0$j.$k")
-            }else viewModel.setDate("$i.$j.$k")
-        }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -36,9 +34,27 @@ class ShapeRecordFragment: Fragment() {
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_line_chart
             }
         }
+
+        val calendar: Calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+        binding.smartCustomCalendar.setEventHandler(this)
+        binding.smartCustomCalendar.updateCalendar()
+
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         return binding.root
+    }
+
+    override fun onCalendarNextPressed() {
+        smartCustomCalendar.updateCalendar()
+    }
+
+    override fun onCalendarPreviousPressed() {
+        smartCustomCalendar.updateCalendar()
     }
 
     override fun onStop() {
