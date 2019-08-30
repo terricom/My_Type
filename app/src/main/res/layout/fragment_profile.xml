@@ -327,13 +327,12 @@
                         android:paddingRight="@dimen/dialog_padding"
                         android:paddingTop="@dimen/dialog_padding"
                         android:paddingBottom="@dimen/dialog_padding"
-                        android:textAlignment="viewEnd"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_weight"
                         app:layout_constraintTop_toTopOf="@+id/shaperecord_title_weight"
                         app:layout_constraintStart_toEndOf="@+id/shaperecord_title_weight"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_water"
-                        android:layout_marginEnd="8dp"/>
+                        app:layout_constraintEnd_toEndOf="@+id/number_coconut"/>
                 <TextView
                         android:text="@string/shape_muscle"
                         android:layout_width="0dp"
@@ -343,9 +342,9 @@
                         android:textColor="@color/colorMyType"
                         android:textAlignment="center"
                         app:layout_constraintTop_toTopOf="@+id/shaperecord_title_weight"
-                        app:layout_constraintStart_toEndOf="@+id/number_weight"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintEnd_toStartOf="@+id/number_muscle"/>
+                        app:layout_constraintEnd_toStartOf="@+id/number_muscle"
+                        app:layout_constraintStart_toEndOf="@+id/number_weight" android:layout_marginStart="8dp"/>
                 <EditText
                         android:text=""
                         android:hint="0.0"
@@ -361,11 +360,10 @@
                         android:paddingBottom="@dimen/dialog_padding"
                         app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_water"
                         app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_water"
-                        android:textAlignment="viewEnd"
-                        app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_water"
+                        android:textAlignment="center"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_fat"
-                        android:layout_marginEnd="8dp"/>
+                        app:layout_constraintStart_toStartOf="@+id/number_protein"
+                        app:layout_constraintEnd_toEndOf="@+id/number_protein"/>
                 <TextView
                         android:text="@string/shape_body_fat"
                         android:layout_width="0dp"
@@ -393,20 +391,19 @@
                         android:paddingBottom="@dimen/dialog_padding"
                         app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_fat"
                         app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_fat"
-                        android:textAlignment="viewEnd"
-                        app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
-                        app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="16dp"/>
+                        android:textAlignment="center"
+                        app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="@+id/number_carbon"
+                        app:layout_constraintStart_toStartOf="@+id/number_carbon"/>
                 <EditText
                         android:hint="2019.08.24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="107dp"
+                        android:layout_height="27dp"
                         android:id="@+id/profile_title_my_goal_date"
                         android:textColorHint="@color/colorButton"
-                        android:paddingLeft="@dimen/dialog_padding"
-                        android:paddingRight="@dimen/dialog_padding"
-                        android:paddingTop="@dimen/dialog_padding"
-                        android:paddingBottom="@dimen/dialog_padding"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
                         android:textSize="@dimen/text_content"
                         android:background="@drawable/input_column" android:textColor="@color/colorWhite"
                         android:textAlignment="center"
@@ -422,18 +419,18 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/profile_my_goal"
                         android:textColorHint="@color/colorButton"
-                        android:paddingLeft="@dimen/dialog_padding"
-                        android:paddingRight="@dimen/dialog_padding"
-                        android:paddingTop="@dimen/dialog_padding"
-                        android:paddingBottom="@dimen/dialog_padding"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
                         android:textSize="@dimen/text_content"
                         android:background="@drawable/input_column" android:textColor="@color/colorWhite"
                         android:textAlignment="viewStart"
-                        android:layout_marginStart="16dp"
-                        app:layout_constraintStart_toEndOf="@+id/profile_title_my_goal_date"
                         android:layout_marginEnd="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/profile_title_my_goal_date"/>
+                        app:layout_constraintTop_toTopOf="@+id/profile_title_my_goal_date"
+                        app:layout_constraintStart_toEndOf="@+id/profile_title_my_goal_date"
+                        android:layout_marginStart="8dp"/>
                 <Button
                         android:text="@string/foodie_save"
                         android:fontFamily="@font/noto_sans"

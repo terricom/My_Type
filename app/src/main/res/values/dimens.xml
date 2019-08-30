@@ -32,6 +32,7 @@
 
     <!-- Profile  -->
     <dimen name="height_profile_header">92dp</dimen>
+    <dimen name="profile_text_padding_left">50dp</dimen>
 
     <!-- FAB  -->
     <dimen name="standard_55">55dp</dimen>

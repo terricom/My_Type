@@ -75,20 +75,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
             ViewCompat.setNestedScrollingEnabled(gridRecycler, false)
 
-            gridRecycler.apply {
-                this.layoutManager = GridLayoutManager(context,
-                    NUM_DAY_OF_WEEK
-                )
-
-                addItemDecoration(
-                    SpaceItemDecoration(
-                        resources.getDimension(R.dimen._1sdp).toInt(),
-                        true
-                    )
-                )
-            }
-
-
+            gridRecycler.layoutManager = GridLayoutManager(context, NUM_DAY_OF_WEEK)
+            gridRecycler.addItemDecoration(SpaceItemDecoration(
+                resources.getDimension(R.dimen._1sdp).toInt(),
+                true
+            ))
 
         }
     }

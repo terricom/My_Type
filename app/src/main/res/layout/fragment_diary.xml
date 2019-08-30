@@ -320,9 +320,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/number_water" android:layout_marginTop="16dp"/>
                 <com.google.android.material.chip.ChipGroup
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                        android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                        app:layout_constraintTop_toBottomOf="@+id/diary_title_nutrient"
+                        app:layout_constraintTop_toBottomOf="@+id/nutrition_recycler"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="16dp"
                         android:id="@+id/nutrition" app:layout_constraintEnd_toEndOf="parent"
@@ -389,6 +389,28 @@
                         app:layout_constraintTop_toBottomOf="@+id/diary_content_mood_memo"
                         app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
                         android:layout_marginTop="24dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/item_diary_nutrition"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/nutrition_recycler" android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/diary_title_nutrient" android:layout_marginTop="8dp"
+                        android:id="@+id/chosed_nutrition" android:background="@drawable/input_column"
+                        android:padding="@dimen/elevation_all">
+                </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
