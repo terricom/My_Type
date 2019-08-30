@@ -23,7 +23,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
     <string name="foodie_title_nutrition">選擇營養</string>
-    <string name="foodie_add_food">新增</string>
+    <string name="foodie_add_food">新增食物</string>
     <string name="shape_weight">體重</string>
     <string name="shape_body_fat">體脂</string>
     <string name="shape_body_water">含水量</string>
@@ -48,7 +48,7 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
-
+    <string name="diary_add_nutrition">新增營養</string>
 
 
 </resources>

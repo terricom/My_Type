@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/nutrition"
             android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-            android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"/>
+            android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+            android:elevation="@dimen/elevation_all"/>
 </LinearLayout>
 </layout>

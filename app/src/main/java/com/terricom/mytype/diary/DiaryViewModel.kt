@@ -11,6 +11,9 @@ class DiaryViewModel: ViewModel() {
     val dragToList: LiveData<String>
         get() = _dragToList
 
+    val addNutrition = MutableLiveData<String>()
+    val adddNutrition: LiveData<String>
+        get() = addNutrition
 
     fun dragToList(nutrition: String) {
         _dragToList.value = nutrition

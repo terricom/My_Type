@@ -1,29 +1,21 @@
-package com.terricom.mytype.diary
+package com.terricom.mytype.foodie
 
 import android.content.ClipData
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.databinding.ItemDiaryNutritionBinding
+import com.terricom.mytype.databinding.ItemFoodieFoodBinding
+import com.terricom.mytype.diary.DiaryViewModel
 
-
-class NutritionAdapter(val viewModel: DiaryViewModel, private val onTouchListener: MyTouchListener )
-    : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
-
-    private var gestureDetectorCompat: GestureDetectorCompat? = null
-
-
-//    class OnTouchListener(val touchListener: (nutrition: String) -> Unit) {
-//        fun onTouch(nutrition: String) = touchListener(nutrition)
-//    }
+class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTouchListener )
+: ListAdapter<String, FoodAdapter.FoodViewHolder>(DiffCallback) {
 
 
     class MyTouchListener: View.OnTouchListener {
@@ -43,14 +35,13 @@ class NutritionAdapter(val viewModel: DiaryViewModel, private val onTouchListene
     }
 
 
-    class NutritionViewHolder(private var binding: ItemDiaryNutritionBinding): RecyclerView.ViewHolder(binding.root),
+    class FoodViewHolder(private var binding: ItemFoodieFoodBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(nutrition: String, viewModel: DiaryViewModel) {
+        fun bind(food: String, viewModel: DiaryViewModel) {
 
             binding.lifecycleOwner =this
-            binding.nutrition.text = nutrition
-            binding.viewModel = viewModel
+            binding.food.text = food
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -92,29 +83,28 @@ class NutritionAdapter(val viewModel: DiaryViewModel, private val onTouchListene
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NutritionViewHolder {
-        return NutritionViewHolder(ItemDiaryNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
+        return FoodViewHolder(ItemFoodieFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-    override fun onBindViewHolder(holder: NutritionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         product.let {
             holder.itemView.hasOnClickListeners()
             holder.itemView.setOnTouchListener(onTouchListener)
-            holder.bind(product, viewModel)
         }
     }
 
-    override fun onViewAttachedToWindow(holder: NutritionViewHolder) {
+    override fun onViewAttachedToWindow(holder: FoodViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: NutritionViewHolder) {
+    override fun onViewDetachedFromWindow(holder: FoodViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.markDetach()
     }

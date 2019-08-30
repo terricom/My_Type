@@ -23,10 +23,14 @@ class DiaryFragment: Fragment() {
         val binding = FragmentDiaryBinding.inflate(inflater)
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.MyTouchListener())
-        val nutritionList: List<String> = listOf("葉黃素", "維他命", "葡萄糖")
+        val nutritionList: MutableList<String> = mutableListOf("葉黃素", "維他命", "葡萄糖")
         (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(nutritionList)
+        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
 
 
+        if (viewModel.addNutrition.value != null) {
+            nutritionList.add(viewModel.addNutrition.value as String)
+        }
         class MyDragListener : OnDragListener {
 
             override fun onDrag(v: View, event: DragEvent): Boolean {
