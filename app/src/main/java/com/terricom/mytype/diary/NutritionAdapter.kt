@@ -19,33 +19,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemDiaryNutritionBinding
 
 
+const val IMAGEVIEW_TAG = "icon bitmap"
+
 class NutritionAdapter(val viewModel: DiaryViewModel
-//                       , private val onTouchListener: MyTouchListener
+                       , private val onTouchListener: MyTouchListener
 )
     : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
-
-    class onLongClickListener: View.OnLongClickListener{
-        override fun onLongClick(p0: View): Boolean {
-                val data = ClipData.newPlainText("", "")
-            val myShadow = MyDragShadowBuilder(p0)
-            p0?.startDrag(data, MyDragShadowBuilder(p0), p0, 0)
-                return true
-            }
-    }
-
 
 
     class MyTouchListener: View.OnTouchListener {
         override fun onTouch(p0: View, p1: MotionEvent): Boolean {
-            if (p1.action == MotionEvent.ACTION_DOWN) {
-                val data = ClipData.newPlainText("", "")
+            return if (p1.action == MotionEvent.ACTION_DOWN) {
+//                val data = ClipData.newPlainText("", "")
+                val data = ClipData.Item(p0.tag as? CharSequence)
+                p0.tag = IMAGEVIEW_TAG
+                val dragData = ClipData(
+                    p0.tag as CharSequence,
+                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+                    data)
                 val shadowBuilder = View.DragShadowBuilder(
                     p0
                 )
-                p0.startDrag(data, shadowBuilder, p0, 0)
-                return true
+                p0.startDrag(dragData, shadowBuilder, p0, 0)
+                true
             } else {
-                return false
+                false
             }
         }
     }
@@ -146,34 +144,34 @@ class NutritionAdapter(val viewModel: DiaryViewModel
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         product.let {
-//            holder.itemView.setOnTouchListener(onTouchListener)
-            holder.itemView.setOnLongClickListener{ v: View ->
-                // Create a new ClipData.
-                // This is done in two steps to provide clarity. The convenience method
-                // ClipData.newPlainText() can create a plain text ClipData in one step.
-
-                // Create a new ClipData.Item from the ImageView object's tag
-                val item = ClipData.Item(v.tag as? CharSequence)
-
-                // Create a new ClipData using the tag as a label, the plain text MIME type, and
-                // the already-created item. This will create a new ClipDescription object within the
-                // ClipData, and set its MIME type entry to "text/plain"
-                val dragData = ClipData(
-                    v.tag as? CharSequence,
-                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                    item)
-
-                // Instantiates the drag shadow builder.
-                val myShadow = MyDragShadowBuilder(v)
-
-                // Starts the drag
-                v.startDrag(
-                    dragData,   // the data to be dragged
-                    myShadow,   // the drag shadow builder
-                    null,       // no need to use local data
-                    0           // flags (not currently used, set to 0)
-                )
-            }
+            holder.itemView.setOnTouchListener(onTouchListener)
+//            holder.itemView.setOnLongClickListener{ v: View ->
+//                // Create a new ClipData.
+//                // This is done in two steps to provide clarity. The convenience method
+//                // ClipData.newPlainText() can create a plain text ClipData in one step.
+//
+//                // Create a new ClipData.Item from the ImageView object's tag
+//                val item = ClipData.Item(v.tag as? CharSequence)
+//
+//                // Create a new ClipData using the tag as a label, the plain text MIME type, and
+//                // the already-created item. This will create a new ClipDescription object within the
+//                // ClipData, and set its MIME type entry to "text/plain"
+//                val dragData = ClipData(
+//                    v.tag as? CharSequence,
+//                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+//                    item)
+//
+//                // Instantiates the drag shadow builder.
+//                val myShadow = MyDragShadowBuilder(v)
+//
+//                // Starts the drag
+//                v.startDrag(
+//                    dragData,   // the data to be dragged
+//                    myShadow,   // the drag shadow builder
+//                    null,       // no need to use local data
+//                    0           // flags (not currently used, set to 0)
+//                )
+//            }
             holder.bind(product, viewModel)
         }
     }

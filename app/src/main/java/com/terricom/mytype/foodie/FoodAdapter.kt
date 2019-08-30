@@ -1,6 +1,7 @@
 package com.terricom.mytype.foodie
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -14,23 +15,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemFoodieFoodBinding
 import com.terricom.mytype.diary.DiaryViewModel
 
+const val IMAGEVIEW_TAG = "icon bitmap"
+
 class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTouchListener )
 : ListAdapter<String, FoodAdapter.FoodViewHolder>(DiffCallback) {
 
 
     class MyTouchListener: View.OnTouchListener {
+
         override fun onTouch(p0: View, p1: MotionEvent): Boolean {
-            if (p1.action == MotionEvent.ACTION_DOWN) {
-                val data = ClipData.newPlainText("", "")
+            return if (p1.action == MotionEvent.ACTION_DOWN) {
+                val data = ClipData.Item(p0.tag as? CharSequence)
+                p0.tag = IMAGEVIEW_TAG
+                val dragData = ClipData(
+                    p0.tag as? CharSequence,
+                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+                    data)
                 val shadowBuilder = View.DragShadowBuilder(
                     p0
                 )
-                p0.startDrag(data, shadowBuilder, p0, 0)
-                return true
+                p0.startDrag(dragData, shadowBuilder, p0, 0)
+                true
             } else {
-                return false
+                false
             }
         }
+
     }
 
 
@@ -93,7 +103,6 @@ class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTo
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         product.let {
-            holder.itemView.hasOnClickListeners()
             holder.itemView.setOnTouchListener(onTouchListener)
         }
     }
