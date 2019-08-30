@@ -26,7 +26,6 @@ class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTo
                     p0
                 )
                 p0.startDrag(data, shadowBuilder, p0, 0)
-                p0.visibility = View.INVISIBLE
                 return true
             } else {
                 return false

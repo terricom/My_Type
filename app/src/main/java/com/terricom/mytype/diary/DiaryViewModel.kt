@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 
 class DiaryViewModel: ViewModel() {
 
-    private val _dragToList = MutableLiveData<String>()
+    private val _dragToList = MutableLiveData<MutableList<String>>()
 
-    val dragToList: LiveData<String>
+    val dragToList: LiveData<MutableList<String>>
         get() = _dragToList
 
     val addNutrition = MutableLiveData<String>()
@@ -16,7 +16,7 @@ class DiaryViewModel: ViewModel() {
         get() = addNutrition
 
     fun dragToList(nutrition: String) {
-        _dragToList.value = nutrition
+        _dragToList.value?.add(nutrition)
     }
 
 }
