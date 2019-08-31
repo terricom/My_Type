@@ -17,6 +17,8 @@ import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
+
+
 class FoodieFragment: Fragment() {
 
     val time = Calendar.getInstance().time

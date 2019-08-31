@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemDiaryNutritionBinding
 
 
+const val IMAGEVIEW_TAG = "icon bitmap"
+
 class NutritionAdapter(val viewModel: DiaryViewModel
                        , private val onTouchListener: MyTouchListener
 )
@@ -30,6 +32,7 @@ class NutritionAdapter(val viewModel: DiaryViewModel
             return if (p1.action == MotionEvent.ACTION_DOWN) {
 //                val data = ClipData.newPlainText("", "")
                 val data = ClipData.Item(p0.tag as? CharSequence)
+                p0.tag = IMAGEVIEW_TAG
                 val dragData = ClipData(
                     p0.tag as CharSequence,
                     arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
