@@ -115,6 +115,7 @@
                         app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                         android:layout_marginStart="16dp"
                         tools:listitem="@layout/item_diary_record"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:id="@+id/recyclerView"
                         app:layout_constraintTop_toBottomOf="@+id/diary_title_total_foodie"
                         app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"/>
