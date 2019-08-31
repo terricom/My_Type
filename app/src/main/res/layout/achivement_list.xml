@@ -95,8 +95,10 @@
                 android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/achivement_title_date"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_achivement_shape"
                 android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp" android:id="@+id/recyclerView2"/>
+                android:layout_marginTop="8dp" android:id="@+id/recycler_shape"/>
         <TextView
                 android:text="@string/achivement_title_steps"
                 android:layout_width="0dp"
@@ -107,9 +109,8 @@
                 android:layout_marginStart="16dp"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_weight"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView2" android:layout_marginTop="16dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/recycler_shape" android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/achivement_title_date"/>
         <TextView
                 android:text="@string/achivement_title_target"
                 android:layout_width="0dp"
@@ -120,9 +121,8 @@
                 android:layout_marginStart="16dp"
                 android:textAlignment="center"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_weight"
-                app:layout_constraintTop_toBottomOf="@+id/achivement_title_steps" android:layout_marginTop="8dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/achivement_title_steps" android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/achivement_title_steps"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

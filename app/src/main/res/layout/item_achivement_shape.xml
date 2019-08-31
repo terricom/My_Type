@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="shape" type="com.terricom.mytype.data.Shape"/>
+        <variable name="viewModel" type="com.terricom.mytype.achivement.AchievementViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="2019/08/31"
+                android:layout_width="84dp"
+                android:layout_height="wrap_content" android:id="@+id/time"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:textSize="@dimen/text_content"
+                android:textAlignment="center"/>
+        <TextView
+                android:text="58.0"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" android:id="@+id/number_weight"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/time" android:textAlignment="center"/>
+        <TextView
+                android:text="55.0"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" android:id="@+id/number_body_water"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/number_weight" android:layout_marginStart="8dp"
+                android:textAlignment="center"/>
+        <TextView
+                android:text="23.0"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" android:id="@+id/number_body_fat"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/number_body_water" android:layout_marginStart="8dp"
+                android:textAlignment="center"/>
+        <TextView
+                android:text="1200"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" android:id="@+id/number_tdeet"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/number_body_fat" android:layout_marginStart="8dp"
+                android:textAlignment="center"/>
+        <TextView
+                android:text="30.0"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" android:id="@+id/number_muscle"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/number_tdeet" android:layout_marginStart="8dp"
+                android:textAlignment="center"/>
+        <TextView
+                android:text="30"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" android:id="@+id/number_body_age"
+                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
+                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/number_muscle"
+                android:layout_marginStart="10dp" android:textAlignment="center"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
