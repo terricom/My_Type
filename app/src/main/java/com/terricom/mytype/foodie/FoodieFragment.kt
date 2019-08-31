@@ -16,12 +16,15 @@ import com.terricom.mytype.R
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-
+import android.graphics.Bitmap
+import android.net.Uri
 
 
 class FoodieFragment: Fragment() {
 
     val time = Calendar.getInstance().time
+
+
 
     private val viewModel: FoodieViewModel by lazy {
         ViewModelProviders.of(this).get(FoodieViewModel::class.java)
