@@ -115,13 +115,5 @@ dependencies {
 
     implementation "androidx.multidex:multidex:$multidex_version"
 
-//    //FAB
-//    implementation 'com.getbase:floatingactionbutton:1.10.1'
-//    implementation 'uk.co.markormesher:android-fab:2.5.0'
-
-    implementation 'ir.farshid_roohi:linegraph:0.1.1'
-
-    //Calendar
-
 
 }

@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ir.farshid_roohi.linegraph.LineChart
+    <com.terricom.mytype.linechart.LineChart
             android:id="@+id/lineChart"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -14,12 +14,16 @@
             app:chart_padding_left="20dp"
             app:chart_padding_right="20dp"
             app:chart_padding_top="20dp"
+            app:layout_constraintBaseline_creator="1"
+            app:layout_editor_absoluteX="10dp"
+            app:layout_editor_absoluteY="10dp"
             app:chart_line_color="@color/colorButton"
-            app:chart_bg_color="@color/colorWhite"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:chart_bg_color="@color/colorMyType"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="16dp" android:layout_marginEnd="16dp" android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginEnd="16dp" android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

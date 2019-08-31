@@ -19,5 +19,11 @@
     <color name="calendar_date_enable_normal">#000000</color>
     <color name="calendar_background_item_enable">#FFFFFF</color>
     <color name="calendar_background_item_disable">#C9BFBF</color>
+    <color name="colorWater">#05A5DB</color>
+    <color name="colorOil">#7B5133</color>
+    <color name="colorVegetable">#428352</color>
+    <color name="colorProtein">#F9D936</color>
+    <color name="colorFruit">#E2644D</color>
+    <color name="colorCarbon">#F59C4D</color>
 
 </resources>

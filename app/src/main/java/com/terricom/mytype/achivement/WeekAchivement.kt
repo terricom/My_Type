@@ -1,31 +1,69 @@
 package com.terricom.mytype.achivement
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ir.farshid_roohi.linegraph.ChartEntity
+import com.terricom.mytype.App
+import com.terricom.mytype.R
+import com.terricom.mytype.linechart.ChartEntity
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WeekAchivement: Fragment() {
+
+    val currentDateTime = Calendar.getInstance()
+    val thisWeek = mutableListOf<String>()
+    val weeek = arrayListOf<String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.AchivementWeekBinding.inflate(inflater)
 
-        val graph1 = floatArrayOf(113000f, 183000f, 188000f, 695000f, 324000f, 230000f, 188000f, 15000f, 126000f, 5000f, 33000f)
-        val graph2 = floatArrayOf(0f, 245000f, 1011000f, 1000f, 0f, 0f, 47000f, 20000f, 12000f, 124400f, 160000f)
-        val legendArr = arrayOf("05/21", "05/22", "05/23", "05/24", "05/25", "05/26", "05/27", "05/28", "05/29", "05/30", "05/31")
+        getThisWeek()
 
-        val firstChartEntity = ChartEntity(Color.WHITE, graph1)
-        val secondChartEntity = ChartEntity(Color.YELLOW, graph2)
+        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), graph1)
+        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), graph2)
 
         val list = ArrayList<ChartEntity>()
-        list.add(firstChartEntity)
-        list.add(secondChartEntity)
-//        lineChart.legendArray = legendArr
-//        lineChart.setList(list)
+        list.add(waterChartEntity)
+        list.add(oilChartEntity)
+
+        binding.lineChart.legendArray = arrayOf(thisWeek[0],thisWeek[1],thisWeek[2],thisWeek[3],thisWeek[4],thisWeek[5],thisWeek[6])
+        binding.lineChart.setList(list)
 
         return binding.root
     }
+
+    private fun getThisWeek(){
+        val currentMonth = currentDateTime.get(Calendar.MONTH) + 1
+        val lastDayOfLastMonth = getLastMonthLastDate()
+        val currentDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+
+        for (i in currentDay-6 until  currentDay ){
+            if (i>-1){
+                weeek.add("$currentMonth/$i")
+                thisWeek.add("$currentMonth/$i")
+            }else {
+                weeek.add("${currentMonth-1}/${lastDayOfLastMonth+i}")
+                thisWeek.add("${currentMonth-1}/${lastDayOfLastMonth+i}")
+            }
+        }
+        thisWeek.add("${currentMonth}/${currentDay}")
+
+    }
+
+    fun getLastMonthLastDate(): Int {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -1)
+
+        val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, max)
+
+        return calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+
+    private val graph1 = floatArrayOf(10f, 7f, 6f, 5f, 4f, 3f, 7f)
+    private val graph2 = floatArrayOf(0f, 2f, 10f,8f, 7f, 6f, 4f)
 }
