@@ -49,6 +49,7 @@
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
     <string name="diary_add_nutrition">新增營養</string>
+    <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n 有圖有真相，上傳照片瞧瞧吧！</string>
 
 
 </resources>

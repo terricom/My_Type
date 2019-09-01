@@ -115,5 +115,8 @@ dependencies {
 
     implementation "androidx.multidex:multidex:$multidex_version"
 
+    def uploadServiceVersion = "3.5.2"
+    implementation "net.gotev:uploadservice:$uploadServiceVersion"
+
 
 }
