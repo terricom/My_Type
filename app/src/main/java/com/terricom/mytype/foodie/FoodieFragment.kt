@@ -13,7 +13,8 @@ import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -22,14 +23,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
+import com.terricom.mytype.Logger
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
-import com.terricom.mytype.uploadimg.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
-import net.gotev.uploadservice.MultipartUploadRequest
-import net.gotev.uploadservice.UploadNotificationConfig
 import java.io.IOException
 import java.util.*
 
@@ -41,10 +40,6 @@ class FoodieFragment: Fragment() {
     private val viewModel: FoodieViewModel by lazy {
         ViewModelProviders.of(this).get(FoodieViewModel::class.java)
     }
-    //Declaring views
-    private var buttonChoose: ImageButton? = null
-    private var buttonUpload: Button? = null
-    private var imageView: ImageView? = null
 
     //Image request code
     private val PICK_IMAGE_REQUEST = 1
@@ -59,8 +54,6 @@ class FoodieFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
 
-//        startActivity(Intent(App.applicationContext(), UploadActivity::class.java))
-
         binding.buttonFoodieShowInfo.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
         }
@@ -70,11 +63,21 @@ class FoodieFragment: Fragment() {
         (binding.foodsRecycler.adapter as FoodAdapter).submitList(foodList)
         (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
 
+
+
         binding.foodiephoto.setOnClickListener{
+            //Requesting storage permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                requestStoragePermission()
+            }
             showFileChooser()
             it.visibility = View.INVISIBLE
             binding.foodieMyType.visibility = View.INVISIBLE
             binding.foodieGreet.visibility = View.INVISIBLE
+        }
+
+        binding.buttonFoodieSave.setOnClickListener {
+            uploadMultipart()
         }
 
         val callback = object : OnBackPressedCallback(true) {
@@ -123,20 +126,22 @@ class FoodieFragment: Fragment() {
         val path = getPath(filePath)
 
         //Uploading code
-        try {
-            val uploadId = UUID.randomUUID().toString()
+//        try {
+//            val uploadId = UUID.randomUUID().toString()
+//
+//            //Creating a multi part request
+//            MultipartUploadRequest(App.applicationContext(), uploadId, Constants.UPLOAD_URL)
+//                .addFileToUpload(path, "image") //Adding file
+//                .addParameter("name", Calendar.DATE.toString()) //Adding text parameter to the request
+//                .setNotificationConfig(UploadNotificationConfig())
+//                .setMaxRetries(2)
+//                .startUpload() //Starting the upload
+//
+//        } catch (exc: Exception) {
+//            Toast.makeText(App.applicationContext(), exc.message, Toast.LENGTH_SHORT).show()
+//        }
 
-            //Creating a multi part request
-            MultipartUploadRequest(App.applicationContext(), uploadId, Constants.UPLOAD_URL)
-                .addFileToUpload(path, "image") //Adding file
-                .addParameter("name", Calendar.DATE.toString()) //Adding text parameter to the request
-                .setNotificationConfig(UploadNotificationConfig())
-                .setMaxRetries(2)
-                .startUpload() //Starting the upload
-
-        } catch (exc: Exception) {
-            Toast.makeText(App.applicationContext(), exc.message, Toast.LENGTH_SHORT).show()
-        }
+        Logger.i("$this $@FoodieFragment path = $path")
 
     }
 
@@ -155,6 +160,7 @@ class FoodieFragment: Fragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             filePath = data.data
+            Logger.i("$this@FoodieFragment onActivityResult filePath =$filePath")
             try {
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 foodieUploadPhoto.setImageBitmap(bitmap)
@@ -174,14 +180,15 @@ class FoodieFragment: Fragment() {
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
         cursor.close()
 
-        cursor = (activity as MainActivity).contentResolver.query(
+        cursor = App.applicationContext().contentResolver.query(
             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             null,
             MediaStore.Images.Media._ID + " = ? ",
             arrayOf(document_id),
             null
         )
-        cursor!!.moveToFirst()
+        cursor.moveToFirst()
+        Logger.i("$this@FoodiwFragment path = ${cursor.getColumnIndex(MediaStore.Images.Media.DATA)}")
         val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
         cursor.close()
 
@@ -239,8 +246,6 @@ class FoodieFragment: Fragment() {
 
     override fun onStop() {
         super.onStop()
-//        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//        (activity as MainActivity).fab.visibility = View.VISIBLE
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
