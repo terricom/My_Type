@@ -115,6 +115,7 @@ class MainActivity : BaseActivity(){
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
                 R.id.referenceDialog -> CurrentFragmentType.REF
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
+                R.id.dreamboardFragment -> CurrentFragmentType.DREAMBOARD
                 else -> viewModel.currentFragmentType.value
             }
         }

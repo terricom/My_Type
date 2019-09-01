@@ -7,6 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -61,6 +62,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha02'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.firebase:firebase-storage:19.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Navigation
@@ -117,6 +122,7 @@ dependencies {
 
     def uploadServiceVersion = "3.5.2"
     implementation "net.gotev:uploadservice:$uploadServiceVersion"
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
 
 
 }
