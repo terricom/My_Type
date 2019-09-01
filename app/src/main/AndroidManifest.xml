@@ -35,11 +35,6 @@
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-                <!--android:name=".UploadActivity"-->
-                <!--android:screenOrientation="sensorPortrait"-->
-                <!--android:windowSoftInputMode="stateHidden|adjustPan">-->
-        <!--</activity>-->
 
 
 </application>

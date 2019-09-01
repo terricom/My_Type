@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -174,7 +175,10 @@ class FoodieFragment: Fragment() {
 
     //method to get the file path from uri
     fun getPath(uri: Uri?): String {
-        var cursor = (activity as MainActivity).contentResolver.query(uri!!, null, null, null, null)
+
+        var path:String ?= null
+
+        var cursor: Cursor? = App.applicationContext().contentResolver.query(uri!!, null, null, null, null) ?: return ""
         cursor!!.moveToFirst()
         var document_id = cursor.getString(0)
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
@@ -187,12 +191,19 @@ class FoodieFragment: Fragment() {
             arrayOf(document_id),
             null
         )
-        cursor.moveToFirst()
-        Logger.i("$this@FoodiwFragment path = ${cursor.getColumnIndex(MediaStore.Images.Media.DATA)}")
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-        cursor.close()
+        if (cursor != null ){
+            cursor.moveToFirst()
+            Logger.i("cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)= ${cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())}")
 
-        return path
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            cursor.close()
+        }
+        Logger.i("path= $path")
+
+
+
+        return path as String
+
     }
 
 
