@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -23,8 +24,15 @@ class DiaryViewModel: ViewModel() {
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
 
+    val diary = db.collection("Users")
+
+    val oneDiary = db.collection("Users")
+        .document().collection("Diary")
+
     init {
         get()
+        faFeiWen()
+
     }
 
     fun get() {
@@ -41,6 +49,32 @@ class DiaryViewModel: ViewModel() {
             }
 
     }
+
+
+    fun faFeiWen(){
+
+        //發文功能
+        val article1 = hashMapOf(
+            "memo" to "臭豆腐好臭RRR",
+            "gotobed" to "08:00",
+            "wakeup" to "14:00",
+            "timestamp" to Timestamp.now(),
+            "nutritions" to listOf("葉黃素", "維他命", "葡萄糖")
+        )
+
+        diary.get()
+            .addOnSuccessListener { result->
+            for (doc in result){
+                if (doc["user_name"]== "Terri 醬"){
+                    diary.document(doc.id).collection("Diary").document().set(article1)
+                }
+            }
+
+        }
+
+
+    }
+
 
 
 }

@@ -11,6 +11,7 @@ class DreamboardFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentDreamBoardBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
 
         return binding.root
     }

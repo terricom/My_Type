@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+                name="viewModel"
+                type="com.terricom.mytype.profile.ProfileViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -11,6 +16,7 @@
                 android:id="@+id/imageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+
         <ImageView
                 android:id="@+id/image_profile_avatar"
                 android:layout_width="0dp"
@@ -18,6 +24,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:outlineProvider="@{viewModel.outlineProvider}"
+                app:imageUrl="@{viewModel.userPic}"
                 android:background="@drawable/icon_profile"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
@@ -33,7 +41,8 @@
                 android:fontFamily="@font/noto_sans"
                 android:letterSpacing="0.15"
                 android:maxLines="1"
-                android:text="terri"
+                android:text="@{viewModel.userName}"
+                tools:text="天菜4你"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/image_profile_avatar"

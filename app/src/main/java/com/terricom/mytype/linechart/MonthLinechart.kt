@@ -19,6 +19,7 @@ class MonthLinechart : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = LinechartMonthBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
         getThisWeek()
 

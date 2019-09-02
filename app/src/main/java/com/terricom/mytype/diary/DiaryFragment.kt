@@ -24,6 +24,7 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentDiaryBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel
             , NutritionAdapter.MyTouchListener()

@@ -7,6 +7,9 @@
               android:label="LoginFragment"/>
     <fragment android:id="@+id/foodieFragment" android:name="com.terricom.mytype.foodie.FoodieFragment"
               android:label="FoodieFragment"/>
+    <action android:id="@+id/navigate_to_login_fragment" app:destination="@id/loginFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <action android:id="@+id/navigate_to_foodie_fragment" app:destination="@id/foodieFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />

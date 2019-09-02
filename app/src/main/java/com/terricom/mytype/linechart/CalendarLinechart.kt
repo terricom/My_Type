@@ -22,6 +22,8 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = LinechartCalendarBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
+
         binding.viewModel = viewModel
 
         val calendar: Calendar = Calendar.getInstance()

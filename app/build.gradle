@@ -124,5 +124,8 @@ dependencies {
     implementation "net.gotev:uploadservice:$uploadServiceVersion"
     implementation 'com.google.firebase:firebase-firestore:21.0.0'
 
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
 }

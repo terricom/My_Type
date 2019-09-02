@@ -25,6 +25,7 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentShapeRecordBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 

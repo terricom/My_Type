@@ -17,6 +17,7 @@ class ListAchivement: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.AchivementListBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
 
         binding.recyclerShape.adapter = ShapeAdapter(viewModel)
         val shapeList: MutableList<Shape> = mutableListOf(

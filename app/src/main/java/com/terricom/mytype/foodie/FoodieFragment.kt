@@ -54,6 +54,7 @@ class FoodieFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
 
         binding.buttonFoodieShowInfo.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToReferenceDialog())

@@ -13,6 +13,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -31,7 +32,11 @@ class MainActivity : BaseActivity(){
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_food_record -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+                if (UserManager.userToken != ""){
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+                }
+                else findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLoginFragment())
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_diary -> {
@@ -69,6 +74,7 @@ class MainActivity : BaseActivity(){
 
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton

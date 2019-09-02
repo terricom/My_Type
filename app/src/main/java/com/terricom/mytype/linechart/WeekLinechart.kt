@@ -21,6 +21,7 @@ class WeekLinechart : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = LinechartWeekBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
         getThisWeek()
 

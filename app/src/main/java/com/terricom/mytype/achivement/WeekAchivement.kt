@@ -19,6 +19,7 @@ class WeekAchivement: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.AchivementWeekBinding.inflate(inflater)
+        binding.setLifecycleOwner(this)
 
         getThisWeek()
 
