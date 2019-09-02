@@ -65,7 +65,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.0.0'
     implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.google.firebase:firebase-database:19.0.0'
-    implementation 'com.google.firebase:firebase-database:16.0.4'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Navigation

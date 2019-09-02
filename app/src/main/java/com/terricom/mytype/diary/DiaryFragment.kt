@@ -26,17 +26,17 @@ class DiaryFragment: Fragment() {
         val binding = FragmentDiaryBinding.inflate(inflater)
         binding.setLifecycleOwner(this)
 
-        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel
-            , NutritionAdapter.MyTouchListener()
-        )
-        val nutritionList: MutableList<String> = mutableListOf("葉黃素", "維他命", "葡萄糖")
-        (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(nutritionList)
-        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
+//        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel
+//            , NutritionAdapter.MyTouchListener()
+//        )
+//        val nutritionList: MutableList<String> = mutableListOf("葉黃素", "維他命", "葡萄糖")
+//        (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(nutritionList)
+//        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
 
 
-            if (viewModel.addNutrition.value != null) {
-            nutritionList.add(viewModel.addNutrition.value as String)
-        }
+//            if (viewModel.addNutrition.value != null) {
+//            nutritionList.add(viewModel.addNutrition.value as String)
+//        }
 
         class MyDragListener : OnDragListener {
 
@@ -61,7 +61,7 @@ class DiaryFragment: Fragment() {
             }
         }
 
-        binding.chosedNutrition.setOnDragListener(MyDragListener())
+//        binding.chosedNutrition.setOnDragListener(MyDragListener())
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
         val foodieList: MutableList<Foodie> = mutableListOf(
@@ -74,7 +74,8 @@ class DiaryFragment: Fragment() {
                 6,
                 5,
                 4,
-                3
+                3,
+                listOf("葉黃素","氨基酸")
                 )
             , Foodie(
                 Timestamp.valueOf("2019-09-31 11:00:00"),
@@ -85,7 +86,9 @@ class DiaryFragment: Fragment() {
                 6,
                 5,
                 4,
-                3
+                3,
+                listOf("膠原蛋白","Ｂ群")
+
             )
             , Foodie(
                 Timestamp.valueOf("2019-08-31 20:00:00"),
@@ -96,7 +99,9 @@ class DiaryFragment: Fragment() {
                 6,
                 5,
                 4,
-                3
+                3,
+                listOf("高蛋白","老虎牙子")
+
 
             )
         )

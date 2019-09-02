@@ -2,15 +2,21 @@ package com.terricom.mytype.login
 
 import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.terricom.mytype.App
 import com.terricom.mytype.App.Companion.instance
+import com.terricom.mytype.Logger
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.internet.RetrofitApi
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +52,8 @@ class LoginViewModel: ViewModel() {
 
     var callbackManager: CallbackManager? = null
     var loginManager: LoginManager? = null
+    private lateinit var auth: FirebaseAuth
+
 
     fun loginFB() {
         callbackManager = CallbackManager.Factory.create()
@@ -85,6 +93,7 @@ class LoginViewModel: ViewModel() {
                                 UserManager.picture = listResult.data.user.picture
 
                                 Log.d("ProfileViewModel","print list result = ${UserManager.name}")
+                                handleFacebookAccessToken(loginResult.accessToken)
 
 
                             } catch (e: Exception) {
@@ -118,6 +127,30 @@ class LoginViewModel: ViewModel() {
                 }
 
             })
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Logger.d( "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Logger.d( "signInWithCredential:success")
+                    val user = auth.currentUser
+//                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Logger.w("signInWithCredential:failure ${task.exception}")
+                    Toast.makeText(
+                        App.applicationContext(), "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+//                    updateUI(null)
+                }
+
+                // ...
+            }
     }
 
 

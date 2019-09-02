@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 import com.terricom.mytype.MainActivity
+import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentLoginBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,6 +23,8 @@ class LoginFragment: Fragment() {
     private val viewModel : LoginViewModel by lazy {
         ViewModelProviders.of(this).get(LoginViewModel::class.java)}
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onStart() {
         super.onStart()
@@ -46,11 +51,16 @@ class LoginFragment: Fragment() {
             it?.let {
                 LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
                 viewModel.onLoginFacebookCompleted()
+                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
             }
         })
 
+        auth = FirebaseAuth.getInstance()
+
+
         return binding.root
     }
+
 
 //    override fun dismiss() {
 //        binding.layoutLogin.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))

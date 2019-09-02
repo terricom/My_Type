@@ -14,5 +14,6 @@ data class Foodie (
     val vegetable: Int,
     val protein: Int,
     val fruit: Int,
-    val carbon: Int
+    val carbon: Int,
+    val supplement: List<String>
 ): Parcelable

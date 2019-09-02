@@ -65,6 +65,10 @@ class FoodieFragment: Fragment() {
         (binding.foodsRecycler.adapter as FoodAdapter).submitList(foodList)
         (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
 
+        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.MyTouchListener())
+        val nutritionList: MutableList<String> = mutableListOf("葉黃素", "氨基酸", "蠻牛")
+        (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(nutritionList)
+        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
 
 
         binding.foodiephoto.setOnClickListener{
@@ -114,6 +118,7 @@ class FoodieFragment: Fragment() {
             }
         }
 
+        binding.chosedFood.setOnDragListener(MyDragListener())
         binding.chosedNutrition.setOnDragListener(MyDragListener())
 
 

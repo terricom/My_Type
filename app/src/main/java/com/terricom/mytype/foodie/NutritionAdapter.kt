@@ -1,4 +1,4 @@
-package com.terricom.mytype.diary
+package com.terricom.mytype.foodie
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -16,12 +16,12 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.databinding.ItemDiaryNutritionBinding
+import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
 
 
-const val IMAGEVIEW_TAG = "icon bitmap"
+const val IMAGEVIEW_TAG_N = "icon bitmap"
 
-class NutritionAdapter(val viewModel: DiaryViewModel
+class NutritionAdapter(val viewModel: FoodieViewModel
                        , private val onTouchListener: MyTouchListener
 )
     : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
@@ -32,7 +32,7 @@ class NutritionAdapter(val viewModel: DiaryViewModel
             return if (p1.action == MotionEvent.ACTION_DOWN) {
 //                val data = ClipData.newPlainText("", "")
                 val data = ClipData.Item(p0.tag as? CharSequence)
-                p0.tag = IMAGEVIEW_TAG
+                p0.tag = IMAGEVIEW_TAG_N
                 val dragData = ClipData(
                     p0.tag as CharSequence,
                     arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
@@ -51,10 +51,10 @@ class NutritionAdapter(val viewModel: DiaryViewModel
 
 
 
-    class NutritionViewHolder(private var binding: ItemDiaryNutritionBinding): RecyclerView.ViewHolder(binding.root),
+    class NutritionViewHolder(private var binding: ItemFoodieNutritionBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(nutrition: String, viewModel: DiaryViewModel) {
+        fun bind(nutrition: String, viewModel: FoodieViewModel) {
 
             binding.lifecycleOwner =this
             binding.nutrition.text = nutrition
@@ -101,7 +101,13 @@ class NutritionAdapter(val viewModel: DiaryViewModel
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NutritionViewHolder {
-        return NutritionViewHolder(ItemDiaryNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return NutritionViewHolder(
+            ItemFoodieNutritionBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
@@ -178,7 +184,7 @@ class NutritionAdapter(val viewModel: DiaryViewModel
 
 
 
-    override fun onViewAttachedToWindow(holder: NutritionAdapter.NutritionViewHolder) {
+    override fun onViewAttachedToWindow(holder: NutritionViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }

@@ -1,6 +1,5 @@
 package com.terricom.mytype.diary
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
@@ -9,31 +8,24 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.databinding.ItemDiaryRecordBinding
+import com.terricom.mytype.databinding.ItemDiaryNutritionlistBinding
 
-class FoodieAdapter(val viewModel: DiaryViewModel
+class NutritionlistAdapter(val viewModel: DiaryViewModel
 //                    , private val onClickListener: OnClickListener
-) : ListAdapter<Foodie, FoodieAdapter.ProductViewHolder>(DiffCallback) {
+) : ListAdapter<String, NutritionlistAdapter.ProductViewHolder>(DiffCallback) {
 
 //    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
 //        fun onClick(foodie: Foodie) = clickListener(foodie)
 //    }
 
 
-    class ProductViewHolder(private var binding: ItemDiaryRecordBinding): RecyclerView.ViewHolder(binding.root),
+    class ProductViewHolder(private var binding: ItemDiaryNutritionlistBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(foodie: Foodie, viewModel: DiaryViewModel) {
+        fun bind(nutrition: String, viewModel: DiaryViewModel) {
 
             binding.lifecycleOwner =this
-            binding.foodie = foodie
-            Log.i("Terri","$this foodie.foods null? = ${foodie.foods}")
-            binding.recyclerDiaryFoodsItem.adapter = FoodlistAdapter(viewModel)
-            (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
-            binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
-            (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.supplement)
-            binding.viewModel = viewModel
+            binding.nutrition.text = nutrition
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -59,19 +51,19 @@ class FoodieAdapter(val viewModel: DiaryViewModel
     }
 
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Foodie>() {
-        override fun areItemsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemDiaryRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ProductViewHolder(ItemDiaryNutritionlistBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
 
