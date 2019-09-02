@@ -9,5 +9,6 @@ enum class CurrentFragmentType(val value: String) {
     DREAMBOARD(App.instance?.getString(R.string.title_dream_puzzle) as String),
     SHAPE_RECORD(App.instance?.getString(R.string.title_shape_record) as String),
     REF(""),
-    PROFILE(App.instance?.getString(R.string.title_profile) as String)
+    PROFILE(App.instance?.getString(R.string.title_profile) as String),
+    SLEEP(App.instance?.getString(R.string.title_sleep) as String)
 }

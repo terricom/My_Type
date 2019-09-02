@@ -18,6 +18,10 @@ buildscript {
         version_paging = "2.1.0-rc01"
         version_room = "2.1.0"
         multidex_version = "2.0.1"
+        ext.maven_version = '1.5'
+        ext.bintray_version = '1.7.2'
+        ext.dokka_version = '0.9.16'
+
     }
     repositories {
         google()
@@ -28,11 +32,15 @@ buildscript {
 
     }
     dependencies {
-//        classpath 'com.google.gms:google-services:4.2.0'
+
         classpath "com.android.tools.build:gradle:$version_android_gradle_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         classpath 'com.google.gms:google-services:4.2.0'
+
+        classpath "com.github.dcendents:android-maven-gradle-plugin:$maven_version"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray_version"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

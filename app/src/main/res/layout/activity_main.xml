@@ -56,6 +56,40 @@
                 app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab" app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintEnd_toEndOf="parent" android:id="@+id/fabLayout3" android:visibility="invisible">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab3"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="5dp"
+                    app:elevation="8dp"
+                    app:backgroundTint="@color/colorMyType"
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                    android:text="@string/title_sleep"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_sleep_title"
+                    android:paddingLeft="@dimen/dialog_padding"
+                    android:paddingRight="@dimen/dialog_padding"
+                    android:paddingTop="@dimen/dialog_padding"
+                    android:paddingBottom="@dimen/dialog_padding"
+                    android:textSize="@dimen/text_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:background="@drawable/input_column" android:textColor="@color/colorWhite"
+                    app:layout_constraintStart_toEndOf="@+id/fab3"
+                    app:layout_constraintTop_toTopOf="@+id/fab3" android:textAlignment="center"
+                    android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab3"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -142,21 +176,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="16dp"/>
 
-        <!--<TextView-->
-                <!--android:text="@string/title_shape_record"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/text_shape_record_title"-->
-                <!--android:paddingLeft="@dimen/dialog_padding"-->
-                <!--android:paddingRight="@dimen/dialog_padding"-->
-                <!--android:paddingTop="@dimen/dialog_padding"-->
-                <!--android:paddingBottom="@dimen/dialog_padding"-->
-                <!--android:textSize="@dimen/text_content"-->
-                <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                <!--app:layout_constraintStart_toEndOf="@+id/fab2"-->
-                <!--app:layout_constraintTop_toTopOf="@+id/fab2" android:textAlignment="center"-->
-                <!--android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab2"-->
-        <!--/>-->
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
                 android:layout_width="0dp"

@@ -31,6 +31,9 @@
     <action android:id="@+id/navigate_to_achivement_fragment" app:destination="@id/achivementFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_sleep_fragment" app:destination="@id/sleepFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -45,4 +48,6 @@
               android:label="AchivementFragment"/>
     <fragment android:id="@+id/dreamboardFragment" android:name="com.terricom.mytype.dreamboard.DreamboardFragment"
               android:label="DreamboardFragment"/>
+    <fragment android:id="@+id/sleepFragment" android:name="com.terricom.mytype.sleep.SleepFragment"
+              android:label="SleepFragment"/>
 </navigation>

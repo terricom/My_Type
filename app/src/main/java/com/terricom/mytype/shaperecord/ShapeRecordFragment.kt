@@ -33,6 +33,8 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToAchivementFragment())
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_line_chart
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
             }
         }
 
@@ -60,14 +62,9 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
 
     override fun onStop() {
         super.onStop()
-        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-        (activity as MainActivity).fab.visibility = View.VISIBLE
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
-
-
-
 
     }
 

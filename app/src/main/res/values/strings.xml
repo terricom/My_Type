@@ -19,6 +19,7 @@
     <string name="title_shape_record">新增成果</string>
     <string name="title_profile">個人</string>
     <string name="title_dream_puzzle">夢想拼圖</string>
+    <string name="title_sleep">新增睡眠</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
@@ -52,6 +53,10 @@
     <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n 有圖有真相，上傳照片瞧瞧吧！</string>
     <string name="facebook_app_id">492524594814446</string> <string name="fb_login_protocol_scheme">fb492524594814446</string>
     <string name="internet_not_connected">當前網路不穩 請重新連線</string>
+    <string name="sleep_record_bed_time">就寢時間</string>
+    <string name="sleep_record_wake_time">起床時間</string>
+    <string name="sleep_record_hr">小時</string>
+    <string name="sleep_record_min">分</string>
 
 
 </resources>

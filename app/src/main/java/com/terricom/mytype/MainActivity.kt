@@ -93,6 +93,12 @@ class MainActivity : BaseActivity(){
         binding.fab2.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
         }
+        binding.fab3.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment())
+        }
+        binding.fabLayout3.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment())
+        }
 
         binding.fabLayout1.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment())
@@ -122,6 +128,7 @@ class MainActivity : BaseActivity(){
                 R.id.referenceDialog -> CurrentFragmentType.REF
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.dreamboardFragment -> CurrentFragmentType.DREAMBOARD
+                R.id.sleepFragment -> CurrentFragmentType.SLEEP
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -133,7 +140,7 @@ class MainActivity : BaseActivity(){
                 hideToolbar()
                 hideFABView()
             }
-            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) ){
+            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) || it.value == App.instance?.getString(R.string.title_sleep)  ){
                 hideBottomNavView()
                 hideFABView()
             }
@@ -153,8 +160,10 @@ class MainActivity : BaseActivity(){
         binding.fab.visibility = View.GONE
         binding.fabLayout1.visibility = View.GONE
         binding.fabLayout2.visibility = View.GONE
+        binding.fabLayout3.visibility - View.GONE
         binding.fab1.visibility = View.GONE
         binding.fab2.visibility = View.GONE
+        binding.fab3.visibility = View.GONE
     }
 
 
@@ -162,10 +171,13 @@ class MainActivity : BaseActivity(){
         isFABOpen = true
         fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
         fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+        fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
+        binding.fab3.visibility = View.VISIBLE
         binding.fabLayout1.visibility = View.VISIBLE
         binding.fabLayout2.visibility = View.VISIBLE
+        binding.fabLayout3.visibility = View.VISIBLE
 
 
     }
@@ -174,10 +186,12 @@ class MainActivity : BaseActivity(){
         isFABOpen = false
         fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
 
         Handler().postDelayed({
             binding.fabLayout1.visibility = View.INVISIBLE
-            binding.fabLayout2.visibility = View.INVISIBLE }, 300)
+            binding.fabLayout2.visibility = View.INVISIBLE
+            binding.fabLayout3.visibility = View.INVISIBLE}, 300)
     }
 
 
