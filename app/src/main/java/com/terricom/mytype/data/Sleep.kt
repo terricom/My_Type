@@ -5,10 +5,8 @@ import kotlinx.android.parcel.Parcelize
 import java.sql.Timestamp
 
 @Parcelize
-data class Diary (
-    val timestamp: Timestamp,
+data class Sleep (
+    val wakeUp: Timestamp,
     val sleepHour: Int,
-    val goToBed: String,
-    val nutritions: List<String>,
-    val memo: String
+    val goToBed: Timestamp
 ): Parcelable

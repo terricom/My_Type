@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.terricom.mytype.sleep.SleepViewModel"/>
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -112,7 +115,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/timePicker"
             app:layout_constraintEnd_toStartOf="@+id/centerGuide"
-    >
+            android:layout_marginEnd="24dp">
 
         <TextView
                 android:id="@+id/tvBedTimeLabel"
@@ -144,12 +147,11 @@
             android:id="@+id/llWakeUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="41dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="24dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/timePicker"
             app:layout_constraintStart_toEndOf="@+id/centerGuide"
-            >
+    >
 
         <TextView
                 android:layout_width="wrap_content"
@@ -191,6 +193,7 @@
             android:background="@drawable/button_background" android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:backgroundTint="@color/colorButton"
+            android:onClick="@{() -> viewModel.addSleepHr()}"
             android:paddingTop="@dimen/elevation_all"
             android:paddingRight="@dimen/elevation_all"
             android:paddingLeft="@dimen/elevation_all" android:textSize="@dimen/text_content"/>
