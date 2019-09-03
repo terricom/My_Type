@@ -11,13 +11,12 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
-import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.linechart_calendar.*
 import java.util.*
 
-class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragment {
+class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
     private val viewModel: ShapeRecordViewModel by lazy {
         ViewModelProviders.of(this).get(ShapeRecordViewModel::class.java)
@@ -26,7 +25,6 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentShapeRecordBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
         binding.viewModel = viewModel
 
         val callback = object : OnBackPressedCallback(true) {
@@ -43,11 +41,17 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
+        viewModel.date.value = "$year-$month-$day 12:00:00.000000000"
+
 
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.updateCalendar()
 
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+        binding.buttonShaperecordSave.setOnClickListener {
+            viewModel.addShape()
+        }
 
         return binding.root
     }
@@ -64,6 +68,7 @@ class ShapeRecordFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndF
         super.onStop()
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
 
     }

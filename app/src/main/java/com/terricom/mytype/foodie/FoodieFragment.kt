@@ -399,6 +399,7 @@ class FoodieFragment: Fragment() {
         super.onStop()
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
 
     }

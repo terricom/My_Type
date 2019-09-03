@@ -23,7 +23,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/number_weight"
                 app:layout_constraintTop_toBottomOf="@+id/smartCustomCalendar" android:layout_marginTop="16dp"/>
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.weight)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 app:layout_constraintStart_toEndOf="@+id/number_weight" app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_water"/>
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.bodyWater)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 app:layout_constraintStart_toEndOf="@+id/number_body_water" app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_fat"/>
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/number_weight"
                 app:layout_constraintTop_toBottomOf="@+id/shaperecord_title_weight" android:layout_marginTop="24dp"/>
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.tdee)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                 app:layout_constraintStart_toStartOf="@+id/shaperecord_title_body_water"
         />
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.muscle)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                 app:layout_constraintStart_toEndOf="@+id/number_muscle" app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_fat"/>
         <EditText
-                android:text=""
+                android:text="@={viewModel.floatToString(viewModel.bodyAge)}"
                 android:hint="0.0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -196,13 +196,13 @@
                 app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
                 app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp" android:textAlignment="viewEnd"/>
-        <com.terricom.mytype.calendar.CalendarFragment
+        <com.terricom.mytype.shaperecord.ShapeCalendarFragment
                 android:id="@+id/smartCustomCalendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
         >
-        </com.terricom.mytype.calendar.CalendarFragment>
+        </com.terricom.mytype.shaperecord.ShapeCalendarFragment>
 
         <Button
                 android:text="@string/foodie_save"

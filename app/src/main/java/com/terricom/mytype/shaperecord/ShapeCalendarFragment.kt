@@ -1,4 +1,4 @@
-package com.terricom.mytype.calendar
+package com.terricom.mytype.shaperecord
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,11 +11,10 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
-import com.terricom.mytype.shaperecord.SpaceItemDecoration
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
+class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCellSelect {
 
     companion object {
         const val MAX_DAY_COUNT = 35
@@ -54,7 +53,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         context?.let {
             val inflater = it.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.fragment_shape_record_calendar, this, true)
+            inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
             txtDate = findViewById(R.id.itemDate)
@@ -103,11 +102,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val calendarAdapter = CalendarAdapter().apply {
+        val calendarAdapter = ShapeCalendarAdapter().apply {
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
-            this.listener = this@CalendarFragment
+            this.listener = this@ShapeCalendarFragment
         }
 
         gridRecycler.adapter = calendarAdapter
@@ -117,7 +116,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
 
     override fun onDateSelect(selectDate: Date) {
-        val tempAdapter = gridRecycler.adapter as CalendarAdapter
+        val tempAdapter = gridRecycler.adapter as ShapeCalendarAdapter
         tempAdapter.selectedDate = selectDate
         tempAdapter.notifyDataSetChanged()
 

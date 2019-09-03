@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/date_puzzle"
             android:elevation="5dp" android:layout_marginTop="24dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible" android:layout_marginStart="4dp"/>
     <ImageView
             android:layout_width="18dp"
             android:layout_height="28dp" app:srcCompat="@drawable/icon_puzzle" android:id="@+id/date_puzzle"
@@ -33,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/date_record" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintVertical_bias="1.0"
             android:tint="@color/colorBananna"
-            android:elevation="5dp" android:layout_marginStart="8dp" android:visibility="invisible"/>
+            android:elevation="5dp" android:layout_marginStart="4dp" android:visibility="invisible"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
