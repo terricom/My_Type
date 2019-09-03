@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemFoodieFoodBinding
-import com.terricom.mytype.diary.DiaryViewModel
 
 const val IMAGEVIEW_TAG = "icon bitmap"
 
-class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTouchListener )
+class FoodAdapter (val viewModel: FoodieViewModel, private val onTouchListener: MyTouchListener )
 : ListAdapter<String, FoodAdapter.FoodViewHolder>(DiffCallback) {
 
 
@@ -47,10 +46,11 @@ class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTo
     class FoodViewHolder(private var binding: ItemFoodieFoodBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(food: String, viewModel: DiaryViewModel) {
+        fun bind(food: String, viewModel: FoodieViewModel) {
 
             binding.lifecycleOwner =this
             binding.food.text = food
+            binding.viewModel = viewModel
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -104,6 +104,7 @@ class FoodAdapter (viewModel: FoodieViewModel, private val onTouchListener: MyTo
         val product = getItem(position)
         product.let {
             holder.itemView.setOnTouchListener(onTouchListener)
+            holder.bind(product,viewModel)
         }
     }
 

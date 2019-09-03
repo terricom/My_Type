@@ -57,6 +57,7 @@
     <string name="sleep_record_wake_time">起床時間</string>
     <string name="sleep_record_hr">小時</string>
     <string name="sleep_record_min">分</string>
+    <string name="clean_data"></string>
 
 
 </resources>

@@ -2,19 +2,23 @@ package com.terricom.mytype.foodie
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -23,14 +27,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.terricom.mytype.App
-import com.terricom.mytype.Logger
-import com.terricom.mytype.MainActivity
-import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.IOException
+import java.io.InputStream
 import java.util.*
 
 
@@ -54,6 +56,7 @@ class FoodieFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
         binding.buttonFoodieShowInfo.setOnClickListener {
@@ -110,6 +113,31 @@ class FoodieFragment: Fragment() {
                         val container = v as LinearLayout
                         container.addView(view)
                         view.visibility = View.VISIBLE
+                        viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
+                    }
+                    else -> {
+                    }
+                }// do nothing
+                return true
+            }
+        }
+
+        class MyDragListenerNu : View.OnDragListener {
+
+            override fun onDrag(v: View, event: DragEvent): Boolean {
+                val action = event.action
+                when (event.action) {
+                    DragEvent.ACTION_DRAG_STARTED -> {
+                    }
+                    DragEvent.ACTION_DROP -> {
+                        // Dropped, reassign View to ViewGroup
+                        val view = event.localState as View
+                        val owner = view.parent as ViewGroup
+                        owner.removeView(view)
+                        val container = v as LinearLayout
+                        container.addView(view)
+                        view.visibility = View.VISIBLE
+                        viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
                     }
                     else -> {
                     }
@@ -119,7 +147,22 @@ class FoodieFragment: Fragment() {
         }
 
         binding.chosedFood.setOnDragListener(MyDragListener())
-        binding.chosedNutrition.setOnDragListener(MyDragListener())
+        binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
+
+
+        binding.buttonFoodieSave.setOnClickListener {
+            val inputDate = binding.editDate.text.toString()
+            val inputTime = binding.editTime.text.toString()
+
+            viewModel.date.value = inputDate
+            viewModel.time.value = inputTime
+
+            val dateArray: List<String> = inputDate.split(".")
+            Logger.i("dateArray = ${dateArray[0]}")
+//            var timestamp = Timestamp.valueOf("${dateArray[0]}-${dateArray[1]}-${dateArray[2]} ${inputTime}:00.000000000")
+
+            viewModel.addFoodie()
+        }
 
 
         return binding.root
@@ -130,6 +173,7 @@ class FoodieFragment: Fragment() {
         //getting name for the image
 
         //getting the actual path of the image
+
         val path = getPath(filePath)
 
         //Uploading code
@@ -148,7 +192,6 @@ class FoodieFragment: Fragment() {
 //            Toast.makeText(App.applicationContext(), exc.message, Toast.LENGTH_SHORT).show()
 //        }
 
-        Logger.i("$this $@FoodieFragment path = $path")
 
     }
 
@@ -168,6 +211,8 @@ class FoodieFragment: Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             filePath = data.data
             Logger.i("$this@FoodieFragment onActivityResult filePath =$filePath")
+            uriToFilePath(App.applicationContext(), data.data)
+            Logger.i("riToFilePath(App.applicationContext(), data.data) = ${uriToFilePath(App.applicationContext(), data.data)}")
             try {
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 foodieUploadPhoto.setImageBitmap(bitmap)
@@ -182,16 +227,24 @@ class FoodieFragment: Fragment() {
     //method to get the file path from uri
     fun getPath(uri: Uri?): String {
 
+
+
         var path:String ?= null
 
-        var cursor: Cursor? = App.applicationContext().contentResolver.query(uri!!, null, null, null, null) ?: return ""
+        var cursor: Cursor? = App.applicationContext().contentResolver
+            .query(uri!!, null, null, null, null) ?: return ""
         cursor!!.moveToFirst()
         var document_id = cursor.getString(0)
+        Logger.i("document_id =$document_id")
+        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
         document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
+        Logger.i("document_id 222=$document_id")
+
         cursor.close()
 
         cursor = App.applicationContext().contentResolver.query(
-            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             null,
             MediaStore.Images.Media._ID + " = ? ",
             arrayOf(document_id),
@@ -201,7 +254,7 @@ class FoodieFragment: Fragment() {
             cursor.moveToFirst()
             Logger.i("cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)= ${cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())}")
 
-            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
+            path = cursor.getString(cursor.getColumnIndex(filePathColumn[0]))
             cursor.close()
         }
         Logger.i("path= $path")
@@ -212,6 +265,86 @@ class FoodieFragment: Fragment() {
 
     }
 
+    public fun uriToFilePath(context: Context,uri: Uri){
+        var filePath: String?
+        if (uri != null && "file".equals(uri.getScheme())) {
+            filePath = uri.getPath();
+        } else {
+            filePath = filenameFromUri(context,uri)
+        }
+    }
+    public fun filenameFromUri(context: Context,uri: Uri): String? {
+        var filePath = getFilePathFromCursor(context, uri)
+        if (TextUtils.isEmpty(filePath)) {
+//            filePath = getFilePathFromInputStream(context, uri);
+        }
+        return filePath
+    }
+
+    private fun getFilePathFromCursor(context: Context, uri: Uri): String? {
+        var filePath: String ?= null
+        var cursor: Cursor ?= null
+        try {
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
+            cursor.moveToFirst()
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            Logger.i("getFilePathFromCursor columnIndex = $columnIndex")
+
+            filePath = cursor.getString(columnIndex)
+            Logger.i("getFilePathFromCursor filePath = $filePath filePathColumn =${filePathColumn[0]}")
+            cursor.close()
+        } catch ( e:Exception) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close()
+            }
+        }
+        return filePath
+    }
+
+//    private fun getFilePathFromInputStream(context: Context, uri: Uri): String {
+//        var filePath: String ?= ""
+//        var inputStream: InputStream ?= null
+//        try {
+//            inputStream = context.getContentResolver().openInputStream(uri);
+//            val bitmap: Bitmap  = BitmapFactory.decodeStream(inputStream, null, getBitMapOptions(context, uri));
+//            inputStream.close();
+//            filePath = saveImg(bitmap, FileUtil.getTempFileName())
+//        } catch (e: Exception ) {
+//            e.printStackTrace();
+//        } finally {
+//            if (inputStream != null) {
+//                try {
+//                    inputStream.close();
+//                } catch (e: IOException ) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return filePath as String
+//    }
+
+    public fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
+
+        val options: BitmapFactory.Options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true;
+        var stream: InputStream = context.getContentResolver().openInputStream(uri);
+        BitmapFactory.decodeStream(stream, null, options);
+        stream.close();
+        var width = options.outWidth;
+        var height = options.outHeight;
+        if (width > height) {
+            val temp = width;
+            width = height;
+            height = temp;
+        }
+        var sampleRatio = Math.max(width / 900, height / 1600);
+//        options = BitmapFactory.Options();
+        options.inSampleSize = sampleRatio;
+        return options;
+    }
 
 
 
@@ -254,6 +387,7 @@ class FoodieFragment: Fragment() {
             }
         }
     }
+
 
     companion object {
 
