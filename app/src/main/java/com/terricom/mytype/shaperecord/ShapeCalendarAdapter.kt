@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
+import com.terricom.mytype.databinding.ItemCalendarSquareBinding
 import java.util.*
 
-class ShapeCalendarAdapter: RecyclerView.Adapter<ShapeCalendarViewHolder>() {
+class ShapeCalendarAdapter(
+    val viewModel: ShapeRecordViewModel
+): RecyclerView.Adapter<ShapeCalendarViewHolder>() {
 
     lateinit var listDates: ArrayList<Date>
     lateinit var context: Context
@@ -19,7 +22,12 @@ class ShapeCalendarAdapter: RecyclerView.Adapter<ShapeCalendarViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): ShapeCalendarViewHolder {
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_square, parent, false)
-        return ShapeCalendarViewHolder(view)
+
+        return ShapeCalendarViewHolder(view, viewModel,ItemCalendarSquareBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+//        return ShapeCalendarViewHolder(view
+//            , viewModel
+//
+//        )
     }
 
     override fun getItemCount(): Int {
@@ -32,6 +40,7 @@ class ShapeCalendarAdapter: RecyclerView.Adapter<ShapeCalendarViewHolder>() {
             showingDateCalendar,
             selectedDate,
             listener
+//            , viewModel
         )
     }
 

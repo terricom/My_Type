@@ -16,6 +16,7 @@ import java.util.*
 
 class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCellSelect {
 
+
     companion object {
         const val MAX_DAY_COUNT = 35
 
@@ -34,6 +35,8 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
+
+    val viewModel = ShapeRecordViewModel()
 
 
     constructor(context: Context?) : super(context) {
@@ -102,7 +105,9 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val calendarAdapter = ShapeCalendarAdapter().apply {
+
+
+        val calendarAdapter = ShapeCalendarAdapter(viewModel).apply {
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
@@ -114,6 +119,8 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
     }
 
+    var selectDateOut: String ?= null
+
 
     override fun onDateSelect(selectDate: Date) {
         val tempAdapter = gridRecycler.adapter as ShapeCalendarAdapter
@@ -122,6 +129,12 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
+        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)}-${tempCalendar.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
+//        Logger.i("ShapeCalendarFragment onDateSelect = ${tempCalendar.get(Calendar.DAY_OF_MONTH)}")
+//        viewModel.date.value = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)}" +
+//                "-${tempCalendar.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
+//
+//        tempCalendar.get(Calendar.YEAR)
         setHeader(tempCalendar)
     }
 

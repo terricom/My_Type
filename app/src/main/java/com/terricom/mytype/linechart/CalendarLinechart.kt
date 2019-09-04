@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.LinechartCalendarBinding
-import kotlinx.android.synthetic.main.linechart_calendar.*
 import java.util.*
 
 
@@ -19,9 +18,11 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
         ViewModelProviders.of(this).get(CalendarLinechartViewModel::class.java)
     }
 
+    private lateinit var binding: LinechartCalendarBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = LinechartCalendarBinding.inflate(inflater)
+        binding = LinechartCalendarBinding.inflate(inflater)
         binding.setLifecycleOwner(this)
 
         binding.viewModel = viewModel
@@ -45,11 +46,11 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
     }
 
     override fun onCalendarNextPressed() {
-        smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.updateCalendar()
     }
 
     override fun onCalendarPreviousPressed() {
-        smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.updateCalendar()
     }
 
 

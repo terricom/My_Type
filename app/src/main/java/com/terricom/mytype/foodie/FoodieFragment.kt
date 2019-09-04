@@ -162,6 +162,7 @@ class FoodieFragment: Fragment() {
 //            var timestamp = Timestamp.valueOf("${dateArray[0]}-${dateArray[1]}-${dateArray[2]} ${inputTime}:00.000000000")
 
             viewModel.addFoodie()
+            viewModel.clearData()
         }
 
 

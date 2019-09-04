@@ -82,9 +82,7 @@
                         android:textSize="@dimen/text_content_title"
                         android:textColor="@color/colorMyType"
                         android:textAlignment="center"
-                        app:layout_constraintBottom_toBottomOf="@+id/diary_date"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintEnd_toStartOf="@+id/diary_time_sleep" android:layout_marginStart="16dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"/>
 
@@ -99,8 +97,8 @@
                         app:layout_constraintBottom_toBottomOf="@+id/diary_date"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button_foodie_save3"
-                        android:layout_marginTop="8dp"/>
+                        app:layout_constraintTop_toBottomOf="@+id/button_profile_goal_save"
+                        android:layout_marginTop="16dp"/>
 
 
 
@@ -118,8 +116,8 @@
                         android:layout_marginStart="16dp"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu"
                         android:layout_marginTop="8dp"/>
-                <TextView
-                        android:text=""
+                <EditText
+                        android:text="@={viewModel.floatToString(viewModel.water)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -151,7 +149,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
                         app:layout_constraintTop_toTopOf="@+id/button_water"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.vegetable)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -181,7 +179,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/number_fruit"
                         app:layout_constraintTop_toTopOf="@+id/button_water"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.fruit)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -212,7 +210,7 @@
                         android:paddingRight="@dimen/elevation_all"
                         android:paddingLeft="@dimen/elevation_all"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.oil)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -242,7 +240,7 @@
                         android:paddingLeft="@dimen/elevation_all"
                 />
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.protein)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -270,7 +268,7 @@
                         android:paddingLeft="@dimen/elevation_all"
                         app:layout_constraintStart_toStartOf="@+id/button_vegetable"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.carbon)}"
                         android:hint="0.3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -292,10 +290,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/button_foodie_show_info"
-                        app:layout_constraintStart_toEndOf="@+id/profile_title_my_goal" android:layout_marginStart="8dp"
-                        app:layout_constraintTop_toTopOf="@+id/profile_title_my_goal"
+                        app:layout_constraintStart_toEndOf="@+id/profile_title_my_menu" android:layout_marginStart="8dp"
                         android:background="@drawable/button_circle" android:elevation="@dimen/elevation_all"
-                        app:layout_constraintBottom_toBottomOf="@+id/profile_title_my_goal"/>
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_title_my_menu"
+                        app:layout_constraintTop_toTopOf="@+id/profile_title_my_menu"/>
                 <TextView
                         android:text="i"
                         android:fontFamily="@font/noto_sans"
@@ -324,7 +322,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintEnd_toStartOf="@+id/number_weight"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.weight)}"
                         android:hint="0.0"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -355,7 +353,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/number_muscle"
                         app:layout_constraintStart_toEndOf="@+id/number_weight" android:layout_marginStart="8dp"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.muscle)}"
                         android:hint="0.0"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -386,7 +384,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintEnd_toStartOf="@+id/number_body_fat"/>
                 <EditText
-                        android:text=""
+                        android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
                         android:hint="0.0"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -444,7 +442,7 @@
                         android:text="@string/foodie_save"
                         android:fontFamily="@font/noto_sans"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" android:id="@+id/button_foodie_save"
+                        android:layout_height="wrap_content" android:id="@+id/button_profile_menu_save"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                         app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                         android:textColor="@color/colorWhite"
@@ -461,7 +459,7 @@
                         android:text="@string/foodie_save"
                         android:fontFamily="@font/noto_sans"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" android:id="@+id/button_foodie_save3"
+                        android:layout_height="wrap_content" android:id="@+id/button_profile_goal_save"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                         app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                         android:textColor="@color/colorWhite"
@@ -481,9 +479,9 @@
                         android:textSize="@dimen/text_content_title"
                         android:textColor="@color/colorMyType"
                         android:textAlignment="center"
-                        app:layout_constraintTop_toBottomOf="@+id/button_foodie_save"
+                        app:layout_constraintTop_toBottomOf="@+id/button_profile_menu_save"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"/>
+                        android:layout_marginTop="16dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
@@ -491,7 +489,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="16dp"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board"
-                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"/>
+                        android:layout_marginTop="8dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

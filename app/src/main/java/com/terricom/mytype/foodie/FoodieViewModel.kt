@@ -22,30 +22,24 @@ class FoodieViewModel: ViewModel() {
         Logger.i("selectedNutrition =$selectedNutrition")
     }
 
-    val water =  MutableLiveData<Long>()
-    val oil = MutableLiveData<Long>()
-    val vegetable = MutableLiveData<Long>()
-    val protein = MutableLiveData<Long>()
-    val fruit = MutableLiveData<Long>()
-    val carbon = MutableLiveData<Long>()
+    val water =  MutableLiveData<Float>()
+    val oil = MutableLiveData<Float>()
+    val vegetable = MutableLiveData<Float>()
+    val protein = MutableLiveData<Float>()
+    val fruit = MutableLiveData<Float>()
+    val carbon = MutableLiveData<Float>()
 
-    @InverseMethod("convertLongToString")
-    fun convertStringToLong(value: String): Long {
+    fun convertStringToFloat(string: String): Float {
         return try {
-            value.toLong().let {
-                when (it) {
-                    0L -> 1
-                    else -> it
-                }
-            }
-        } catch (e: NumberFormatException) {
-            1
+            string.toFloat()
+        } catch (nfe: NumberFormatException) {
+            0.0f
         }
     }
 
-    fun convertLongToString(value: Long): String {
-        return value.toString()
-    }
+    @InverseMethod("convertStringToFloat")
+    fun floatToString(value:Float) = value.toString()
+
 
     val date = MutableLiveData<String>()
     var cleanDate = date.value?.replace(".","-")
@@ -83,6 +77,15 @@ class FoodieViewModel: ViewModel() {
             }
 
 
+    }
+
+    fun clearData(){
+        water.value = 0.0f
+        oil.value = 0.0f
+        vegetable.value = 0.0f
+        protein.value = 0.0f
+        fruit.value = 0.0f
+        carbon.value = 0.0f
     }
 
 

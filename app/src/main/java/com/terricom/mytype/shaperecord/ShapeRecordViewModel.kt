@@ -4,12 +4,14 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import java.sql.Timestamp
 
 class ShapeRecordViewModel: ViewModel() {
 
     val date = MutableLiveData<String>()
 
+    fun upDate(update: String?){
+        date.value = update
+    }
 
     var weight = MutableLiveData<Float>()
     var bodyWater = MutableLiveData<Float>()
@@ -34,9 +36,10 @@ class ShapeRecordViewModel: ViewModel() {
 
     fun addShape(){
 
+        com.terricom.mytype.Logger.i("date.value = ${date.value}")
         //發文功能
         val shapeContent = hashMapOf(
-            "timestamp" to Timestamp.valueOf("${date.value}"),
+            "timestamp" to date.value,
             "weight" to weight.value,
             "bodyWater" to bodyWater.value,
             "bodyFat" to bodyFat.value,
@@ -56,6 +59,15 @@ class ShapeRecordViewModel: ViewModel() {
             }
 
 
+    }
+
+    fun clearData(){
+        weight.value = 0.0f
+        bodyAge.value = 0.0f
+        bodyFat.value = 0.0f
+        bodyWater.value = 0.0f
+        tdee.value = 0.0f
+        muscle.value = 0.0f
     }
 
 

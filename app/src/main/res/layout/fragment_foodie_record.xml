@@ -137,7 +137,7 @@
                         android:layout_marginStart="16dp" android:layout_marginTop="8dp"
                         app:layout_constraintTop_toBottomOf="@+id/foodie_title_nutrition"/>
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.water)}"
+                        android:text="@={viewModel.floatToString(viewModel.water)}"
                         android:inputType="number"
 
                         android:hint="0.3"
@@ -169,7 +169,7 @@
                         app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
                         app:layout_constraintTop_toTopOf="@+id/button_water"/>
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.vegetable)}"
+                        android:text="@={viewModel.floatToString(viewModel.vegetable)}"
                         android:inputType="number"
 
                         android:hint="0.3"
@@ -200,7 +200,7 @@
                         app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/number_fruit"
                         app:layout_constraintTop_toTopOf="@+id/button_water"/>
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.fruit)}"
+                        android:text="@={viewModel.floatToString(viewModel.fruit)}"
                         android:inputType="number"
 
                         android:hint="0.3"
@@ -231,7 +231,7 @@
                         android:paddingRight="@dimen/elevation_all"
                         android:paddingLeft="@dimen/elevation_all"/>
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.oil)}"
+                        android:text="@={viewModel.floatToString(viewModel.oil)}"
                         android:inputType="number"
 
                         android:hint="0.3"
@@ -263,7 +263,7 @@
                         android:paddingLeft="@dimen/elevation_all"
                 />
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.protein)}"
+                        android:text="@={viewModel.floatToString(viewModel.protein)}"
                         android:inputType="number"
 
                         android:hint="0.3"
@@ -293,7 +293,7 @@
                         android:paddingLeft="@dimen/elevation_all"
                         app:layout_constraintStart_toStartOf="@+id/button_vegetable"/>
                 <EditText
-                        android:text="@={viewModel.convertLongToString(viewModel.carbon)}"
+                        android:text="@={viewModel.floatToString(viewModel.carbon)}"
                         android:inputType="number"
                         android:hint="0.3"
                         android:layout_width="0dp"

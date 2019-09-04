@@ -8,12 +8,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.terricom.mytype.Logger
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.linechart_calendar.*
 import java.util.*
 
 class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
@@ -21,9 +21,10 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
     private val viewModel: ShapeRecordViewModel by lazy {
         ViewModelProviders.of(this).get(ShapeRecordViewModel::class.java)
     }
+    private lateinit var binding: FragmentShapeRecordBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentShapeRecordBinding.inflate(inflater)
+        binding = FragmentShapeRecordBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -41,27 +42,35 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        viewModel.date.value = "$year-$month-$day 12:00:00.000000000"
+//        viewModel.date.value = "$year-$month-$day 12:00:00.000000000"
+
 
 
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.updateCalendar()
 
+        viewModel.date.observe(this, androidx.lifecycle.Observer {
+            Logger.i("ShapeRecordFragment viewModel.date.observe = $it")
+        })
+
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         binding.buttonShaperecordSave.setOnClickListener {
+            viewModel.upDate("${binding.smartCustomCalendar.selectDateOut}")
             viewModel.addShape()
+            viewModel.clearData()
         }
 
         return binding.root
     }
 
+
     override fun onCalendarNextPressed() {
-        smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.updateCalendar()
     }
 
     override fun onCalendarPreviousPressed() {
-        smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.updateCalendar()
     }
 
     override fun onStop() {

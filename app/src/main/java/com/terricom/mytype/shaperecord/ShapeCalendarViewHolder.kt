@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
 import java.util.*
 
-class ShapeCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class ShapeCalendarViewHolder(val view: View
+                              , val viewModel: ShapeRecordViewModel
+,private var binding: com.terricom.mytype.databinding.ItemCalendarSquareBinding
+) : RecyclerView.ViewHolder(view) {
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val shape = view.findViewById<ImageView>(R.id.shape)
@@ -21,7 +24,11 @@ class ShapeCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                    showingDate : Calendar,
                    dateSelected : Date?,
                    listener: ShapeCalendarAdapter.ListenerCellSelect? = null
+//    ,viewModel: ShapeRecordViewModel
     ){
+        binding.viewModel = viewModel
+        binding.executePendingBindings()
+
         resetViewDefault()
 
         val viewMonth = showingDate.get(Calendar.MONTH) + 1
@@ -38,6 +45,14 @@ class ShapeCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
+//            Logger.i("ShapeCalendarViewHolder selectedDay YEAR =${selectedDateTime.get(Calendar.YEAR)}" +
+//                    "-${selectedDateTime.get(Calendar.MONTH)}"+
+//                    "-${selectedDateTime.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000")
+//            viewModel.date.value = "${selectedDateTime.get(Calendar.YEAR)}"+
+//                    "-${selectedDateTime.get(Calendar.MONTH)}" +
+//                    "-${selectedDateTime.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
+
+
         }
 
         if(currentMonth != viewMonth || currentYear != viewYear){
@@ -51,6 +66,7 @@ class ShapeCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
             )
         } else if(selectedDay == currentDay ){
+
 
             monthOfDate.setTypeface(null, Typeface.BOLD)
             cellDateLayout.background =
@@ -74,6 +90,7 @@ class ShapeCalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         monthOfDate.text = currentDay.toString()
     }
+
 
 
     private fun resetViewDefault() {
