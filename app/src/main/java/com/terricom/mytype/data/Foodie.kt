@@ -2,18 +2,18 @@ package com.terricom.mytype.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.sql.Timestamp
+import java.util.*
 
 @Parcelize
 data class Foodie (
-    val timestamp: Timestamp,
-    val photo: String,
-    val foods: List<String>,
-    val water: Int,
-    val oil: Int,
-    val vegetable: Int,
-    val protein: Int,
-    val fruit: Int,
-    val carbon: Int,
-    val supplement: List<String>
+    val timestamp: Date ?= null,
+    val photo: String ?= "",
+    val foods: List<String> ?= null,
+    val water: Long ?= null,
+    val oil: Long ?= null,
+    val vegetable: Long ?= null,
+    val protein: Long ?= null,
+    val fruit: Long ?= null,
+    val carbon: Long ?= null,
+    val nutritions: List<String> ?= null
 ): Parcelable

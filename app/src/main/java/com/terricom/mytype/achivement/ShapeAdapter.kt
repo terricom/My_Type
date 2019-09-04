@@ -28,10 +28,10 @@ class ShapeAdapter(val viewModel: AchievementViewModel
             binding.lifecycleOwner =this
             binding.shape = shape
             binding.viewModel = viewModel
-            binding.time.text = viewModel.getTime(shape.timestamp)
-            binding.numberBodyAge.text = shape.bodyage.toString()
-            binding.numberBodyFat.text = shape.bodyfat.toString()
-            binding.numberBodyWater.text = shape.bodywater.toString()
+//            binding.time.text = viewModel.getTime(shape.timestamp)
+            binding.numberBodyAge.text = shape.bodyAge.toString()
+            binding.numberBodyFat.text = shape.bodyFat.toString()
+            binding.numberBodyWater.text = shape.bodyWater.toString()
             binding.numberMuscle.text = shape.muscle.toString()
             binding.numberTdeet.text = shape.tdee.toString()
             binding.numberWeight.text = shape.weight.toString()

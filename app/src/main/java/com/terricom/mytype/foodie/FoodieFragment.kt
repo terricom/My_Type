@@ -164,6 +164,11 @@ class FoodieFragment: Fragment() {
 
             viewModel.addFoodie()
             viewModel.clearData()
+
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).fab.visibility = View.VISIBLE
         }
 
 

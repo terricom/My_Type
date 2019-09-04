@@ -2,15 +2,15 @@ package com.terricom.mytype.data
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.sql.Timestamp
+import java.util.*
 
 @Parcelize
 data class Shape (
-    val timestamp: Timestamp,
-    val weight: Int,
-    val bodyfat: Int,
-    val bodywater: Int,
-    val muscle: Int,
-    val bodyage: Int,
-    val tdee: Int
+    val timestamp: Date ?= null,
+    val weight: Long ?= null,
+    val bodyFat: Long ?= null,
+    val bodyWater: Long ?= null,
+    val muscle: Long ?= null,
+    val bodyAge: Long ?= null,
+    val tdee: Long ?= null
 ): Parcelable

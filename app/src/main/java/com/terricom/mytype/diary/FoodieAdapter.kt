@@ -10,15 +10,49 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.Shape
+import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.databinding.ItemDiaryRecordBinding
+import com.terricom.mytype.databinding.ItemDiaryShapeBinding
+import com.terricom.mytype.databinding.ItemDiarySleepBinding
+import com.terricom.mytype.databinding.ItemDiarySumBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+private val TITLE = 0
+private val DIARY_LIST = 1
+private val SHAPE_RECORD = 2
+private val SLEEP_RECORD = 3
 
 class FoodieAdapter(val viewModel: DiaryViewModel
 //                    , private val onClickListener: OnClickListener
-) : ListAdapter<Foodie, FoodieAdapter.ProductViewHolder>(DiffCallback) {
+) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback) {
 
 //    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
 //        fun onClick(foodie: Foodie) = clickListener(foodie)
 //    }
+
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun addHeaderAndSubmitList(list : List<Foodie>?, shape: Shape, sleep: Sleep) {
+        adapterScope.launch {
+            val newList = mutableListOf<DataItem>()
+            if (list != null) {
+                newList.add(DataItem.Header(list[0], viewModel))
+                for (foodie in list) {
+                    newList.add(DataItem.FoodieList(foodie, viewModel))
+                }
+                newList.add(DataItem.ShapeItem(shape, viewModel))
+                newList.add(DataItem.SleepItem(sleep, viewModel))
+            }
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+    }
+
 
 
     class ProductViewHolder(private var binding: ItemDiaryRecordBinding): RecyclerView.ViewHolder(binding.root),
@@ -32,7 +66,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             binding.recyclerDiaryFoodsItem.adapter = FoodlistAdapter(viewModel)
             (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
             binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
-            (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.supplement)
+            (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.nutritions)
             binding.viewModel = viewModel
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
@@ -58,13 +92,99 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         }
     }
 
+    class SumViewHolder(private var binding: ItemDiarySumBinding): RecyclerView.ViewHolder(binding.root),
+    LifecycleOwner {
+        fun bind(foodie: Foodie, viewModel: DiaryViewModel){
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Foodie>() {
-        override fun areItemsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+
+    }
+
+    class ShapeViewHolder(private var binding: ItemDiaryShapeBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
+        fun bind(shape: Shape, viewModel: DiaryViewModel){
+            binding.shape = shape
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
+
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+
+    }
+
+    class SleepViewHolder(private var binding: ItemDiarySleepBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
+        fun bind(sleep: Sleep, viewModel: DiaryViewModel){
+            binding.sleep = sleep
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
+
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+
+    }
+
+
+    companion object DiffCallback : DiffUtil.ItemCallback<DataItem>() {
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem == newItem
         }
     }
@@ -75,21 +195,75 @@ class FoodieAdapter(val viewModel: DiaryViewModel
     }
 
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
-
-        product.let {
-            holder.bind(product, viewModel)
+        when(holder){
+            is ProductViewHolder -> {
+                val header = getItem(position) as DataItem.FoodieList
+                holder.bind(header.foodie, header.viewModel)
+            }
+            is SumViewHolder -> {
+                val header = getItem(position) as DataItem.Header
+                holder.bind(header.foodie, header.viewModel)
+            }
+            is ShapeViewHolder -> {
+                val shape = getItem(position) as DataItem.ShapeItem
+                holder.bind(shape.shape, shape.viewModel)
+            }
+            is SleepViewHolder -> {
+                val sleep = getItem(position) as DataItem.SleepItem
+                holder.bind(sleep.sleep, sleep.viewModel)
+            }
+            else -> throw IllegalArgumentException()
         }
     }
-    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
+
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is DataItem.Header -> TITLE
+            is DataItem.FoodieList -> DIARY_LIST
+            is DataItem.ShapeItem -> SHAPE_RECORD
+            is DataItem.SleepItem -> SLEEP_RECORD
+            else -> throw IllegalArgumentException()
+        }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.markAttach()
+        when (holder) {
+            is ProductViewHolder -> holder.markAttach()
+            is SumViewHolder -> holder.markAttach()
+            is ShapeViewHolder -> holder.markAttach()
+            is SleepViewHolder -> holder.markAttach()
+        }
     }
 
-    override fun onViewDetachedFromWindow(holder: ProductViewHolder) {
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.markDetach()
+        when (holder) {
+            is ProductViewHolder -> holder.markDetach()
+            is SumViewHolder -> holder.markDetach()
+            is ShapeViewHolder -> holder.markDetach()
+            is SleepViewHolder -> holder.markDetach()
+        }
     }
+}
+
+sealed class DataItem {
+    data class FoodieList(val foodie: Foodie, val viewModel: DiaryViewModel): DataItem(){
+        override val id = foodie.timestamp.toString()
+    }
+    data class ShapeItem(val shape: Shape, val viewModel: DiaryViewModel) : DataItem(){
+        override val id = shape.timestamp.toString()
+    }
+    data class SleepItem(val sleep: Sleep, val viewModel: DiaryViewModel) : DataItem(){
+        override val id = sleep.wakeUp.toString()
+
+    }
+    data class Header (val foodie: Foodie, val viewModel: DiaryViewModel): DataItem() {
+        override val id = foodie.hashCode().toString()
+    }
+    abstract val id: String
+
+
 }

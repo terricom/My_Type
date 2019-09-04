@@ -129,12 +129,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)}-${tempCalendar.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
-//        Logger.i("ShapeCalendarFragment onDateSelect = ${tempCalendar.get(Calendar.DAY_OF_MONTH)}")
-//        viewModel.date.value = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)}" +
-//                "-${tempCalendar.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
-//
-//        tempCalendar.get(Calendar.YEAR)
+        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)+1}-${tempCalendar.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
         setHeader(tempCalendar)
     }
 
