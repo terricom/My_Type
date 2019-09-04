@@ -4,9 +4,11 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.terricom.mytype.data.UserManager
 
 class ShapeRecordViewModel: ViewModel() {
 
+    val userUid = UserManager.uid
     val date = MutableLiveData<String>()
 
     fun upDate(update: String?){
@@ -51,7 +53,7 @@ class ShapeRecordViewModel: ViewModel() {
         user.get()
             .addOnSuccessListener { result->
                 for (doc in result){
-                    if (doc["user_name"]== "Terri 醬"){
+                    if (doc.id == userUid){
                         user.document(doc.id).collection("Shape").document().set(shapeContent)
                     }
                 }

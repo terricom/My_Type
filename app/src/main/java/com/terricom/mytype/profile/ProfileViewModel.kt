@@ -10,6 +10,7 @@ class ProfileViewModel: ViewModel() {
 
     val userName = UserManager.name
     val userPic = UserManager.picture
+    val userUid = UserManager.uid
 
     val outlineProvider = ProfileAvatarOutlineProvider()
 
@@ -43,23 +44,34 @@ class ProfileViewModel: ViewModel() {
     fun addMenu(){
 
         //發文功能
-        val menuContent = hashMapOf(
-            "water" to water.value,
-            "oil" to oil.value,
-            "vegetable" to vegetable.value,
-            "protein" to protein.value,
-            "fruit" to fruit.value,
-            "carbon" to carbon.value,
-            "weight" to weight.value,
-            "bodyfat" to bodyFat.value,
-            "muscle" to muscle.value
+        val menuContentSet = hashMapOf(
+            "water" to water.value as Float,
+            "oil" to oil.value as Float,
+            "vegetable" to vegetable.value as Float,
+            "protein" to protein.value as Float,
+            "fruit" to fruit.value as Float,
+            "carbon" to carbon.value as Float,
+            "weight" to weight.value as Float,
+            "bodyfat" to bodyFat.value as Float,
+            "muscle" to muscle.value as Float
         )
-
+        val menuContent = hashMapOf<String, Any>(
+            "water" to water.value as Float,
+            "oil" to oil.value as Float,
+            "vegetable" to vegetable.value as Float,
+            "protein" to protein.value as Float,
+            "fruit" to fruit.value as Float,
+            "carbon" to carbon.value as Float,
+            "weight" to weight.value as Float,
+            "bodyfat" to bodyFat.value as Float,
+            "muscle" to muscle.value as Float
+        )
         user.get()
             .addOnSuccessListener { result->
                 for (doc in result){
-                    if (doc["user_name"]== "Terri 醬"){
-                        user.document(doc.id).set(menuContent)
+                    if (doc.id == userUid){
+                        user.document(doc.id).collection("Goal").document().set(menuContentSet)
+//                        user.document(doc.id).collection("Goal").document().update(menuContent).addOnCompleteListener {  }
                     }
                 }
 
@@ -70,29 +82,27 @@ class ProfileViewModel: ViewModel() {
     fun addGoal(){
 
         //發文功能
-        val menuContent = hashMapOf(
-            "water" to water.value,
-            "oil" to oil.value,
-            "vegetable" to vegetable.value,
-            "protein" to protein.value,
-            "fruit" to fruit.value,
-            "carbon" to carbon.value,
-            "weight" to weight.value,
-            "bodyfat" to bodyFat.value,
-            "muscle" to muscle.value
+        val menuContent = hashMapOf<String, Any>(
+            "water" to water.value as Float,
+            "oil" to oil.value as Float,
+            "vegetable" to vegetable.value as Float,
+            "protein" to protein.value as Float,
+            "fruit" to fruit.value as Float,
+            "carbon" to carbon.value as Float,
+            "weight" to weight.value as Float,
+            "bodyfat" to bodyFat.value as Float,
+            "muscle" to muscle.value as Float
         )
 
         user.get()
             .addOnSuccessListener { result->
                 for (doc in result){
-                    if (doc["user_name"]== "Terri 醬"){
-                        user.document(doc.id).set(menuContent)
+                    if (doc.id == userUid){
+                        user.document(doc.id).collection("Goal").document().update(menuContent).addOnCompleteListener {  }
                     }
                 }
 
             }
-
-
     }
 
 

@@ -44,5 +44,14 @@ object UserManager {
             Log.i("UserManager.Picture", value)
         }
 
+    var uid : String? = null
+        get(){
+            return prefs?.getString("uid", "")
+        }
+        set(value){
+            field = prefs?.edit()?.putString("uid",value)?.apply().toString()
+            Log.i("UserManager.Uid", value)
+        }
+
 
 }

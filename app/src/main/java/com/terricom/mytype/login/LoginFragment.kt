@@ -6,14 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.facebook.AccessToken
 import com.facebook.login.LoginManager
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.terricom.mytype.MainActivity
-import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.*
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentLoginBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,36 +42,67 @@ class LoginFragment: Fragment() {
         binding.buttonLoginFacebook.setOnClickListener {
             viewModel.loginFB()
             Log.i("getUserProfile", UserManager.userToken)
-
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
-
         }
 
 
 
         viewModel.loginFacebook.observe(this, Observer {
             it?.let {
+                handleFacebookAccessToken(viewModel.accessToken as AccessToken)
                 LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
                 viewModel.onLoginFacebookCompleted()
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+                (activity as MainActivity).toolbar.visibility = View.VISIBLE
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
             }
         })
 
         auth = FirebaseAuth.getInstance()
 
-
         return binding.root
     }
 
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Logger.d( "handleFacebookAccessToken:${token.token}")
 
-//    override fun dismiss() {
-//        binding.layoutLogin.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
-//        Handler().postDelayed({ super.dismiss() }, 200)
-//    }
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Logger.d( "signInWithCredential:success")
+                    var user = auth.currentUser
+                    viewModel.checkUser(user!!.uid)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Logger.w("signInWithCredential:failure ${task.exception}")
+                    Toast.makeText(
+                        App.applicationContext(), "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+//                    updateUI(null)
+                }
+
+                // ...
+            }
+    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         viewModel.callbackManager?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
+        (activity as MainActivity).isFABOpen = false
+
     }
 
 

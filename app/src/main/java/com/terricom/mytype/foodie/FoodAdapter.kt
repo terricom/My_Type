@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
 import com.terricom.mytype.databinding.ItemFoodieFoodBinding
 
 const val IMAGEVIEW_TAG = "icon bitmap"
@@ -22,8 +23,21 @@ class FoodAdapter (val viewModel: FoodieViewModel, private val onTouchListener: 
 
     class MyTouchListener: View.OnTouchListener {
 
+        var x1: Float = 0.0f
+        var x2: Float = 0.0f
+
         override fun onTouch(p0: View, p1: MotionEvent): Boolean {
-            return if (p1.action == MotionEvent.ACTION_DOWN) {
+            if (p1.action == MotionEvent.ACTION_DOWN){
+                x1 = p1.x
+            }
+            if (p1.action == MotionEvent.ACTION_UP){
+                x2 = p1.x
+            }
+            Logger.i("x1 =$x1 x2 =$x2")
+            return if (
+                p1.action == MotionEvent.ACTION_DOWN
+//                && ((x2 - x1) == 0.0)
+            ) {
                 val data = ClipData.Item(p0.tag as? CharSequence)
                 p0.tag = IMAGEVIEW_TAG
                 val dragData = ClipData(

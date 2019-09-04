@@ -64,15 +64,16 @@ class FoodieFragment: Fragment() {
         }
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.MyTouchListener())
-        val foodList: MutableList<String> = mutableListOf("紅油抄手", "擔擔麵", "蘿蔔糕")
-        (binding.foodsRecycler.adapter as FoodAdapter).submitList(foodList)
-        (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
+        viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
+            (binding.foodsRecycler.adapter as FoodAdapter).submitList(it)
+            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
+        })
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.MyTouchListener())
-        val nutritionList: MutableList<String> = mutableListOf("葉黃素", "氨基酸", "蠻牛")
-        (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(nutritionList)
-        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
-
+        viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
+            (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(it)
+            (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
+        })
 
         binding.foodiephoto.setOnClickListener{
             //Requesting storage permission

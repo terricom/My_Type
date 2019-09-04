@@ -3,9 +3,12 @@ package com.terricom.mytype.sleep
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
 
 class SleepViewModel: ViewModel() {
+
+    val userUid = UserManager.uid
 
     val wakeUp = MutableLiveData<Timestamp>()
     val goToSleep = MutableLiveData<Timestamp>()
@@ -39,7 +42,7 @@ class SleepViewModel: ViewModel() {
         sleep.get()
             .addOnSuccessListener { result->
                 for (doc in result){
-                    if (doc["user_name"]== "Terri 醬"){
+                    if (doc.id == userUid){
                         sleep.document(doc.id).collection("Sleep").document().set(sleepContent)
                     }
                 }

@@ -1,25 +1,44 @@
 package com.terricom.mytype.foodie
 
 import androidx.databinding.InverseMethod
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
+import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
 
 class FoodieViewModel: ViewModel() {
 
-    val selectedFood = mutableListOf<String>()
+    val userUid = UserManager.uid
+
+    var selectedFood = mutableListOf<String>()
+    var selectedNutrition = mutableListOf<String>()
+
+    val _userFoodList = MutableLiveData<List<String>>()
+    val userFoodList : LiveData<List<String>>
+        get() = _userFoodList
+
+    val _userNuList = MutableLiveData<List<String>>()
+    val userNuList : LiveData<List<String>>
+        get() = _userNuList
+
+    fun getFoodlist(foodlist: List<String>){
+        _userFoodList.value = foodlist
+    }
+
+    fun getNulist(nulist: List<String>){
+        _userNuList.value = nulist
+    }
+
 
     fun dragToList(food: String) {
         selectedFood.add(food)
     }
 
-    val selectedNutrition = mutableListOf<String>()
-
     fun dragToListNu(nutrition: String) {
         selectedNutrition.add(nutrition)
-        Logger.i("selectedNutrition =$selectedNutrition")
     }
 
     val water =  MutableLiveData<Float>()
@@ -68,8 +87,9 @@ class FoodieViewModel: ViewModel() {
 
         user.get()
             .addOnSuccessListener { result->
+                Logger.i("FoodieViewModel userUid =$userUid")
                 for (doc in result){
-                    if (doc["user_name"]== "Terri 醬"){
+                    if (doc.id == userUid){
                         user.document(doc.id).collection("Foodie").document().set(foodieContent)
                     }
                 }
@@ -86,6 +106,28 @@ class FoodieViewModel: ViewModel() {
         protein.value = 0.0f
         fruit.value = 0.0f
         carbon.value = 0.0f
+    }
+
+    init {
+        if (userUid != null){
+            getFoodAndNuList()
+        }
+    }
+
+    fun getFoodAndNuList(){
+
+        user.get()
+            .addOnSuccessListener { result ->
+                for (doc in result){
+                    if (doc.id == userUid){
+                        var firebaseFoodlist = doc["foodlist"] as List<String>
+                        getFoodlist(firebaseFoodlist)
+                        var firebaseNulist = doc["nutritionlist"] as List<String>
+                        getNulist(firebaseNulist)
+                    }
+                }
+
+            }
     }
 
 
