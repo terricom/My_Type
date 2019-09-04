@@ -63,13 +63,13 @@ class FoodieFragment: Fragment() {
             findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
         }
 
-        binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.MyTouchListener())
+        binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
             (binding.foodsRecycler.adapter as FoodAdapter).submitList(it)
             (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
         })
 
-        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.MyTouchListener())
+        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
         viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
             (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(it)
             (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()

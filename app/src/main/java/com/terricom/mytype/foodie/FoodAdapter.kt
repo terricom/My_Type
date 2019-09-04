@@ -2,6 +2,10 @@ package com.terricom.mytype.foodie
 
 import android.content.ClipData
 import android.content.ClipDescription
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,8 +21,54 @@ import com.terricom.mytype.databinding.ItemFoodieFoodBinding
 
 const val IMAGEVIEW_TAG = "icon bitmap"
 
-class FoodAdapter (val viewModel: FoodieViewModel, private val onTouchListener: MyTouchListener )
+class FoodAdapter (val viewModel: FoodieViewModel
+//                   , private val onTouchListener: MyTouchListener
+                    ,private val onLongClickListener: LongClickListener)
 : ListAdapter<String, FoodAdapter.FoodViewHolder>(DiffCallback) {
+
+    class LongClickListener: View.OnLongClickListener{
+        override fun onLongClick(p0: View): Boolean {
+            val data = ClipData.newPlainText("", "")
+            val myShadow = MyDragShadowBuilder(p0)
+            p0?.startDrag(data, MyDragShadowBuilder(p0), p0, 0)
+            return true
+        }
+    }
+    private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
+
+        private val shadow = ColorDrawable(Color.LTGRAY)
+
+        // Defines a callback that sends the drag shadow dimensions and touch point back to the
+        // system.
+        override fun onProvideShadowMetrics(size: Point, touch: Point) {
+            // Sets the width of the shadow to half the width of the original View
+            val width: Int = view.width / 2
+
+            // Sets the height of the shadow to half the height of the original View
+            val height: Int = view.height / 2
+
+            // The drag shadow is a ColorDrawable. This sets its dimensions to be the same as the
+            // Canvas that the system will provide. As a result, the drag shadow will fill the
+            // Canvas.
+            shadow.setBounds(0, 0, width, height)
+
+            // Sets the size parameter's width and height values. These get back to the system
+            // through the size parameter.
+            size.set(width, height)
+
+            // Sets the touch point's position to be in the middle of the drag shadow
+            touch.set(width / 2, height / 2)
+        }
+
+        // Defines a callback that draws the drag shadow in a Canvas that the system constructs
+        // from the dimensions passed in onProvideShadowMetrics().
+        override fun onDrawShadow(canvas: Canvas) {
+            // Draws the ColorDrawable in the Canvas passed in from the system.
+            shadow.draw(canvas)
+        }
+    }
+
+
 
 
     class MyTouchListener: View.OnTouchListener {
@@ -117,7 +167,7 @@ class FoodAdapter (val viewModel: FoodieViewModel, private val onTouchListener: 
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         product.let {
-            holder.itemView.setOnTouchListener(onTouchListener)
+            holder.itemView.setOnLongClickListener(onLongClickListener)
             holder.bind(product,viewModel)
         }
     }

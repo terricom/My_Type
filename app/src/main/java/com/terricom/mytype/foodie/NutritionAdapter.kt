@@ -22,9 +22,20 @@ import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
 const val IMAGEVIEW_TAG_N = "icon bitmap"
 
 class NutritionAdapter(val viewModel: FoodieViewModel
-                       , private val onTouchListener: MyTouchListener
+//                       , private val onTouchListener: MyTouchListener
+                       ,private val onLongClickListenerNu: LongClickListenerNu
 )
+
     : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
+
+    class LongClickListenerNu: View.OnLongClickListener{
+        override fun onLongClick(p0: View): Boolean {
+            val data = ClipData.newPlainText("", "")
+            val myShadow = MyDragShadowBuilder(p0)
+            p0?.startDrag(data, MyDragShadowBuilder(p0), p0, 0)
+            return true
+        }
+    }
 
 
     class MyTouchListener: View.OnTouchListener {
@@ -150,7 +161,7 @@ class NutritionAdapter(val viewModel: FoodieViewModel
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         product.let {
-            holder.itemView.setOnTouchListener(onTouchListener)
+            holder.itemView.setOnLongClickListener (onLongClickListenerNu)
 //            holder.itemView.setOnLongClickListener{ v: View ->
 //                // Create a new ClipData.
 //                // This is done in two steps to provide clarity. The convenience method
