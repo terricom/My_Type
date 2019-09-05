@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.LinechartCalendarBinding
 import java.util.*
 
 
-class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFragment {
+class CalendarLinechart : Fragment()
+//    , CalendarFragment.EventBetweenCalendarAndFragment
+{
 
     private val viewModel: CalendarLinechartViewModel by lazy {
         ViewModelProviders.of(this).get(CalendarLinechartViewModel::class.java)
@@ -33,8 +34,8 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
-        binding.smartCustomCalendar.setEventHandler(this)
-        binding.smartCustomCalendar.updateCalendar()
+//        binding.smartCustomCalendar.setEventHandler(this)
+//        binding.smartCustomCalendar.updateCalendar()
 
 
         viewModel.date.observe(this, androidx.lifecycle.Observer {
@@ -46,13 +47,13 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
         return binding.root
     }
 
-    override fun onCalendarNextPressed() {
-        binding.smartCustomCalendar.updateCalendar()
-    }
-
-    override fun onCalendarPreviousPressed() {
-        binding.smartCustomCalendar.updateCalendar()
-    }
+//    override fun onCalendarNextPressed() {
+//        binding.smartCustomCalendar.updateCalendar()
+//    }
+//
+//    override fun onCalendarPreviousPressed() {
+//        binding.smartCustomCalendar.updateCalendar()
+//    }
 
 
 

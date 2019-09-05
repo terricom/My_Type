@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
-import com.terricom.mytype.linechart.CalendarLinechartViewModel
+import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarViewHolder(val view: View
-                         , val viewModel: CalendarLinechartViewModel
-) : RecyclerView.ViewHolder(view) , LifecycleOwner{
+                         , val viewModel: DiaryViewModel
+) : RecyclerView.ViewHolder(view)
+    , LifecycleOwner
+{
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val recordDate = view.findViewById<ImageView>(R.id.date_record)
@@ -34,7 +36,7 @@ class CalendarViewHolder(val view: View
                    showingDate : Calendar,
                    dateSelected : Date?,
                    listener: CalendarAdapter.ListenerCellSelect? = null,
-                   viewModel: CalendarLinechartViewModel
+                   viewModel: DiaryViewModel
     ){
         resetViewDefault()
 
@@ -49,22 +51,18 @@ class CalendarViewHolder(val view: View
         val currentYear = currentDateTime.get(Calendar.YEAR)
 
         val sdf = SimpleDateFormat("d")
-        val sdfM = SimpleDateFormat("M")
 
-
-        binding.lifecycleOwner = this
+//        binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.executePendingBindings()
 
         var selectedDay = -1
-        var selectedMonth = -1
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
-            selectedMonth = selectedDateTime.get(Calendar.MONTH)
         }
 
-        viewModel.fireFoodie.observe(this, androidx.lifecycle.Observer {
+        viewModel.fireFoodieM.observe(this, androidx.lifecycle.Observer {
             for (day in it){
                 Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) =${sdf.format(java.sql.Date(day.timestamp!!.time))}"
                         +"monthOfDate.text =${monthOfDate.text}")
@@ -88,8 +86,8 @@ class CalendarViewHolder(val view: View
                 )
             )
         } else if(selectedDay == currentDay){
-            if (viewModel.fireFoodie.value != null){
-                for (day in viewModel.fireFoodie.value!!){
+            if (viewModel.fireFoodieM.value != null){
+                for (day in viewModel.fireFoodieM.value!!){
             if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
                 Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
                 recordDate.visibility = View.VISIBLE
@@ -105,8 +103,8 @@ class CalendarViewHolder(val view: View
                 )
 
         } else {
-            if (viewModel.fireFoodie.value != null){
-            for (day in viewModel.fireFoodie.value!!){
+            if (viewModel.fireFoodieM.value != null){
+            for (day in viewModel.fireFoodieM.value!!){
                 if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
                     Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
                     recordDate.visibility = View.VISIBLE

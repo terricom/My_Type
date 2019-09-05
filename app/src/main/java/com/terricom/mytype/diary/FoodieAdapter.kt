@@ -3,15 +3,19 @@ package com.terricom.mytype.diary
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
+import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.Sleep
-import com.terricom.mytype.databinding.*
+import com.terricom.mytype.databinding.ItemDiaryRecordBinding
+import com.terricom.mytype.databinding.ItemDiaryShapeBinding
+import com.terricom.mytype.databinding.ItemDiarySleepBinding
+import com.terricom.mytype.databinding.ItemDiarySumBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -98,6 +102,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind(viewModel: DiaryViewModel){
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
+//            binding.diaryCalendar.setEventHandler(this)
+//            binding.diaryCalendar.updateCalendar()
             binding.executePendingBindings()
 
         }
@@ -119,6 +125,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         override fun getLifecycle(): Lifecycle {
             return lifecycleRegistry
         }
+
+
+
+
 
     }
 

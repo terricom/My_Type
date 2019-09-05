@@ -11,8 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
-import com.terricom.mytype.linechart.CalendarLinechartViewModel
-import com.terricom.mytype.shaperecord.SpaceItemDecoration
+import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +36,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
 
-    val viewModel = CalendarLinechartViewModel()
+    val viewModel = DiaryViewModel()
 
 
     constructor(context: Context?) : super(context) {
@@ -57,7 +56,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         context?.let {
             val inflater = it.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.fragment_shape_record_calendar, this, true)
+            inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
             txtDate = findViewById(R.id.itemDate)
@@ -129,8 +128,8 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)+1}"
-        viewModel.setDate(selectDateOut as String)
+        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)+1}-${tempCalendar.get(Calendar.DAY_OF_MONTH)}"
+        viewModel.filterdate(selectDateOut as String)
         setHeader(tempCalendar)
     }
 

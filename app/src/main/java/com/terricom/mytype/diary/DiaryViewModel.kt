@@ -30,6 +30,14 @@ class DiaryViewModel: ViewModel() {
         _fireFoodie.value = foo
     }
 
+    val _fireFoodieM = MutableLiveData<List<Foodie>>()
+    val fireFoodieM : LiveData<List<Foodie>>
+        get() = _fireFoodieM
+
+    fun fireFoodieBackM (foo: List<Foodie>){
+        _fireFoodieM.value = foo
+    }
+
     val _fireShape = MutableLiveData<Shape>()
     val fireShape : LiveData<Shape>
         get() = _fireShape
@@ -69,9 +77,9 @@ class DiaryViewModel: ViewModel() {
 
 
     init {
-        Logger.i("currentDate =$currentDate")
         filterdate(currentDate)
         getDiary()
+        getThisMonth()
     }
 
     fun getDiary() {
@@ -193,6 +201,26 @@ class DiaryViewModel: ViewModel() {
     fun getTime(timestamp: Date):String{
         val sdf = SimpleDateFormat("HH:mm")
             return sdf.format(java.sql.Date(timestamp.time).time)
+    }
+
+    fun getThisMonth() {
+        foodieDiary
+            .get()
+            .addOnSuccessListener {
+                val items = mutableListOf<Foodie>()
+                for (document in it) {
+                    val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
+                    if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
+                        "${sdf.format(convertDate).split("-")[1]}" ==
+                        "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
+                        items.add(document.toObject(Foodie::class.java))
+                    }
+                }
+                if (items.size != 0) {
+                    Logger.i("CalendarLinechartViewModel items fireFoodieBack = $items")
+                }
+                fireFoodieBackM(items)
+            }
     }
 
 

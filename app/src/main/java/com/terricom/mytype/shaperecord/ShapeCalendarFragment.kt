@@ -56,7 +56,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
         context?.let {
             val inflater = it.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.fragment_calendar, this, true)
+            inflater.inflate(R.layout.fragment_shape_record_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
             txtDate = findViewById(R.id.itemDate)

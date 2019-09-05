@@ -12,44 +12,30 @@
             android:layout_height="match_parent">
 
 
-        <!--<ScrollView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="0dp" app:layout_constraintTop_toTopOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintHorizontal_bias="0.0"-->
-                <!--app:layout_constraintVertical_bias="0.0">-->
-            <!--<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"-->
-                                                               <!--android:layout_height="wrap_content"-->
-                                                               <!--android:orientation="vertical">-->
-                <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/diary_date"-->
-                        <!--android:text="2019.08.24"-->
-                        <!--android:paddingBottom="@dimen/elevation_all"-->
-                        <!--android:paddingTop="@dimen/elevation_all"-->
-                        <!--android:paddingRight="@dimen/elevation_all"-->
-                        <!--android:fontFamily="@font/noto_sans"-->
-                        <!--android:textColorHint="@color/colorButton"-->
-                        <!--android:paddingLeft="@dimen/elevation_all" android:textSize="@dimen/text_content"-->
-                        <!--android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"-->
-                        <!--android:background="@drawable/input_column"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--android:layout_marginStart="16dp" android:textAlignment="center"-->
-                        <!--android:textColor="@color/colorWhite"/>-->
-
-                <!--<TextView-->
-                        <!--android:text="@string/diary_title_today_record"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/diary_title_total_foodie"-->
-                        <!--android:textSize="@dimen/text_content_title"-->
-                        <!--android:textColor="@color/colorMyType"-->
-                        <!--android:textAlignment="viewStart"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/diary_date"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/diary_date" android:layout_marginStart="8dp"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/diary_date"/>-->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/diary_date"
+                android:text="@{String.valueOf(viewModel.date)}"
+                android:paddingBottom="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:fontFamily="@font/noto_sans"
+                android:textColorHint="@color/colorButton"
+                android:paddingLeft="@dimen/elevation_all" android:textSize="@dimen/text_content"
+                android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/input_column"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"/>
+        <com.terricom.mytype.calendar.CalendarFragment
+                android:id="@+id/diary_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_date"
+                app:layout_constraintHorizontal_bias="1.0" android:visibility="visible">
+        </com.terricom.mytype.calendar.CalendarFragment>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,181 +44,8 @@
                 tools:listitem="@layout/item_diary_record"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/recyclerView"
-                app:layout_constraintTop_toBottomOf="@+id/diary_date"
+                app:layout_constraintTop_toBottomOf="@+id/diary_calendar"
                 app:layout_constraintHorizontal_bias="0.0" android:layout_marginStart="16dp"/>
-                <!--<TextView-->
-                        <!--android:text="@string/diary_title_today_compliment"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/diary_title_total_nutrition"-->
-                        <!--android:textSize="@dimen/text_content_title"-->
-                        <!--android:textColor="@color/colorMyType"-->
-                        <!--android:textAlignment="viewStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/diary_date"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/recyclerView" android:layout_marginTop="8dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_water"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/number_oil"-->
-                        <!--app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_water"-->
-                        <!--android:id="@+id/iwater"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_water"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_water" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_water"-->
-                        <!--android:layout_marginStart="4dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_oil"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/number_water"-->
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/number_vegetable"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_coconut"-->
-                        <!--android:id="@+id/oil"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_oil"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_oil" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_oil"-->
-                        <!--android:layout_marginStart="4dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_vegetable"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition"-->
-                        <!--android:layout_marginTop="8dp"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/number_oil"-->
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/number_protein"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_vegetable"-->
-                        <!--android:id="@+id/vegetable"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_vegetable"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_vegetable" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_vegetable"-->
-                        <!--android:layout_marginStart="4dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_protein"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/number_vegetable"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_vegetable"-->
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/number_fruit"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_protein"-->
-                        <!--android:id="@+id/protein"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_protein"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_protein" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_protein"-->
-                        <!--android:layout_marginStart="4dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_fruit"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--android:layout_marginStart="8dp"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/number_protein"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_protein"-->
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
-                        <!--app:layout_constraintEnd_toStartOf="@+id/number_carbon"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_fruit"-->
-                        <!--android:id="@+id/fruit"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_fruit"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_fruit" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_fruit"-->
-                        <!--android:layout_marginStart="4dp"/>-->
-                <!--<TextView-->
-                        <!--android:text="6.0"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/number_carbon"-->
-                        <!--android:paddingLeft="@dimen/dialog_padding"-->
-                        <!--android:paddingRight="@dimen/dialog_padding"-->
-                        <!--android:paddingTop="@dimen/dialog_padding"-->
-                        <!--android:paddingBottom="@dimen/dialog_padding"-->
-                        <!--android:textSize="@dimen/text_content"-->
-                        <!--android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"-->
-                        <!--android:textAlignment="viewEnd"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_fruit"-->
-                        <!--app:layout_constraintStart_toEndOf="@+id/number_fruit"-->
-                        <!--android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"/>-->
-                <!--<ImageView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="0dp" app:srcCompat="@drawable/icon_carbon"-->
-                        <!--android:id="@+id/carbon"-->
-                        <!--app:layout_constraintTop_toTopOf="@+id/number_carbon"-->
-                        <!--app:layout_constraintBottom_toBottomOf="@+id/number_carbon"-->
-                        <!--android:scaleType="fitStart"-->
-                        <!--app:layout_constraintStart_toStartOf="@+id/number_carbon"-->
-                        <!--android:layout_marginStart="4dp" android:layout_marginTop="8dp"-->
-                        <!--android:layout_marginBottom="8dp"/>-->
-
-            <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-        <!--</ScrollView>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

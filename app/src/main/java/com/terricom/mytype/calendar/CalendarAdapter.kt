@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
-import com.terricom.mytype.linechart.CalendarLinechartViewModel
+import com.terricom.mytype.diary.DiaryViewModel
 import java.util.*
 
 class CalendarAdapter(
-    var viewModel: CalendarLinechartViewModel
+    var viewModel: DiaryViewModel
 
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -24,7 +24,9 @@ class CalendarAdapter(
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day, parent, false)
 
-        return CalendarViewHolder(view, viewModel)
+        return CalendarViewHolder(view, viewModel
+//            , ItemCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
