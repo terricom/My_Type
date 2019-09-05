@@ -8,10 +8,7 @@ import com.terricom.mytype.R
 import com.terricom.mytype.diary.DiaryViewModel
 import java.util.*
 
-class CalendarAdapter(
-    var viewModel: DiaryViewModel
-
-) : RecyclerView.Adapter<CalendarViewHolder>() {
+class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
 
     lateinit var listDates: ArrayList<Date>
     lateinit var context: Context
@@ -19,14 +16,11 @@ class CalendarAdapter(
     var selectedDate: Date? = null
     var listener: ListenerCellSelect? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
 
+    override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day, parent, false)
-
-        return CalendarViewHolder(view, viewModel
-//            , ItemCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        return CalendarViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -38,24 +32,9 @@ class CalendarAdapter(
             listDates[position],
             showingDateCalendar,
             selectedDate,
-            listener,
-            viewModel
+            listener
         )
     }
-
-    override fun onViewAttachedToWindow(holder: CalendarViewHolder) {
-        super.onViewAttachedToWindow(holder)
-
-            holder.markAttach()
-        }
-
-
-    override fun onViewDetachedFromWindow(holder: CalendarViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-
-            holder.markDetach()
-    }
-
 
 
     interface ListenerCellSelect {

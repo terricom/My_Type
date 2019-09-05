@@ -30,11 +30,11 @@
                 android:textColor="@color/colorWhite"/>
         <com.terricom.mytype.calendar.CalendarFragment
                 android:id="@+id/diary_calendar"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/diary_date"
-                app:layout_constraintHorizontal_bias="1.0" android:visibility="visible">
+                android:visibility="visible" app:layout_constraintEnd_toEndOf="parent">
         </com.terricom.mytype.calendar.CalendarFragment>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"

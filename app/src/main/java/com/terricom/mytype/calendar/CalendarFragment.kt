@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
-import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,8 +34,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
-
-    val viewModel = DiaryViewModel()
 
 
     constructor(context: Context?) : super(context) {
@@ -79,12 +76,10 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             ViewCompat.setNestedScrollingEnabled(gridRecycler, false)
 
             gridRecycler.layoutManager = GridLayoutManager(context, NUM_DAY_OF_WEEK)
-            gridRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen._1sdp).toInt(),
-                    true
-                )
-            )
+            gridRecycler.addItemDecoration(SpaceItemDecoration(
+                resources.getDimension(R.dimen._1sdp).toInt(),
+                true
+            ))
 
         }
     }
@@ -105,20 +100,17 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val calendarAdapter = CalendarAdapter(viewModel).apply {
+        val calendarAdapter = CalendarAdapter().apply {
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@CalendarFragment
-            this.viewModel = viewModel
         }
 
         gridRecycler.adapter = calendarAdapter
         setHeader(currentDateCalendar)
 
     }
-
-    var selectDateOut: String ?= null
 
 
     override fun onDateSelect(selectDate: Date) {
@@ -128,8 +120,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)+1}-${tempCalendar.get(Calendar.DAY_OF_MONTH)}"
-        viewModel.filterdate(selectDateOut as String)
         setHeader(tempCalendar)
     }
 
