@@ -64,7 +64,7 @@ class DiaryViewModel: ViewModel() {
         .orderBy("timestamp", Query.Direction.DESCENDING)
     val sleepDiary = users
         .document(userUid as String).collection("Sleep")
-        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .orderBy("wakeUp", Query.Direction.DESCENDING)
 
 
 
@@ -97,7 +97,7 @@ class DiaryViewModel: ViewModel() {
             .addOnSuccessListener {
                 val items = mutableListOf<Sleep>()
                 for (document in it) {
-                    val convertDate = java.sql.Date(document.toObject(Sleep::class.java).goToBed!!.time)
+                    val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
                     if (convertDate.toString() == date.value){
                         items.add(document.toObject(Sleep::class.java))
                     }

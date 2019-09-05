@@ -19,19 +19,20 @@ class DiaryFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentDiaryBinding.inflate(inflater)
         binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
-        viewModel.fireFoodie.observe(this, Observer {
-            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
-            (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-        })
         viewModel.fireSleep.observe(this, Observer {
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireShape.observe(this, Observer {
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
+        viewModel.fireFoodie.observe(this, Observer {
+            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
+            (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+        })
+
 
         return binding.root
     }
