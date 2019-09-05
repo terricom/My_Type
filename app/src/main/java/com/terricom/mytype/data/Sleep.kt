@@ -7,6 +7,6 @@ import java.util.*
 @Parcelize
 data class Sleep (
     val wakeUp: Date ?= null ,
-    val sleepHr: Long ?= null,
+    val sleepHr: Float ?= null,
     val goToBed: Date ?= null
 ): Parcelable

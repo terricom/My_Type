@@ -3,19 +3,15 @@ package com.terricom.mytype.diary
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.Sleep
-import com.terricom.mytype.databinding.ItemDiaryRecordBinding
-import com.terricom.mytype.databinding.ItemDiaryShapeBinding
-import com.terricom.mytype.databinding.ItemDiarySleepBinding
-import com.terricom.mytype.databinding.ItemDiarySumBinding
+import com.terricom.mytype.databinding.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,16 +32,17 @@ class FoodieAdapter(val viewModel: DiaryViewModel
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list : List<Foodie>?, shape: Shape, sleep: Sleep) {
+    fun addHeaderAndSubmitList(list : List<Foodie>?) {
         adapterScope.launch {
             val newList = mutableListOf<DataItem>()
             if (list != null) {
-                newList.add(DataItem.Header(list[0], viewModel))
+                newList.add(DataItem.Header( viewModel))
                 for (foodie in list) {
+                    Logger.i("addHeaderAndSubmitList ")
                     newList.add(DataItem.FoodieList(foodie, viewModel))
                 }
-                newList.add(DataItem.ShapeItem(shape, viewModel))
-                newList.add(DataItem.SleepItem(sleep, viewModel))
+                newList.add(DataItem.ShapeItem(viewModel))
+                newList.add(DataItem.SleepItem(viewModel))
             }
             withContext(Dispatchers.Main) {
                 submitList(newList)
@@ -94,7 +91,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
 
     class SumViewHolder(private var binding: ItemDiarySumBinding): RecyclerView.ViewHolder(binding.root),
     LifecycleOwner {
-        fun bind(foodie: Foodie, viewModel: DiaryViewModel){
+        fun bind(viewModel: DiaryViewModel){
+            binding.lifecycleOwner = this
             binding.viewModel = viewModel
             binding.executePendingBindings()
 
@@ -122,8 +120,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
 
     class ShapeViewHolder(private var binding: ItemDiaryShapeBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
-        fun bind(shape: Shape, viewModel: DiaryViewModel){
-            binding.shape = shape
+        fun bind( viewModel: DiaryViewModel){
+//            binding.shape = shape
+            binding.lifecycleOwner = this
+
             binding.viewModel = viewModel
             binding.executePendingBindings()
 
@@ -151,8 +151,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
 
     class SleepViewHolder(private var binding: ItemDiarySleepBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
-        fun bind(sleep: Sleep, viewModel: DiaryViewModel){
-            binding.sleep = sleep
+        fun bind( viewModel: DiaryViewModel){
+//            binding.sleep = sleep
+            binding.lifecycleOwner = this
+
             binding.viewModel = viewModel
             binding.executePendingBindings()
 
@@ -190,30 +192,36 @@ class FoodieAdapter(val viewModel: DiaryViewModel
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemDiaryRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
+        TITLE -> SumViewHolder(ItemDiarySumBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        DIARY_LIST -> ProductViewHolder(ItemDiaryRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        SHAPE_RECORD -> ShapeViewHolder(ItemDiaryShapeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        SLEEP_RECORD -> SleepViewHolder(ItemDiarySleepBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        else -> throw IllegalArgumentException()
     }
+
+
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
         when(holder){
+            is SumViewHolder -> {
+                val header = getItem(position) as DataItem.Header
+                holder.bind( header.viewModel)
+            }
             is ProductViewHolder -> {
                 val header = getItem(position) as DataItem.FoodieList
                 holder.bind(header.foodie, header.viewModel)
             }
-            is SumViewHolder -> {
-                val header = getItem(position) as DataItem.Header
-                holder.bind(header.foodie, header.viewModel)
-            }
             is ShapeViewHolder -> {
                 val shape = getItem(position) as DataItem.ShapeItem
-                holder.bind(shape.shape, shape.viewModel)
+                holder.bind( shape.viewModel)
             }
             is SleepViewHolder -> {
                 val sleep = getItem(position) as DataItem.SleepItem
-                holder.bind(sleep.sleep, sleep.viewModel)
+                holder.bind( sleep.viewModel)
             }
             else -> throw IllegalArgumentException()
         }
@@ -253,15 +261,19 @@ sealed class DataItem {
     data class FoodieList(val foodie: Foodie, val viewModel: DiaryViewModel): DataItem(){
         override val id = foodie.timestamp.toString()
     }
-    data class ShapeItem(val shape: Shape, val viewModel: DiaryViewModel) : DataItem(){
-        override val id = shape.timestamp.toString()
+    data class ShapeItem(
+//        val shape: Shape,
+        val viewModel: DiaryViewModel) : DataItem(){
+        override val id = (Long.MIN_VALUE).toString()
     }
-    data class SleepItem(val sleep: Sleep, val viewModel: DiaryViewModel) : DataItem(){
-        override val id = sleep.wakeUp.toString()
+    data class SleepItem(
+//        val sleep: Sleep,
+        val viewModel: DiaryViewModel) : DataItem(){
+        override val id = (Long.MIN_VALUE+1).toString()
 
     }
-    data class Header (val foodie: Foodie, val viewModel: DiaryViewModel): DataItem() {
-        override val id = foodie.hashCode().toString()
+    data class Header (val viewModel: DiaryViewModel): DataItem() {
+        override val id = (Long.MIN_VALUE+2).toString()
     }
     abstract val id: String
 

@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 
 
@@ -20,6 +18,7 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentDiaryBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
 //        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel
@@ -37,8 +36,7 @@ class DiaryFragment: Fragment() {
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
         viewModel.fireFoodie.observe(this, Observer {
-            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it, viewModel.fireShape.value as Shape
-                , viewModel.fireSleep.value as Sleep)
+            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
         })
 //        val foodieList: MutableList<Foodie> = mutableListOf(
 //            Foodie(

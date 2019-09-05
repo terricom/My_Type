@@ -23,21 +23,21 @@ class ListAchivement: Fragment() {
         val shapeList: MutableList<Shape> = mutableListOf(
             Shape(
                 Timestamp.valueOf("2018-10-16 11:49:45"),
-                58,
-                21,
-                52,
-                20,
-                19,
-                1300
+                58.0f,
+                21.0f,
+                52.0f,
+                20.0f,
+                19.0f,
+                1300.0f
                 )
             ,Shape(
                 Timestamp.valueOf("2018-08-31 23:49:45"),
-                59,
-                22,
-                53,
-                30,
-                30,
-                1100
+                59.0f,
+                22.0f,
+                53.0f,
+                30.0f,
+                30.0f,
+                1100.0f
             )
             )
         (binding.recyclerShape.adapter as ShapeAdapter).submitList(shapeList)

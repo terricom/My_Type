@@ -2,6 +2,7 @@ package com.terricom.mytype.diary
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -85,8 +86,10 @@ class DiaryViewModel: ViewModel() {
                         items.add(document.toObject(Shape::class.java))
                     }
                 }
+                if (items.size != 0){
                 Logger.i("DiaryViewModel items fireShapeBack (items[0]) = ${items[0]}")
                 fireShapeBack(items[0])
+                }
             }
 
         sleepDiary
@@ -94,15 +97,18 @@ class DiaryViewModel: ViewModel() {
             .addOnSuccessListener {
                 val items = mutableListOf<Sleep>()
                 for (document in it) {
-                    val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
+                    val convertDate = java.sql.Date(document.toObject(Sleep::class.java).goToBed!!.time)
                     if (convertDate.toString() == date.value){
                         items.add(document.toObject(Sleep::class.java))
                     }
 
                 }
-                Logger.i("DiaryViewModel items fireSleepBack (items[0]) = ${items[0]}")
+                if (items.size != 0){
+                    Logger.i("DiaryViewModel items fireSleepBack (items[0]) = ${items[0]}")
 
-                fireSleepBack(items[0])
+                    fireSleepBack(items[0])
+                }
+
             }
 
         foodieDiary
@@ -116,14 +122,75 @@ class DiaryViewModel: ViewModel() {
                     }
 
                 }
-                Logger.i("DiaryViewModel items fireFoodieBack = $items")
-
+                if (items.size != 0) {
+                    Logger.i("DiaryViewModel items fireFoodieBack = $items")
+                }
                 fireFoodieBack(items)
             }
 
-
-
     }
+
+    val totalWater: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.water != null){
+            result += foodie.water!!.toFloat()
+            }
+        }
+        result
+    }
+
+    val totalOil: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.oil != null){
+            result += foodie.oil!!.toFloat()
+            }
+        }
+        result
+    }
+
+    val totalVegetable: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.vegetable != null){
+            result += foodie.vegetable.toFloat()
+            }
+        }
+        result
+    }
+
+    val totalProtein: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.protein != null) {
+                result += foodie.protein!!.toFloat()
+            }
+        }
+        result
+    }
+
+    val totalFruit: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.fruit != null){
+            result += foodie.fruit.toFloat()
+            }
+        }
+        result
+    }
+
+    val totalCarbon: LiveData<Float> = Transformations.map(fireFoodie){it
+        var result: Float = 0.0f
+        for (foodie in it) {
+            if (foodie.carbon != null){
+            result += foodie.carbon.toFloat()
+            }
+        }
+        result
+    }
+
+
 
 
 

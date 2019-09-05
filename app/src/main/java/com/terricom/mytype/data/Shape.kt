@@ -7,10 +7,10 @@ import java.util.*
 @Parcelize
 data class Shape (
     val timestamp: Date ?= null,
-    val weight: Long ?= null,
-    val bodyFat: Long ?= null,
-    val bodyWater: Long ?= null,
-    val muscle: Long ?= null,
-    val bodyAge: Long ?= null,
-    val tdee: Long ?= null
+    val weight: Float ?= null,
+    val bodyFat: Float ?= null,
+    val bodyWater: Float ?= null,
+    val muscle: Float ?= null,
+    val bodyAge: Float ?= null,
+    val tdee: Float ?= null
 ): Parcelable
