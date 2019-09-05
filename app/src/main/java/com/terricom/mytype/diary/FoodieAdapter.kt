@@ -102,8 +102,6 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind(viewModel: DiaryViewModel){
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
-//            binding.diaryCalendar.setEventHandler(this)
-//            binding.diaryCalendar.updateCalendar()
             binding.executePendingBindings()
 
         }

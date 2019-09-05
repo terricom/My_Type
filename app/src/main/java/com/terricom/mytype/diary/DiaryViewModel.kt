@@ -217,7 +217,7 @@ class DiaryViewModel: ViewModel() {
                     }
                 }
                 if (items.size != 0) {
-                    Logger.i("CalendarLinechartViewModel items fireFoodieBack = $items")
+                    Logger.i("DiaryViewModel items fireFoodieBack = $items")
                 }
                 fireFoodieBackM(items)
             }

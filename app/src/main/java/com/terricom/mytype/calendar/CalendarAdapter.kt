@@ -32,7 +32,8 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
             listDates[position],
             showingDateCalendar,
             selectedDate,
-            listener
+            listener,
+            viewModel = DiaryViewModel()
         )
     }
 
@@ -40,6 +41,16 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     interface ListenerCellSelect {
         fun onDateSelect(selectDate: Date)
 
+    }
+
+    override fun onViewAttachedToWindow(holder: CalendarViewHolder) {
+        super.onViewAttachedToWindow(holder)
+         holder.markAttach()
+    }
+
+    override fun onViewDetachedFromWindow(holder: CalendarViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.markDetach()
     }
 
 }

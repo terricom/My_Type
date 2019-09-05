@@ -7,11 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
+import com.terricom.mytype.diary.DiaryViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view), LifecycleOwner {
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val recordDate = view.findViewById<ImageView>(R.id.date_record)
@@ -22,7 +28,8 @@ class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
                    dateSelected : Date?,
-                   listener: CalendarAdapter.ListenerCellSelect? = null
+                   listener: CalendarAdapter.ListenerCellSelect? = null,
+                   viewModel: DiaryViewModel
     ){
         resetViewDefault()
 
@@ -41,6 +48,19 @@ class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
         }
+        val sdf = SimpleDateFormat("d")
+        viewModel.fireFoodieM.observe(this, androidx.lifecycle.Observer {
+            if (it != null){
+                Logger.i("CalendarViewHolder date not null")
+                for (day in it){
+                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
+                        recordDate.visibility = View.VISIBLE
+                    }
+                }}
+
+        })
+
 
         if(currentMonth != viewMonth || currentYear != viewYear){
             recordDate.visibility = View.INVISIBLE
@@ -54,7 +74,14 @@ class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
             )
         } else if(selectedDay == currentDay ){
-            recordDate.visibility = View.VISIBLE
+            if (viewModel.fireFoodieM.value != null){
+                for (day in viewModel.fireFoodieM.value!!){
+                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
+                        recordDate.visibility = View.VISIBLE
+                    }
+                }}
+
             puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
@@ -65,7 +92,13 @@ class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
 
         } else {
-            recordDate.visibility = View.VISIBLE
+            if (viewModel.fireFoodieM.value != null){
+                for (day in viewModel.fireFoodieM.value!!){
+                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
+                        recordDate.visibility = View.VISIBLE
+                    }
+                }}
             monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorMyType, null))
             cellDateLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.calendar_date,null)
 
@@ -93,5 +126,22 @@ class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         return Calendar.getInstance().apply { time = date }
     }
 
+    private val lifecycleRegistry = LifecycleRegistry(this)
+
+    init {
+        lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+    }
+
+    fun markAttach() {
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+    }
+
+    fun markDetach() {
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
+    }
 
 }

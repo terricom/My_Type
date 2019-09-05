@@ -27,7 +27,7 @@
                 android:background="@drawable/input_column"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textAlignment="center"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorWhite" android:layout_marginStart="16dp"/>
         <com.terricom.mytype.calendar.CalendarFragment
                 android:id="@+id/diary_calendar"
                 android:layout_width="0dp"
