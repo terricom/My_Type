@@ -55,6 +55,7 @@ class DiaryViewModel: ViewModel() {
     }
 
     fun filterdate(dato: String){
+        Logger.i("DiaryViewModel filterdate = ${date.value}")
         _date.value = dato
     }
 

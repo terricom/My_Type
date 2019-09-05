@@ -10,7 +10,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
+import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -112,6 +114,9 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     }
 
+    val viewModel = DiaryViewModel()
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+
 
     override fun onDateSelect(selectDate: Date) {
         val tempAdapter = gridRecycler.adapter as CalendarAdapter
@@ -120,6 +125,8 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
+        Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} ")
+        viewModel.filterdate(sdf.format(selectDate))
         setHeader(tempCalendar)
     }
 

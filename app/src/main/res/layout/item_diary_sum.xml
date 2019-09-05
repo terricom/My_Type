@@ -30,7 +30,7 @@
                 android:textColor="@color/colorMyType"
                 android:textAlignment="viewStart"
                 app:layout_constraintStart_toStartOf="@+id/diary_date"
-                app:layout_constraintTop_toBottomOf="@+id/diary_calendar"/>
+                android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:orientation="vertical"
                 android:layout_width="0dp"

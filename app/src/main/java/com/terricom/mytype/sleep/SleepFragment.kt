@@ -73,10 +73,10 @@ class SleepFragment: Fragment() {
 
         wakeDate.minusDays(1)
         bedDate.minusDays(1)
-        val newBedDate = "${bedDate.year}-${bedDate.monthValue}-${bedDate.minusDays(1).dayOfMonth} ${bedDate.hour}:${bedDate.minute}:${bedDate.second}.000000000"
+        val newBedDate = "${bedDate.year}-${bedDate.monthValue}-${bedDate.dayOfMonth} ${bedDate.hour}:${bedDate.minute}:${bedDate.second}.000000000"
         var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
         viewModel.setSleepTime(timeStampBed)
-        val newWakeDate = "${wakeDate.year}-${wakeDate.monthValue}-${wakeDate.minusDays(1).dayOfMonth} ${wakeDate.hour}:${wakeDate.minute}:${wakeDate.second}.000000000"
+        val newWakeDate = "${wakeDate.year}-${wakeDate.monthValue}-${wakeDate.dayOfMonth} ${wakeDate.hour}:${wakeDate.minute}:${wakeDate.second}.000000000"
         var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
         viewModel.setWakeTime(timeStampWake)
     }

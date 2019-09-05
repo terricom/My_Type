@@ -39,6 +39,11 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
 
+        binding.diaryDate.setOnClickListener {
+            binding.diaryCalendar.visibility = View.VISIBLE
+        }
+
+        binding.diaryCalendar
 
         return binding.root
     }

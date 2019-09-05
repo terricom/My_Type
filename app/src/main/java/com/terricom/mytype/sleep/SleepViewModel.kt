@@ -12,7 +12,7 @@ class SleepViewModel: ViewModel() {
 
     val wakeUp = MutableLiveData<Timestamp>()
     val goToSleep = MutableLiveData<Timestamp>()
-    val sleepHr = MutableLiveData<Int>()
+    val sleepHr = MutableLiveData<Float>()
 
     val db = FirebaseFirestore.getInstance()
     val sleep = db.collection("Users")
@@ -25,9 +25,9 @@ class SleepViewModel: ViewModel() {
         goToSleep.value = time
     }
 
-    fun setSleepHr(hours: Long, minitues: Long): Int{
-        sleepHr.value = hours.toInt()
-        return hours.plus(minitues/60).toInt()
+    fun setSleepHr(hours: Long, minitues: Long): Float{
+        sleepHr.value = hours.plus(minitues/60).toFloat()
+        return hours.plus(minitues/60).toFloat()
     }
 
     fun addSleepHr(){
