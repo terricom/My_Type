@@ -58,6 +58,7 @@
     <string name="sleep_record_hr">小時</string>
     <string name="sleep_record_min">分</string>
     <string name="clean_data"></string>
+    <string name="diary_title_shape">今日規格</string>
 
 
 </resources>

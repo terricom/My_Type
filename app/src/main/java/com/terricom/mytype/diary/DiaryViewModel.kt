@@ -190,6 +190,10 @@ class DiaryViewModel: ViewModel() {
         result
     }
 
+    fun getTime(timestamp: Date):String{
+        val sdf = SimpleDateFormat("HH:mm")
+            return sdf.format(java.sql.Date(timestamp.time).time)
+    }
 
 
 

@@ -41,8 +41,12 @@ class FoodieAdapter(val viewModel: DiaryViewModel
                     Logger.i("addHeaderAndSubmitList ")
                     newList.add(DataItem.FoodieList(foodie, viewModel))
                 }
-                newList.add(DataItem.ShapeItem(viewModel))
-                newList.add(DataItem.SleepItem(viewModel))
+                if (viewModel.fireShape.value != null){
+                    newList.add(DataItem.ShapeItem(viewModel))
+                }
+                if (viewModel.fireSleep.value != null){
+                    newList.add(DataItem.SleepItem(viewModel))
+                }
             }
             withContext(Dispatchers.Main) {
                 submitList(newList)

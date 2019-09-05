@@ -21,10 +21,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/timePicker"
                 app:layout_constraintEnd_toStartOf="@+id/centerGuide"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp" android:layout_marginTop="16dp">
 
             <TextView
                     android:id="@+id/tvBedTimeLabel"
@@ -36,7 +36,8 @@
                     android:text="@string/sleep_record_bed_time"
                     android:textColor="@color/colorMyType"
                     android:textSize="@dimen/text_content" app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" android:padding="@dimen/elevation_all"/>
+                    app:layout_constraintStart_toStartOf="parent" android:padding="@dimen/elevation_all"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
 
             <TextView
@@ -46,6 +47,7 @@
                     android:letterSpacing="0.06"
                     android:lineSpacingExtra="6sp"
                     android:textColor="@color/colorMyType"
+                    android:text="@{viewModel.getTime(viewModel.fireSleep.goToBed)}"
                     android:textSize="@dimen/text_content"
                     tools:text="12:15 PM" android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +62,8 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/timePicker"
                 app:layout_constraintStart_toEndOf="@+id/centerGuide"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -84,6 +87,7 @@
                     android:lineSpacingExtra="6sp"
                     android:textColor="@color/colorMyType"
                     android:textSize="@dimen/text_content"
+                    android:text="@{viewModel.getTime(viewModel.fireSleep.wakeUp)}"
                     tools:text="7:45 AM" android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvWakeTimeLabel" android:layout_marginStart="8dp"
