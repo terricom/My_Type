@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
+import com.terricom.mytype.linechart.CalendarLinechartViewModel
 import java.util.*
 
-class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
+class CalendarAdapter(
+    var viewModel: CalendarLinechartViewModel
+
+) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     lateinit var listDates: ArrayList<Date>
     lateinit var context: Context
@@ -15,11 +19,12 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     var selectedDate: Date? = null
     var listener: ListenerCellSelect? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
+
         context = parent.context
         val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day, parent, false)
-        return CalendarViewHolder(view)
+
+        return CalendarViewHolder(view, viewModel)
     }
 
     override fun getItemCount(): Int {
@@ -31,9 +36,24 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
             listDates[position],
             showingDateCalendar,
             selectedDate,
-            listener
+            listener,
+            viewModel
         )
     }
+
+    override fun onViewAttachedToWindow(holder: CalendarViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+            holder.markAttach()
+        }
+
+
+    override fun onViewDetachedFromWindow(holder: CalendarViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+
+            holder.markDetach()
+    }
+
 
 
     interface ListenerCellSelect {

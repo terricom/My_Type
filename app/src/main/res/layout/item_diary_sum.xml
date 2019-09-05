@@ -12,7 +12,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/diary_date"
-                android:text="2019.08.24"
+                android:text="@{String.valueOf(viewModel.date)}"
                 android:paddingBottom="@dimen/elevation_all"
                 android:paddingTop="@dimen/elevation_all"
                 android:paddingRight="@dimen/elevation_all"

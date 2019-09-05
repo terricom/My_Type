@@ -6,6 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.R
 import java.util.*
@@ -13,7 +16,8 @@ import java.util.*
 class ShapeCalendarViewHolder(val view: View
                               , val viewModel: ShapeRecordViewModel
 ,private var binding: com.terricom.mytype.databinding.ItemCalendarSquareBinding
-) : RecyclerView.ViewHolder(view) {
+) : RecyclerView.ViewHolder(view)
+, LifecycleOwner {
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val shape = view.findViewById<ImageView>(R.id.shape)
@@ -27,6 +31,7 @@ class ShapeCalendarViewHolder(val view: View
 //    ,viewModel: ShapeRecordViewModel
     ){
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         binding.executePendingBindings()
 
         resetViewDefault()
@@ -103,6 +108,24 @@ class ShapeCalendarViewHolder(val view: View
     fun getCalendarFromTimestamp(timestamp: Long): Calendar {
         val date = Date(timestamp)
         return Calendar.getInstance().apply { time = date }
+    }
+
+    private val lifecycleRegistry = LifecycleRegistry(this)
+
+    init {
+        lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+    }
+
+    fun markAttach() {
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+    }
+
+    fun markDetach() {
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycleRegistry
     }
 
 

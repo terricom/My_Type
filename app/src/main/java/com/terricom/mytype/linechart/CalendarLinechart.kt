@@ -36,6 +36,7 @@ class CalendarLinechart : Fragment(), CalendarFragment.EventBetweenCalendarAndFr
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.updateCalendar()
 
+
         viewModel.date.observe(this, androidx.lifecycle.Observer {
             Log.i("Terri", "viewModel.date.observe =$it")
         })
