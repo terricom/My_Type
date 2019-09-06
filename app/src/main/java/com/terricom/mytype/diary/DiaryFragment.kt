@@ -24,8 +24,8 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.diaryCalendar.setEventHandler(this)
-        binding.diaryCalendar.updateCalendar()
+//        binding.diaryCalendar.setEventHandler(this)
+//        binding.diaryCalendar.updateCalendar()
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
         viewModel.fireSleep.observe(this, Observer {
@@ -40,20 +40,20 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         })
 
         binding.diaryDate.setOnClickListener {
-            binding.diaryCalendar.visibility = View.VISIBLE
+//            binding.diaryCalendar.visibility = View.VISIBLE
         }
 
-        binding.diaryCalendar
+//        binding.diaryCalendar
 
         return binding.root
     }
 
     override fun onCalendarNextPressed() {
-        binding.diaryCalendar.updateCalendar()
+//        binding.diaryCalendar.updateCalendar()
     }
 
     override fun onCalendarPreviousPressed() {
-        binding.diaryCalendar.updateCalendar()
+//        binding.diaryCalendar.updateCalendar()
     }
 
 

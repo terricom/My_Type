@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
@@ -63,17 +62,10 @@ class DiaryViewModel: ViewModel() {
     val currentDate = sdf.format(Date())
 
     val db = FirebaseFirestore.getInstance()
-    val users: CollectionReference = db.collection("Users")
+    val users = db.collection("Users")
 
-    val foodieDiary = users
-        .document(userUid as String).collection("Foodie")
-        .orderBy("timestamp", Query.Direction.DESCENDING)
-    val shapeDiary = users
-        .document(userUid as String).collection("Shape")
-        .orderBy("timestamp", Query.Direction.DESCENDING)
-    val sleepDiary = users
-        .document(userUid as String).collection("Sleep")
-        .orderBy("wakeUp", Query.Direction.DESCENDING)
+
+
 
 
 
@@ -84,6 +76,19 @@ class DiaryViewModel: ViewModel() {
     }
 
     fun getDiary() {
+
+        if (userUid!!.isNotEmpty()){
+            Logger.i("userUid = $userUid")
+            val foodieDiary = users
+                .document(userUid as String).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+            val shapeDiary = users
+                .document(userUid as String).collection("Shape")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+            val sleepDiary = users
+                .document(userUid as String).collection("Sleep")
+                .orderBy("wakeUp", Query.Direction.DESCENDING)
+
 
         shapeDiary
             .get()
@@ -136,6 +141,7 @@ class DiaryViewModel: ViewModel() {
                 }
                 fireFoodieBack(items)
             }
+        }
 
     }
 
@@ -205,6 +211,10 @@ class DiaryViewModel: ViewModel() {
     }
 
     fun getThisMonth() {
+        if (userUid!!.isNotEmpty()){
+            val foodieDiary = users
+                .document(userUid as String).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
         foodieDiary
             .get()
             .addOnSuccessListener {
@@ -222,6 +232,7 @@ class DiaryViewModel: ViewModel() {
                 }
                 fireFoodieBackM(items)
             }
+        }
     }
 
 
