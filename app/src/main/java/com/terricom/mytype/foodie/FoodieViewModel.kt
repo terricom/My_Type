@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
+import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
 
@@ -120,9 +121,10 @@ class FoodieViewModel: ViewModel() {
             .addOnSuccessListener { result ->
                 for (doc in result){
                     if (doc.id == userUid){
-                        var firebaseFoodlist = doc["foodlist"] as List<String>
+                        val user = doc.toObject(UserMT::class.java)
+                        var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
                         getFoodlist(firebaseFoodlist)
-                        var firebaseNulist = doc["nutritionlist"] as List<String>
+                        var firebaseNulist: List<String> = doc["nutritionlist"] as List<String>
                         getNulist(firebaseNulist)
                     }
                 }

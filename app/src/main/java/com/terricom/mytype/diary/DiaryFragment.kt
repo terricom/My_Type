@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.terricom.mytype.Logger
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 
@@ -41,9 +42,24 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         binding.diaryDate.setOnClickListener {
             binding.diaryCalendar.visibility = View.VISIBLE
+
         }
 
-        binding.diaryCalendar
+        binding.buttonSaveCalendar.setOnClickListener {
+            binding.diaryCalendar.visibility = View.GONE
+        }
+
+        viewModel.date.observe(this, Observer {
+            Logger.i("viewModel.date.observe === $it")
+            binding.diaryDate.text = it
+        })
+
+//        if ( binding.diaryDate.text == ""){
+//            val sdf = SimpleDateFormat("yyyy-MM-dd")
+//            val currentDate = sdf.format(Date())
+//            viewModel.filterdate(currentDate)
+//        }
+
 
         return binding.root
     }

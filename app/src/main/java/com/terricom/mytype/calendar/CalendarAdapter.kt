@@ -13,7 +13,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     lateinit var listDates: ArrayList<Date>
     lateinit var context: Context
     lateinit var showingDateCalendar: Calendar
-    var selectedDate: Date? = null
+    var selectedDate: Date ?= null
     var listener: ListenerCellSelect? = null
 
 
@@ -35,6 +35,12 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
             listener,
             viewModel = DiaryViewModel()
         )
+//        if(selectedDate != null){
+//            val selectedDateTime = viewHolder.getCalendarFromTimestamp(selectedDate!!.time)
+//            val sdf = SimpleDateFormat("yyyy-MM-dd")
+//            Logger.i("itemView.setOnClickListener = ${sdf.format(Date(selectedDateTime.time.time))}")
+//            DiaryViewModel().filterdate("${sdf.format(Date(selectedDateTime.time.time))}")
+//        }
     }
 
 

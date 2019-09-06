@@ -53,8 +53,8 @@ class DiaryViewModel: ViewModel() {
         _fireSleep.value = sleep
     }
 
-    fun filterdate(dato: String){
-        Logger.i("DiaryViewModel filterdate = ${date.value}")
+    fun filterdate(dato: String?){
+        Logger.i("DiaryViewModel filterdate = ${dato}")
         _date.value = dato
     }
 
@@ -63,10 +63,6 @@ class DiaryViewModel: ViewModel() {
 
     val db = FirebaseFirestore.getInstance()
     val users = db.collection("Users")
-
-
-
-
 
 
     init {
@@ -78,7 +74,6 @@ class DiaryViewModel: ViewModel() {
     fun getDiary() {
 
         if (userUid!!.isNotEmpty()){
-            Logger.i("userUid = $userUid")
             val foodieDiary = users
                 .document(userUid as String).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -137,7 +132,6 @@ class DiaryViewModel: ViewModel() {
 
                 }
                 if (items.size != 0) {
-                    Logger.i("DiaryViewModel items fireFoodieBack = $items")
                 }
                 fireFoodieBack(items)
             }
@@ -228,7 +222,6 @@ class DiaryViewModel: ViewModel() {
                     }
                 }
                 if (items.size != 0) {
-                    Logger.i("DiaryViewModel items fireFoodieBack = $items")
                 }
                 fireFoodieBackM(items)
             }

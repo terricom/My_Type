@@ -51,6 +51,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         currentDateCalendar = Calendar.getInstance().apply {
             todayMonth = this.get(Calendar.MONTH)
             todayYear = this.get(Calendar.YEAR)
+
         }
 
         context?.let {
@@ -116,6 +117,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     val viewModel = DiaryViewModel()
     val sdf = SimpleDateFormat("yyyy-MM-dd")
+    var selectedDayOut: String ?= ""
 
 
     override fun onDateSelect(selectDate: Date) {
@@ -126,6 +128,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
         Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} ")
+        selectedDayOut = sdf.format(selectDate)
         viewModel.filterdate(sdf.format(selectDate))
         setHeader(tempCalendar)
     }

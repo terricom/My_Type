@@ -11,12 +11,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+<!--        android:text="@{String.valueOf(viewModel.date)}"-->
+        <ImageView
+            android:id="@+id/button_save_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:rotation="90.0"
+            android:tint="@color/colorMyType"
+            app:layout_constraintBottom_toBottomOf="@+id/diary_date"
+            app:layout_constraintStart_toEndOf="@+id/diary_date"
+            app:layout_constraintTop_toTopOf="@+id/diary_date"
+            app:srcCompat="@mipmap/ic_arrow_left" />
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/diary_date"
-                android:text="@{String.valueOf(viewModel.date)}"
                 android:paddingBottom="@dimen/elevation_all"
                 android:paddingTop="@dimen/elevation_all"
                 android:paddingRight="@dimen/elevation_all"
@@ -28,13 +41,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite" android:layout_marginStart="16dp"/>
+
         <com.terricom.mytype.calendar.CalendarFragment
-                android:id="@+id/diary_calendar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/diary_date"
-                android:visibility="visible" app:layout_constraintEnd_toEndOf="parent">
+            android:id="@+id/diary_calendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/diary_date">
+
         </com.terricom.mytype.calendar.CalendarFragment>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
@@ -45,7 +61,9 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:id="@+id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@id/diary_calendar"
-                app:layout_constraintHorizontal_bias="0.0" android:layout_marginStart="16dp"/>
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginStart="16dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
