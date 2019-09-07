@@ -30,8 +30,8 @@ class MonthAchivement: Fragment() {
         list.add(waterChartEntity)
         list.add(oilChartEntity)
 
-        binding.lineChart.legendArray = thisWeek.toTypedArray()
-        binding.lineChart.setList(list)
+//        binding.lineChart.legendArray = thisWeek.toTypedArray()
+//        binding.lineChart.setList(list)
 
         return binding.root
     }

@@ -5,8 +5,10 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -22,7 +24,7 @@ class LineChart : View {
     var mPaddingBottom: Float = 90f
     var maxValue: Long = 0
     var marginTop: Int = 50
-    var legendArray: Array<String>? = null
+    var legendArray: ArrayList<String>? = null
 
     var lineColor: Int = 0
     var bgColor: Int = 0
@@ -86,22 +88,6 @@ class LineChart : View {
     }
 
 
-    fun setList(list: List<ChartEntity>) {
-        this.chartEntities = null
-        invalidate()
-        this.chartEntities = list
-        val maxes = ArrayList<Float>()
-        val copy = mutableListOf<Float>()
-        for (lineGraph in chartEntities!!) {
-            val copies =
-                lineGraph.values.copyOf(lineGraph.values.size)
-            Arrays.sort(copies)
-            maxes.add(copies[copies.size - 1])
-
-        }
-        this.maxValue = (Collections.max(maxes) as Float).toLong()
-    }
-
 //    fun setList(list: List<ChartEntity>) {
 //        this.chartEntities = null
 //        invalidate()
@@ -112,9 +98,26 @@ class LineChart : View {
 //                lineGraph.values.copyOf(lineGraph.values.size)
 //            Arrays.sort(copies)
 //            maxes.add(copies[copies.size - 1])
+//
 //        }
+//        Logger.i("LineChart maxes = $maxes")
 //        this.maxValue = (Collections.max(maxes) as Float).toLong()
 //    }
+
+    fun setList(list: List<ChartEntity>) {
+        Logger.i("LineChart chartEntities = $chartEntities list =$list")
+        this.chartEntities = null
+        invalidate()
+        this.chartEntities = list
+        val maxes = ArrayList<Float>()
+        for (lineGraph in chartEntities!!) {
+            val copies =
+                lineGraph.values.copyOf(lineGraph.values.size)
+            Arrays.sort(copies)
+            maxes.add(copies[copies.size - 1])
+        }
+        this.maxValue = (Collections.max(maxes) as Float).toLong()
+    }
 
 
     @SuppressLint("DrawAllocation")

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.App
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.LinechartWeekBinding
 import java.util.*
@@ -19,7 +20,7 @@ class WeekLinechart : Fragment() {
     val currentDateTime = Calendar.getInstance()
     val thisWeek = mutableListOf<String>()
     val weeek = arrayListOf<String>()
-    val viewModel: WeeekLinechartViewModel by lazy {
+    private val viewModel: WeeekLinechartViewModel by lazy {
         ViewModelProviders.of(this).get(WeeekLinechartViewModel::class.java)
     }
 
@@ -28,18 +29,56 @@ class WeekLinechart : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-//        getThisWeek()
-
-        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), graph1)
-        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), graph2)
-
         val list = ArrayList<ChartEntity>()
-        list.add(waterChartEntity)
-        list.add(oilChartEntity)
 
 
-        binding.lineChart.legendArray = viewModel.fireDate.value?.toTypedArray()
-        binding.lineChart.setList(list)
+        viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
+            if (it != null){
+                Logger.i("WeekLinechart viewModel.fireDate.observe = ${it}")
+                viewModel.waterList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        Logger.i("viewModel.waterList.observe(this, androidx.lifecycle.Observer it =$it")
+                        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
+                        list.add(waterChartEntity)
+
+                    }
+                })
+
+                viewModel.oilList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        Logger.i("viewModel.oilList.observe = $it")
+                        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
+                        list.add(oilChartEntity)
+                    }
+                })
+
+                binding.lineChart.legendArray = viewModel.fireDate.value
+                if (list != null){
+                    Logger.i("Not NULL")
+                    binding.lineChart.setList(list)
+                }
+            }
+        })
+
+
+//            }
+//        })
+
+
+//        val vegetableGraph = viewModel.vegetableList.value as FloatArray
+//        val proteinGraph = viewModel.proteinList.value as FloatArray
+//        val fruitGraph = viewModel.fruitList.value as FloatArray
+//        val carbonGraph = viewModel.carbonList.value as FloatArray
+
+//        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), viewModel.waterList.value as FloatArray)
+//        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), viewModel.oilList.value as FloatArray)
+//
+//        val list = ArrayList<ChartEntity>()
+//        list.add(waterChartEntity)
+//        list.add(oilChartEntity)
+//
+//        binding.lineChart.legendArray = viewModel.fireDate.value?.let { it as Array<String>}
+//        binding.lineChart.setList(list)
 
 
 
@@ -75,8 +114,8 @@ class WeekLinechart : Fragment() {
     }
 
 
-    private val graph1 = floatArrayOf(10f, 7f, 6f)
-    private val graph2 = floatArrayOf(0f, 2f, 10f)
+
+
 
 
 }
