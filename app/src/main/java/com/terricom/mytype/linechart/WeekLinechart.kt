@@ -46,39 +46,47 @@ class WeekLinechart : Fragment() {
 
                 viewModel.oilList.observe(this, androidx.lifecycle.Observer {
                     if (it != null){
-                        Logger.i("viewModel.oilList.observe = $it")
                         val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
                         list.add(oilChartEntity)
                     }
                 })
 
+                viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
+                        list.add(vegetableChartEntity)
+
+                    }
+                })
+
+                viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
+                        list.add(proteinChartEntity)
+                    }
+                })
+
+                viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
+                        list.add(fruitChartEntity)
+
+                    }
+                })
+
+                viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
+                        list.add(carbonChartEntity)
+                    }
+                })
+
                 binding.lineChart.legendArray = viewModel.fireDate.value
                 if (list != null){
-                    Logger.i("Not NULL")
                     binding.lineChart.setList(list)
                 }
             }
         })
-
-
-//            }
-//        })
-
-
-//        val vegetableGraph = viewModel.vegetableList.value as FloatArray
-//        val proteinGraph = viewModel.proteinList.value as FloatArray
-//        val fruitGraph = viewModel.fruitList.value as FloatArray
-//        val carbonGraph = viewModel.carbonList.value as FloatArray
-
-//        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), viewModel.waterList.value as FloatArray)
-//        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), viewModel.oilList.value as FloatArray)
-//
-//        val list = ArrayList<ChartEntity>()
-//        list.add(waterChartEntity)
-//        list.add(oilChartEntity)
-//
-//        binding.lineChart.legendArray = viewModel.fireDate.value?.let { it as Array<String>}
-//        binding.lineChart.setList(list)
 
 
 

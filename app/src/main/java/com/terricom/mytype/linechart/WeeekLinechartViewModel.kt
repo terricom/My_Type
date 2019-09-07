@@ -94,6 +94,14 @@ class WeeekLinechartViewModel: ViewModel() {
         _carbonList.value = foo
     }
 
+    val _waterClicked = MutableLiveData<Boolean>()
+    val waterClicked : LiveData<Boolean>
+        get() = _waterClicked
+
+    fun watchWaterClicked (){
+        _waterClicked.value = true
+    }
+
 
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
@@ -138,6 +146,12 @@ class WeeekLinechartViewModel: ViewModel() {
                     val cleanList = datelist.distinct()
 
                     for (eachDay in cleanList){
+                        waterD.clear()
+                        oilD.clear()
+                        vegetableD.clear()
+                        proteinD.clear()
+                        fruitD.clear()
+                        carbonD.clear()
                         for (i in 0 until items.size){
                             if (sdfM.format(items[i].timestamp?.time) == eachDay){
                                 items[i].water?.let {
@@ -167,6 +181,7 @@ class WeeekLinechartViewModel: ViewModel() {
                         fruitList.add(fruitD.sum())
                         carbonList.add(carbonD.sum())
                     }
+                    Logger.i("waterList =$waterList oilList = $oilList")
                     fireFoodieBack(items)
                     fireDateBack(ArrayList(cleanList))
                     waterListBack(waterList.toFloatArray())

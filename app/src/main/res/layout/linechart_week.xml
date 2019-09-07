@@ -26,6 +26,7 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/colorMyType"
         android:textSize="@dimen/text_content"
+        android:onClick="@{() -> viewModel.watchWaterClicked()}"
         app:layout_constraintEnd_toStartOf="@+id/number_oil"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/iwater"
