@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.LinechartWeekBinding
 import java.util.*
@@ -32,13 +31,11 @@ class WeekLinechart : Fragment() {
         val list = ArrayList<ChartEntity>()
 
 
-        viewModel.carbonList.observe(this, androidx.lifecycle.Observer {carbonlist ->
-            if (carbonlist != null){
-                Logger.i("WeekLinechart viewModel.fireDate.observe = ${carbonlist}")
+        viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
+            if (it == true){
                 viewModel.waterList.observe(this, androidx.lifecycle.Observer {
                     val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
                     if (it != null){
-                        Logger.i("viewModel.waterList.observe(this, androidx.lifecycle.Observer it =$it")
                         viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
                             if (it == true){
                                 list.add(waterChartEntity)
@@ -86,7 +83,7 @@ class WeekLinechart : Fragment() {
                 })
 
                 binding.lineChart.legendArray = viewModel.fireDate.value
-                if (list.size == 0){
+                if (list.size != 0){
                     binding.lineChart.setList(list)
                 }
             }

@@ -94,6 +94,14 @@ class WeeekLinechartViewModel: ViewModel() {
         _carbonList.value = foo
     }
 
+    val _fireBackEnd = MutableLiveData<Boolean>()
+    val fireBackEnd : LiveData<Boolean>
+        get() = _fireBackEnd
+
+    fun finishFireBack (){
+        _fireBackEnd.value = true
+    }
+
     val _waterClicked = MutableLiveData<Boolean>()
     val waterClicked : LiveData<Boolean>
         get() = _waterClicked
@@ -190,6 +198,7 @@ class WeeekLinechartViewModel: ViewModel() {
                     proteinListBack(proteinList.toFloatArray())
                     fruitListBack(fruitList.toFloatArray())
                     carbonListBack(carbonList.toFloatArray())
+                    finishFireBack()
                     Logger.i("WeeekLinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
                 }
         }
