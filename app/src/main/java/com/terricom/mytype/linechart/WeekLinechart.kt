@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.LinechartWeekBinding
@@ -18,12 +19,16 @@ class WeekLinechart : Fragment() {
     val currentDateTime = Calendar.getInstance()
     val thisWeek = mutableListOf<String>()
     val weeek = arrayListOf<String>()
+    val viewModel: WeeekLinechartViewModel by lazy {
+        ViewModelProviders.of(this).get(WeeekLinechartViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = LinechartWeekBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        getThisWeek()
+//        getThisWeek()
 
         val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), graph1)
         val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), graph2)
@@ -32,8 +37,11 @@ class WeekLinechart : Fragment() {
         list.add(waterChartEntity)
         list.add(oilChartEntity)
 
-        binding.lineChart.legendArray = arrayOf(thisWeek[0],thisWeek[1],thisWeek[2],thisWeek[3],thisWeek[4],thisWeek[5],thisWeek[6])
+
+        binding.lineChart.legendArray = viewModel.fireDate.value?.toTypedArray()
         binding.lineChart.setList(list)
+
+
 
         return binding.root
     }
@@ -67,8 +75,8 @@ class WeekLinechart : Fragment() {
     }
 
 
-    private val graph1 = floatArrayOf(10f, 7f, 6f, 5f, 4f, 3f, 7f)
-    private val graph2 = floatArrayOf(0f, 2f, 10f,8f, 7f, 6f, 4f)
+    private val graph1 = floatArrayOf(10f, 7f, 6f)
+    private val graph2 = floatArrayOf(0f, 2f, 10f)
 
 
 }

@@ -91,14 +91,30 @@ class LineChart : View {
         invalidate()
         this.chartEntities = list
         val maxes = ArrayList<Float>()
+        val copy = mutableListOf<Float>()
         for (lineGraph in chartEntities!!) {
             val copies =
                 lineGraph.values.copyOf(lineGraph.values.size)
             Arrays.sort(copies)
             maxes.add(copies[copies.size - 1])
+
         }
         this.maxValue = (Collections.max(maxes) as Float).toLong()
     }
+
+//    fun setList(list: List<ChartEntity>) {
+//        this.chartEntities = null
+//        invalidate()
+//        this.chartEntities = list
+//        val maxes = ArrayList<Float>()
+//        for (lineGraph in chartEntities!!) {
+//            val copies =
+//                lineGraph.values.copyOf(lineGraph.values.size)
+//            Arrays.sort(copies)
+//            maxes.add(copies[copies.size - 1])
+//        }
+//        this.maxValue = (Collections.max(maxes) as Float).toLong()
+//    }
 
 
     @SuppressLint("DrawAllocation")
@@ -253,8 +269,8 @@ class LineChart : View {
                 if (t < chartEntities!![m].values.size) {
                     x = (xGap * t).toFloat()
                     y = yLength * chartEntities!![m].values[t] / maxValue
-                    graphCanvasWrapper.drawCircle(x, y, 8.0f, pCircle)
-                    graphCanvasWrapper.drawCircle(x, y, 4.0f, pCircleBG)
+                    graphCanvasWrapper.drawCircle(x, y, 2.0f, pCircle)
+                    graphCanvasWrapper.drawCircle(x, y, 0.5f, pCircleBG)
                 }
             }
         }

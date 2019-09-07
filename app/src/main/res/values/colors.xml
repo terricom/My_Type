@@ -7,7 +7,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorAllTransparent">#00FFFFFF</color>
     <color name="colorTransparent">#30FFFFFF</color>
-    <color name="blue_facebook">#3b5998</color>
+    <color name="blue_facebook">#3B5998</color>
     <color name="black_3f3a3a">#3F3A3A</color>
     <color name="colorOrangeSave">#C8FF8C00</color>
     <color name="colorBananna">#E6FFD500</color>
@@ -25,5 +25,7 @@
     <color name="colorProtein">#F9D936</color>
     <color name="colorFruit">#E2644D</color>
     <color name="colorCarbon">#F59C4D</color>
+    <color name="colorNight">#B9694E</color>
+    <color name="colorMuscle">#A06FE0</color>
 
 </resources>
