@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.terricom.mytype.linechart.WeeekLinechartViewModel" />
+            type="com.terricom.mytype.linechart.LinechartViewModel" />
 
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout

@@ -18,21 +18,7 @@ class AchivementFragment: Fragment() {
         binding.setLifecycleOwner(this)
 
 
-        // adapter
-        achovementAdapter = AchivementAdapter(childFragmentManager)
 
-
-        // viewPager
-        viewPager = binding.viewPager
-        viewPager.adapter = achovementAdapter
-
-        // tabLayout
-        val tabLayout = binding.tabLayout
-
-        // link tabLayout with viewPager
-        tabLayout.setupWithViewPager(viewPager)
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 }

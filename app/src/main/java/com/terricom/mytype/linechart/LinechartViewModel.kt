@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class WeeekLinechartViewModel: ViewModel() {
+class LinechartViewModel: ViewModel() {
 
     val userUid = UserManager.uid
 
@@ -26,8 +26,14 @@ class WeeekLinechartViewModel: ViewModel() {
     val date: LiveData<String>
         get() = _date
 
-    fun setDate(date: String){
-        _date.value = date
+    private val _dateM = MutableLiveData<String>()
+    val dateM: LiveData<String>
+        get() = _dateM
+
+
+    fun setDate(date: Date){//date format should be java.util.Date
+        _date.value = sdf.format(date)
+        _dateM.value = "${sdfM.format(date.time.minus(604800000L))}-${sdfM.format(date)}"
     }
 
     val _fireFoodie = MutableLiveData<List<Foodie>>()
@@ -115,7 +121,7 @@ class WeeekLinechartViewModel: ViewModel() {
     val users: CollectionReference = db.collection("Users")
 
     init {
-        setDate(currentDate)
+        setDate(Date())
         getThisMonth()
     }
 
@@ -199,7 +205,7 @@ class WeeekLinechartViewModel: ViewModel() {
                     fruitListBack(fruitList.toFloatArray())
                     carbonListBack(carbonList.toFloatArray())
                     finishFireBack()
-                    Logger.i("WeeekLinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
+                    Logger.i("LinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
                 }
         }
     }

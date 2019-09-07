@@ -5,35 +5,120 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
+import androidx.lifecycle.ViewModelProviders
+import com.terricom.mytype.App
+import com.terricom.mytype.R
+import java.util.*
 
 class LinechartFragment: Fragment() {
 
-    private lateinit var linechartAdapter: LinechartAdapter
-    private lateinit var viewPager: ViewPager
+    val currentDateTime = Calendar.getInstance()
+    val thisWeek = mutableListOf<String>()
+    val weeek = arrayListOf<String>()
+    private val viewModel: LinechartViewModel by lazy {
+        ViewModelProviders.of(this).get(LinechartViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.FragmentLinechartBinding.inflate(inflater)
-
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
-
-        // adapter
-        linechartAdapter = LinechartAdapter(childFragmentManager)
+        val list = ArrayList<ChartEntity>()
 
 
-        // viewPager
-        viewPager = binding.viewPager
-        viewPager.adapter = linechartAdapter
+        viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
+            if (it == true){
+                viewModel.waterList.observe(this, androidx.lifecycle.Observer {
+                    val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
+                    if (it != null){
+                        viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
+                            if (it == true){
+                                list.add(waterChartEntity)
+                            }
+                        })
 
-        // tabLayout
-        val tabLayout = binding.tabLayout
+                    }
+                })
 
-        // link tabLayout with viewPager
-        tabLayout.setupWithViewPager(viewPager)
+                viewModel.oilList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
+                        list.add(oilChartEntity)
+                    }
+                })
 
-        // Inflate the layout for this fragment
+                viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
+                        list.add(vegetableChartEntity)
+
+                    }
+                })
+
+                viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
+                        list.add(proteinChartEntity)
+                    }
+                })
+
+                viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
+                        list.add(fruitChartEntity)
+
+                    }
+                })
+
+                viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
+                        list.add(carbonChartEntity)
+                    }
+                })
+
+                binding.lineChart.legendArray = viewModel.fireDate.value
+                if (list.size != 0){
+                    binding.lineChart.setList(list)
+                }
+            }
+        })
+
+
+
         return binding.root
     }
+
+    private fun getThisWeek(){
+        val currentMonth = currentDateTime.get(Calendar.MONTH) + 1
+        val lastDayOfLastMonth = getLastMonthLastDate()
+        val currentDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+
+        for (i in currentDay-6 until  currentDay ){
+            if (i>-1){
+                weeek.add("$currentMonth/$i")
+                thisWeek.add("$currentMonth/$i")
+            }else {
+                weeek.add("${currentMonth-1}/${lastDayOfLastMonth+i}")
+                thisWeek.add("${currentMonth-1}/${lastDayOfLastMonth+i}")
+            }
+        }
+        thisWeek.add("${currentMonth}/${currentDay}")
+
+    }
+
+    fun getLastMonthLastDate(): Int {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -1)
+
+        val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, max)
+
+        return calendar.get(Calendar.DAY_OF_MONTH)
+    }
+
+
+
 
 }

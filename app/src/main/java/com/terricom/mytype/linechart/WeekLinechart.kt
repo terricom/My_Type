@@ -19,8 +19,8 @@ class WeekLinechart : Fragment() {
     val currentDateTime = Calendar.getInstance()
     val thisWeek = mutableListOf<String>()
     val weeek = arrayListOf<String>()
-    private val viewModel: WeeekLinechartViewModel by lazy {
-        ViewModelProviders.of(this).get(WeeekLinechartViewModel::class.java)
+    private val viewModel: LinechartViewModel by lazy {
+        ViewModelProviders.of(this).get(LinechartViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
