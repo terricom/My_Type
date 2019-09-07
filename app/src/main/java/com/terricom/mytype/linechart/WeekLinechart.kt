@@ -32,14 +32,18 @@ class WeekLinechart : Fragment() {
         val list = ArrayList<ChartEntity>()
 
 
-        viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
-            if (it != null){
-                Logger.i("WeekLinechart viewModel.fireDate.observe = ${it}")
+        viewModel.carbonList.observe(this, androidx.lifecycle.Observer {carbonlist ->
+            if (carbonlist != null){
+                Logger.i("WeekLinechart viewModel.fireDate.observe = ${carbonlist}")
                 viewModel.waterList.observe(this, androidx.lifecycle.Observer {
+                    val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
                     if (it != null){
                         Logger.i("viewModel.waterList.observe(this, androidx.lifecycle.Observer it =$it")
-                        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
-                        list.add(waterChartEntity)
+                        viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
+                            if (it == true){
+                                list.add(waterChartEntity)
+                            }
+                        })
 
                     }
                 })
