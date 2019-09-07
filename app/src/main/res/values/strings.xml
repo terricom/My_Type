@@ -59,6 +59,8 @@
     <string name="sleep_record_min">分</string>
     <string name="clean_data"></string>
     <string name="diary_title_shape">今日規格</string>
+    <string name="foodie_drag_nutrition_hint">請拖曳加入本餐營養補充品，也可以自行新增喔！</string>
+    <string name="foodie_drag_food_hint">請拖曳加入本餐菜單，也可以自行新增食物喔！</string>
 
 
 </resources>

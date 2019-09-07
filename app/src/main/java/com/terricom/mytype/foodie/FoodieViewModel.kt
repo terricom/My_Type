@@ -9,6 +9,8 @@ import com.terricom.mytype.Logger
 import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FoodieViewModel: ViewModel() {
 
@@ -20,6 +22,13 @@ class FoodieViewModel: ViewModel() {
     val _userFoodList = MutableLiveData<List<String>>()
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
+
+    val addFood = MutableLiveData<String>()
+    val addNutrition = MutableLiveData<String>()
+
+    val newFuList = mutableListOf<String>()
+    val newNuList = mutableListOf<String>()
+
 
     val _userNuList = MutableLiveData<List<String>>()
     val userNuList : LiveData<List<String>>
@@ -109,10 +118,17 @@ class FoodieViewModel: ViewModel() {
         carbon.value = 0.0f
     }
 
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val sdfT = SimpleDateFormat("HH:mm")
+    val currentDate = sdf.format(Date())
+    val currentTime = sdfT.format(Date())
+
     init {
         if (userUid != null){
             getFoodAndNuList()
         }
+        date.value = currentDate
+        time.value = currentTime
     }
 
     fun getFoodAndNuList(){
@@ -122,15 +138,37 @@ class FoodieViewModel: ViewModel() {
                 for (doc in result){
                     if (doc.id == userUid){
                         val user = doc.toObject(UserMT::class.java)
-                        var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
-                        getFoodlist(firebaseFoodlist)
-                        var firebaseNulist: List<String> = doc["nutritionlist"] as List<String>
-                        getNulist(firebaseNulist)
+                        if (user.foodlist != null){
+                            var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
+                            getFoodlist(firebaseFoodlist)
+                        }
+                        if (user.nutritionlist != null){
+                            var firebaseNulist: List<String> = doc["nutritionlist"] as List<String>
+                            getNulist(firebaseNulist)
+                        }
                     }
                 }
 
             }
     }
 
+    fun updateFoodAndNuList(){
+
+        user.get()
+            .addOnSuccessListener { result ->
+                for (doc in result){
+                    if (doc.id == userUid){
+                        val user = doc.toObject(UserMT::class.java)
+                        if (user.foodlist == null){
+                            db.collection("Users").document(doc.id).update("foodlist", newFuList).addOnCompleteListener{}
+                        }
+                        if (user.nutritionlist == null){
+                            db.collection("Users").document(doc.id).update("nutritionlist", newNuList).addOnCompleteListener {  }
+                        }
+                    }
+                }
+
+            }
+    }
 
 }

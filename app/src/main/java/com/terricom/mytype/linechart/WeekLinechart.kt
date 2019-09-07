@@ -86,7 +86,7 @@ class WeekLinechart : Fragment() {
                 })
 
                 binding.lineChart.legendArray = viewModel.fireDate.value
-                if (list != null){
+                if (list.size == 0){
                     binding.lineChart.setList(list)
                 }
             }

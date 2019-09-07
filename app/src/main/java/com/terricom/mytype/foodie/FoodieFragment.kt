@@ -90,6 +90,27 @@ class FoodieFragment: Fragment() {
             uploadMultipart()
         }
 
+        binding.buttonAddFood.setOnClickListener {
+            binding.dagFoodHint.visibility = View.GONE
+            if (viewModel.addFood.value != null){
+                viewModel.newFuList.add("${viewModel.addFood.value}")
+            (binding.foodsRecycler.adapter as FoodAdapter).submitList(listOf(viewModel.addFood.value))
+            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
+            viewModel.addFood.value = ""
+            }
+        }
+
+        binding.buttonAddNutrition.setOnClickListener {
+            binding.dragNutritionHint.visibility = View.GONE
+            if (viewModel.addNutrition.value != null){
+                viewModel.newNuList.add("${viewModel.addNutrition.value}")
+                (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(listOf(viewModel.addNutrition.value))
+                (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
+                viewModel.addNutrition.value = ""
+            }
+
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
@@ -152,17 +173,14 @@ class FoodieFragment: Fragment() {
 
 
         binding.buttonFoodieSave.setOnClickListener {
-            val inputDate = binding.editDate.text.toString()
-            val inputTime = binding.editTime.text.toString()
-
-            viewModel.date.value = inputDate
-            viewModel.time.value = inputTime
-
-            val dateArray: List<String> = inputDate.split(".")
-            Logger.i("dateArray = ${dateArray[0]}")
-//            var timestamp = Timestamp.valueOf("${dateArray[0]}-${dateArray[1]}-${dateArray[2]} ${inputTime}:00.000000000")
+//            val inputDate = binding.editDate.text.toString()
+//            val inputTime = binding.editTime.text.toString()
+//
+//            viewModel.date.value = inputDate
+//            viewModel.time.value = inputTime
 
             viewModel.addFoodie()
+            viewModel.updateFoodAndNuList()
             viewModel.clearData()
 
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
