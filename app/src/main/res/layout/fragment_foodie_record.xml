@@ -24,12 +24,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                           android:orientation="vertical">
-                <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" app:srcCompat="@color/colorAllTransparent"
-                        android:id="@+id/foodieUploadPhoto" app:layout_constraintStart_toStartOf="@+id/foodiephoto"
-                        app:layout_constraintEnd_toEndOf="@+id/foodiephoto"
-                        app:layout_constraintTop_toTopOf="@+id/foodiephoto" android:scaleType="fitStart"/>
+
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,13 +82,28 @@
                         app:layout_constraintEnd_toEndOf="@+id/foodieUploadPhoto"
                         app:layout_constraintTop_toTopOf="@+id/foodie_my_type" android:textSize="@dimen/text_content"
                         android:fontFamily="@font/noto_sans" app:layout_constraintBottom_toBottomOf="@+id/foodie_my_type"/>
+
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" app:srcCompat="@drawable/icon_my_type"
-                        android:id="@+id/foodie_my_type"
-                        app:layout_constraintStart_toStartOf="@+id/foodieUploadPhoto" android:layout_marginStart="32dp"
-                        app:layout_constraintTop_toTopOf="@+id/foodieUploadPhoto"
-                        android:layout_marginTop="40dp"/>
+                    android:id="@+id/foodie_my_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintStart_toStartOf="@+id/foodieUploadPhoto"
+                    app:layout_constraintTop_toTopOf="@+id/foodiephoto"
+                    app:srcCompat="@drawable/icon_my_type" />
+
+                <ImageView
+                    android:id="@+id/foodieUploadPhoto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/foodiephoto"
+                    app:srcCompat="@color/colorAllTransparent" />
+
                 <TextView
                         android:text="@string/foodie_title_nutrition"
                         android:layout_width="0dp"
@@ -358,14 +368,14 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/input_column"
                     android:orientation="horizontal"
                     android:padding="@dimen/elevation_all"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/foodiephoto" />
+                    app:layout_constraintTop_toBottomOf="@+id/foodieUploadPhoto" />
 
                 <EditText
                     android:id="@+id/add_food"

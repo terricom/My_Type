@@ -27,12 +27,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.IOException
 import java.io.InputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -53,11 +58,17 @@ class FoodieFragment: Fragment() {
     //Uri to store the image uri
     private var filePath: Uri? = null
 
+    private var storageReference: StorageReference ?= null
+    private var auth: FirebaseAuth ?= null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
         binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
+
+        auth = FirebaseAuth.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
 
         binding.buttonFoodieShowInfo.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
@@ -81,13 +92,9 @@ class FoodieFragment: Fragment() {
                 requestStoragePermission()
             }
             showFileChooser()
-            it.visibility = View.INVISIBLE
+            it.visibility = View.GONE
             binding.foodieMyType.visibility = View.INVISIBLE
             binding.foodieGreet.visibility = View.INVISIBLE
-        }
-
-        binding.buttonFoodieSave.setOnClickListener {
-            uploadMultipart()
         }
 
         binding.buttonAddFood.setOnClickListener {
@@ -172,12 +179,21 @@ class FoodieFragment: Fragment() {
         binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
 
 
+
         binding.buttonFoodieSave.setOnClickListener {
 //            val inputDate = binding.editDate.text.toString()
 //            val inputTime = binding.editTime.text.toString()
 //
 //            viewModel.date.value = inputDate
 //            viewModel.time.value = inputTime
+
+            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
+
+            val user: FirebaseUser = auth!!.currentUser as FirebaseUser
+            val userId = user.uid
+            val name = sdf.format(Date().time)
+
+            uploadFile()
 
             viewModel.addFoodie()
             viewModel.updateFoodAndNuList()
@@ -191,33 +207,6 @@ class FoodieFragment: Fragment() {
 
 
         return binding.root
-    }
-
-
-    fun uploadMultipart() {
-        //getting name for the image
-
-        //getting the actual path of the image
-
-        val path = getPath(filePath)
-
-        //Uploading code
-//        try {
-//            val uploadId = UUID.randomUUID().toString()
-//
-//            //Creating a multi part request
-//            MultipartUploadRequest(App.applicationContext(), uploadId, Constants.UPLOAD_URL)
-//                .addFileToUpload(path, "image") //Adding file
-//                .addParameter("name", Calendar.DATE.toString()) //Adding text parameter to the request
-//                .setNotificationConfig(UploadNotificationConfig())
-//                .setMaxRetries(2)
-//                .startUpload() //Starting the upload
-//
-//        } catch (exc: Exception) {
-//            Toast.makeText(App.applicationContext(), exc.message, Toast.LENGTH_SHORT).show()
-//        }
-
-
     }
 
 
@@ -235,9 +224,8 @@ class FoodieFragment: Fragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             filePath = data.data
-            Logger.i("$this@FoodieFragment onActivityResult filePath =$filePath")
+            Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             uriToFilePath(App.applicationContext(), data.data)
-            Logger.i("riToFilePath(App.applicationContext(), data.data) = ${uriToFilePath(App.applicationContext(), data.data)}")
             try {
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 foodieUploadPhoto.setImageBitmap(bitmap)
@@ -246,6 +234,29 @@ class FoodieFragment: Fragment() {
                 e.printStackTrace()
             }
 
+        }
+    }
+
+    private fun uploadFile(){
+        if (filePath != null){
+            auth = FirebaseAuth.getInstance()
+            val userId = auth!!.currentUser!!.uid
+            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+            val imgRef = storageReference!!.child("images/users/"+ userId+"/"+sdf.format(Date()))
+            imgRef.putFile(filePath!!)
+                .addOnCompleteListener{
+                    Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(App.applicationContext(),"Upload failed", Toast.LENGTH_SHORT)
+
+                }
+                .addOnProgressListener { taskSnapshot ->
+                    val progress = 100.0 * taskSnapshot.bytesTransferred/ taskSnapshot.totalByteCount
+                    Toast.makeText(App.applicationContext(),"$progress uploaded...", Toast.LENGTH_SHORT)
+
+
+                }
         }
     }
 
@@ -290,15 +301,17 @@ class FoodieFragment: Fragment() {
 
     }
 
-    public fun uriToFilePath(context: Context,uri: Uri){
+    fun uriToFilePath(context: Context,uri: Uri){
         var filePath: String?
-        if (uri != null && "file".equals(uri.getScheme())) {
-            filePath = uri.getPath();
+        if (uri != null && "file".equals(uri.scheme)) {
+            Logger.i("uriToFilePath not null")
+            filePath = uri.path
         } else {
             filePath = filenameFromUri(context,uri)
         }
     }
-    public fun filenameFromUri(context: Context,uri: Uri): String? {
+
+    fun filenameFromUri(context: Context,uri: Uri): String? {
         var filePath = getFilePathFromCursor(context, uri)
         if (TextUtils.isEmpty(filePath)) {
 //            filePath = getFilePathFromInputStream(context, uri);
@@ -311,7 +324,7 @@ class FoodieFragment: Fragment() {
         var cursor: Cursor ?= null
         try {
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
+            cursor = context.contentResolver.query(uri, filePathColumn, null, null, null)
             cursor.moveToFirst()
             val columnIndex = cursor.getColumnIndex(filePathColumn[0])
             Logger.i("getFilePathFromCursor columnIndex = $columnIndex")
@@ -320,7 +333,7 @@ class FoodieFragment: Fragment() {
             Logger.i("getFilePathFromCursor filePath = $filePath filePathColumn =${filePathColumn[0]}")
             cursor.close()
         } catch ( e:Exception) {
-            e.printStackTrace();
+            e.printStackTrace()
         } finally {
             if (cursor != null) {
                 cursor.close()
@@ -351,25 +364,26 @@ class FoodieFragment: Fragment() {
 //        return filePath as String
 //    }
 
-    public fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
+    fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
 
         val options: BitmapFactory.Options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true;
-        var stream: InputStream = context.getContentResolver().openInputStream(uri);
-        BitmapFactory.decodeStream(stream, null, options);
-        stream.close();
-        var width = options.outWidth;
-        var height = options.outHeight;
+        options.inJustDecodeBounds = true
+        var stream: InputStream = context.contentResolver.openInputStream(uri)
+        BitmapFactory.decodeStream(stream, null, options)
+        stream.close()
+        var width = options.outWidth
+        var height = options.outHeight
         if (width > height) {
-            val temp = width;
-            width = height;
-            height = temp;
+            val temp = width
+            width = height
+            height = temp
         }
-        var sampleRatio = Math.max(width / 900, height / 1600);
+        var sampleRatio = Math.max(width / 900, height / 1600)
 //        options = BitmapFactory.Options();
-        options.inSampleSize = sampleRatio;
-        return options;
+        options.inSampleSize = sampleRatio
+        return options
     }
+
 
 
 
