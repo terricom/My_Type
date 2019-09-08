@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager2.widget.ViewPager2
+import com.terricom.mytype.Logger
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class LinechartFragment: Fragment() {
 
@@ -22,26 +26,56 @@ class LinechartFragment: Fragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+
+        var currentPosition = binding.viewPager2.currentItem
+
         binding.viewPager2.adapter = LinechartAdapter(viewModel)
-        binding.viewPager2.setCurrentItem(20, true)
+        (binding.viewPager2.adapter as LinechartAdapter).notifyDataSetChanged()
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
 
-        val currentPosition = binding.viewPager2.currentItem
+            }
 
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPosition = position
+                viewModel.setCurrentPosition(position)
+                Logger.i("Selected_Page , position.toString() = $position")
+                viewModel.newFireBack()
+                viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+
+            }
+        })
+
+
+        if (viewModel.date.value == sdf.format(Date())){
+            binding.viewPager2.setCurrentItem(20, true)
+        }
         binding.toBack.setOnClickListener {
-//            viewModel.newFireBack()
-            viewModel.setDate(Date(viewModel.recordDate.value!!.time.minus(604800000L)))
-            viewModel.getThisMonth()
-            binding.viewPager2.setCurrentItem(currentPosition.minus(1), true)
+            viewModel.newFireBack()
+            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
+            binding.viewPager2.setCurrentItem( currentPosition.minus(1), true)
 
         }
         binding.toNext.setOnClickListener {
-//            viewModel.newFireBack()
-            viewModel.setDate(Date(viewModel.recordDate.value!!.time.plus(604800000L)))
-            viewModel.getThisMonth()
-            binding.viewPager2.setCurrentItem(currentPosition.plus(1), true)
-
-
+            viewModel.newFireBack()
+            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
+            binding.viewPager2.setCurrentItem( currentPosition.plus(1), true)
         }
+
+        viewModel.date.observe(this, androidx.lifecycle.Observer {
+            viewModel.getThisMonth()
+        })
 
         return binding.root
     }

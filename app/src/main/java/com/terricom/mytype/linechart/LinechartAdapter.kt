@@ -32,18 +32,10 @@ class LinechartAdapter(val viewModel: LinechartViewModel) : RecyclerView.Adapter
 
     //binding the screen with view
     override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
-        Logger.i("Linechart Adapter position =$position")
-        if(position == 20){
-            viewModel.newFireBack()
-            viewModel.setDate(Date())
-            holder.bind(viewModel)
-        }
-        if(position != 20) {
-            viewModel.newFireBack()
-            viewModel.setDate(Date(viewModel.recordDate.value!!.time.plus(604800000L*(position-20))))
-            holder.bind(viewModel)
-        }
-
+        Logger.i("Linechart Adapter position =$position adapter position =${holder.adapterPosition} viewModel current position =${viewModel.currentPotition.value}")
+        viewModel.newFireBack()
+        holder.list.clear()
+        holder.bind(viewModel)
     }
 
 
@@ -58,10 +50,14 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
         binding.executePendingBindings()
 
         viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
+            list.clear()
+//            viewModel.clearData()
+            Logger.i("Before check list =${list.size}")
             if (it == true){
+                Logger.i("viewModel.fireBackEnd.observe = $it")
                 viewModel.waterList.observe(this, androidx.lifecycle.Observer {
                     val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
-                    if (it != null){
+                    it?.let{
                         viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
                             if (it == true){
                                 list.add(waterChartEntity)
@@ -72,14 +68,14 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
                 })
 
                 viewModel.oilList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
+                    it?.let{
                         val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
                         list.add(oilChartEntity)
                     }
                 })
 
                 viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
+                    it?.let{
                         val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
                         list.add(vegetableChartEntity)
 
@@ -87,14 +83,14 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
                 })
 
                 viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
+                    it?.let{
                         val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
                         list.add(proteinChartEntity)
                     }
                 })
 
                 viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
+                    it?.let{
                         val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
                         list.add(fruitChartEntity)
 
@@ -102,18 +98,24 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
                 })
 
                 viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
+                    it?.let{
                         val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
                         list.add(carbonChartEntity)
                     }
                 })
 
-                binding.lineChart.legendArray = viewModel.fireDate.value
-                if (list.size != 0){
+                if (list.size > 0){
+                    Logger.i("After check list =${viewModel.dateM.value}${list.size}")
+
+
+                    binding.lineChart.legendArray = viewModel.fireDate.value
                     binding.lineChart.setList(list)
+
                 }
+
             }
         })
+//        list.clear()
     }
 
 

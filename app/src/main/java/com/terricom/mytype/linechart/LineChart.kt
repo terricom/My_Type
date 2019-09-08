@@ -109,6 +109,7 @@ class LineChart : View {
         this.chartEntities = null
         invalidate()
         this.chartEntities = list
+        Logger.i("LineChart setList chartEntities size = ${list.size}")
         val maxes = ArrayList<Float>()
         for (lineGraph in chartEntities!!) {
             val copies =
@@ -150,7 +151,7 @@ class LineChart : View {
 
         var newX: Float
         var newY: Float
-        val gap = chartXLength / (chartEntities!![0].values.size - 1)
+//        val gap = chartXLength / (chartEntities!![0].values.size - 1)
         val yGap = (yLength / 10).toFloat()
 
         for (i in 0 until 11) {
@@ -159,8 +160,11 @@ class LineChart : View {
             newY = yGap * i
             graphCanvasWrapper.drawLine(0.0f, newY, chartXLength.toFloat(), newY, pBaseLine)
 
-            drawGraph(graphCanvasWrapper)
-            drawXText(graphCanvasWrapper)
+            if (chartEntities!!.size >2 ){
+                drawGraph(graphCanvasWrapper)
+                drawXText(graphCanvasWrapper)
+
+            }
         }
     }
 

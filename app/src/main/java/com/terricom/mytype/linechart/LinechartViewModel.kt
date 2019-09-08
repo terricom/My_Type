@@ -35,11 +35,21 @@ class LinechartViewModel: ViewModel() {
     val recordDate: LiveData<Date>
         get() = _recordDate
 
+    private val _currentPotition = MutableLiveData<Int>()
+    val currentPotition: LiveData<Int>
+        get() = _currentPotition
+
+    fun setCurrentPosition(po: Int){
+        _currentPotition.value = po
+    }
+
 
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
-        _dateM.value = "${sdfM.format(date.time.minus(604800000L))}-${sdfM.format(date)}"
+        _dateM.value = "${sdfM.format(date.time.minus(518400000L))}-${sdfM.format(date)}"
         _recordDate.value = date
+        Logger.i("viewModel.date.observe = ${dateM.value}")
+
     }
 
     val _fireFoodie = MutableLiveData<List<Foodie>>()
@@ -125,6 +135,15 @@ class LinechartViewModel: ViewModel() {
         _waterClicked.value = true
     }
 
+    fun clearData(){
+        _waterList.value = null
+        _oilList.value = null
+        _vegetableList.value = null
+        _proteinList.value = null
+        _fruitList.value = null
+        _carbonList.value = null
+    }
+
 
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
@@ -135,14 +154,12 @@ class LinechartViewModel: ViewModel() {
     }
 
     fun getThisMonth() {
-        Logger.i("LinechartViewModel Date().time = ${Date().time}")
-
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
                 .document(userUid as String).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
                 .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
             foodieDiary
                 .get()
                 .addOnSuccessListener { querySnapshot ->
