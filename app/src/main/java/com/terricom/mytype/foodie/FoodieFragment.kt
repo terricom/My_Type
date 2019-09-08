@@ -62,6 +62,9 @@ class FoodieFragment: Fragment() {
     private var storageReference: StorageReference ?= null
     private var auth: FirebaseAuth ?= null
 
+    private var imgDownloadUri: Uri ?= null
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
@@ -184,12 +187,6 @@ class FoodieFragment: Fragment() {
 
 
         binding.buttonFoodieSave.setOnClickListener {
-//            val inputDate = binding.editDate.text.toString()
-//            val inputTime = binding.editTime.text.toString()
-//
-//            viewModel.date.value = inputDate
-//            viewModel.time.value = inputTime
-
             val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
 
             val user: FirebaseUser = auth!!.currentUser as FirebaseUser
@@ -240,14 +237,19 @@ class FoodieFragment: Fragment() {
         }
     }
 
+
     private fun uploadFile(){
         if (filePath != null){
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
             val sdf = SimpleDateFormat("yyyy-MM-dd-hhmmss")
-            val imgRef = storageReference!!.child("images/users/"+ userId+"/"+sdf.format(Date(Timestamp.valueOf("${viewModel.date.value?.replace(".","-")} ${viewModel.time.value}:00.000000000").time)))
+            val imgRef = storageReference!!.child("images/users/"+ userId+"/"
+                    +sdf.format(Date(Timestamp.valueOf("${viewModel.date.value?.replace(".","-")} ${viewModel.time.value}:00.000000000").time))+".jpg")
             imgRef.putFile(filePath!!)
                 .addOnCompleteListener{
+                    imgRef.downloadUrl.addOnCompleteListener {
+                        viewModel.setPhoto(it.result!!)
+                    }
                     Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
                 }
                 .addOnFailureListener {
@@ -257,8 +259,6 @@ class FoodieFragment: Fragment() {
                 .addOnProgressListener { taskSnapshot ->
                     val progress = 100.0 * taskSnapshot.bytesTransferred/ taskSnapshot.totalByteCount
                     Toast.makeText(App.applicationContext(),"$progress uploaded...", Toast.LENGTH_SHORT)
-
-
                 }
         }
     }

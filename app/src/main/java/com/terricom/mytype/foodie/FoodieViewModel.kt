@@ -1,5 +1,6 @@
 package com.terricom.mytype.foodie
 
+import android.net.Uri
 import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -77,6 +78,13 @@ class FoodieViewModel: ViewModel() {
     var cleanDate = date.value?.replace(".","-")
 
     val time = MutableLiveData<String>()
+    val _photoUri = MutableLiveData<Uri>()
+    val photoUri: LiveData<Uri>
+            get() = _photoUri
+
+    fun setPhoto(photo: Uri){
+        _photoUri.value = photo
+    }
 
 
     val db = FirebaseFirestore.getInstance()
@@ -95,7 +103,8 @@ class FoodieViewModel: ViewModel() {
             "carbon" to carbon.value,
             "photo" to "",
             "foods" to selectedFood,
-            "nutritions" to selectedNutrition
+            "nutritions" to selectedNutrition,
+            "photo" to photoUri.value
         )
 
         user.get()

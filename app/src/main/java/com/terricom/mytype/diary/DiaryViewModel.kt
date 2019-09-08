@@ -136,8 +136,8 @@ class DiaryViewModel: ViewModel() {
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == date.value){
-                        Logger.i("ref path = images/users/$userUid/${sdfhms.format(convertDate)}.png")
-                        val riversRef = storageRef!!.child("images/users/$userUid/${sdfhms.format(convertDate)}.png")
+                        Logger.i("ref path = images/users/$userUid/${sdfhms.format(convertDate)}.jpg")
+                        val riversRef = storageRef!!.child("images/users/$userUid/${sdfhms.format(convertDate)}.jpg")
                         riversRef.downloadUrl
                             .addOnSuccessListener {
                                 Logger.i("Download success localfile absoluteFile = ${it}")
