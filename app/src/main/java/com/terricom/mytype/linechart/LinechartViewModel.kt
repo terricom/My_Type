@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,10 +31,15 @@ class LinechartViewModel: ViewModel() {
     val dateM: LiveData<String>
         get() = _dateM
 
+    private val _recordDate = MutableLiveData<Date>()
+    val recordDate: LiveData<Date>
+        get() = _recordDate
+
 
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
         _dateM.value = "${sdfM.format(date.time.minus(604800000L))}-${sdfM.format(date)}"
+        _recordDate.value = date
     }
 
     val _fireFoodie = MutableLiveData<List<Foodie>>()
@@ -107,6 +113,9 @@ class LinechartViewModel: ViewModel() {
     fun finishFireBack (){
         _fireBackEnd.value = true
     }
+    fun newFireBack (){
+        _fireBackEnd.value = false
+    }
 
     val _waterClicked = MutableLiveData<Boolean>()
     val waterClicked : LiveData<Boolean>
@@ -126,11 +135,14 @@ class LinechartViewModel: ViewModel() {
     }
 
     fun getThisMonth() {
+        Logger.i("LinechartViewModel Date().time = ${Date().time}")
 
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
                 .document(userUid as String).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
             foodieDiary
                 .get()
                 .addOnSuccessListener { querySnapshot ->

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.App
-import com.terricom.mytype.R
 import java.util.*
 
 class LinechartFragment: Fragment() {
@@ -24,68 +22,26 @@ class LinechartFragment: Fragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
-        val list = ArrayList<ChartEntity>()
+        binding.viewPager2.adapter = LinechartAdapter(viewModel)
+        binding.viewPager2.setCurrentItem(20, true)
+
+        val currentPosition = binding.viewPager2.currentItem
+
+        binding.toBack.setOnClickListener {
+//            viewModel.newFireBack()
+            viewModel.setDate(Date(viewModel.recordDate.value!!.time.minus(604800000L)))
+            viewModel.getThisMonth()
+            binding.viewPager2.setCurrentItem(currentPosition.minus(1), true)
+
+        }
+        binding.toNext.setOnClickListener {
+//            viewModel.newFireBack()
+            viewModel.setDate(Date(viewModel.recordDate.value!!.time.plus(604800000L)))
+            viewModel.getThisMonth()
+            binding.viewPager2.setCurrentItem(currentPosition.plus(1), true)
 
 
-        viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
-            if (it == true){
-                viewModel.waterList.observe(this, androidx.lifecycle.Observer {
-                    val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
-                    if (it != null){
-                        viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
-                            if (it == true){
-                                list.add(waterChartEntity)
-                            }
-                        })
-
-                    }
-                })
-
-                viewModel.oilList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
-                        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
-                        list.add(oilChartEntity)
-                    }
-                })
-
-                viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
-                        val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
-                        list.add(vegetableChartEntity)
-
-                    }
-                })
-
-                viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
-                        val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
-                        list.add(proteinChartEntity)
-                    }
-                })
-
-                viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
-                        val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
-                        list.add(fruitChartEntity)
-
-                    }
-                })
-
-                viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
-                    if (it != null){
-                        val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
-                        list.add(carbonChartEntity)
-                    }
-                })
-
-                binding.lineChart.legendArray = viewModel.fireDate.value
-                if (list.size != 0){
-                    binding.lineChart.setList(list)
-                }
-            }
-        })
-
-
+        }
 
         return binding.root
     }
