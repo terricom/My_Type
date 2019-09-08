@@ -6,6 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
@@ -59,10 +61,14 @@ class DiaryViewModel: ViewModel() {
     }
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val sdfhms = SimpleDateFormat("yyyy-MM-dd-hhmmss")
     val currentDate = sdf.format(Date())
 
     val db = FirebaseFirestore.getInstance()
     val users = db.collection("Users")
+
+    private var storageRef : StorageReference?= null
+
 
 
     init {
@@ -120,13 +126,24 @@ class DiaryViewModel: ViewModel() {
 
             }
 
-        foodieDiary
+
+            foodieDiary
             .get()
             .addOnSuccessListener {
+                storageRef = FirebaseStorage.getInstance().getReference()
+
                 val items = mutableListOf<Foodie>()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == date.value){
+                        Logger.i("ref path = images/users/$userUid/${sdfhms.format(convertDate)}.png")
+                        val riversRef = storageRef!!.child("images/users/$userUid/${sdfhms.format(convertDate)}.png")
+                        riversRef.downloadUrl
+                            .addOnSuccessListener {
+                                Logger.i("Download success localfile absoluteFile = ${it}")
+                            }.addOnFailureListener {
+                                Logger.i("Download failed exception =$it")
+                            }
                         items.add(document.toObject(Foodie::class.java))
                     }
 

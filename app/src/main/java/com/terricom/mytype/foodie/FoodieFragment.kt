@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.IOException
 import java.io.InputStream
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -142,6 +143,7 @@ class FoodieFragment: Fragment() {
                         val container = v as LinearLayout
                         container.addView(view)
                         view.visibility = View.VISIBLE
+                        binding.dagFoodHint.visibility = View.INVISIBLE
                         viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
                     }
                     else -> {
@@ -166,6 +168,7 @@ class FoodieFragment: Fragment() {
                         val container = v as LinearLayout
                         container.addView(view)
                         view.visibility = View.VISIBLE
+                        binding.dragNutritionHint.visibility = View.INVISIBLE
                         viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
                     }
                     else -> {
@@ -241,8 +244,8 @@ class FoodieFragment: Fragment() {
         if (filePath != null){
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
-            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            val imgRef = storageReference!!.child("images/users/"+ userId+"/"+sdf.format(Date()))
+            val sdf = SimpleDateFormat("yyyy-MM-dd-hhmmss")
+            val imgRef = storageReference!!.child("images/users/"+ userId+"/"+sdf.format(Date(Timestamp.valueOf("${viewModel.date.value?.replace(".","-")} ${viewModel.time.value}:00.000000000").time)))
             imgRef.putFile(filePath!!)
                 .addOnCompleteListener{
                     Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)

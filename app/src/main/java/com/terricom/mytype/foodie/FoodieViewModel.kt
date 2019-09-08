@@ -12,6 +12,9 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+
+
 class FoodieViewModel: ViewModel() {
 
     val userUid = UserManager.uid
