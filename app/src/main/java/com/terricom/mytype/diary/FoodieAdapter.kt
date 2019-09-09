@@ -73,6 +73,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
             (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.nutritions)
             binding.viewModel = viewModel
+            Logger.i("binding.imageView2.maxHeight =${binding.imageView2.maxHeight} binding.imageView2.maxWeight = ${binding.imageView2.maxWidth}" +
+                    "binding.imageView2.width =${binding.imageView2.width} binding.imageView2.height =${binding.imageView2.height}")
+            binding.imageView2.rotation = if (binding.imageView2.maxHeight > binding.imageView2.maxWidth)90.0f else 0.0f
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()

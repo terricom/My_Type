@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content" android:id="@+id/number_weight"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 
@@ -39,7 +38,7 @@
                 android:layout_height="wrap_content" android:id="@+id/number_body_water"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="@+id/number_weight"
+                app:layout_constraintTop_toTopOf="@+id/number_weight"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 
@@ -52,7 +51,6 @@
                 android:layout_height="wrap_content" android:id="@+id/number_body_fat"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 
@@ -66,7 +64,6 @@
                 android:layout_height="wrap_content" android:id="@+id/number_tdeet"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 
@@ -81,7 +78,6 @@
                 android:layout_height="wrap_content" android:id="@+id/number_muscle"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 
@@ -95,7 +91,6 @@
                 android:layout_height="wrap_content" android:id="@+id/number_body_age"
                 android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"
                 android:textSize="@dimen/text_content"
                 android:letterSpacing="0.15"
 

@@ -5,20 +5,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
-import android.text.TextUtils
-import android.view.DragEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.DisplayMetrics
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +23,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -37,11 +35,11 @@ import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 
 class FoodieFragment: Fragment() {
@@ -64,9 +62,11 @@ class FoodieFragment: Fragment() {
     private var storageReference: StorageReference ?= null
     private var auth: FirebaseAuth ?= null
 
-    private var imgDownloadUri: Uri ?= null
+    private var filePathProvider: FileProvider ?= null
 
+    private var mPhone: DisplayMetrics?= null
 
+    private var windowManager: WindowManager? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentFoodieRecordBinding.inflate(inflater)
@@ -186,6 +186,9 @@ class FoodieFragment: Fragment() {
         binding.chosedFood.setOnDragListener(MyDragListener())
         binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
 
+        //讀取手機解析度
+        mPhone = DisplayMetrics()
+        getWindowManager(App.applicationContext()).getDefaultDisplay().getMetrics(mPhone)
 
 
         binding.buttonFoodieSave.setOnClickListener {
@@ -219,10 +222,18 @@ class FoodieFragment: Fragment() {
             Logger.i("viewModel.photoUri.observe =$it")
         })
 
+        filePathProvider = FileProvider()
+
 
         return binding.root
     }
 
+    private fun getWindowManager(context: Context): WindowManager {
+        if (windowManager == null) {
+            windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        }
+        return windowManager as WindowManager
+    }
 
     //method to show file chooser
     private fun showFileChooser() {
@@ -232,6 +243,8 @@ class FoodieFragment: Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
 
+
+
     //handling the image chooser activity result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -239,19 +252,285 @@ class FoodieFragment: Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             filePath = data.data
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
-            uriToFilePath(App.applicationContext(), data.data)
             try {
-                val matrix = Matrix()
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
-                val rotatedBitmap: Bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.getWidth(), bitmap!!.getHeight(), matrix, true);
+                val degree = getRotateDegree(filePath!!.path)
+                Logger.i("degree = $degree")
+                val matrix: Matrix = Matrix()
+                matrix.postRotate(degree.toFloat())
+                val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
+                val baos = ByteArrayOutputStream()
+                outBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                bitmap!!.recycle()
+                if(bitmap!!.getWidth()>bitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels);
+                else ScalePic(outBitmap!!, mPhone!!.widthPixels)
 
-                foodieUploadPhoto.setImageBitmap(rotatedBitmap)
+//                foodieUploadPhoto.setImageBitmap(bitmap)
 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
+        }
+    }
+
+
+    fun loadScaledBitmap( path: String, maxWidth: Int, maxHeight: Int): Bitmap? {
+        val options : BitmapFactory.Options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(path, options)
+        var srcHeight = options.outHeight;
+        var srcWidth = options.outWidth;
+        // decode失败
+        if (srcHeight == -1 || srcWidth == -1) {
+            return null
+        }
+
+        // 当比例差距过大时，先通过inSampleSize加载bitmap降低内存消耗
+        val scale: Float = getScale(srcWidth.toFloat(), srcHeight.toFloat(), maxWidth.toFloat(), maxHeight.toFloat())
+        val evaluateWH = evaluateWH(srcWidth.toFloat(), srcHeight.toFloat(), maxWidth.toFloat(), maxHeight.toFloat())
+        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+        options.inJustDecodeBounds = false;
+        if (evaluateWH == 0) {
+            options.inScaled = true;
+            options.inDensity = srcWidth;
+            options.inTargetDensity = maxWidth * options.inSampleSize;
+        } else if (evaluateWH == 1) {
+            options.inScaled = true;
+            options.inDensity = srcHeight;
+            options.inTargetDensity = maxHeight * options.inSampleSize;
+        } else {
+            options.inScaled = false;
+        }
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+//    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+//        val height = options.outHeight
+//        val width = options.outHeight
+//        var inSampleSize = 1
+//        if (height > reqHeight || width > reqWidth) {
+//            val halfHeight = height / 2
+//            val halfWidth = width / 2
+//
+//            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+//                inSampleSize *= 2
+//            }
+//        }
+//        return inSampleSize
+//    }
+
+    private fun getScale(srcWidth: Float, srcHeight: Float, destWidth: Float, destHeight: Float): Float {
+        val evaluateWH = evaluateWH(srcWidth, srcHeight, destWidth, destHeight)
+        return when (evaluateWH){
+            0 -> destWidth / srcWidth
+            1 -> destHeight / srcHeight;
+            else -> 1f
+        }
+    }
+
+
+    private fun evaluateWH(srcWidth: Float, srcHeight: Float, destWidth: Float, destHeight: Float): Int {
+        if (srcWidth < 1f || srcHeight < 1f || srcWidth < destWidth && srcHeight < destHeight) {
+            return -1
+        }
+        var result: Int
+        if (destWidth > 0 && destHeight > 0) {
+            result = if(destWidth / srcWidth < destHeight / srcHeight)0 else 1
+        } else if (destWidth > 0) {
+            result = 0;
+        } else if (destHeight > 0) {
+            result = 1;
+        } else {
+            result = -1;
+        }
+        return result;
+    }
+
+
+    private fun ScalePic( bitmap:Bitmap, phone: Int)
+    {
+        //縮放比例預設為1
+        var mScale = 1f
+
+        //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
+        if(bitmap.getWidth() > phone )
+        {
+            //判斷縮放比例
+            mScale = phone.toFloat()/ bitmap.getWidth().toFloat()
+
+            val mMat: Matrix = Matrix()
+            mMat.setScale(mScale, mScale)
+
+            var mScaleBitmap = Bitmap.createBitmap(bitmap,
+            0,
+            0,
+            bitmap.getWidth(),
+            bitmap.getHeight(),
+            mMat,
+            false)
+            foodieUploadPhoto.setImageBitmap(mScaleBitmap)
+        }
+        else foodieUploadPhoto.setImageBitmap(bitmap)
+    }
+
+    //計算圖片的縮放值
+    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+            val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
+            val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
+            inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
+        }
+        return inSampleSize
+    }
+
+    // 根據路徑獲得圖片並壓縮，返回bitmap用於顯示
+    fun getSmallBitmap(filePath: String): Bitmap {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(filePath, options)
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, 480, 800)
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false
+
+        return BitmapFactory.decodeFile(filePath, options)
+    }
+
+    //把bitmap轉換成String
+    fun bitmapToString(filePath: String): String {
+
+        val bm = getSmallBitmap(filePath)
+        val baos = ByteArrayOutputStream()
+
+        bm.compress(Bitmap.CompressFormat.JPEG, 40, baos)
+        val b = baos.toByteArray()
+        return Base64.getEncoder().encodeToString(b) //, Base64.DEFAULT
+    }
+
+
+    private fun getRotateDegree( filePath:String): Int{
+        var degree: Int = 0
+        try {
+            var exifInterface: ExifInterface = ExifInterface(filePath);
+            var orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+                degree = 90;
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+                degree = 180;
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                degree = 270;
+            }
+            if (degree != 0) {
+                exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION, "0");
+                exifInterface.saveAttributes();
+            }
+        } catch (e: IOException) {
+            degree = -1;
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+
+
+    companion object {
+
+
+        //storage permission code
+        private val STORAGE_PERMISSION_CODE = 123
+
+        /** Calculate inSampleSize to fit within requestSize */
+        fun calculateInSampleSize(context: Context, uri: Uri, requestSize: Int): Int {
+            var stream: InputStream? = null
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            return try {
+                stream = context.contentResolver.openInputStream(uri)
+                BitmapFactory.decodeStream(stream, null, options)
+                val longer = Math.max(options.outWidth, options.outHeight)
+                if (longer > requestSize) {
+                    longer / requestSize
+                } else {
+                    1
+                }
+            } catch (e: Exception) {
+                1
+            } finally {
+                stream?.close()
+            }
+        }
+
+        /** Acquire image rotation from Uri */
+        fun getImageRotation(context: Context, uri: Uri): Int {
+            var stream: InputStream? = null
+            return try {
+                stream = context.contentResolver.openInputStream(uri)
+                val exifInterface = ExifInterface(stream)
+                val exifOrientation =
+                    exifInterface.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_NORMAL
+                    )
+                when (exifOrientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                    ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                    else -> 0
+                }
+            } catch (e: Exception) {
+                0
+            } finally {
+                stream?.close()
+            }
+        }
+
+        /** Retrieve the reduced image below requestSize */
+        fun createReducedBitmap(context: Context, uri: Uri, requestSize: Int): Bitmap? {
+            var stream: InputStream? = null
+            val options = BitmapFactory.Options().apply {
+                inSampleSize = calculateInSampleSize(context, uri, requestSize)
+            }
+            return try {
+                stream = context.contentResolver.openInputStream(uri)
+                BitmapFactory.decodeStream(stream, null, options)
+            } catch (e: Exception) {
+                null
+            } finally {
+                stream?.close()
+            }
+        }
+
+        /** Save images to a file */
+        fun saveBitmapToFile(bitmap: Bitmap, file: File): Boolean {
+            var stream: OutputStream? = null
+            return try {
+                stream = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            } catch (e: Exception) {
+                false
+            } finally {
+                stream?.close()
+            }
+        }
+
+        /** Reset file Orientation tag */
+        fun resetOrientation(filePath: String): Boolean {
+            return try {
+                val exifInterface = ExifInterface(filePath)
+                exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION, "0")
+                true
+            } catch (e: Exception) {
+                false
+            }
         }
     }
 
@@ -262,9 +541,10 @@ class FoodieFragment: Fragment() {
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
             val sdf = SimpleDateFormat("yyyy-MM-dd-hhmmss")
+            val data = compress(filePath!!)
             val imgRef = storageReference!!.child("images/users/"+ userId+"/"
                     +sdf.format(Date(Timestamp.valueOf("${viewModel.date.value?.replace(".","-")} ${viewModel.time.value}:00.000000000").time))+".jpg")
-            imgRef.putFile(filePath!!)
+            imgRef.putBytes(data!!)
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
                         viewModel.setPhoto(it.result!!)
@@ -288,68 +568,34 @@ class FoodieFragment: Fragment() {
     }
 
 
-    fun uriToFilePath(context: Context,uri: Uri){
-        var filePath: String?
-        if (uri != null && "file".equals(uri.scheme)) {
-            Logger.i("uriToFilePath not null")
-            filePath = uri.path
-        } else {
-            filePath = filenameFromUri(context,uri)
-        }
-    }
+    private fun compress(image: Uri): ByteArray? {
 
-    fun filenameFromUri(context: Context,uri: Uri): String? {
-        var filePath = getFilePathFromCursor(context, uri)
-        if (TextUtils.isEmpty(filePath)) {
-//            filePath = getFilePathFromInputStream(context, uri);
-        }
-        return filePath
-    }
-
-    private fun getFilePathFromCursor(context: Context, uri: Uri): String? {
-        var filePath: String ?= null
-        var cursor: Cursor ?= null
+        var imageStream: InputStream? = null
         try {
-            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = context.contentResolver.query(uri, filePathColumn, null, null, null)
-            cursor.moveToFirst()
-            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
-            Logger.i("getFilePathFromCursor columnIndex = $columnIndex")
-
-            filePath = cursor.getString(columnIndex)
-            Logger.i("getFilePathFromCursor filePath = $filePath filePathColumn =${filePathColumn[0]}")
-            cursor.close()
-        } catch ( e:Exception) {
+            imageStream = App.applicationContext().contentResolver.openInputStream(
+                image
+            )
+        } catch (e: FileNotFoundException) {
             e.printStackTrace()
-        } finally {
-            if (cursor != null) {
-                cursor.close()
-            }
         }
-        return filePath
-    }
 
-//    private fun getFilePathFromInputStream(context: Context, uri: Uri): String {
-//        var filePath: String ?= ""
-//        var inputStream: InputStream ?= null
-//        try {
-//            inputStream = context.getContentResolver().openInputStream(uri);
-//            val bitmap: Bitmap  = BitmapFactory.decodeStream(inputStream, null, getBitMapOptions(context, uri));
-//            inputStream.close();
-//            filePath = saveImg(bitmap, FileUtil.getTempFileName())
-//        } catch (e: Exception ) {
-//            e.printStackTrace();
-//        } finally {
-//            if (inputStream != null) {
-//                try {
-//                    inputStream.close();
-//                } catch (e: IOException ) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return filePath as String
-//    }
+        val bmp = BitmapFactory.decodeStream(imageStream)
+
+        var stream: ByteArrayOutputStream? = ByteArrayOutputStream()
+        //Qaulity was 35
+        bmp.compress(Bitmap.CompressFormat.JPEG, 10, stream)
+        val byteArray = stream!!.toByteArray()
+        try {
+            stream.close()
+            stream = null
+            return byteArray
+        } catch (e: IOException) {
+
+            e.printStackTrace()
+        }
+
+        return null
+    }
 
     fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
 
@@ -415,11 +661,7 @@ class FoodieFragment: Fragment() {
     }
 
 
-    companion object {
 
-        //storage permission code
-        private val STORAGE_PERMISSION_CODE = 123
-    }
 
     override fun onStop() {
         super.onStop()
