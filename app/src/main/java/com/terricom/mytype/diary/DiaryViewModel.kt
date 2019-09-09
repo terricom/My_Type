@@ -81,13 +81,13 @@ class DiaryViewModel: ViewModel() {
 
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid as String).collection("Foodie")
+                .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
             val shapeDiary = users
-                .document(userUid as String).collection("Shape")
+                .document(userUid).collection("Shape")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
             val sleepDiary = users
-                .document(userUid as String).collection("Sleep")
+                .document(userUid).collection("Sleep")
                 .orderBy("wakeUp", Query.Direction.DESCENDING)
 
 
@@ -130,20 +130,20 @@ class DiaryViewModel: ViewModel() {
             foodieDiary
             .get()
             .addOnSuccessListener {
-                storageRef = FirebaseStorage.getInstance().getReference()
+                storageRef = FirebaseStorage.getInstance().reference
 
                 val items = mutableListOf<Foodie>()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == date.value){
                         Logger.i("ref path = images/users/$userUid/${sdfhms.format(convertDate)}.jpg")
-                        val riversRef = storageRef!!.child("images/users/$userUid/${sdfhms.format(convertDate)}.jpg")
-                        riversRef.downloadUrl
-                            .addOnSuccessListener {
-                                Logger.i("Download success localfile absoluteFile = ${it}")
-                            }.addOnFailureListener {
-                                Logger.i("Download failed exception =$it")
-                            }
+//                        val riversRef = storageRef!!.child("images/users/$userUid/${sdfhms.format(convertDate)}.jpg")
+//                        riversRef.downloadUrl
+//                            .addOnSuccessListener {
+//                                Logger.i("Download success localfile absoluteFile = ${it}")
+//                            }.addOnFailureListener {
+//                                Logger.i("Download failed exception =$it")
+//                            }
                         items.add(document.toObject(Foodie::class.java))
                     }
 
@@ -160,7 +160,7 @@ class DiaryViewModel: ViewModel() {
         var result: Float = 0.0f
         for (foodie in it) {
             if (foodie.water != null){
-            result += foodie.water!!.toFloat()
+            result += foodie.water.toFloat()
             }
         }
         result
@@ -170,7 +170,7 @@ class DiaryViewModel: ViewModel() {
         var result: Float = 0.0f
         for (foodie in it) {
             if (foodie.oil != null){
-            result += foodie.oil!!.toFloat()
+            result += foodie.oil.toFloat()
             }
         }
         result
@@ -190,7 +190,7 @@ class DiaryViewModel: ViewModel() {
         var result: Float = 0.0f
         for (foodie in it) {
             if (foodie.protein != null) {
-                result += foodie.protein!!.toFloat()
+                result += foodie.protein.toFloat()
             }
         }
         result
@@ -224,7 +224,7 @@ class DiaryViewModel: ViewModel() {
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid as String).collection("Foodie")
+                .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
         foodieDiary
             .get()

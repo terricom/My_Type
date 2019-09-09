@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.DragEvent
@@ -195,15 +196,27 @@ class FoodieFragment: Fragment() {
 
             uploadFile()
 
-            viewModel.addFoodie()
-            viewModel.updateFoodAndNuList()
-            viewModel.clearData()
 
-            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).fab.visibility = View.VISIBLE
+            val handler = Handler()
+
+            handler.postDelayed({
+                viewModel.addFoodie()
+                viewModel.updateFoodAndNuList()
+                viewModel.clearData()
+
+                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
+            }, 3000)
+
+
+
         }
+
+        viewModel.photoUri.observe(this, androidx.lifecycle.Observer {
+            Logger.i("viewModel.photoUri.observe =$it")
+        })
 
 
         return binding.root
@@ -249,7 +262,12 @@ class FoodieFragment: Fragment() {
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
                         viewModel.setPhoto(it.result!!)
+                        Logger.i("FoodieFragment uploadFile =${it.result}")
                     }
+                        .addOnFailureListener {
+                            Logger.i("FoodieFragment uploadFile failed =$it")
+
+                        }
                     Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
                 }
                 .addOnFailureListener {

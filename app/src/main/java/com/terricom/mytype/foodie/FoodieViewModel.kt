@@ -78,12 +78,14 @@ class FoodieViewModel: ViewModel() {
     var cleanDate = date.value?.replace(".","-")
 
     val time = MutableLiveData<String>()
-    val _photoUri = MutableLiveData<Uri>()
+
+    private val _photoUri = MutableLiveData<Uri>()
     val photoUri: LiveData<Uri>
-            get() = _photoUri
+        get() = _photoUri
 
     fun setPhoto(photo: Uri){
         _photoUri.value = photo
+        Logger.i("photouri get = $photo")
     }
 
 
@@ -101,10 +103,9 @@ class FoodieViewModel: ViewModel() {
             "protein" to protein.value,
             "fruit" to fruit.value,
             "carbon" to carbon.value,
-            "photo" to "",
+            "photo" to photoUri.value.toString(),
             "foods" to selectedFood,
-            "nutritions" to selectedNutrition,
-            "photo" to photoUri.value
+            "nutritions" to selectedNutrition
         )
 
         user.get()
