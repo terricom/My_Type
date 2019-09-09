@@ -14,18 +14,16 @@ import java.util.*
 
 class LinechartAdapter(val viewModel: LinechartViewModel) : RecyclerView.Adapter<LinechartAdapter.PagerVH>() {
 
-    //array of colors to change the background color of screen
-    private val colors = intArrayOf(
-        android.R.color.black,
-        android.R.color.holo_red_light,
-        android.R.color.holo_blue_dark,
-        android.R.color.holo_purple
-    )
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH =
-        PagerVH(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
+        viewModel.run {
+            newFireBack()
+            getThisMonth()
+            Logger.i("If viewModel run")
+        }
+        return PagerVH(
             ItemLinechartViewPageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
+    }
 
     //get the size of color array
     override fun getItemCount(): Int = Int.MAX_VALUE
@@ -48,59 +46,71 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.executePendingBindings()
+        list.clear()
 
         viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
-            list.clear()
 //            viewModel.clearData()
             Logger.i("Before check list =${list.size}")
             if (it == true){
                 Logger.i("viewModel.fireBackEnd.observe = $it")
                 viewModel.waterList.observe(this, androidx.lifecycle.Observer {
-                    val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
                     it?.let{
+                        if (it.size > 0){
+                        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
                         viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
                             if (it == true){
                                 list.add(waterChartEntity)
                             }
                         })
+                        }
 
                     }
                 })
 
                 viewModel.oilList.observe(this, androidx.lifecycle.Observer {
                     it?.let{
+                        if (it.size > 0){
                         val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
                         list.add(oilChartEntity)
+                        }
                     }
                 })
 
                 viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
                     it?.let{
+                        if (it.size > 0){
                         val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
                         list.add(vegetableChartEntity)
+                        }
 
                     }
                 })
 
                 viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
                     it?.let{
+                        if (it.size > 0){
                         val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
                         list.add(proteinChartEntity)
+                        }
                     }
                 })
 
                 viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
                     it?.let{
+                        if (it.size > 0){
                         val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
                         list.add(fruitChartEntity)
+                        }
 
                     }
                 })
 
                 viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
                     it?.let{
+                        if (it.size > 0){
                         val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
                         list.add(carbonChartEntity)
+                        }
                     }
                 })
 

@@ -56,120 +56,145 @@
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@id/water_layout"
-                android:id="@+id/oil_layout"
-                app:layout_constraintStart_toEndOf="@+id/water_layout"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/vagetable_layout">
+            android:id="@+id/oil_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/vagetable_layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/water_layout"
+            app:layout_constraintTop_toTopOf="@id/water_layout">
+
             <TextView
-                    android:text="@{String.valueOf(viewModel.totalOil)}"
-                    android:layout_width="62dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_oil"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
-                    android:drawableStart="@drawable/icon_coconut"
-                    android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"
-                    android:textAlignment="viewEnd"
-                    tools:layout_editor_absoluteY="84dp" tools:layout_editor_absoluteX="78dp"/>
+                android:id="@+id/number_oil"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_coners_four"
+                android:drawableStart="@drawable/icon_coconut"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:text="@{String.valueOf(viewModel.totalOil)}"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                tools:layout_editor_absoluteX="78dp"
+                tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@+id/oil_layout"
-                android:id="@+id/vagetable_layout"
-                app:layout_constraintStart_toEndOf="@+id/oil_layout"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/protein_layout">
+            android:id="@+id/vagetable_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/protein_layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/oil_layout"
+            app:layout_constraintTop_toTopOf="@+id/oil_layout">
+
             <TextView
-                    android:text="@{String.valueOf(viewModel.totalVegetable)}"
-                    android:layout_width="62dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_vegetable"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
-                    android:drawableStart="@drawable/icon_vegetable"
-                    android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"
-                    android:textAlignment="viewEnd"
-                    tools:layout_editor_absoluteY="84dp" tools:layout_editor_absoluteX="140dp"/>
+                android:id="@+id/number_vegetable"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_coners_four"
+                android:drawableStart="@drawable/icon_vegetable"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:text="@{String.valueOf(viewModel.totalVegetable)}"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                tools:layout_editor_absoluteX="140dp"
+                tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@+id/vagetable_layout"
-                android:id="@+id/protein_layout"
-                app:layout_constraintStart_toEndOf="@+id/vagetable_layout"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/fruit_layout">
+            android:id="@+id/protein_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/fruit_layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/vagetable_layout"
+            app:layout_constraintTop_toTopOf="@+id/vagetable_layout">
+
             <TextView
-                    android:text="@{String.valueOf(viewModel.totalProtein)}"
-                    android:layout_width="62dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_protein"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
-                    android:drawableStart="@drawable/icon_protein"
-                    android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"
-                    android:textAlignment="viewEnd"
-                    tools:layout_editor_absoluteY="84dp" tools:layout_editor_absoluteX="202dp"/>
+                android:id="@+id/number_protein"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_coners_four"
+                android:drawableStart="@drawable/icon_protein"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:text="@{String.valueOf(viewModel.totalProtein)}"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                tools:layout_editor_absoluteX="202dp"
+                tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@+id/protein_layout"
-                android:id="@+id/fruit_layout"
-                app:layout_constraintStart_toEndOf="@+id/protein_layout"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/carbon_layout">
+            android:id="@+id/fruit_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/carbon_layout"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/protein_layout"
+            app:layout_constraintTop_toTopOf="@+id/protein_layout">
+
             <TextView
-                    android:text="@{String.valueOf(viewModel.totalFruit)}"
-                    android:layout_width="62dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_fruit"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
-                    android:drawableStart="@drawable/icon_fruit"
-                    android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"
-                    android:textAlignment="viewEnd"
-                    tools:layout_editor_absoluteY="84dp" tools:layout_editor_absoluteX="272dp"/>
+                android:id="@+id/number_fruit"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_coners_four"
+                android:drawableStart="@drawable/icon_fruit"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:text="@{String.valueOf(viewModel.totalFruit)}"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                tools:layout_editor_absoluteX="272dp"
+                tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
+
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="@+id/fruit_layout"
-                android:id="@+id/carbon_layout"
-                app:layout_constraintStart_toEndOf="@+id/fruit_layout"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent">
+            android:id="@+id/carbon_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fruit_layout"
+            app:layout_constraintTop_toTopOf="@+id/fruit_layout">
+
             <TextView
-                    android:text="@{String.valueOf(viewModel.totalCarbon)}"
-                    android:layout_width="62dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number_carbon"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
-                    android:drawableStart="@drawable/icon_carbon"
-                    android:background="@drawable/round_coners_four" android:textColor="@color/colorMyType"
-                    android:textAlignment="viewEnd"
-                    tools:layout_editor_absoluteY="84dp" tools:layout_editor_absoluteX="334dp"/>
+                android:id="@+id/number_carbon"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_coners_four"
+                android:drawableStart="@drawable/icon_carbon"
+                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingTop="@dimen/dialog_padding"
+                android:paddingRight="@dimen/dialog_padding"
+                android:paddingBottom="@dimen/dialog_padding"
+                android:text="@{String.valueOf(viewModel.totalCarbon)}"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                tools:layout_editor_absoluteX="334dp"
+                tools:layout_editor_absoluteY="84dp" />
         </LinearLayout>
 
 

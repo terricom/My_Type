@@ -45,10 +45,12 @@ class LinechartFragment: Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentPosition = position
+                viewModel.clearData()
                 viewModel.setCurrentPosition(position)
                 Logger.i("Selected_Page , position.toString() = $position")
                 viewModel.newFireBack()
                 viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
+                viewModel.getThisMonth()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -73,9 +75,9 @@ class LinechartFragment: Fragment() {
             binding.viewPager2.setCurrentItem( currentPosition.plus(1), true)
         }
 
-        viewModel.date.observe(this, androidx.lifecycle.Observer {
-            viewModel.getThisMonth()
-        })
+//        viewModel.date.observe(this, androidx.lifecycle.Observer {
+//            viewModel.getThisMonth()
+//        })
 
         return binding.root
     }

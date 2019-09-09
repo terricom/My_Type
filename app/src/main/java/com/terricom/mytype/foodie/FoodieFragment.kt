@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -240,8 +241,12 @@ class FoodieFragment: Fragment() {
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             uriToFilePath(App.applicationContext(), data.data)
             try {
+                val matrix = Matrix()
+
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
-                foodieUploadPhoto.setImageBitmap(bitmap)
+                val rotatedBitmap: Bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.getWidth(), bitmap!!.getHeight(), matrix, true);
+
+                foodieUploadPhoto.setImageBitmap(rotatedBitmap)
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -249,6 +254,7 @@ class FoodieFragment: Fragment() {
 
         }
     }
+
 
 
     private fun uploadFile(){
@@ -281,46 +287,6 @@ class FoodieFragment: Fragment() {
         }
     }
 
-    //method to get the file path from uri
-    fun getPath(uri: Uri?): String {
-
-
-
-        var path:String ?= null
-
-        var cursor: Cursor? = App.applicationContext().contentResolver
-            .query(uri!!, null, null, null, null) ?: return ""
-        cursor!!.moveToFirst()
-        var document_id = cursor.getString(0)
-        Logger.i("document_id =$document_id")
-        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
-        Logger.i("document_id 222=$document_id")
-
-        cursor.close()
-
-        cursor = App.applicationContext().contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            null,
-            MediaStore.Images.Media._ID + " = ? ",
-            arrayOf(document_id),
-            null
-        )
-        if (cursor != null ){
-            cursor.moveToFirst()
-            Logger.i("cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)= ${cursor.getColumnIndex(MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString())}")
-
-            path = cursor.getString(cursor.getColumnIndex(filePathColumn[0]))
-            cursor.close()
-        }
-        Logger.i("path= $path")
-
-
-
-        return path as String
-
-    }
 
     fun uriToFilePath(context: Context,uri: Uri){
         var filePath: String?
@@ -387,7 +353,7 @@ class FoodieFragment: Fragment() {
 
     fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
 
-        val options: BitmapFactory.Options = BitmapFactory.Options()
+        var options: BitmapFactory.Options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         var stream: InputStream = context.contentResolver.openInputStream(uri)
         BitmapFactory.decodeStream(stream, null, options)
@@ -400,7 +366,7 @@ class FoodieFragment: Fragment() {
             height = temp
         }
         var sampleRatio = Math.max(width / 900, height / 1600)
-//        options = BitmapFactory.Options();
+        options = BitmapFactory.Options()
         options.inSampleSize = sampleRatio
         return options
     }

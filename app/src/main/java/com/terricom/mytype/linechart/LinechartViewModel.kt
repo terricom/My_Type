@@ -150,7 +150,6 @@ class LinechartViewModel: ViewModel() {
 
     init {
         setDate(Date())
-        getThisMonth()
     }
 
     fun getThisMonth() {
