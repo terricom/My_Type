@@ -55,19 +55,6 @@ class MainActivity : BaseActivity(){
         false
     }
 
-    // get the height of status bar from system
-    private val statusBarHeight: Int
-        get() {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            return when {
-                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
-                else -> 0
-            }
-        }
-
-    private val duration = 1000L
-    private val await = 1500L
-
     @SuppressLint("ObsoleteSdkInt")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,7 +121,7 @@ class MainActivity : BaseActivity(){
         }
         viewModel.currentFragmentType.observe(this, Observer {
             Log.i("Terri", "viewModel.currentFragmentType.observe = ${it.value}")
-            binding.textToolbarTitle.text = it.value
+//            binding.textToolbarTitle.text = it.value
             if (it.value == ""){
                 hideBottomNavView()
                 hideToolbar()
@@ -149,7 +136,7 @@ class MainActivity : BaseActivity(){
     }
 
     fun hideToolbar(){
-        binding.toolbar.visibility = View.GONE
+//        binding.toolbar.visibility = View.GONE
     }
 
     fun hideBottomNavView(){

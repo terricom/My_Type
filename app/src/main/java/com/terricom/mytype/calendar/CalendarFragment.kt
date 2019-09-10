@@ -129,7 +129,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         tempCalendar.time = selectDate
         Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} ")
         selectedDayOut = sdf.format(selectDate)
-        viewModel.filterdate(sdf.format(selectDate))
+        viewModel.filterdate(selectDate)
         setHeader(tempCalendar)
     }
 

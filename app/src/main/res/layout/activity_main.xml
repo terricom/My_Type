@@ -17,45 +17,46 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:minHeight="?attr/actionBarSize"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/colorWhite"
-                android:layout_gravity="center" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:elevation="@dimen/elevation_all"/>
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:minHeight="?attr/actionBarSize"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:background="@color/colorWhite"-->
+<!--                android:layout_gravity="center" app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:elevation="@dimen/elevation_all"/>-->
 
-        <TextView
-                android:id="@+id/text_toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:textColor="@color/colorMyType"
-                android:letterSpacing="0.15"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                tools:text="My Type"
-                app:layout_constraintEnd_toEndOf="@+id/toolbar"
-                app:layout_constraintStart_toStartOf="@+id/toolbar"
-                app:layout_constraintTop_toTopOf="@+id/toolbar"
-                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"
-                android:elevation="5dp"/>
+<!--        <TextView-->
+<!--                android:id="@+id/text_toolbar_title"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/noto_sans"-->
+<!--                android:textColor="@color/colorMyType"-->
+<!--                android:letterSpacing="0.15"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_gravity="center"-->
+<!--                tools:text="My Type"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/toolbar"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/toolbar"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/toolbar"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"-->
+<!--                android:elevation="5dp"/>-->
 
         <fragment
-                android:id="@+id/myNavHostFragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:navGraph="@navigation/navigation"
-                app:defaultNavHost="true"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.6"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"/>
+            android:id="@+id/myNavHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/navigation" />
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"

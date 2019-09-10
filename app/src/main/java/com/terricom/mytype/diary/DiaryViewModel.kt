@@ -13,14 +13,15 @@ import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DiaryViewModel: ViewModel() {
 
     val userUid = UserManager.uid
-    val _date = MutableLiveData<String>()
-    val date : LiveData<String>
+    val _date = MutableLiveData<Date>()
+    val date : LiveData<Date>
         get() = _date
 
     val _fireFoodie = MutableLiveData<List<Foodie>>()
@@ -55,7 +56,7 @@ class DiaryViewModel: ViewModel() {
         _fireSleep.value = sleep
     }
 
-    fun filterdate(dato: String?){
+    fun filterdate(dato: Date){
         Logger.i("DiaryViewModel filterdate = ${dato}")
         _date.value = dato
     }
@@ -72,7 +73,7 @@ class DiaryViewModel: ViewModel() {
 
 
     init {
-        filterdate(currentDate)
+        filterdate(Date())
         getDiary()
         getThisMonth()
     }
@@ -89,7 +90,8 @@ class DiaryViewModel: ViewModel() {
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
                 .orderBy("wakeUp", Query.Direction.DESCENDING)
-
+                .whereLessThanOrEqualTo("wakeUp", Timestamp(date.value!!.time))
+                .whereGreaterThanOrEqualTo("wakeUp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
 
         shapeDiary
             .get()
@@ -97,7 +99,7 @@ class DiaryViewModel: ViewModel() {
                 val items = mutableListOf<Shape>()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                    if (convertDate.toString() == date.value){
+                    if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Shape::class.java))
                     }
                 }
@@ -113,7 +115,7 @@ class DiaryViewModel: ViewModel() {
                 val items = mutableListOf<Sleep>()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
-                    if (convertDate.toString() == date.value){
+                    if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Sleep::class.java))
                     }
 
@@ -135,7 +137,7 @@ class DiaryViewModel: ViewModel() {
                 val items = mutableListOf<Foodie>()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
-                    if (convertDate.toString() == date.value){
+                    if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Foodie::class.java))
                     }
 
@@ -226,7 +228,7 @@ class DiaryViewModel: ViewModel() {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
                         "${sdf.format(convertDate).split("-")[1]}" ==
-                        "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
+                        "${sdf.format(date.value)!!.split("-")[0]}-${sdf.format(date.value)!!.split("-")[1]}"){
                         items.add(document.toObject(Foodie::class.java))
                     }
                 }

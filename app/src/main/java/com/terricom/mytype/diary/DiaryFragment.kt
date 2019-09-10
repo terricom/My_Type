@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.Logger
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.databinding.FragmentDiaryBinding
+import java.text.SimpleDateFormat
 
 
 class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragment
@@ -30,9 +31,11 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
         viewModel.fireSleep.observe(this, Observer {
+            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireShape.observe(this, Observer {
+            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireFoodie.observe(this, Observer {
@@ -51,7 +54,9 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         viewModel.date.observe(this, Observer {
             Logger.i("viewModel.date.observe === $it")
-            binding.diaryDate.text = it
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+
+            binding.diaryDate.text = sdf.format(it)
         })
 
 //        if ( binding.diaryDate.text == ""){

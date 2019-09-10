@@ -10,17 +10,17 @@
             android:layout_height="wrap_content">
 
 
-        <TextView
-                android:text="@string/diary_title_today_record"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/diary_title_total_foodie"
-                android:textSize="@dimen/text_content_title"
-                android:textColor="@color/colorMyType"
-                android:textAlignment="viewStart"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/water_layout"
-                android:layout_marginTop="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp"/>
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="fitStart"
+            app:layout_constraintBottom_toBottomOf="@+id/diary_title_total_nutrition"
+            app:layout_constraintStart_toEndOf="@+id/diary_title_total_nutrition"
+            app:layout_constraintTop_toTopOf="@+id/diary_title_total_nutrition"
+            app:srcCompat="@drawable/icon_info" />
+
         <TextView
                 android:text="@string/diary_title_today_compliment"
                 android:layout_width="0dp"
@@ -32,182 +32,203 @@
                 app:layout_constraintStart_toStartOf="@+id/diary_date"
                 android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/water_layout"
+        <ImageView
+            android:id="@+id/button_water"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:padding="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_water"
+            app:layout_constraintEnd_toStartOf="@+id/number_water"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/number_water"
+            app:srcCompat="@drawable/icon_water" />
+
+        <TextView
+            android:id="@+id/number_water"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/tag_right_corners"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            android:text="0.3"
+            app:layout_constraintEnd_toStartOf="@+id/button_fruit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_water"
+            app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition" />
+
+        <ImageButton
+            android:id="@+id/button_vegetable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_vegetable"
+            app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/number_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_water"
+            app:srcCompat="@drawable/icon_vegetable" />
+
+        <TextView
+            android:id="@+id/number_vegetable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/button_water" />
+
+        <ImageButton
+            android:id="@+id/button_fruit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_fruit"
+            app:layout_constraintEnd_toStartOf="@+id/number_fruit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/number_water"
+            app:layout_constraintTop_toTopOf="@+id/button_water"
+            app:srcCompat="@drawable/icon_fruit" />
+
+        <TextView
+            android:id="@+id/number_fruit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toStartOf="@+id/button_vegetable"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_water" />
+
+        <ImageButton
+            android:id="@+id/button_coconut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_coconut"
+            app:layout_constraintEnd_toStartOf="@+id/number_water"
+            app:layout_constraintStart_toStartOf="@+id/button_water"
+            app:layout_constraintTop_toBottomOf="@+id/button_water"
+            app:srcCompat="@drawable/icon_coconut" />
+
+        <TextView
+            android:id="@+id/number_coconut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/oil_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition">
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/number_water"
+            app:layout_constraintStart_toStartOf="@+id/number_water"
+            app:layout_constraintTop_toBottomOf="@+id/button_water" />
 
-            <TextView
-                android:id="@+id/number_water"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_water"
-                android:padding="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.totalWater)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/button_protein"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/button_coconut"
+            app:layout_constraintEnd_toStartOf="@+id/number_fruit"
+            app:layout_constraintStart_toStartOf="@+id/button_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_coconut"
+            app:srcCompat="@drawable/icon_protein" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/oil_layout"
+        <TextView
+            android:id="@+id/number_protein"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/vagetable_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/water_layout"
-            app:layout_constraintTop_toTopOf="@id/water_layout">
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="@+id/button_protein"
+            app:layout_constraintEnd_toEndOf="@+id/number_fruit"
+            app:layout_constraintStart_toStartOf="@+id/number_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_protein" />
 
-            <TextView
-                android:id="@+id/number_oil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_coconut"
-                android:padding="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.totalOil)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/button_carbon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/button_protein"
+            app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
+            app:layout_constraintStart_toStartOf="@+id/button_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/button_coconut"
+            app:srcCompat="@drawable/icon_carbon" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/vagetable_layout"
+        <TextView
+            android:id="@+id/number_carbon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/protein_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/oil_layout"
-            app:layout_constraintTop_toTopOf="@+id/oil_layout">
-
-            <TextView
-                android:id="@+id/number_vegetable"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_vegetable"
-                android:padding="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.totalVegetable)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/protein_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/fruit_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/vagetable_layout"
-            app:layout_constraintTop_toTopOf="@+id/vagetable_layout">
-
-            <TextView
-                android:id="@+id/number_protein"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_protein"
-                android:padding="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.totalProtein)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fruit_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/carbon_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/protein_layout"
-            app:layout_constraintTop_toTopOf="@+id/protein_layout">
-
-            <TextView
-                android:id="@+id/number_fruit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_fruit"
-                android:padding="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.totalFruit)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/carbon_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_date"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/fruit_layout"
-            app:layout_constraintTop_toTopOf="@+id/fruit_layout">
-
-            <TextView
-                android:id="@+id/number_carbon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/round_coners_four"
-                android:drawableStart="@drawable/icon_carbon"
-                android:padding="@dimen/elevation_all"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:text="@{String.valueOf(viewModel.totalCarbon)}"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="@+id/button_carbon"
+            app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
+            app:layout_constraintStart_toStartOf="@+id/number_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/button_carbon"
+            app:layout_constraintVertical_bias="0.538" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
