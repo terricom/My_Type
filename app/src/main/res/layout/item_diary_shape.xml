@@ -10,94 +10,228 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-                android:text="@string/diary_title_shape"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/time"
-                android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:textSize="@dimen/text_content_title"
-                android:textAlignment="center"/>
-        <TextView
-                android:text='@{"體重"+String.valueOf(viewModel.fireShape.weight)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_weight"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="fitStart"
+            app:layout_constraintBottom_toBottomOf="@+id/title_item_diary_shape"
+            app:layout_constraintStart_toEndOf="@+id/title_item_diary_shape"
+            app:layout_constraintTop_toTopOf="@+id/title_item_diary_shape"
+            app:srcCompat="@drawable/icon_info" />
 
-                android:textAlignment="center"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/time"
-                android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/number_body_water"/>
-        <TextView
-                android:text='@{"含水量"+String.valueOf(viewModel.fireShape.bodyWater)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_body_water"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                app:layout_constraintTop_toTopOf="@+id/number_weight"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
 
-                app:layout_constraintStart_toEndOf="@+id/number_weight" android:layout_marginStart="8dp"
-                android:textAlignment="center" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/number_body_fat"/>
-        <TextView
-                android:text='@{"體脂"+String.valueOf(viewModel.fireShape.bodyFat)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_body_fat"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
+        <ImageView
+            android:id="@+id/button_water"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:padding="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_weight"
+            app:layout_constraintEnd_toStartOf="@+id/number_weight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/number_weight"
+            app:srcCompat="@drawable/icon_weight" />
 
-                app:layout_constraintStart_toEndOf="@+id/number_body_water" android:layout_marginStart="8dp"
-                android:textAlignment="center" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/time" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent"/>
         <TextView
-                android:text='@{"日代謝"+String.valueOf(viewModel.fireShape.tdee)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_tdeet"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
+            android:id="@+id/number_weight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:text="@{String.valueOf(viewModel.fireShape.weight)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toStartOf="@+id/button_fruit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_water"
+            app:layout_constraintTop_toBottomOf="@+id/title_item_diary_shape" />
 
-                android:layout_marginStart="8dp"
-                android:textAlignment="center" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/number_weight" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/number_muscle"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"/>
+        <ImageButton
+            android:id="@+id/button_vegetable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
+            app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/number_body_water"
+            app:layout_constraintTop_toTopOf="@+id/button_water"
+            app:srcCompat="@drawable/icon_body_fat" />
+
         <TextView
-                android:text='@{"肌肉量"+String.valueOf(viewModel.fireShape.muscle)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_muscle"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
+            android:id="@+id/number_body_fat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:text="@{String.valueOf(viewModel.fireShape.bodyFat)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/button_water" />
 
-                app:layout_constraintStart_toEndOf="@+id/number_tdeet" android:layout_marginStart="8dp"
-                android:textAlignment="center"
-                app:layout_constraintTop_toTopOf="@+id/number_tdeet" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/number_body_age"/>
+        <ImageButton
+            android:id="@+id/button_fruit"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_body_water"
+            app:layout_constraintEnd_toStartOf="@+id/number_body_water"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/number_weight"
+            app:layout_constraintTop_toTopOf="@+id/button_water"
+            app:srcCompat="@drawable/icon_body_water" />
+
         <TextView
-                android:text='@{"體年齡"+String.valueOf(viewModel.fireShape.bodyAge)}'
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/number_body_age"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                android:letterSpacing="0.15"
+            android:id="@+id/number_body_water"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:text="@{String.valueOf(viewModel.fireShape.bodyWater)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toStartOf="@+id/button_vegetable"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_water" />
 
-                app:layout_constraintStart_toEndOf="@+id/number_muscle"
-                android:layout_marginStart="10dp" android:textAlignment="center"
-                app:layout_constraintTop_toTopOf="@+id/number_muscle" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent"/>
+        <ImageButton
+            android:id="@+id/button_coconut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/number_tdee"
+            app:layout_constraintEnd_toStartOf="@+id/number_weight"
+            app:layout_constraintStart_toStartOf="@+id/button_water"
+            app:layout_constraintTop_toTopOf="@+id/number_tdee"
+            app:srcCompat="@drawable/icon_tdee" />
+
+        <TextView
+            android:id="@+id/number_tdee"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toEndOf="@+id/number_weight"
+            app:layout_constraintStart_toStartOf="@+id/number_weight"
+            app:layout_constraintTop_toBottomOf="@+id/button_water" />
+
+        <ImageButton
+            android:id="@+id/button_protein"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/button_coconut"
+            app:layout_constraintEnd_toStartOf="@+id/number_body_water"
+            app:layout_constraintStart_toStartOf="@+id/button_fruit"
+            app:layout_constraintTop_toTopOf="@+id/button_coconut"
+            app:srcCompat="@drawable/icon_muscle" />
+
+        <TextView
+            android:id="@+id/number_muscle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:text="@{String.valueOf(viewModel.fireShape.muscle)}"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="@+id/button_protein"
+            app:layout_constraintEnd_toEndOf="@+id/number_body_water"
+            app:layout_constraintStart_toStartOf="@+id/number_body_water"
+            app:layout_constraintTop_toTopOf="@+id/button_protein" />
+
+        <ImageButton
+            android:id="@+id/button_carbon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/tag_left_corners"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:paddingBottom="@dimen/elevation_all"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
+            app:layout_constraintStart_toStartOf="@+id/button_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/button_coconut"
+            app:srcCompat="@drawable/icon_body_age" />
+
+        <TextView
+            android:id="@+id/number_body_age"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tag_right_corners"
+            android:hint="0.3"
+            android:padding="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="@+id/button_carbon"
+            app:layout_constraintEnd_toEndOf="@+id/number_body_fat"
+            app:layout_constraintStart_toStartOf="@+id/number_body_fat"
+            app:layout_constraintTop_toTopOf="@+id/button_carbon"
+            app:layout_constraintVertical_bias="0.538" />
+
+        <TextView
+            android:id="@+id/title_item_diary_shape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/noto_sans"
+            android:text="@string/diary_title_shape"
+            android:textColor="@color/colorMyType"
+            android:textSize="@dimen/text_content_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

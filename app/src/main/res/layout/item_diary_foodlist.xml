@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="horizontal"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:orientation="horizontal"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content">
 
@@ -12,12 +12,15 @@
                 android:layout_height="wrap_content" android:id="@+id/tag"
                 android:fontFamily="@font/noto_sans"
                 android:textColor="@color/colorMyType"/>
+
         <TextView
-                android:text="紅油抄手"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/food"
-                android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"/>
+            android:id="@+id/food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:paddingRight="@dimen/elevation_all"
+            android:text="紅油抄手"
+            android:textColor="@color/colorMyType" />
 
     </LinearLayout>
 </layout>

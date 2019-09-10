@@ -13,6 +13,7 @@ import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.profile.CardAvatarOutlineProvider
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,6 +21,9 @@ import java.util.*
 class DiaryViewModel: ViewModel() {
 
     val userUid = UserManager.uid
+
+    val outlineProvider = CardAvatarOutlineProvider()
+
     val _date = MutableLiveData<Date>()
     val date : LiveData<Date>
         get() = _date
@@ -59,6 +63,18 @@ class DiaryViewModel: ViewModel() {
     fun filterdate(dato: Date){
         Logger.i("DiaryViewModel filterdate = ${dato}")
         _date.value = dato
+    }
+
+    val _calendarClicked = MutableLiveData<Boolean>()
+    val calendarClicked : LiveData<Boolean>
+        get() = _calendarClicked
+
+    fun calendarClicked(){
+        _calendarClicked.value = true
+    }
+
+    fun calendarClickedAgain(){
+        _calendarClicked.value = false
     }
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")

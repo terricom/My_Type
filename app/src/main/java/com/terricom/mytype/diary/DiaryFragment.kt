@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.Logger
+import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
+import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 import java.text.SimpleDateFormat
 
@@ -39,18 +41,52 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireFoodie.observe(this, Observer {
+            if (it.size > 0){
+                binding.diaryHintAddFoodie.visibility = View.GONE
+            }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
 
-        binding.diaryDate.setOnClickListener {
-            binding.diaryCalendar.visibility = View.VISIBLE
+        binding.recyclerView.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.elevation_all).toInt(),
+                true
+            )
+        )
 
-        }
+        viewModel.calendarClicked.observe(this, Observer {
+            Logger.i("viewModel.calendarClicked.observe =$it")
+            if (it == true){
+                viewModel.calendarClickedAgain()
+                binding.buttonSaveCalendar.setOnClickListener {
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down)).start()
+                    binding.diaryCalendar.visibility = View.GONE
+                }
+            }else if (it == false){
+                binding.buttonSaveCalendar.setOnClickListener {
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down)).start()
+                    binding.diaryCalendar.visibility = View.VISIBLE
+                    viewModel.calendarClicked()
+                }
 
-        binding.buttonSaveCalendar.setOnClickListener {
-            binding.diaryCalendar.visibility = View.GONE
-        }
+            }
+        })
+
+//        if (viewModel.calendarClicked.value == true){
+//            viewModel.calendarClickedAgain()
+//            binding.buttonSaveCalendar.setOnClickListener {
+//                binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down))
+//                binding.diaryCalendar.visibility = View.GONE
+//            }
+//        }else {
+//            binding.buttonSaveCalendar.setOnClickListener {
+//                binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down))
+//                binding.diaryCalendar.visibility = View.VISIBLE
+//
+//            }
+//
+//        }
 
         viewModel.date.observe(this, Observer {
             Logger.i("viewModel.date.observe === $it")

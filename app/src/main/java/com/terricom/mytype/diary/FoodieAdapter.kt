@@ -138,7 +138,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.shape = shape
             binding.lifecycleOwner = this
-
+            binding.numberTdee.text = viewModel.fireShape.value!!.tdee!!.toInt().toString()
+            binding.numberBodyAge.text = viewModel.fireShape.value!!.bodyAge!!.toInt().toString()
             binding.viewModel = viewModel
             binding.executePendingBindings()
 
