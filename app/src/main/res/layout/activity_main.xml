@@ -68,7 +68,9 @@
                     android:layout_gravity="bottom|end"
                     android:layout_margin="5dp"
                     app:elevation="8dp"
-                    app:backgroundTint="@color/colorMyType"
+                app:tint="@color/colorWhite"
+
+                app:backgroundTint="@color/colorMyType"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
@@ -104,6 +106,7 @@
                     android:layout_margin="5dp"
                     app:elevation="8dp"
                     app:backgroundTint="@color/colorMyType"
+                app:tint="@color/colorWhite"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
@@ -138,7 +141,9 @@
                     android:layout_gravity="bottom|end"
                     android:layout_margin="5dp"
                     app:elevation="8dp"
-                    app:backgroundTint="@color/colorMyType"
+                app:tint="@color/colorWhite"
+
+                app:backgroundTint="@color/colorMyType"
                     app:srcCompat="@android:drawable/ic_menu_edit"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>

@@ -48,6 +48,7 @@
                 android:id="@+id/number_water"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_water"
                 android:padding="@dimen/elevation_all"
@@ -61,7 +62,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/oil_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,8 +75,9 @@
 
             <TextView
                 android:id="@+id/number_oil"
-                android:layout_width="62dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_coconut"
                 android:padding="@dimen/elevation_all"
@@ -83,11 +85,14 @@
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                tools:layout_editor_absoluteX="78dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/vagetable_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -100,8 +105,9 @@
 
             <TextView
                 android:id="@+id/number_vegetable"
-                android:layout_width="62dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_vegetable"
                 android:padding="@dimen/elevation_all"
@@ -109,11 +115,13 @@
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                tools:layout_editor_absoluteX="140dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/protein_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -126,8 +134,9 @@
 
             <TextView
                 android:id="@+id/number_protein"
-                android:layout_width="62dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_protein"
                 android:padding="@dimen/elevation_all"
@@ -135,11 +144,13 @@
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                tools:layout_editor_absoluteX="202dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fruit_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -152,8 +163,9 @@
 
             <TextView
                 android:id="@+id/number_fruit"
-                android:layout_width="62dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_fruit"
                 android:padding="@dimen/elevation_all"
@@ -161,11 +173,13 @@
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                tools:layout_editor_absoluteX="272dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/carbon_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -178,8 +192,9 @@
 
             <TextView
                 android:id="@+id/number_carbon"
-                android:layout_width="62dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:background="@drawable/round_coners_four"
                 android:drawableStart="@drawable/icon_carbon"
                 android:padding="@dimen/elevation_all"
@@ -188,9 +203,11 @@
                 android:textAlignment="viewEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                tools:layout_editor_absoluteX="334dp"
-                tools:layout_editor_absoluteY="84dp" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

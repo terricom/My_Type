@@ -27,6 +27,14 @@ class FoodieViewModel: ViewModel() {
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
 
+    val _addPhoto = MutableLiveData<Boolean>()
+    val addPhoto : LiveData<Boolean>
+        get() = _addPhoto
+
+    fun addPhoto(){
+        _addPhoto.value = true
+    }
+
     val addFood = MutableLiveData<String>()
     val addNutrition = MutableLiveData<String>()
 

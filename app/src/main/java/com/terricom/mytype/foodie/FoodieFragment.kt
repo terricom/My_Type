@@ -12,7 +12,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.*
@@ -101,6 +100,8 @@ class FoodieFragment: Fragment() {
             it.visibility = View.GONE
             binding.foodieMyType.visibility = View.INVISIBLE
             binding.foodieGreet.visibility = View.INVISIBLE
+
+
         }
 
         binding.buttonAddFood.setOnClickListener {
@@ -198,21 +199,54 @@ class FoodieFragment: Fragment() {
             val userId = user.uid
             val name = sdf.format(Date().time)
 
-            uploadFile()
+//            uploadFile()
+            viewModel.addFoodie()
+            viewModel.updateFoodAndNuList()
+            viewModel.clearData()
 
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).fab.visibility = View.VISIBLE
 
-            val handler = Handler()
+//            viewModel.addPhoto.observe(this, androidx.lifecycle.Observer {
+//                if (it == true){
+//                    viewModel.photoUri.observe(this, androidx.lifecycle.Observer {
+//                        if (it != null){
+//                            viewModel.addFoodie()
+//                            viewModel.updateFoodAndNuList()
+//                            viewModel.clearData()
+//
+//                            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+//                            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+//                            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+//                            (activity as MainActivity).fab.visibility = View.VISIBLE
+//                        }
+//                    })
+//                } else {
+//                    viewModel.addFoodie()
+//                    viewModel.updateFoodAndNuList()
+//                    viewModel.clearData()
+//
+//                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+//                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+//                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+//                    (activity as MainActivity).fab.visibility = View.VISIBLE
+//                }
+//            })
 
-            handler.postDelayed({
-                viewModel.addFoodie()
-                viewModel.updateFoodAndNuList()
-                viewModel.clearData()
-
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-            }, 3000)
+//            val handler = Handler()
+//
+//            handler.postDelayed({
+//                viewModel.addFoodie()
+//                viewModel.updateFoodAndNuList()
+//                viewModel.clearData()
+//
+//                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+//                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+//                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+//                (activity as MainActivity).fab.visibility = View.VISIBLE
+//            }, 4000)
 
 
 
@@ -261,11 +295,12 @@ class FoodieFragment: Fragment() {
                 matrix.postRotate(degree.toFloat())
                 val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
                 val baos = ByteArrayOutputStream()
-                outBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                outBitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
                 bitmap!!.recycle()
                 if(bitmap!!.getWidth()>bitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels);
                 else ScalePic(outBitmap!!, mPhone!!.widthPixels)
 
+                uploadFile()
 //                foodieUploadPhoto.setImageBitmap(bitmap)
 
             } catch (e: IOException) {
