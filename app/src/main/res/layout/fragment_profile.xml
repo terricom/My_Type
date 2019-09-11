@@ -361,7 +361,6 @@
                     android:id="@+id/shaperecord_title_body_water"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
                     android:background="@drawable/tag_left_corners"
                     android:padding="@dimen/elevation_all"
                     android:textAlignment="center"
@@ -370,7 +369,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/number_muscle"
                     app:layout_constraintEnd_toEndOf="@+id/button_protein"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/number_weight"
+                    app:layout_constraintStart_toStartOf="@+id/button_protein"
                     app:layout_constraintTop_toTopOf="@+id/shaperecord_title_weight"
                     app:srcCompat="@drawable/icon_muscle" />
 

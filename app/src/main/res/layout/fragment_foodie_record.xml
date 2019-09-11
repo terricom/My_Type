@@ -28,6 +28,33 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/title_foodie"
+                    android:textColor="@color/colorMyType"
+                    android:textSize="@dimen/layout_title"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/editTime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/buttonBack2Main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="fitStart"
+                    app:layout_constraintBottom_toTopOf="@+id/editDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icon_back" />
+
                 <ImageView
                     android:id="@+id/imageView10"
                     android:layout_width="0dp"
@@ -43,7 +70,7 @@
                     android:layout_width="69dp"
                     android:layout_height="28dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/calendar_date"
                     android:backgroundTint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#00FFFFFF") :Color.parseColor("#209387")}'
@@ -70,7 +97,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="60dp"
                     android:background="@drawable/tag_left_corners"
                     android:ems="10"
                     android:fontFamily="@font/noto_sans"

@@ -62,6 +62,8 @@
     <string name="foodie_drag_nutrition_hint">請拖曳加入本餐營養補充品，也可以自行新增喔！</string>
     <string name="foodie_drag_food_hint">請拖曳加入本餐菜單，也可以自行新增食物喔！</string>
     <string name="diary_hint_2_foodie">Hi 今天吃得好嗎？\n點選新增按鈕開始紀錄營養充滿的一天吧！</string>
+    <string name="title_shape_record_info">紀錄成果</string>
+    <string name="title_shape_record_choose_date">選擇日期</string>
 
 
 </resources>
