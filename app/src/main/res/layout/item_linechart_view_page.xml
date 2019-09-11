@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.terricom.mytype.linechart.LinechartViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.terricom.mytype.linechart.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:chart_bg_color="@color/colorWhite"
+        app:chart_line_color="@color/colorButton"
+        app:chart_padding_bottom="35dp"
+        app:chart_padding_left="35dp"
+        app:chart_padding_right="20dp"
+        app:chart_padding_top="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></com.terricom.mytype.linechart.LineChart>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,31 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="viewModel" type="com.terricom.mytype.sleep.SleepViewModel"/>
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 
     <com.appsci.sleep.timepicker.SleepTimePicker
-            android:id="@+id/timePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:divisionColor="@color/colorMyType"
-            app:labelColor="@color/colorMyType"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:progressBackgroundColor="@color/colorWhite"
-            app:progressBgStrokeWidth="28dp"
-            app:progressColor="@color/colorButton"
-            app:progressStrokeWidth="28dp"
-            app:sleepLayoutId="@layout/layout_picker_sleep"
-            app:wakeLayoutId="@layout/layout_picker_wake" android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"/>
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:divisionColor="@color/colorMyType"
+        app:labelColor="@color/colorMyType"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:progressBackgroundColor="@color/colorWhite"
+        app:progressBgStrokeWidth="28dp"
+        app:progressColor="@color/colorButton"
+        app:progressStrokeWidth="28dp"
+        app:sleepLayoutId="@layout/layout_picker_sleep"
+        app:wakeLayoutId="@layout/layout_picker_wake" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/title_sleep"
+        android:textColor="@color/colorMyType"
+        android:textSize="@dimen/layout_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_message" />
+
+    <ImageView
+        android:id="@+id/buttonBack2Main"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toTopOf="@+id/imageView9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_back" />
 
     <LinearLayout
             android:id="@+id/llDuration"
@@ -117,30 +156,47 @@
             app:layout_constraintEnd_toStartOf="@+id/centerGuide"
             android:layout_marginEnd="24dp">
 
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="7dp"
+            android:paddingVertical="@dimen/elevation_all"
+            android:paddingLeft="7dp"
+            android:scaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBedTimeLabel"
+            app:layout_constraintEnd_toStartOf="@+id/tvBedTimeLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_night" />
+
         <TextView
-                android:id="@+id/tvBedTimeLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_night_s"
-                android:drawablePadding="8dp"
-                android:letterSpacing="0.2"
-                android:text="@string/sleep_record_bed_time"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+            android:id="@+id/tvBedTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:paddingVertical="@dimen/elevation_all"
+            android:paddingRight="7dp"
+            android:text="@string/sleep_record_bed_time"
+            android:textColor="@color/colorMyType"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
-                android:id="@+id/tvBedTime"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:letterSpacing="0.06"
-                android:lineSpacingExtra="6sp"
-                android:textColor="@color/colorMyType"
-                android:textSize="18sp"
-                tools:text="12:15 PM" android:textAlignment="center" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/tvBedTimeLabel"
-                android:layout_marginTop="8dp"/>
+            android:id="@+id/tvBedTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.06"
+            android:lineSpacingExtra="6sp"
+            android:paddingHorizontal="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorMyType"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvBedTimeLabel"
+            tools:text="12:15 PM" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -154,49 +210,67 @@
     >
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/icon_day_s"
-                android:drawablePadding="8dp"
-                android:letterSpacing="0.2"
-                android:text="@string/sleep_record_wake_time"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                tools:ignore="SmallSp" app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/tvWakeTimeLabel"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/tvWakeTimeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:paddingVertical="@dimen/elevation_all"
+            android:paddingLeft="30dp"
+            android:paddingRight="7dp"
+            android:text="@string/sleep_record_wake_time"
+            android:textColor="@color/colorMyType"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingVertical="@dimen/elevation_all"
+            android:paddingRight="4dp"
+            android:scaleType="fitStart"
+            app:layout_constraintBottom_toBottomOf="@+id/tvWakeTimeLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_day" />
 
 
         <TextView
-                android:id="@+id/tvWakeTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:letterSpacing="0.06"
-                android:lineSpacingExtra="6sp"
-                android:textColor="@color/colorMyType"
-                android:textSize="18sp"
-                tools:text="7:45 AM" android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWakeTimeLabel"/>
+            android:id="@+id/tvWakeTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.06"
+            android:lineSpacingExtra="6sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorMyType"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWakeTimeLabel"
+            tools:text="7:45 AM" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-            android:text="@string/foodie_save"
-            android:fontFamily="@font/noto_sans"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/button_shaperecord_save"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/button_background" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:backgroundTint="@color/colorButton"
-            android:onClick="@{() -> viewModel.addSleepHr()}"
-            android:paddingTop="@dimen/elevation_all"
-            android:paddingRight="@dimen/elevation_all"
-            android:paddingLeft="@dimen/elevation_all" android:textSize="@dimen/text_content"/>
+        android:id="@+id/button_shaperecord_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/calendar_date"
+        android:fontFamily="@font/noto_sans"
+        android:onClick="@{() -> viewModel.addSleepHr()}"
+        android:paddingLeft="@dimen/elevation_all"
+        android:paddingTop="@dimen/elevation_all"
+        android:paddingRight="@dimen/elevation_all"
+        android:text="@string/foodie_save"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

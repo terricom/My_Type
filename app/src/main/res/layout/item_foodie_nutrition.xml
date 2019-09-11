@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable name="viewModel" type="com.terricom.mytype.foodie.FoodieViewModel"/>
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
+    <LinearLayout
+        android:orientation="vertical"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content">
 
         <TextView
-                android:text="大豆蛋白"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/nutrition"
-                android:background="@drawable/calendar_date" android:fontFamily="@font/noto_sans"
-                android:padding="@dimen/elevation_all" android:textColor="@color/colorMyType"
-                android:elevation="@dimen/elevation_all"/>
+            android:id="@+id/nutrition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/calendar_date"
+            android:fontFamily="@font/noto_sans"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="1dp"
+            android:text="大豆蛋白"
+            android:textColor="@color/colorMyType" />
     </LinearLayout>
 </layout>

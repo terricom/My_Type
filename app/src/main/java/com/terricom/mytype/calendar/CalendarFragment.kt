@@ -10,9 +10,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
-import com.terricom.mytype.linechart.CalendarLinechartViewModel
-import com.terricom.mytype.shaperecord.SpaceItemDecoration
+import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,8 +37,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
 
-    val viewModel = CalendarLinechartViewModel()
-
 
     constructor(context: Context?) : super(context) {
         initView(context)
@@ -53,11 +51,12 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         currentDateCalendar = Calendar.getInstance().apply {
             todayMonth = this.get(Calendar.MONTH)
             todayYear = this.get(Calendar.YEAR)
+
         }
 
         context?.let {
             val inflater = it.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.fragment_shape_record_calendar, this, true)
+            inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
             txtDate = findViewById(R.id.itemDate)
@@ -80,12 +79,10 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             ViewCompat.setNestedScrollingEnabled(gridRecycler, false)
 
             gridRecycler.layoutManager = GridLayoutManager(context, NUM_DAY_OF_WEEK)
-            gridRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen._1sdp).toInt(),
-                    true
-                )
-            )
+            gridRecycler.addItemDecoration(SpaceItemDecoration(
+                resources.getDimension(R.dimen._1sdp).toInt(),
+                true
+            ))
 
         }
     }
@@ -106,12 +103,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        val calendarAdapter = CalendarAdapter(viewModel).apply {
+        val calendarAdapter = CalendarAdapter().apply {
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@CalendarFragment
-            this.viewModel = viewModel
         }
 
         gridRecycler.adapter = calendarAdapter
@@ -119,7 +115,9 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     }
 
-    var selectDateOut: String ?= null
+    val viewModel = DiaryViewModel()
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    var selectedDayOut: String ?= ""
 
 
     override fun onDateSelect(selectDate: Date) {
@@ -129,8 +127,9 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        selectDateOut = "${tempCalendar.get(Calendar.YEAR)}-${tempCalendar.get(Calendar.MONTH)+1}"
-        viewModel.setDate(selectDateOut as String)
+        Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} ")
+        selectedDayOut = sdf.format(selectDate)
+        viewModel.filterdate(selectDate)
         setHeader(tempCalendar)
     }
 

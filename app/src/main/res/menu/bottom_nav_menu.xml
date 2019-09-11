@@ -8,7 +8,7 @@
 
     <item
             android:id="@+id/navigation_diary"
-            android:icon="@drawable/icon_sand_glass"
+            android:icon="@drawable/icon_line_chart"
             android:title="@string/title_linechart"/>
 
     <item

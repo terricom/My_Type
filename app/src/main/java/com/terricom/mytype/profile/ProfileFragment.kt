@@ -21,18 +21,6 @@ class ProfileFragment: Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner= this
 
-        binding.buttonProfileGoalSave.setOnClickListener {
-            val inputDate = binding.profileTitleMyGoalDate.text.toString()
-            viewModel.date.value = inputDate
-            val goal = binding.profileMyGoal.text.toString()
-            viewModel.goal.value = goal
-
-        }
-
-        binding.buttonProfileMenuSave.setOnClickListener {
-            viewModel.addMenu()
-        }
-
         return binding.root
     }
 }

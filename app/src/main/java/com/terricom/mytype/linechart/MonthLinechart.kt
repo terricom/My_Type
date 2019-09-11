@@ -30,8 +30,8 @@ class MonthLinechart : Fragment() {
         list.add(waterChartEntity)
         list.add(oilChartEntity)
 
-        binding.lineChart.legendArray = arrayOf(thisWeek[0],thisWeek[1],thisWeek[2],thisWeek[3],thisWeek[4],thisWeek[5],thisWeek[6])
-        binding.lineChart.setList(list)
+//        binding.lineChart.legendArray = thisWeek.toTypedArray()
+//        binding.lineChart.setList(list)
         return binding.root
     }
 

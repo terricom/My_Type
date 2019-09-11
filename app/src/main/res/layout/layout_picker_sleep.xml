@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-               xmlns:tools="http://schemas.android.com/tools"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:scaleType="center"
-               android:src="@drawable/icon_night"
-               tools:ignore="ContentDescription"/>
+
+    <ImageView
+        android:layout_width="@dimen/height_all_bottom_layout"
+        android:layout_height="@dimen/height_all_bottom_layout"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon_night"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

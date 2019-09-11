@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.databinding.ItemAchivementShapeBinding
+import java.text.SimpleDateFormat
 
 class ShapeAdapter(val viewModel: AchievementViewModel
 //                    , private val onClickListener: OnClickListener
@@ -28,13 +29,14 @@ class ShapeAdapter(val viewModel: AchievementViewModel
             binding.lifecycleOwner =this
             binding.shape = shape
             binding.viewModel = viewModel
-//            binding.time.text = viewModel.getTime(shape.timestamp)
-            binding.numberBodyAge.text = shape.bodyAge.toString()
-            binding.numberBodyFat.text = shape.bodyFat.toString()
-            binding.numberBodyWater.text = shape.bodyWater.toString()
-            binding.numberMuscle.text = shape.muscle.toString()
-            binding.numberTdeet.text = shape.tdee.toString()
-            binding.numberWeight.text = shape.weight.toString()
+            val sdf = SimpleDateFormat("yyyy/MM/dd")
+            binding.time.text = sdf.format(shape.timestamp!!.time)
+            binding.numberBodyAge.text = if (shape.bodyAge.toString().split(".")[0] == null || shape.bodyAge.toString().split(".")[0] == "null" ) "-" else shape.bodyAge.toString().split(".")[0]
+            binding.numberBodyFat.text = if (shape.bodyFat.toString() == null || shape.bodyFat.toString() == "null") "" else shape.bodyFat.toString()
+            binding.numberBodyWater.text = if (shape.bodyWater.toString() == null || shape.bodyWater.toString() == "null")"-" else shape.bodyWater.toString()
+            binding.numberMuscle.text = if (shape.muscle.toString() == null || shape.muscle.toString() == "null")"-" else shape.muscle.toString()
+            binding.numberTdeet.text = if (shape.tdee.toString().split(".")[0]==null || shape.tdee.toString().split(".")[0]=="null") "-" else shape.tdee.toString().split(".")[0]
+            binding.numberWeight.text = if (shape.weight.toString() == null || shape.weight.toString() == "null") "-" else shape.weight.toString()
 
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements

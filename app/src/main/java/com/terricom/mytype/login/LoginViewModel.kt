@@ -1,24 +1,26 @@
 package com.terricom.mytype.login
 
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
+import com.terricom.mytype.Logger
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.internet.RetrofitApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import org.json.JSONException
+import java.io.IOException
+
+
+
 
 class LoginViewModel: ViewModel() {
 
@@ -62,51 +64,46 @@ class LoginViewModel: ViewModel() {
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
-                    // App code
-                    val FB_Token = "token from facebook"
-                    var pref: SharedPreferences? = null
-                    pref = App.instance?.getSharedPreferences("token", 0)
-                    val userAccessToken = pref?.getString(FB_Token, "")
-                    pref!!.edit().putString(FB_Token, "")
 
                     accessToken = loginResult.accessToken
-                    Log.d("FB", "FB token: " + loginResult.accessToken.token)
-//                    handleFacebookAccessToken(loginResult.accessToken)
+                    val graphRequest = GraphRequest.newMeRequest(
+                        loginResult.accessToken
+                    ) { `object`, response ->
+                        try {
+                            if (response.connection.responseCode == 200) {
+                                val id = `object`.getLong("id")
+                                val name = `object`.getString("name")
+                                val email = `object`.getString("email")
+                                Logger.d( "Facebook id:$id")
+                                Logger.d( "Facebook name:$name")
+                                Logger.d( "Facebook email:$email")
 
+                                // 此時如果登入成功，就可以順便取得用戶大頭照
+                                val profile = Profile.getCurrentProfile()
+                                // 設定大頭照大小
+                                val userPhoto = profile.getProfilePictureUri(300, 300)
 
-                    var viewModelJob = Job()
-                    val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-                    fun getProperties(token: String) {
-                        coroutineScope.launch {
-
-                            var getPropertiesDeferred =
-                                RetrofitApi.retrofitService.postUserSignin(access_token = token)
-                            try {
-                                // this will run on a thread managed by Retrofit
-                                val listResult = getPropertiesDeferred.await()
-
-
-                                UserManager.userToken = listResult.data.toString()
-                                UserManager.name = listResult.data.user.name
-                                UserManager.picture = listResult.data.user.picture
-                                user_name = listResult.data.user.name as String
-                                user_email = listResult.data.user.email as String
-                                user_picture = listResult.data.user.picture as String
+                                UserManager.userToken = id.toString()
+                                UserManager.name = name
+                                UserManager.picture = userPhoto.toString()
+                                user_name = name
+                                user_email = email
+                                user_picture = userPhoto.toString()
                                 loginFacebook()
 
-                                Log.d("ProfileViewModel","print list result = ${UserManager.name}")
-
-
-                            } catch (e: Exception) {
-                                Log.i("FB", "exception=${e.message}")
                             }
-
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
                         }
                     }
 
+                    val parameters = Bundle()
+                    parameters.putString("fields", "id,name,email")
+                    graphRequest.parameters = parameters
+                    graphRequest.executeAsync()
 
-                    getProperties(loginResult.accessToken.token)
                 }
 
                 override fun onCancel() {
@@ -140,6 +137,8 @@ class LoginViewModel: ViewModel() {
             "user_email" to user_email
         )
 
+        var newOne = ""
+
         user.get()
             .addOnSuccessListener { result->
                 for (doc in result){
@@ -152,12 +151,12 @@ class LoginViewModel: ViewModel() {
                         var pref: SharedPreferences? = null
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
-                        user.document(uid).set(userData)
                         UserManager.uid = uid
 
+                        newOne = uid
                     }
                 }
-
+                user.document(newOne).set(userData)
             }
 
 

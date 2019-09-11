@@ -3,15 +3,19 @@ package com.terricom.mytype.diary
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
+import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.Sleep
-import com.terricom.mytype.databinding.*
+import com.terricom.mytype.databinding.ItemDiaryRecordBinding
+import com.terricom.mytype.databinding.ItemDiaryShapeBinding
+import com.terricom.mytype.databinding.ItemDiarySleepBinding
+import com.terricom.mytype.databinding.ItemDiarySumBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,6 +73,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
             (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.nutritions)
             binding.viewModel = viewModel
+            Logger.i("binding.imageView2.maxHeight =${binding.imageView2.maxHeight} binding.imageView2.maxWeight = ${binding.imageView2.maxWidth}" +
+                    "binding.imageView2.width =${binding.imageView2.width} binding.imageView2.height =${binding.imageView2.height}")
+            binding.imageView2.rotation = if (binding.imageView2.maxHeight > binding.imageView2.maxWidth)90.0f else 0.0f
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -120,6 +127,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             return lifecycleRegistry
         }
 
+
+
+
+
     }
 
     class ShapeViewHolder(private var binding: ItemDiaryShapeBinding): RecyclerView.ViewHolder(binding.root),
@@ -127,7 +138,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.shape = shape
             binding.lifecycleOwner = this
-
+            binding.numberTdee.text = viewModel.fireShape.value!!.tdee!!.toInt().toString()
+            binding.numberBodyAge.text = viewModel.fireShape.value!!.bodyAge!!.toInt().toString()
             binding.viewModel = viewModel
             binding.executePendingBindings()
 

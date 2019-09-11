@@ -13,14 +13,11 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
-import com.terricom.mytype.databinding.ItemCalendarDayBinding
-import com.terricom.mytype.linechart.CalendarLinechartViewModel
+import com.terricom.mytype.diary.DiaryViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarViewHolder(val view: View
-                         , val viewModel: CalendarLinechartViewModel
-) : RecyclerView.ViewHolder(view) , LifecycleOwner{
+class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view), LifecycleOwner {
 
     private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
     private val recordDate = view.findViewById<ImageView>(R.id.date_record)
@@ -28,13 +25,11 @@ class CalendarViewHolder(val view: View
     private val cellDateLayout = view.findViewById<ConstraintLayout>(R.id.cellDateLayout)
     private val context = view.context
 
-    val binding = ItemCalendarDayBinding.bind(view)
-
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
                    dateSelected : Date?,
                    listener: CalendarAdapter.ListenerCellSelect? = null,
-                   viewModel: CalendarLinechartViewModel
+                   viewModel: DiaryViewModel
     ){
         resetViewDefault()
 
@@ -48,33 +43,28 @@ class CalendarViewHolder(val view: View
         val currentMonth = currentDateTime.get(Calendar.MONTH) + 1
         val currentYear = currentDateTime.get(Calendar.YEAR)
 
-        val sdf = SimpleDateFormat("d")
-        val sdfM = SimpleDateFormat("M")
-
-
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.executePendingBindings()
-
         var selectedDay = -1
         var selectedMonth = -1
-        if(dateSelected != null){
-            val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
-            selectedDay = selectedDateTime.get(Calendar.DATE)
-            selectedMonth = selectedDateTime.get(Calendar.MONTH)
-        }
+        var selectedYear = -1
 
-        viewModel.fireFoodie.observe(this, androidx.lifecycle.Observer {
-            for (day in it){
-                Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) =${sdf.format(java.sql.Date(day.timestamp!!.time))}"
-                        +"monthOfDate.text =${monthOfDate.text}")
-                if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-                    Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
-                    recordDate.visibility = View.VISIBLE
-                }
+//        if(dateSelected != null){
+//            val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
+//            val sdf = SimpleDateFormat("yyyy-MM-dd")
+//            selectedDay = selectedDateTime.get(Calendar.DATE)
+//            viewModel.filterdate("${sdf.format(Date(selectedDateTime.time.time))}")
+//        }
+        val sdf = SimpleDateFormat("d")
+        viewModel.fireFoodieM.observe(this, androidx.lifecycle.Observer {
+            if (it != null){
+                for (day in it){
+                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
+                        recordDate.visibility = View.VISIBLE
+                    }
+                }}
 
-            }
         })
+
 
         if(currentMonth != viewMonth || currentYear != viewYear){
             recordDate.visibility = View.INVISIBLE
@@ -87,14 +77,8 @@ class CalendarViewHolder(val view: View
                     null
                 )
             )
-        } else if(selectedDay == currentDay){
-            if (viewModel.fireFoodie.value != null){
-                for (day in viewModel.fireFoodie.value!!){
-            if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-                Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
-                recordDate.visibility = View.VISIBLE
-            }
-            }}
+        } else if(selectedDay == currentDay ){
+
             puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
@@ -103,15 +87,21 @@ class CalendarViewHolder(val view: View
                     R.drawable.input_column,
                     null
                 )
+//            if (viewModel.fireFoodieM.value != null){
+//                for (day in viewModel.fireFoodieM.value!!){
+//                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+//                        recordDate.visibility = View.VISIBLE
+//                    }
+//                }}
 
         } else {
-            if (viewModel.fireFoodie.value != null){
-            for (day in viewModel.fireFoodie.value!!){
-                if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-                    Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
-                    recordDate.visibility = View.VISIBLE
-                }
-            }}
+//            if (viewModel.fireFoodieM.value != null){
+//                for (day in viewModel.fireFoodieM.value!!){
+//                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
+//                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
+//                        recordDate.visibility = View.VISIBLE
+//                    }
+//                }}
             monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorMyType, null))
             cellDateLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.calendar_date,null)
 
@@ -122,39 +112,6 @@ class CalendarViewHolder(val view: View
                 }
             }
         }
-
-//        if(currentMonth != viewMonth || currentYear != viewYear){
-//            recordDate.visibility = View.INVISIBLE
-//            puzzleDate.visibility = View.INVISIBLE
-//            monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorAllTransparent, null))
-//            cellDateLayout.setBackgroundColor(
-//                ResourcesCompat.getColor(
-//                    context.resources,
-//                    R.color.colorAllTransparent,
-//                    null
-//                )
-//            )
-//        } else if(selectedDay == currentDay ){
-//            puzzleDate.visibility = View.VISIBLE
-//            monthOfDate.setTypeface(null, BOLD)
-//            cellDateLayout.background =
-//                ResourcesCompat.getDrawable(
-//                    context.resources,
-//                    R.drawable.input_column,
-//                    null
-//                )
-//
-//        } else {
-//            monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorMyType, null))
-//            cellDateLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.calendar_date,null)
-//
-//
-//            itemView.setOnClickListener{
-//                listener?.let { eventHandler ->
-//                    eventHandler.onDateSelect(currentDateInput)
-//                }
-//            }
-//        }
 
         monthOfDate.text = currentDay.toString()
     }
@@ -189,7 +146,5 @@ class CalendarViewHolder(val view: View
     override fun getLifecycle(): Lifecycle {
         return lifecycleRegistry
     }
-
-
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.LinechartWeekBinding
@@ -18,22 +19,77 @@ class WeekLinechart : Fragment() {
     val currentDateTime = Calendar.getInstance()
     val thisWeek = mutableListOf<String>()
     val weeek = arrayListOf<String>()
+    private val viewModel: LinechartViewModel by lazy {
+        ViewModelProviders.of(this).get(LinechartViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = LinechartWeekBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        getThisWeek()
-
-        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), graph1)
-        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), graph2)
-
         val list = ArrayList<ChartEntity>()
-        list.add(waterChartEntity)
-        list.add(oilChartEntity)
 
-        binding.lineChart.legendArray = arrayOf(thisWeek[0],thisWeek[1],thisWeek[2],thisWeek[3],thisWeek[4],thisWeek[5],thisWeek[6])
-        binding.lineChart.setList(list)
+
+        viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
+            if (it == true){
+                viewModel.waterList.observe(this, androidx.lifecycle.Observer {
+                    val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
+                    if (it != null){
+                        viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
+                            if (it == true){
+                                list.add(waterChartEntity)
+                            }
+                        })
+
+                    }
+                })
+
+                viewModel.oilList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
+                        list.add(oilChartEntity)
+                    }
+                })
+
+                viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
+                        list.add(vegetableChartEntity)
+
+                    }
+                })
+
+                viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
+                        list.add(proteinChartEntity)
+                    }
+                })
+
+                viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
+                        list.add(fruitChartEntity)
+
+                    }
+                })
+
+                viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
+                    if (it != null){
+                        val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
+                        list.add(carbonChartEntity)
+                    }
+                })
+
+                binding.lineChart.legendArray = viewModel.fireDate.value
+                if (list.size != 0){
+                    binding.lineChart.setList(list)
+                }
+            }
+        })
+
+
 
         return binding.root
     }
@@ -67,8 +123,8 @@ class WeekLinechart : Fragment() {
     }
 
 
-    private val graph1 = floatArrayOf(10f, 7f, 6f, 5f, 4f, 3f, 7f)
-    private val graph2 = floatArrayOf(0f, 2f, 10f,8f, 7f, 6f, 4f)
+
+
 
 
 }

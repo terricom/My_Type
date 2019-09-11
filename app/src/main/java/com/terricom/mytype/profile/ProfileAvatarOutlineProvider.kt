@@ -13,3 +13,11 @@ class ProfileAvatarOutlineProvider : ViewOutlineProvider() {
         outline.setOval(0, 0, radius, radius)
     }
 }
+
+class CardAvatarOutlineProvider : ViewOutlineProvider() {
+    override fun getOutline(view: View, outline: Outline) {
+        view.clipToOutline = true
+        val radius = App.applicationContext().resources.getDimensionPixelSize(R.dimen.elevation_all)
+        outline.setRoundRect(0, 0, view.width , view.height, radius.toFloat())
+    }
+}

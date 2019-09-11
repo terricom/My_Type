@@ -5,8 +5,10 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -22,7 +24,7 @@ class LineChart : View {
     var mPaddingBottom: Float = 90f
     var maxValue: Long = 0
     var marginTop: Int = 50
-    var legendArray: Array<String>? = null
+    var legendArray: ArrayList<String>? = null
 
     var lineColor: Int = 0
     var bgColor: Int = 0
@@ -86,10 +88,28 @@ class LineChart : View {
     }
 
 
+//    fun setList(list: List<ChartEntity>) {
+//        this.chartEntities = null
+//        invalidate()
+//        this.chartEntities = list
+//        val maxes = ArrayList<Float>()
+//        for (lineGraph in chartEntities!!) {
+//            val copies =
+//                lineGraph.values.copyOf(lineGraph.values.size)
+//            Arrays.sort(copies)
+//            maxes.add(copies[copies.size - 1])
+//
+//        }
+//        Logger.i("LineChart maxes = $maxes")
+//        this.maxValue = (Collections.max(maxes) as Float).toLong()
+//    }
+
     fun setList(list: List<ChartEntity>) {
+        Logger.i("LineChart chartEntities = $chartEntities list =$list")
         this.chartEntities = null
         invalidate()
         this.chartEntities = list
+        Logger.i("LineChart setList chartEntities size = ${list.size}")
         val maxes = ArrayList<Float>()
         for (lineGraph in chartEntities!!) {
             val copies =
@@ -131,7 +151,7 @@ class LineChart : View {
 
         var newX: Float
         var newY: Float
-        val gap = chartXLength / (chartEntities!![0].values.size - 1)
+//        val gap = chartXLength / (chartEntities!![0].values.size - 1)
         val yGap = (yLength / 10).toFloat()
 
         for (i in 0 until 11) {
@@ -140,8 +160,11 @@ class LineChart : View {
             newY = yGap * i
             graphCanvasWrapper.drawLine(0.0f, newY, chartXLength.toFloat(), newY, pBaseLine)
 
-            drawGraph(graphCanvasWrapper)
-            drawXText(graphCanvasWrapper)
+            if (chartEntities!!.size >2 ){
+                drawGraph(graphCanvasWrapper)
+                drawXText(graphCanvasWrapper)
+
+            }
         }
     }
 
@@ -253,8 +276,8 @@ class LineChart : View {
                 if (t < chartEntities!![m].values.size) {
                     x = (xGap * t).toFloat()
                     y = yLength * chartEntities!![m].values[t] / maxValue
-                    graphCanvasWrapper.drawCircle(x, y, 8.0f, pCircle)
-                    graphCanvasWrapper.drawCircle(x, y, 4.0f, pCircleBG)
+                    graphCanvasWrapper.drawCircle(x, y, 2.0f, pCircle)
+                    graphCanvasWrapper.drawCircle(x, y, 0.5f, pCircleBG)
                 }
             }
         }

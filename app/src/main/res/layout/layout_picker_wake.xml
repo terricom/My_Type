@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-           xmlns:tools="http://schemas.android.com/tools"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:orientation="vertical"
-           android:scaleType="center"
-           android:src="@drawable/icon_day"
-           tools:ignore="ContentDescription">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/height_all_bottom_layout"
+    android:layout_height="@dimen/height_all_bottom_layout"
+    android:orientation="vertical"
+    android:scaleType="centerInside"
+    android:src="@drawable/icon_day"
+    tools:ignore="ContentDescription">
 
 </ImageView>

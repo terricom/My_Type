@@ -30,7 +30,7 @@ class LoginFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).toolbar.visibility = View.GONE
+//        (activity as MainActivity).toolbar.visibility = View.GONE
         (activity as MainActivity).bottom_nav_view.visibility = View.GONE
     }
 
@@ -54,7 +54,7 @@ class LoginFragment: Fragment() {
                 viewModel.onLoginFacebookCompleted()
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-                (activity as MainActivity).toolbar.visibility = View.VISIBLE
+//                (activity as MainActivity).toolbar.visibility = View.VISIBLE
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
             }
@@ -88,8 +88,6 @@ class LoginFragment: Fragment() {
                 // ...
             }
     }
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         viewModel.callbackManager?.onActivityResult(requestCode, resultCode, data)

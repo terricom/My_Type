@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.terricom.mytype.Logger
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
@@ -71,14 +72,60 @@ class SleepFragment: Fragment() {
         viewModel.setSleepHr(hours,minutes)
         if (minutes > 0) binding.llMins.visibility = View.VISIBLE else binding.llMins.visibility = View.GONE
 
-        wakeDate.minusDays(1)
-        bedDate.minusDays(1)
-        val newBedDate = "${bedDate.year}-${bedDate.monthValue}-${bedDate.minusDays(1).dayOfMonth} ${bedDate.hour}:${bedDate.minute}:${bedDate.second}.000000000"
-        var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
-        viewModel.setSleepTime(timeStampBed)
-        val newWakeDate = "${wakeDate.year}-${wakeDate.monthValue}-${wakeDate.minusDays(1).dayOfMonth} ${wakeDate.hour}:${wakeDate.minute}:${wakeDate.second}.000000000"
-        var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
-        viewModel.setWakeTime(timeStampWake)
+        if (bedDate < wakeDate){
+            Logger.i("bedDate == wakeDate ${bedDate.dayOfMonth} - ${wakeDate.dayOfMonth}")
+            if (bedDate.dayOfMonth == wakeDate.dayOfMonth){
+                val newBedDate = "${bedDate.year}" +
+                        "-${bedDate.monthValue}" +
+                        "-${bedDate.dayOfMonth} ${bedDate.hour}" +
+                        ":${bedDate.minute}:${bedDate.second}.000000000"
+                var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+                viewModel.setSleepTime(timeStampBed)
+                val newWakeDate = "${wakeDate.year}" +
+                        "-${wakeDate.monthValue}" +
+                        "-${wakeDate.dayOfMonth} ${wakeDate.hour}" +
+                        ":${wakeDate.minute}:${wakeDate.second}.000000000"
+                var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+                viewModel.setWakeTime(timeStampWake)
+                Logger.i("bedDate == wakeDate newBedDate = $newBedDate newWakeDate =$newWakeDate")
+            }else if (bedDate.dayOfMonth < wakeDate.dayOfMonth){
+                wakeDate.minusDays(1)
+                bedDate.minusDays(1)
+                val newBedDate = "${bedDate.minusDays(1).year}" +
+                        "-${bedDate.minusDays(1).monthValue}" +
+                        "-${bedDate.minusDays(1).dayOfMonth} ${bedDate.minusDays(1).hour}" +
+                        ":${bedDate.minute}:${bedDate.minusDays(1).second}.000000000"
+                var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+                viewModel.setSleepTime(timeStampBed)
+                val newWakeDate = "${wakeDate.minusDays(1).year}" +
+                        "-${wakeDate.minusDays(1).monthValue}" +
+                        "-${wakeDate.minusDays(1).dayOfMonth} ${wakeDate.minusDays(1).hour}" +
+                        ":${wakeDate.minusDays(1).minute}:${wakeDate.minusDays(1).second}.000000000"
+                var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+                viewModel.setWakeTime(timeStampWake)
+                Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
+            }
+
+        }else if (bedDate == wakeDate){
+            Logger.i("bedDate == wakeDate ${bedDate.dayOfMonth} - ${wakeDate.dayOfMonth}")
+            wakeDate.plusDays(1)
+            bedDate.plusDays(1)
+            val newBedDate = "${bedDate.year}" +
+                    "-${bedDate.monthValue}" +
+                    "-${bedDate.plusDays(1).dayOfMonth} ${bedDate.hour}" +
+                    ":${bedDate.minute}:${bedDate.second}.000000000"
+            var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+            viewModel.setSleepTime(timeStampBed)
+            val newWakeDate = "${wakeDate.year}" +
+                    "-${wakeDate.monthValue}" +
+                    "-${wakeDate.plusDays(1).dayOfMonth} ${wakeDate.hour}" +
+                    ":${wakeDate.minute}:${wakeDate.second}.000000000"
+            var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+            viewModel.setWakeTime(timeStampWake)
+            Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
+        }
+
+
     }
 
     override fun onStop() {

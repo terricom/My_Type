@@ -19,6 +19,9 @@
     <dimen name="height_all_bottom_layout">80dp</dimen>
     <dimen name="text_content">14sp</dimen>
     <dimen name="text_content_title">16sp</dimen>
+    <dimen name="recyclerview_between">1dp</dimen>
+    <dimen name="layout_title">20sp</dimen>
+
 
     <!-- Dialog Padding -->
     <dimen name="dialog_padding">10dp</dimen>
@@ -46,6 +49,9 @@
     <dimen name="_12sdp">12dp</dimen>
     <dimen name="_16sdp">16dp</dimen>
     <dimen name="_1sdp">1dp</dimen>
+    <dimen name="diary_up_side_down_275">275dp</dimen>
+    <dimen name="diary_up_side_down_45">45dp</dimen>
+    <dimen name="diary_up_side_down_205">205dp</dimen>
 
 
 

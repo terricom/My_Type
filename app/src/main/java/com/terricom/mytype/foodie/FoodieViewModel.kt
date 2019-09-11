@@ -1,13 +1,20 @@
 package com.terricom.mytype.foodie
 
+import android.net.Uri
 import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
+import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
+
+
+
 
 class FoodieViewModel: ViewModel() {
 
@@ -19,6 +26,21 @@ class FoodieViewModel: ViewModel() {
     val _userFoodList = MutableLiveData<List<String>>()
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
+
+    val _addPhoto = MutableLiveData<Boolean>()
+    val addPhoto : LiveData<Boolean>
+        get() = _addPhoto
+
+    fun addPhoto(){
+        _addPhoto.value = true
+    }
+
+    val addFood = MutableLiveData<String>()
+    val addNutrition = MutableLiveData<String>()
+
+    val newFuList = mutableListOf<String>()
+    val newNuList = mutableListOf<String>()
+
 
     val _userNuList = MutableLiveData<List<String>>()
     val userNuList : LiveData<List<String>>
@@ -65,6 +87,15 @@ class FoodieViewModel: ViewModel() {
 
     val time = MutableLiveData<String>()
 
+    private val _photoUri = MutableLiveData<Uri>()
+    val photoUri: LiveData<Uri>
+        get() = _photoUri
+
+    fun setPhoto(photo: Uri){
+        _photoUri.value = photo
+        Logger.i("photouri get = $photo")
+    }
+
 
     val db = FirebaseFirestore.getInstance()
     val user = db.collection("Users")
@@ -80,7 +111,7 @@ class FoodieViewModel: ViewModel() {
             "protein" to protein.value,
             "fruit" to fruit.value,
             "carbon" to carbon.value,
-            "photo" to "",
+            "photo" to photoUri.value.toString(),
             "foods" to selectedFood,
             "nutritions" to selectedNutrition
         )
@@ -108,10 +139,18 @@ class FoodieViewModel: ViewModel() {
         carbon.value = 0.0f
     }
 
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val sdfT = SimpleDateFormat("HH:mm")
+    val currentDate = sdf.format(Date())
+    val currentTime = sdfT.format(Date())
+
     init {
         if (userUid != null){
             getFoodAndNuList()
         }
+        date.value = currentDate
+        time.value = currentTime
+        _addPhoto.value = false
     }
 
     fun getFoodAndNuList(){
@@ -120,15 +159,38 @@ class FoodieViewModel: ViewModel() {
             .addOnSuccessListener { result ->
                 for (doc in result){
                     if (doc.id == userUid){
-                        var firebaseFoodlist = doc["foodlist"] as List<String>
-                        getFoodlist(firebaseFoodlist)
-                        var firebaseNulist = doc["nutritionlist"] as List<String>
-                        getNulist(firebaseNulist)
+                        val user = doc.toObject(UserMT::class.java)
+                        if (user.foodlist != null){
+                            var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
+                            getFoodlist(firebaseFoodlist)
+                        }
+                        if (user.nutritionlist != null){
+                            var firebaseNulist: List<String> = doc["nutritionlist"] as List<String>
+                            getNulist(firebaseNulist)
+                        }
                     }
                 }
 
             }
     }
 
+    fun updateFoodAndNuList(){
+
+        user.get()
+            .addOnSuccessListener { result ->
+                for (doc in result){
+                    if (doc.id == userUid){
+                        val user = doc.toObject(UserMT::class.java)
+                        if (user.foodlist == null){
+                            db.collection("Users").document(doc.id).update("foodlist", newFuList).addOnCompleteListener{}
+                        }
+                        if (user.nutritionlist == null){
+                            db.collection("Users").document(doc.id).update("nutritionlist", newNuList).addOnCompleteListener {  }
+                        }
+                    }
+                }
+
+            }
+    }
 
 }
