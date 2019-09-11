@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
+import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
@@ -82,27 +83,48 @@ class FoodieFragment: Fragment() {
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
             (binding.foodsRecycler.adapter as FoodAdapter).submitList(it)
+            binding.foodsRecycler.addItemDecoration(
+                SpaceItemDecoration(
+                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                    true
+                )
+            )
             (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
         })
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
         viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
             (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(it)
+            binding.nutritionRecycler.addItemDecoration(
+                SpaceItemDecoration(
+                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                    true
+                )
+            )
             (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
         })
 
         binding.foodiephoto.setOnClickListener{
+            Logger.i("Clicked foodiephoto")
             //Requesting storage permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 requestStoragePermission()
             }
             showFileChooser()
-            it.visibility = View.GONE
-            binding.foodieMyType.visibility = View.INVISIBLE
-            binding.foodieGreet.visibility = View.INVISIBLE
-
+            Logger.i("showFileChooser() in foodiephoto")
+        }
+        binding.uploadIcon.setOnClickListener{
+            Logger.i("Clicked uploadIcon")
+            viewModel.addPhoto()
+            //Requesting storage permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                requestStoragePermission()
+            }
+            showFileChooser()
+            Logger.i("showFileChooser() in uploadIcon")
 
         }
+
 
         binding.buttonAddFood.setOnClickListener {
             binding.dagFoodHint.visibility = View.GONE
@@ -275,6 +297,7 @@ class FoodieFragment: Fragment() {
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        Logger.i("Inside showFileChooser()")
     }
 
 
@@ -289,19 +312,17 @@ class FoodieFragment: Fragment() {
             try {
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
-                val degree = getRotateDegree(filePath!!.path)
+                val degree = getImageRotation(App.applicationContext(),filePath!!)
                 Logger.i("degree = $degree")
-                val matrix: Matrix = Matrix()
+                val matrix = Matrix()
                 matrix.postRotate(degree.toFloat())
                 val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
                 val baos = ByteArrayOutputStream()
                 outBitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
-                bitmap!!.recycle()
-                if(bitmap!!.getWidth()>bitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels);
+                if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
                 else ScalePic(outBitmap!!, mPhone!!.widthPixels)
-
+//                bitmap!!.recycle()
                 uploadFile()
-//                foodieUploadPhoto.setImageBitmap(bitmap)
 
             } catch (e: IOException) {
                 e.printStackTrace()

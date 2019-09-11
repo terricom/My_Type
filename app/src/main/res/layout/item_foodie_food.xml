@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/calendar_date"
             android:fontFamily="@font/noto_sans"
-            android:padding="@dimen/elevation_all"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="1dp"
             android:text="紅油抄手"
             android:textColor="@color/colorMyType" />
     </LinearLayout>

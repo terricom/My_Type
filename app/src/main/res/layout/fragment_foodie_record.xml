@@ -2,6 +2,7 @@
 <layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
+        <import type="android.graphics.Color"/>
         <variable name="nutrition" type="String"/>
         <variable name="viewModel" type="com.terricom.mytype.foodie.FoodieViewModel"/>
     </data>
@@ -27,27 +28,65 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/upload_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/upload_icon"
+                    app:layout_constraintStart_toStartOf="@+id/upload_icon"
+                    app:layout_constraintTop_toTopOf="@+id/upload_icon"
+                    app:srcCompat="@drawable/calendar_date" />
+
+                <ImageView
+                    android:id="@+id/foodiephoto"
+                    android:layout_width="69dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/calendar_date"
+                    android:backgroundTint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#00FFFFFF") :Color.parseColor("#209387")}'
+                    app:layout_constraintBottom_toBottomOf="@+id/editTime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/editTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/upload_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:paddingTop="3dp"
+                    android:tint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#209387") :Color.parseColor("#FFFFFF")}'
+                    app:layout_constraintBottom_toBottomOf="@+id/foodiephoto"
+                    app:layout_constraintEnd_toEndOf="@+id/foodiephoto"
+                    app:layout_constraintStart_toStartOf="@+id/foodiephoto"
+                    app:layout_constraintTop_toTopOf="@+id/foodiephoto"
+                    app:srcCompat="@drawable/icon_image" />
+
                 <EditText
                     android:id="@+id/editDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/input_column"
+                    android:background="@drawable/tag_left_corners"
                     android:ems="10"
                     android:fontFamily="@font/noto_sans"
                     android:hint="2019.08.25"
                     android:inputType="date"
-                    android:onClick="@{()-> viewModel.addPhoto()}"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
                     android:text="@={viewModel.date}"
                     android:textAlignment="center"
-                    android:textColor="@color/colorWhite"
-                    android:textColorHint="@color/colorWhite"
+                    android:textColor="@color/colorMyType"
+                    android:textColorHint="@color/colorMyType"
                     android:textSize="@dimen/text_content"
+                    app:layout_constraintEnd_toStartOf="@+id/editTime"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,9 +94,7 @@
                     android:id="@+id/editTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/input_column"
+                    android:background="@drawable/tag_right_corners"
                     android:ems="10"
                     android:fontFamily="@font/noto_sans"
                     android:hint="10:00"
@@ -71,47 +108,48 @@
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/foodiephoto"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/editDate"
                     app:layout_constraintTop_toTopOf="@+id/editDate" />
 
-                <ImageButton
-                    android:id="@+id/foodiephoto"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/calendar_date"
-                    android:scaleType="fitXY"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editDate" />
+                <!--                <ImageButton-->
+                <!--                    android:id="@+id/foodiephoto"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="200dp"-->
+                <!--                    android:layout_marginStart="16dp"-->
+                <!--                    android:layout_marginTop="8dp"-->
+                <!--                    android:layout_marginEnd="16dp"-->
+                <!--                    android:background="@drawable/calendar_date"-->
+                <!--                    android:scaleType="fitXY"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/editDate" />-->
 
-                <TextView
-                    android:id="@+id/foodie_greet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="@string/foodie_green_upload_photo"
-                    android:textColor="@color/colorMyType"
-                    android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/foodie_my_type"
-                    app:layout_constraintEnd_toEndOf="@+id/foodiephoto"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/foodie_my_type"
-                    app:layout_constraintTop_toTopOf="@+id/foodie_my_type" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/foodie_greet"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="8dp"-->
+                <!--                    android:fontFamily="@font/noto_sans"-->
+                <!--                    android:text="@string/foodie_green_upload_photo"-->
+                <!--                    android:textColor="@color/colorMyType"-->
+                <!--                    android:textSize="@dimen/text_content"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/foodie_my_type"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@+id/foodiephoto"-->
+                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/foodie_my_type"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/foodie_my_type" />-->
 
-                <ImageView
-                    android:id="@+id/foodie_my_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/foodieUploadPhoto"
-                    app:layout_constraintEnd_toStartOf="@+id/foodie_greet"
-                    app:layout_constraintStart_toStartOf="@+id/foodiephoto"
-                    app:layout_constraintTop_toTopOf="@+id/foodiephoto"
-                    app:srcCompat="@drawable/icon_my_type" />
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/foodie_my_type"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/foodieUploadPhoto"-->
+                <!--                    app:layout_constraintEnd_toStartOf="@+id/foodie_greet"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/foodiephoto"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/foodiephoto"-->
+                <!--                    app:srcCompat="@drawable/icon_my_type" />-->
 
                 <ImageView
                     android:id="@+id/foodieUploadPhoto"
@@ -139,45 +177,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/foods_recycler" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/button_foodie_show_info"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/button_circle"
-                    android:elevation="@dimen/elevation_all"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/icon_info"
                     app:layout_constraintBottom_toBottomOf="@+id/foodie_title_nutrition"
                     app:layout_constraintStart_toEndOf="@+id/foodie_title_nutrition"
-                    app:layout_constraintTop_toTopOf="@+id/foodie_title_nutrition" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="5dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="i"
-                    android:textAlignment="center"
-                    android:textColor="@color/black_3f3a3a"
-                    android:textSize="12sp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_foodie_show_info"
-                    app:layout_constraintEnd_toEndOf="@+id/button_foodie_show_info"
-                    app:layout_constraintStart_toStartOf="@+id/button_foodie_show_info"
-                    app:layout_constraintTop_toTopOf="@+id/button_foodie_show_info" />
+                    app:layout_constraintTop_toTopOf="@+id/foodie_title_nutrition"
+                    app:srcCompat="@drawable/icon_info" />
 
                 <ImageButton
                     android:id="@+id/button_water"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
                     android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/number_water"
+                    app:layout_constraintEnd_toStartOf="@+id/number_water"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/foodie_title_nutrition"
                     app:srcCompat="@drawable/icon_water" />
@@ -187,15 +213,12 @@
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="12dp"
-                    android:background="@drawable/input_column"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
+                    android:padding="@dimen/elevation_all"
                     android:text="@={viewModel.floatToString(viewModel.water)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
@@ -204,13 +227,13 @@
                     app:layout_constraintEnd_toStartOf="@+id/button_fruit"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/button_water"
-                    app:layout_constraintTop_toTopOf="@+id/button_water" />
+                    app:layout_constraintTop_toBottomOf="@+id/foodie_title_nutrition" />
 
                 <ImageButton
                     android:id="@+id/button_vegetable"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
-                    android:background="@drawable/button_background"
+                    android:layout_width="0dp"
+                    android:layout_height="27dp"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
@@ -219,7 +242,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/number_fruit"
-                    app:layout_constraintTop_toTopOf="@+id/button_water"
+                    app:layout_constraintTop_toTopOf="@+id/button_fruit"
                     app:srcCompat="@drawable/icon_vegetable" />
 
                 <EditText
@@ -227,29 +250,27 @@
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/input_column"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
+                    android:paddingHorizontal="@dimen/elevation_all"
+                    android:paddingVertical="@dimen/elevation_all"
                     android:text="@={viewModel.floatToString(viewModel.vegetable)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/button_vegetable"
-                    app:layout_constraintTop_toTopOf="@+id/button_water" />
+                    app:layout_constraintTop_toTopOf="@+id/number_fruit" />
 
                 <ImageButton
                     android:id="@+id/button_fruit"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
-                    android:background="@drawable/button_background"
+                    android:layout_width="0dp"
+                    android:layout_height="27dp"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
@@ -266,15 +287,11 @@
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="12dp"
-                    android:background="@drawable/input_column"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
+                    android:padding="@dimen/elevation_all"
                     android:text="@={viewModel.floatToString(viewModel.fruit)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
@@ -287,15 +304,17 @@
 
                 <ImageButton
                     android:id="@+id/button_coconut"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
                     android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/number_coconut"
+                    app:layout_constraintEnd_toStartOf="@+id/number_water"
                     app:layout_constraintStart_toStartOf="@+id/button_water"
                     app:layout_constraintTop_toBottomOf="@+id/button_water"
                     app:srcCompat="@drawable/icon_coconut" />
@@ -305,33 +324,32 @@
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_column"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
+                    android:padding="@dimen/elevation_all"
                     android:text="@={viewModel.floatToString(viewModel.oil)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_coconut"
                     app:layout_constraintEnd_toEndOf="@+id/number_water"
                     app:layout_constraintStart_toStartOf="@+id/number_water"
-                    app:layout_constraintTop_toTopOf="@+id/button_coconut" />
+                    app:layout_constraintTop_toBottomOf="@+id/number_water" />
 
                 <ImageButton
                     android:id="@+id/button_protein"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
-                    android:background="@drawable/button_background"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
                     android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/number_protein"
+                    app:layout_constraintEnd_toStartOf="@+id/number_fruit"
                     app:layout_constraintStart_toStartOf="@+id/button_fruit"
                     app:layout_constraintTop_toTopOf="@+id/button_coconut"
                     app:srcCompat="@drawable/icon_protein" />
@@ -341,33 +359,32 @@
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_column"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
+                    android:padding="@dimen/elevation_all"
                     android:text="@={viewModel.floatToString(viewModel.protein)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_protein"
                     app:layout_constraintEnd_toEndOf="@+id/number_fruit"
                     app:layout_constraintStart_toStartOf="@+id/number_fruit"
-                    app:layout_constraintTop_toTopOf="@+id/button_protein" />
+                    app:layout_constraintTop_toBottomOf="@+id/number_fruit" />
 
                 <ImageButton
                     android:id="@+id/button_carbon"
-                    android:layout_width="@dimen/foodie_button_width"
-                    android:layout_height="@dimen/foodie_button_height"
-                    android:background="@drawable/button_background"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/tag_left_corners"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
                     android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/number_carbon"
+                    app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
                     app:layout_constraintStart_toStartOf="@+id/button_vegetable"
                     app:layout_constraintTop_toTopOf="@+id/button_coconut"
                     app:srcCompat="@drawable/icon_carbon" />
@@ -376,23 +393,20 @@
                     android:id="@+id/number_carbon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/input_column"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/tag_right_corners"
                     android:hint="0.3"
                     android:inputType="number"
-                    android:paddingLeft="@dimen/dialog_padding"
+                    android:padding="@dimen/elevation_all"
                     android:paddingTop="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
                     android:text="@={viewModel.floatToString(viewModel.carbon)}"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_carbon"
                     app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
                     app:layout_constraintStart_toStartOf="@+id/number_vegetable"
-                    app:layout_constraintTop_toTopOf="@+id/button_carbon"
-                    app:layout_constraintVertical_bias="0.538" />
+                    app:layout_constraintTop_toBottomOf="@+id/number_vegetable" />
 
                 <Button
                     android:id="@+id/button_foodie_save"
@@ -403,7 +417,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/button_background"
-                    android:backgroundTint="@color/colorButton"
+                    android:backgroundTint="@color/colorMyType"
                     android:fontFamily="@font/noto_sans"
                     android:paddingLeft="@dimen/elevation_all"
                     android:paddingTop="@dimen/elevation_all"
@@ -423,12 +437,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="23dp"
                     android:orientation="horizontal"
-                    android:padding="@dimen/elevation_all"
+                    android:paddingVertical="1dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toStartOf="@+id/add_food"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintEnd_toEndOf="@+id/button_add_food"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chosed_food"
                     tools:listitem="@layout/item_foodie_food" />
@@ -436,7 +449,7 @@
                 <LinearLayout
                     android:id="@+id/chosed_food"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
@@ -452,17 +465,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/calendar_date"
                     android:fontFamily="@font/noto_sans"
                     android:hint="@string/foodie_add_food"
-                    android:padding="@dimen/elevation_all"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="1dp"
                     android:text="@={viewModel.addFood}"
+                    android:textAlignment="center"
                     android:textColor="@color/colorMyType"
                     android:textColorHint="@color/colorMyType"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintBottom_toBottomOf="@+id/button_add_food"
-                    app:layout_constraintEnd_toStartOf="@+id/button_add_food"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chosed_food" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -471,19 +486,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="23dp"
                     android:orientation="horizontal"
-                    android:padding="@dimen/elevation_all"
+                    android:paddingVertical="1dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toStartOf="@+id/add_nutrition"
+                    app:layout_constraintEnd_toEndOf="@+id/button_add_nutrition"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition"
-                    tools:listitem="@layout/item_diary_nutritionlist" />
+                    tools:listitem="@layout/item_foodie_nutrition" />
 
                 <LinearLayout
                     android:id="@+id/chosed_nutrition"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -499,17 +514,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/calendar_date"
                     android:fontFamily="@font/noto_sans"
                     android:hint="@string/diary_add_nutrition"
-                    android:padding="@dimen/elevation_all"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="1dp"
                     android:text="@={viewModel.addNutrition}"
                     android:textColor="@color/colorMyType"
                     android:textColorHint="@color/colorMyType"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintBottom_toBottomOf="@+id/button_add_nutrition"
-                    app:layout_constraintEnd_toStartOf="@+id/button_add_nutrition"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition" />
 
                 <TextView
@@ -539,27 +555,27 @@
                 <ImageView
                     android:id="@+id/button_add_food"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/input_column"
-                    android:backgroundTint="@color/colorMyType"
-                    android:tint="@color/colorWhite"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chosed_food"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:scaleType="fitEnd"
+                    android:tint="@color/colorMyType"
+                    app:layout_constraintBottom_toBottomOf="@+id/foods_recycler"
+                    app:layout_constraintEnd_toStartOf="@+id/add_food"
+                    app:layout_constraintTop_toTopOf="@+id/foods_recycler"
                     app:srcCompat="@android:drawable/ic_input_add" />
 
                 <ImageView
                     android:id="@+id/button_add_nutrition"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/input_column"
-                    android:backgroundTint="@color/colorMyType"
-                    android:tint="@color/colorWhite"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:scaleType="fitEnd"
+                    android:tint="@color/colorMyType"
+                    app:layout_constraintBottom_toBottomOf="@+id/nutrition_recycler"
+                    app:layout_constraintEnd_toStartOf="@+id/add_nutrition"
+                    app:layout_constraintTop_toTopOf="@+id/nutrition_recycler"
                     app:srcCompat="@android:drawable/ic_input_add" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

@@ -150,6 +150,7 @@ class FoodieViewModel: ViewModel() {
         }
         date.value = currentDate
         time.value = currentTime
+        _addPhoto.value = false
     }
 
     fun getFoodAndNuList(){
