@@ -69,7 +69,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="60dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:onClick="@{() -> viewModel.watchWaterClicked()}"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
@@ -113,7 +113,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -161,7 +161,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -204,7 +204,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -248,7 +248,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -292,7 +292,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -340,7 +340,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -388,7 +388,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -402,18 +402,18 @@
             app:layout_constraintStart_toEndOf="@+id/number_oil1"
             app:layout_constraintTop_toTopOf="@+id/number_oil1" />
 
-        <TextView
+        <ImageView
             android:id="@+id/weight"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
-            android:text="@string/shape_weight"
+            android:scaleType="fitStart"
             app:layout_constraintBottom_toBottomOf="@+id/number_vegetable1"
             app:layout_constraintStart_toStartOf="@+id/number_vegetable1"
-            app:layout_constraintTop_toTopOf="@+id/number_vegetable1" />
+            app:layout_constraintTop_toTopOf="@+id/number_vegetable1"
+            app:srcCompat="@drawable/icon_weight" />
 
         <ImageView
             android:id="@+id/line_vegetable1"
@@ -427,14 +427,14 @@
             app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
             app:layout_constraintStart_toStartOf="@+id/weight"
             app:layout_constraintTop_toTopOf="@+id/number_vegetable1"
-            app:srcCompat="@color/blue_facebook" />
+            app:srcCompat="@color/colorPinky" />
 
         <ImageButton
             android:id="@+id/number_protein1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -448,18 +448,18 @@
             app:layout_constraintStart_toEndOf="@+id/number_vegetable1"
             app:layout_constraintTop_toTopOf="@+id/number_vegetable1" />
 
-        <TextView
+        <ImageView
             android:id="@+id/protein1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
-            android:text="@string/shape_body_fat"
+            android:scaleType="fitStart"
             app:layout_constraintBottom_toBottomOf="@+id/number_protein1"
             app:layout_constraintStart_toStartOf="@+id/number_protein1"
-            app:layout_constraintTop_toTopOf="@+id/number_protein1" />
+            app:layout_constraintTop_toTopOf="@+id/number_protein1"
+            app:srcCompat="@drawable/icon_body_fat" />
 
         <ImageView
             android:id="@+id/line_protein1"
@@ -473,7 +473,7 @@
             app:layout_constraintEnd_toEndOf="@+id/number_protein1"
             app:layout_constraintStart_toStartOf="@+id/protein1"
             app:layout_constraintTop_toTopOf="@+id/number_protein1"
-            app:srcCompat="@color/colorAccent" />
+            app:srcCompat="@color/browser_actions_title_color" />
 
         <ImageButton
             android:id="@+id/number_fruit1"
@@ -481,7 +481,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/custom_selector"
+            android:background="@drawable/calendar_date"
             android:paddingLeft="@dimen/dialog_padding"
             android:paddingTop="@dimen/dialog_padding"
             android:paddingRight="@dimen/dialog_padding"
@@ -495,18 +495,19 @@
             app:layout_constraintStart_toEndOf="@+id/number_protein1"
             app:layout_constraintTop_toTopOf="@+id/number_protein1" />
 
-        <TextView
+        <ImageView
             android:id="@+id/fruit1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="肌肉"
+            android:scaleType="fitStart"
             android:textSize="@dimen/text_content"
             app:layout_constraintBottom_toBottomOf="@+id/number_fruit1"
             app:layout_constraintStart_toStartOf="@+id/number_fruit1"
-            app:layout_constraintTop_toTopOf="@+id/number_fruit1" />
+            app:layout_constraintTop_toTopOf="@+id/number_fruit1"
+            app:srcCompat="@drawable/icon_muscle" />
 
         <ImageView
             android:id="@+id/line_fruit1"
@@ -520,7 +521,7 @@
             app:layout_constraintEnd_toEndOf="@+id/number_fruit"
             app:layout_constraintStart_toStartOf="@+id/fruit1"
             app:layout_constraintTop_toTopOf="@+id/number_fruit1"
-            app:srcCompat="@color/colorMuscle" />
+            app:srcCompat="@color/blue_facebook" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager_2"
