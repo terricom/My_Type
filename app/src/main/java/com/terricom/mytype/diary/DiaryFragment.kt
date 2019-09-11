@@ -43,6 +43,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.fireFoodie.observe(this, Observer {
             if (it.size > 0){
                 binding.diaryHintAddFoodie.visibility = View.GONE
+                binding.iconMyType.visibility = View.GONE
             }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()

@@ -151,6 +151,7 @@ class FoodieFragment: Fragment() {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
                 (activity as MainActivity).fab.visibility = View.VISIBLE
             }
         }
@@ -724,6 +725,7 @@ class FoodieFragment: Fragment() {
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
 
     }

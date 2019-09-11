@@ -78,6 +78,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
 
     }

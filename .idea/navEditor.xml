@@ -107,6 +107,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="navigate_to_goal_setting_fragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="navigate_to_linechart_fragment">
                     <value>
                       <LayoutPositions />
