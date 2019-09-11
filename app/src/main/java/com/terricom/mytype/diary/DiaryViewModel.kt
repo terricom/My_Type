@@ -105,9 +105,9 @@ class DiaryViewModel: ViewModel() {
                 .orderBy("timestamp", Query.Direction.DESCENDING)
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
-                .orderBy("wakeUp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("wakeUp", Timestamp(date.value!!.time))
-                .whereGreaterThanOrEqualTo("wakeUp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp(date.value!!.time))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
 
         shapeDiary
             .get()

@@ -46,7 +46,8 @@
     <dimen name="_12sdp">12dp</dimen>
     <dimen name="_16sdp">16dp</dimen>
     <dimen name="_1sdp">1dp</dimen>
-    <dimen name="diary_up_side_down">180dp</dimen>
+    <dimen name="diary_up_side_down_270">270dp</dimen>
+    <dimen name="diary_up_side_down_90">90dp</dimen>
 
 
 

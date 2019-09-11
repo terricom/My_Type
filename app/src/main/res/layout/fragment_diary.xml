@@ -19,7 +19,6 @@
             android:layout_height="0dp"
             android:background="@drawable/tag_left_corners"
             android:tint="@color/colorMyType"
-            android:onClick="@{()->viewModel.calendarClickedAgain()}"
             app:layout_constraintBottom_toBottomOf="@+id/diary_date"
             app:layout_constraintEnd_toStartOf="@+id/number_water"
             app:layout_constraintStart_toStartOf="@+id/button_water"

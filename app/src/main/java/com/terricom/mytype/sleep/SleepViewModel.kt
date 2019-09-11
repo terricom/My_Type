@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
+import java.util.*
 
 class SleepViewModel: ViewModel() {
 
@@ -36,7 +37,8 @@ class SleepViewModel: ViewModel() {
         val sleepContent = hashMapOf(
             "wakeUp" to wakeUp.value,
             "goToBed" to goToSleep.value,
-            "sleepHr" to sleepHr.value
+            "sleepHr" to sleepHr.value,
+            "timestamp" to Timestamp(Date().time)
         )
 
         sleep.get()

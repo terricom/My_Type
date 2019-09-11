@@ -58,18 +58,24 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.calendarClicked.observe(this, Observer {
             Logger.i("viewModel.calendarClicked.observe =$it")
             if (it == true){
-                viewModel.calendarClickedAgain()
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down)).start()
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_90)).start()
                     binding.diaryCalendar.visibility = View.GONE
+                    viewModel.calendarClickedAgain()
                 }
             }else if (it == false){
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down)).start()
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_270)).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
                     viewModel.calendarClicked()
                 }
 
+            }else {
+                binding.buttonSaveCalendar.setOnClickListener {
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_270)).start()
+                    binding.diaryCalendar.visibility = View.VISIBLE
+                    viewModel.calendarClicked()
+                }
             }
         })
 
