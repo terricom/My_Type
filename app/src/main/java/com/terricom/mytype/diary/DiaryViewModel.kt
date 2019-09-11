@@ -92,6 +92,7 @@ class DiaryViewModel: ViewModel() {
         filterdate(Date())
         getDiary()
         getThisMonth()
+        calendarClickedAgain()
     }
 
     fun getDiary() {
@@ -227,7 +228,7 @@ class DiaryViewModel: ViewModel() {
     }
 
     fun getTime(timestamp: Date):String{
-        val sdf = SimpleDateFormat("HH:mm")
+        val sdf = SimpleDateFormat("HH:mm a")
             return sdf.format(java.sql.Date(timestamp.time).time)
     }
 

@@ -59,24 +59,24 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             Logger.i("viewModel.calendarClicked.observe =$it")
             if (it == true){
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_90)).start()
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_275)).start()
                     binding.diaryCalendar.visibility = View.GONE
+                    if (viewModel.fireFoodie.value!!.size <= 0){
+                        binding.diaryHintAddFoodie.visibility = View.VISIBLE
+
+                    }
                     viewModel.calendarClickedAgain()
                 }
             }else if (it == false){
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_270)).start()
+                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_205)).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
+                    binding.diaryHintAddFoodie.visibility = View.INVISIBLE
                     viewModel.calendarClicked()
                 }
 
-            }else {
-                binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_270)).start()
-                    binding.diaryCalendar.visibility = View.VISIBLE
-                    viewModel.calendarClicked()
-                }
             }
+
         })
 
 //        if (viewModel.calendarClicked.value == true){

@@ -50,7 +50,7 @@
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
     <string name="diary_add_nutrition">新增營養</string>
-    <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n 有圖有真相，上傳照片瞧瞧吧！</string>
+    <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n有圖有真相，上傳照片瞧瞧吧！</string>
     <string name="facebook_app_id">492524594814446</string> <string name="fb_login_protocol_scheme">fb492524594814446</string>
     <string name="internet_not_connected">當前網路不穩 請重新連線</string>
     <string name="sleep_record_bed_time">就寢時間</string>
@@ -61,7 +61,7 @@
     <string name="diary_title_shape">今日規格</string>
     <string name="foodie_drag_nutrition_hint">請拖曳加入本餐營養補充品，也可以自行新增喔！</string>
     <string name="foodie_drag_food_hint">請拖曳加入本餐菜單，也可以自行新增食物喔！</string>
-    <string name="diary_hint_2_foodie">Hi 今天吃得好嗎？\n 請點選新增按鈕開始紀錄營養充滿的一天吧！</string>
+    <string name="diary_hint_2_foodie">Hi 今天吃得好嗎？\n點選新增按鈕開始紀錄營養充滿的一天吧！</string>
 
 
 </resources>

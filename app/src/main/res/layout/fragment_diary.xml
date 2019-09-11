@@ -49,13 +49,12 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:rotation="90.0"
             android:tint="@color/colorMyType"
             app:layout_constraintBottom_toBottomOf="@+id/button_save_calendar"
             app:layout_constraintEnd_toStartOf="@+id/diary_date"
             app:layout_constraintStart_toStartOf="@+id/button_save_calendar"
             app:layout_constraintTop_toTopOf="@+id/button_save_calendar"
-            app:srcCompat="@mipmap/ic_arrow_left" />
+            app:srcCompat="@drawable/toolbar_back" />
 
         <com.terricom.mytype.calendar.CalendarFragment
             android:id="@+id/diary_calendar"
@@ -178,7 +177,9 @@
             android:id="@+id/diary_hint_add_foodie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lineSpacingExtra="4sp"
             android:text="@string/diary_hint_2_foodie"
+            android:textAlignment="viewStart"
             android:textColor="@color/colorMyType"
             android:textSize="@dimen/text_content_title"
             app:layout_constraintBottom_toBottomOf="parent"
