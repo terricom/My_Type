@@ -10,5 +10,6 @@ enum class CurrentFragmentType(val value: String) {
     SHAPE_RECORD(App.instance?.getString(R.string.title_shape_record) as String),
     REF(""),
     PROFILE(App.instance?.getString(R.string.title_profile) as String),
-    SLEEP(App.instance?.getString(R.string.title_sleep) as String)
+    SLEEP(App.instance?.getString(R.string.title_sleep) as String),
+    GOAL(App.instance?.getString(R.string.title_goal_setting) as String)
 }

@@ -20,6 +20,7 @@
     <string name="title_profile">個人</string>
     <string name="title_dream_puzzle">夢想拼圖</string>
     <string name="title_sleep">新增睡眠</string>
+    <string name="title_goal_setting">新增目標</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
@@ -64,6 +65,7 @@
     <string name="diary_hint_2_foodie">Hi 今天吃得好嗎？\n點選新增按鈕開始紀錄營養充滿的一天吧！</string>
     <string name="title_shape_record_info">紀錄成果</string>
     <string name="title_shape_record_choose_date">選擇日期</string>
+    <string name="profile_title_set_date">目標宣言</string>
 
 
 </resources>

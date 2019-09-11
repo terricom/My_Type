@@ -86,6 +86,12 @@ class MainActivity : BaseActivity(){
         binding.fabLayout3.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment())
         }
+        binding.fab4.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+        }
+        binding.fabLayout4.setOnClickListener {
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+        }
 
         binding.fabLayout1.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment())
@@ -116,6 +122,7 @@ class MainActivity : BaseActivity(){
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.dreamboardFragment -> CurrentFragmentType.DREAMBOARD
                 R.id.sleepFragment -> CurrentFragmentType.SLEEP
+                R.id.goalSettingFragment -> CurrentFragmentType.GOAL
                 else -> viewModel.currentFragmentType.value
             }
         }
@@ -148,9 +155,13 @@ class MainActivity : BaseActivity(){
         binding.fabLayout1.visibility = View.GONE
         binding.fabLayout2.visibility = View.GONE
         binding.fabLayout3.visibility - View.GONE
+        binding.fabLayout4.visibility - View.GONE
+
         binding.fab1.visibility = View.GONE
         binding.fab2.visibility = View.GONE
         binding.fab3.visibility = View.GONE
+        binding.fab4.visibility = View.GONE
+
     }
 
 
@@ -159,12 +170,15 @@ class MainActivity : BaseActivity(){
         fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
         fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
         fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
+        fabLayout4.animate().translationY(-resources.getDimension(R.dimen.standard_205))
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
         binding.fab3.visibility = View.VISIBLE
+        binding.fab4.visibility = View.VISIBLE
         binding.fabLayout1.visibility = View.VISIBLE
         binding.fabLayout2.visibility = View.VISIBLE
         binding.fabLayout3.visibility = View.VISIBLE
+        binding.fabLayout4.visibility = View.VISIBLE
 
 
     }
@@ -174,11 +188,14 @@ class MainActivity : BaseActivity(){
         fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
+
 
         Handler().postDelayed({
             binding.fabLayout1.visibility = View.INVISIBLE
             binding.fabLayout2.visibility = View.INVISIBLE
-            binding.fabLayout3.visibility = View.INVISIBLE}, 300)
+            binding.fabLayout3.visibility = View.INVISIBLE
+            binding.fabLayout4.visibility = View.INVISIBLE}, 300)
     }
 
 
