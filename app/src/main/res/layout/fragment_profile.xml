@@ -544,6 +544,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerGoal" />
 
+                <ImageView
+                        android:id="@+id/blurView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="#3f000000"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board" />
+
+
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerPuzzle"
                         android:layout_width="0dp"
@@ -551,14 +563,11 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:clipToPadding="false"
-                        android:orientation="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board"
-                        app:spanCount="2"
                         tools:listitem="@layout/item_profile_dream_board" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
