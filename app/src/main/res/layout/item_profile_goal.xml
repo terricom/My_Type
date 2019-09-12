@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+                name="viewModel"
+                type="com.terricom.mytype.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <ImageView
+                android:id="@+id/button_save_calendar"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="70dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorAllTransparent"
+                android:tint="@color/colorMyType"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_date_of_goal"
+                app:layout_constraintEnd_toEndOf="@+id/profile_date_of_goal"
+                app:layout_constraintStart_toStartOf="@+id/profile_date_of_goal"
+                app:layout_constraintTop_toTopOf="@+id/profile_date_of_goal" />
+
+        <TextView
+                android:id="@+id/profile_date_of_goal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/calendar_date"
+                android:fontFamily="@font/noto_sans"
+                android:paddingLeft="10dp"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="30dp"
+                android:paddingBottom="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textColorHint="@color/colorButton"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2019-09-10" />
+
+        <ImageView
+                android:id="@+id/button_expand_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:tint="@color/colorMyType"
+                app:layout_constraintBottom_toBottomOf="@+id/button_save_calendar"
+                app:layout_constraintEnd_toEndOf="@+id/button_save_calendar"
+                app:layout_constraintTop_toTopOf="@+id/button_save_calendar"
+                app:srcCompat="@drawable/toolbar_back" />
+
+
+        <ImageView
+                android:id="@+id/button_water"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_water"
+                app:layout_constraintEnd_toStartOf="@+id/number_water"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_date_of_goal"
+                app:srcCompat="@drawable/icon_water" />
+
+        <TextView
+                android:id="@+id/number_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.water)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toStartOf="@+id/button_fruit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button_water"
+                app:layout_constraintTop_toBottomOf="@+id/profile_date_of_goal" />
+
+        <ImageButton
+                android:id="@+id/button_vegetable"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_vegetable"
+                app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_fruit"
+                app:layout_constraintTop_toTopOf="@+id/button_water"
+                app:srcCompat="@drawable/icon_vegetable" />
+
+        <TextView
+                android:id="@+id/number_vegetable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.vegetable)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button_vegetable"
+                app:layout_constraintTop_toTopOf="@+id/button_water" />
+
+        <ImageButton
+                android:id="@+id/button_fruit"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_fruit"
+                app:layout_constraintEnd_toStartOf="@+id/number_fruit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_water"
+                app:layout_constraintTop_toTopOf="@+id/button_water"
+                app:srcCompat="@drawable/icon_fruit" />
+
+        <TextView
+                android:id="@+id/number_fruit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.fruit)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toStartOf="@+id/button_vegetable"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/button_fruit"
+                app:layout_constraintTop_toTopOf="@+id/button_water" />
+
+        <ImageButton
+                android:id="@+id/button_coconut"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_coconut"
+                app:layout_constraintEnd_toStartOf="@+id/number_water"
+                app:layout_constraintStart_toStartOf="@+id/button_water"
+                app:layout_constraintTop_toBottomOf="@+id/button_water"
+                app:srcCompat="@drawable/icon_coconut" />
+
+        <TextView
+                android:id="@+id/number_coconut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.oil)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="@+id/number_water"
+                app:layout_constraintStart_toStartOf="@+id/number_water"
+                app:layout_constraintTop_toBottomOf="@+id/button_water" />
+
+        <ImageButton
+                android:id="@+id/button_protein"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/button_coconut"
+                app:layout_constraintEnd_toStartOf="@+id/number_fruit"
+                app:layout_constraintStart_toStartOf="@+id/button_fruit"
+                app:layout_constraintTop_toTopOf="@+id/button_coconut"
+                app:srcCompat="@drawable/icon_protein" />
+
+        <TextView
+                android:id="@+id/number_protein"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.protein)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/button_protein"
+                app:layout_constraintEnd_toEndOf="@+id/number_fruit"
+                app:layout_constraintStart_toStartOf="@+id/number_fruit"
+                app:layout_constraintTop_toTopOf="@+id/button_protein" />
+
+        <ImageButton
+                android:id="@+id/button_carbon"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/button_protein"
+                app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
+                app:layout_constraintStart_toStartOf="@+id/button_vegetable"
+                app:layout_constraintTop_toTopOf="@+id/button_coconut"
+                app:srcCompat="@drawable/icon_carbon" />
+
+        <TextView
+                android:id="@+id/number_carbon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.3"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.carbon)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/button_carbon"
+                app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
+                app:layout_constraintStart_toStartOf="@+id/number_vegetable"
+                app:layout_constraintTop_toTopOf="@+id/button_carbon"
+                app:layout_constraintVertical_bias="0.538" />
+
+        <ImageView
+                android:id="@+id/shaperecord_title_weight"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:text="@string/shape_weight"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/number_weight"
+                app:layout_constraintEnd_toEndOf="@+id/button_coconut"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_coconut"
+                app:srcCompat="@drawable/icon_weight" />
+
+        <TextView
+                android:id="@+id/number_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.weight)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="@+id/number_coconut"
+                app:layout_constraintStart_toStartOf="@+id/number_coconut"
+                app:layout_constraintTop_toBottomOf="@+id/number_coconut" />
+
+        <ImageView
+                android:id="@+id/shaperecord_title_body_water"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/number_muscle"
+                app:layout_constraintEnd_toEndOf="@+id/button_protein"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/button_protein"
+                app:layout_constraintTop_toTopOf="@+id/shaperecord_title_weight"
+                app:srcCompat="@drawable/icon_muscle" />
+
+        <TextView
+                android:id="@+id/number_muscle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.muscle)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/number_protein"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/number_protein"
+                app:layout_constraintTop_toBottomOf="@+id/number_protein" />
+
+        <ImageView
+                android:id="@+id/shaperecord_title_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
+                app:layout_constraintEnd_toEndOf="@+id/button_carbon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/button_carbon"
+                app:layout_constraintTop_toBottomOf="@+id/button_carbon"
+                app:srcCompat="@drawable/icon_body_fat" />
+
+        <TextView
+                android:id="@+id/number_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="@+id/number_carbon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/number_carbon"
+                app:layout_constraintTop_toBottomOf="@+id/number_carbon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

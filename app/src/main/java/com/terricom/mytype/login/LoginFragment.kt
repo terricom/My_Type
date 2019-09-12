@@ -53,7 +53,7 @@ class LoginFragment: Fragment() {
                 LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
                 viewModel.onLoginFacebookCompleted()
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
 //                (activity as MainActivity).toolbar.visibility = View.VISIBLE
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE

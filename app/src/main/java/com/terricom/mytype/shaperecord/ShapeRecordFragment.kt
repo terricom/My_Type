@@ -31,7 +31,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToAchivementFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_line_chart
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_achievment
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
             }

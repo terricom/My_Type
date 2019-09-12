@@ -11,15 +11,17 @@
 
 
         <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:scaleType="fitStart"
-            app:layout_constraintBottom_toBottomOf="@+id/diary_title_total_nutrition"
-            app:layout_constraintStart_toEndOf="@+id/diary_title_total_nutrition"
-            app:layout_constraintTop_toTopOf="@+id/diary_title_total_nutrition"
-            app:srcCompat="@drawable/icon_info" />
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitStart"
+                app:layout_constraintBottom_toBottomOf="@+id/diary_title_total_nutrition"
+                app:layout_constraintStart_toEndOf="@+id/diary_title_total_nutrition"
+                app:layout_constraintTop_toTopOf="@+id/diary_title_total_nutrition"
+                app:srcCompat="@drawable/icon_info" />
 
         <TextView
                 android:text="@string/diary_title_today_compliment"

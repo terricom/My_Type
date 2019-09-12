@@ -28,5 +28,6 @@
     <color name="colorNight">#B9694E</color>
     <color name="colorMuscle">#A06FE0</color>
     <color name="colorPinky">#E4B6C7</color>
+    <color name="colorSelectedBottomNav">#FFE873</color>
 
 </resources>

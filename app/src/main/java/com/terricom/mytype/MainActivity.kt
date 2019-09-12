@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(){
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_food_record -> {
+            R.id.navigation_diary -> {
                 if (UserManager.userToken != ""){
                     findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
                 }
@@ -39,15 +39,15 @@ class MainActivity : BaseActivity(){
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_diary -> {
+            R.id.navigation_accumulation -> {
                 findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLinechartFragment())
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_line_chart -> {
+            R.id.navigation_achievment -> {
                 findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToAchivementFragment())
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_harvest -> {
+            R.id.navigation_profile -> {
                 findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
                 return@OnNavigationItemSelectedListener true
             }
@@ -134,7 +134,7 @@ class MainActivity : BaseActivity(){
                 hideToolbar()
                 hideFABView()
             }
-            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) || it.value == App.instance?.getString(R.string.title_sleep)  ){
+            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) || it.value == App.instance?.getString(R.string.title_sleep) || it.value == App.instance?.getString(R.string.title_dream_puzzle) ){
                 hideBottomNavView()
                 hideFABView()
             }

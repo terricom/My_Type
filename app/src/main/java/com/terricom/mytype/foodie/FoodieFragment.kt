@@ -125,7 +125,6 @@ class FoodieFragment: Fragment() {
 
         }
 
-
         binding.buttonAddFood.setOnClickListener {
             binding.dagFoodHint.visibility = View.GONE
             if (viewModel.addFood.value != null){
@@ -151,7 +150,7 @@ class FoodieFragment: Fragment() {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                 (activity as MainActivity).fab.visibility = View.VISIBLE
             }
         }
@@ -228,49 +227,9 @@ class FoodieFragment: Fragment() {
             viewModel.clearData()
 
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).fab.visibility = View.VISIBLE
-
-//            viewModel.addPhoto.observe(this, androidx.lifecycle.Observer {
-//                if (it == true){
-//                    viewModel.photoUri.observe(this, androidx.lifecycle.Observer {
-//                        if (it != null){
-//                            viewModel.addFoodie()
-//                            viewModel.updateFoodAndNuList()
-//                            viewModel.clearData()
-//
-//                            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-//                            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-//                            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//                            (activity as MainActivity).fab.visibility = View.VISIBLE
-//                        }
-//                    })
-//                } else {
-//                    viewModel.addFoodie()
-//                    viewModel.updateFoodAndNuList()
-//                    viewModel.clearData()
-//
-//                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-//                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-//                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//                    (activity as MainActivity).fab.visibility = View.VISIBLE
-//                }
-//            })
-
-//            val handler = Handler()
-//
-//            handler.postDelayed({
-//                viewModel.addFoodie()
-//                viewModel.updateFoodAndNuList()
-//                viewModel.clearData()
-//
-//                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-//                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_food_record
-//                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//                (activity as MainActivity).fab.visibility = View.VISIBLE
-//            }, 4000)
-
 
 
         }

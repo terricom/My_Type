@@ -48,10 +48,16 @@ class FoodieViewModel: ViewModel() {
 
     fun getFoodlist(foodlist: List<String>){
         _userFoodList.value = foodlist
+        for (food in foodlist){
+            newFuList.add(food)
+        }
     }
 
     fun getNulist(nulist: List<String>){
         _userNuList.value = nulist
+        for (nutrition in nulist){
+            newNuList.add(nutrition)
+        }
     }
 
 
@@ -181,12 +187,12 @@ class FoodieViewModel: ViewModel() {
                 for (doc in result){
                     if (doc.id == userUid){
                         val user = doc.toObject(UserMT::class.java)
-                        if (user.foodlist == null){
+//                        if (user.foodlist == null){
                             db.collection("Users").document(doc.id).update("foodlist", newFuList).addOnCompleteListener{}
-                        }
-                        if (user.nutritionlist == null){
+//                        }
+//                        if (user.nutritionlist == null){
                             db.collection("Users").document(doc.id).update("nutritionlist", newNuList).addOnCompleteListener {  }
-                        }
+//                        }
                     }
                 }
 

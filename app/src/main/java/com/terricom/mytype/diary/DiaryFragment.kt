@@ -42,6 +42,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         })
         viewModel.fireFoodie.observe(this, Observer {
             if (it.size > 0){
+                Logger.i("viewModel.fireFoodie.observe = $it")
                 binding.diaryHintAddFoodie.visibility = View.GONE
                 binding.iconMyType.visibility = View.GONE
             }
@@ -60,7 +61,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             Logger.i("viewModel.calendarClicked.observe =$it")
             if (it == true){
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_275)).start()
+                    binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.visibility = View.GONE
                     if (viewModel.fireFoodie.value!!.size <= 0){
                         binding.diaryHintAddFoodie.visibility = View.VISIBLE
@@ -70,7 +71,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 }
             }else if (it == false){
                 binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down_205)).start()
+                    binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
                     binding.diaryHintAddFoodie.visibility = View.INVISIBLE
                     viewModel.calendarClicked()

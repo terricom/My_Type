@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="182dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorSelectedBottomNav"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <ImageView
@@ -23,7 +23,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_my_type"/>
+                app:srcCompat="@drawable/icon_my_type" />
         <!--android:outlineProvider="@{viewModel.outlineProvider}"-->
         <!--app:imageUrl="@{viewModel.user.picture}"-->
 
@@ -40,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_drawer_avatar"
-                tools:text="@string/app_name"/>
+                tools:text="@string/app_name" />
         <!--android:text="@{viewModel.user.name}"-->
         <!--android:visibility="@{TextUtils.isEmpty(viewModel.user.name) ? View.GONE : View.VISIBLE}"-->
 

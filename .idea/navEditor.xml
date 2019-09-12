@@ -102,6 +102,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="navigate_to_dream_board_fragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="navigate_to_foodie_fragment">
                     <value>
                       <LayoutPositions />

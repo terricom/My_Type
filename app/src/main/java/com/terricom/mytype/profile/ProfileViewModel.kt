@@ -1,9 +1,12 @@
 package com.terricom.mytype.profile
 
 import androidx.databinding.InverseMethod
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.terricom.mytype.Logger
+import com.terricom.mytype.data.Pazzle
 import com.terricom.mytype.data.UserManager
 
 class ProfileViewModel: ViewModel() {
@@ -26,6 +29,15 @@ class ProfileViewModel: ViewModel() {
 
     val date = MutableLiveData<String>()
     val goal = MutableLiveData<String>()
+
+    val _pazzle = MutableLiveData<Pazzle>()
+    val pazzle :LiveData<Pazzle>
+        get() = _pazzle
+
+    fun setPazzle(pazzle: Pazzle){
+        _pazzle.value = pazzle
+        Logger.i("ProfileViewModel setPazzle = ${pazzle.position}")
+    }
 
     fun convertStringToFloat(string: String): Float {
         return try {

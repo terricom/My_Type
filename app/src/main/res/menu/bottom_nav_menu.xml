@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/navigation_food_record"
+            android:id="@+id/navigation_diary"
             android:icon="@drawable/icon_diary"
             android:title="@string/title_diary"/>
 
     <item
-            android:id="@+id/navigation_diary"
+            android:id="@+id/navigation_accumulation"
             android:icon="@drawable/icon_line_chart"
             android:title="@string/title_linechart"/>
 
@@ -16,11 +16,11 @@
             android:title=""/>
 
     <item
-            android:id="@+id/navigation_line_chart"
+            android:id="@+id/navigation_achievment"
             android:icon="@drawable/icon_shape"
             android:title="@string/title_harvest"/>
     <item
-            android:id="@+id/navigation_harvest"
+            android:id="@+id/navigation_profile"
             android:icon="@drawable/icon_profile"
             android:title="@string/title_profile"/>
 
