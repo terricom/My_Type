@@ -1,12 +1,17 @@
 package com.terricom.mytype.diary
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.terricom.mytype.App
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
@@ -45,6 +50,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 Logger.i("viewModel.fireFoodie.observe = $it")
                 binding.diaryHintAddFoodie.visibility = View.GONE
                 binding.iconMyType.visibility = View.GONE
+                binding.backgroundOfIcon.visibility = View.GONE
             }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
@@ -81,20 +87,21 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         })
 
-//        if (viewModel.calendarClicked.value == true){
-//            viewModel.calendarClickedAgain()
-//            binding.buttonSaveCalendar.setOnClickListener {
-//                binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down))
-//                binding.diaryCalendar.visibility = View.GONE
-//            }
-//        }else {
-//            binding.buttonSaveCalendar.setOnClickListener {
-//                binding.buttonExpandArrow.animate().rotation(resources.getDimension(R.dimen.diary_up_side_down))
-//                binding.diaryCalendar.visibility = View.VISIBLE
-//
-//            }
-//
-//        }
+        fun isConnected(): Boolean{
+            val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
+            return if (connectivityManager is ConnectivityManager) {
+                val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+                networkInfo?.isConnected ?: false
+            } else false
+        }
+
+        if (isConnected()) {
+            Logger.i("NetworkConnection Network Connected.")
+            //執行下載任務
+        }else{
+            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+            //告訴使用者網路無法使用
+        }
 
         viewModel.date.observe(this, Observer {
             Logger.i("viewModel.date.observe === $it")

@@ -1,17 +1,18 @@
 package com.terricom.mytype.sleep
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.terricom.mytype.Logger
-import com.terricom.mytype.MainActivity
-import com.terricom.mytype.NavigationDirections
-import com.terricom.mytype.R
+import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import org.threeten.bp.Duration
@@ -51,6 +52,15 @@ class SleepFragment: Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
+        binding.buttonShaperecordSave.setOnClickListener {
+            if (isConnected()) {
+                Logger.i("NetworkConnection Network Connected.")
+                //執行下載任務
+            }else{
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+                //告訴使用者網路無法使用
+            }
+        }
 
         return binding.root
     }
@@ -125,7 +135,14 @@ class SleepFragment: Fragment() {
             Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
         }
 
+    }
 
+    private fun isConnected(): Boolean{
+        val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
     override fun onStop() {

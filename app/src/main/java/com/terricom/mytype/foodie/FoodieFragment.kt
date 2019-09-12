@@ -9,6 +9,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -156,6 +158,8 @@ class FoodieFragment: Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
+
+
         class MyDragListener : View.OnDragListener {
 
             override fun onDrag(v: View, event: DragEvent): Boolean {
@@ -230,6 +234,14 @@ class FoodieFragment: Fragment() {
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).fab.visibility = View.VISIBLE
+
+            if (isConnected()) {
+                Logger.i("NetworkConnection Network Connected.")
+                //執行下載任務
+            }else{
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+                //告訴使用者網路無法使用
+            }
 
 
         }
@@ -432,27 +444,12 @@ class FoodieFragment: Fragment() {
     }
 
 
-    private fun getRotateDegree( filePath:String): Int{
-        var degree: Int = 0
-        try {
-            var exifInterface: ExifInterface = ExifInterface(filePath);
-            var orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
-                degree = 90;
-            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
-                degree = 180;
-            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
-                degree = 270;
-            }
-            if (degree != 0) {
-                exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION, "0");
-                exifInterface.saveAttributes();
-            }
-        } catch (e: IOException) {
-            degree = -1;
-            e.printStackTrace();
-        }
-        return degree;
+    private fun isConnected(): Boolean{
+        val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
+        return if (connectivityManager is ConnectivityManager) {
+            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+            networkInfo?.isConnected ?: false
+        } else false
     }
 
 

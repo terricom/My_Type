@@ -184,7 +184,7 @@
                 android:id="@+id/diary_hint_add_foodie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="180dp"
                 android:lineSpacingExtra="4sp"
                 android:text="@string/diary_hint_2_foodie"
                 android:textAlignment="viewStart"
@@ -212,14 +212,25 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <ImageView
+                android:id="@+id/background_of_icon"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginBottom="24dp"
+                android:tint="@color/com_facebook_button_background_color_pressed"
+                app:layout_constraintBottom_toTopOf="@+id/diary_hint_add_foodie"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/button_circle" />
+
+        <ImageView
                 android:id="@+id/icon_my_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/diary_hint_add_foodie"
+                app:layout_constraintBottom_toBottomOf="@+id/background_of_icon"
                 app:layout_constraintEnd_toEndOf="@+id/diary_hint_add_foodie"
                 app:layout_constraintStart_toStartOf="@+id/diary_hint_add_foodie"
-                app:srcCompat="@drawable/icon_broccoli" />
+                app:layout_constraintTop_toTopOf="@+id/background_of_icon"
+                app:srcCompat="@drawable/icon_my_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
