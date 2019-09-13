@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Pazzle
+import com.terricom.mytype.data.PlaceHolder
 import com.terricom.mytype.databinding.FragmentProfileBinding
 
 
@@ -29,11 +30,11 @@ class ProfileFragment: Fragment() {
         binding.lifecycleOwner= this
         val pazzleMock = Pazzle(
             listOf(0,4,6,8),
-            "https://firebasestorage.googleapis.com/v0/b/mytype-201909.appspot.com/o/images%2Fplaceholders%2Fplaceholder_1.png?alt=media&token=690d7b59-a06e-44a2-9c9e-1bffccccf74b"
+            PlaceHolder.PUMPKIN.value
         )
         val pazzleMock2 = Pazzle(
             listOf(10,14,16,18),
-            "https://firebasestorage.googleapis.com/v0/b/mytype-201909.appspot.com/o/images%2Fplaceholders%2Fplaceholder_1.png?alt=media&token=690d7b59-a06e-44a2-9c9e-1bffccccf74b"
+            PlaceHolder.AVOCADO.value
         )
 
         viewModel.setPazzle(listOf(pazzleMock, pazzleMock2))

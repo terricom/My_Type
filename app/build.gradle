@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.0.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
 
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Navigation

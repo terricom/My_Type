@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.iid.FirebaseInstanceId
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -105,6 +107,22 @@ class MainActivity : BaseActivity(){
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Logger.w( "Firebase getInstanceId failed ${task.exception}")
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                Logger.d("Firebase token from firebase =$token")
+            })
+
+        //取消 Firebase 的系統自動推播
+//        FirebaseMessaging.getInstance().isAutoInitEnabled = false
 
     }
 
@@ -134,7 +152,10 @@ class MainActivity : BaseActivity(){
                 hideToolbar()
                 hideFABView()
             }
-            if (it.value == App.instance?.getString(R.string.title_foodie) || it.value == App.instance?.getString(R.string.title_shape_record) || it.value == App.instance?.getString(R.string.title_sleep) || it.value == App.instance?.getString(R.string.title_dream_puzzle) ){
+            if (it.value == App.instance?.getString(R.string.title_foodie) ||
+                it.value == App.instance?.getString(R.string.title_shape_record) ||
+                it.value == App.instance?.getString(R.string.title_sleep) ||
+                it.value == App.instance?.getString(R.string.title_dream_puzzle) ){
                 hideBottomNavView()
                 hideFABView()
             }
