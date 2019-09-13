@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
@@ -29,27 +30,34 @@ class MyFirebaseMessagingService: FirebaseMessagingService(){
         setMessage()
         Handler().postDelayed({
             createNotificationChannel()
-        },3000)
+        },4000)
     }
 
-//    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//
-//        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-//        Logger.d("From: " + remoteMessage.from!!)
-//
-//        // Check if message contains a data payload.
-//        if (remoteMessage.data.size > 0) {
-//            Logger.d("Message data payload: " + remoteMessage.data)
-//
-//
-//        }
-//
-//        // Check if message contains a notification payload.
-//        if (remoteMessage.notification != null) {
-//            Logger.d( "Message Notification Body: " + remoteMessage.notification!!.body!!)
-//        }
-//
-//    }
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Logger.d("From: " + remoteMessage.from!!)
+
+        // Check if message contains a data payload.
+        if (remoteMessage.data.size > 0) {
+            Logger.d("Message data payload: " + remoteMessage.data)
+            setMessage()
+            Handler().postDelayed({
+                createNotificationChannel()
+            },4000)
+
+        }
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.notification != null) {
+            Logger.d( "Message Notification Body: " + remoteMessage.notification!!.body!!)
+            setMessage()
+//            Handler().postDelayed({
+                createNotificationChannel()
+//            },4000)
+        }
+
+    }
 
     var time = 0
     val CHANNEL_ID = "MyType"
