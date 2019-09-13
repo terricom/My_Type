@@ -54,6 +54,7 @@
     <dimen name="diary_up_side_down_45">45dp</dimen>
     <dimen name="diary_up_side_down_205">205dp</dimen>
     <dimen name="rotate_180">180dp</dimen>
+    <dimen name="height_profile_pazzle">250dp</dimen>
 
 
 </resources>

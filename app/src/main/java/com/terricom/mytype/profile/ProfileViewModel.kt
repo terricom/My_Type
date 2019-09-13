@@ -4,6 +4,8 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Pazzle
@@ -30,13 +32,13 @@ class ProfileViewModel: ViewModel() {
     val date = MutableLiveData<String>()
     val goal = MutableLiveData<String>()
 
-    val _pazzle = MutableLiveData<Pazzle>()
-    val pazzle :LiveData<Pazzle>
+    val _pazzle = MutableLiveData<List<Pazzle>>()
+    val pazzle :LiveData<List<Pazzle>>
         get() = _pazzle
 
-    fun setPazzle(pazzle: Pazzle){
+    fun setPazzle(pazzle: List<Pazzle>){
         _pazzle.value = pazzle
-        Logger.i("ProfileViewModel setPazzle = ${pazzle.position}")
+        Logger.i("pazzle = $pazzle")
     }
 
     fun convertStringToFloat(string: String): Float {
@@ -44,6 +46,22 @@ class ProfileViewModel: ViewModel() {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
             0.0f
+        }
+    }
+
+    private val _snapPosition = MutableLiveData<Int>()
+
+    val snapPosition: LiveData<Int>
+        get() = _snapPosition
+
+    fun onGalleryScrollChange(layoutManager: RecyclerView.LayoutManager?, linearSnapHelper: LinearSnapHelper) {
+        val snapView = linearSnapHelper.findSnapView(layoutManager)
+        snapView?.let {
+            layoutManager?.getPosition(snapView)?.let {
+                if (it != snapPosition.value) {
+                    _snapPosition.value = it
+                }
+            }
         }
     }
 
