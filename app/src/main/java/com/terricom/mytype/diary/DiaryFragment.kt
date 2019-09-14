@@ -35,7 +35,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.lifecycleOwner = this
 
         binding.diaryCalendar.setEventHandler(this)
-        binding.diaryCalendar.filterdate(Date())
+        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
             binding.diaryCalendar.updateCalendar()
@@ -131,11 +131,21 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
     }
 
     override fun onCalendarNextPressed() {
-        binding.diaryCalendar.updateCalendar()
+        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+        binding.diaryCalendar.getThisMonth()
+        binding.diaryCalendar.recordedDate.observe(this, Observer {
+            binding.diaryCalendar.updateCalendar()
+
+        })
     }
 
     override fun onCalendarPreviousPressed() {
-        binding.diaryCalendar.updateCalendar()
+        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+        binding.diaryCalendar.getThisMonth()
+        binding.diaryCalendar.recordedDate.observe(this, Observer {
+            binding.diaryCalendar.updateCalendar()
+
+        })
     }
 
 

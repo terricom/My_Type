@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
         <variable name="viewModel" type="com.terricom.mytype.diary.DiaryViewModel"/>
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="vertical">
 
@@ -36,16 +36,17 @@
             <!-- date title -->
             <TextView
                     android:id="@+id/itemDate"
+                    style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/toNext"
                     android:layout_toRightOf="@+id/toBack"
                     android:gravity="center"
+                    android:letterSpacing="0.15"
                     android:text="2018.12"
-                    style="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/colorMyType"
-                    android:letterSpacing="0.15" android:textStyle="bold"/>
+                    android:textSize="@dimen/text_content" />
 
             <!-- next button -->
             <ImageView

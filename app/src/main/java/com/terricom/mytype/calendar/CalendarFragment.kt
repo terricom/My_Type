@@ -128,7 +128,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     val viewModel = DiaryViewModel()
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    var selectedDayOut: Date ?= null
+    var selectedDayOut: Date = Date()
     val thisMonth: List<String> ?= null
 
 
@@ -188,6 +188,8 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                 .addOnSuccessListener {
                     val items = mutableListOf<Foodie>()
                     val dates = mutableListOf<String>()
+                    items.clear()
+                    dates.clear()
                     for (document in it) {
                         val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                         if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +

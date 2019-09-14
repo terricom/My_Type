@@ -12,45 +12,47 @@
         android:layout_height="72dp">
 
         <TextView
-            android:id="@+id/itemDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="2dp"
-            android:text="1"
-            android:textColor="@color/colorMyType"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/itemDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="2dp"
+                android:text="1"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/date_record"
-            android:layout_width="16dp"
-            android:layout_height="26dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:elevation="5dp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toEndOf="@+id/date_puzzle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_my_type" />
+                android:id="@+id/date_record"
+                android:layout_width="16dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:elevation="5dp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toEndOf="@+id/date_puzzle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_my_type" />
 
         <ImageView
-            android:id="@+id/date_puzzle"
-            android:layout_width="16dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="5dp"
-            android:tint="@color/colorBananna"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/date_record"
-            app:layout_constraintEnd_toStartOf="@+id/date_record"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/date_record"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/icon_puzzle" />
+                android:id="@+id/date_puzzle"
+                android:layout_width="15dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="5dp"
+                android:tint="@color/colorBananna"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/date_record"
+                app:layout_constraintEnd_toStartOf="@+id/date_record"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/date_record"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/icon_puzzle"
+                tools:layout_editor_absoluteY="24dp" />
 
 
     </com.terricom.mytype.calendar.SquareConstrainLayout>

@@ -20,7 +20,7 @@
                 android:layout_marginStart="0.01dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="0.01dp"
-                android:scaleType="matrix"
+                android:scaleType="center"
                 app:imageUrl="@{foodie.photo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

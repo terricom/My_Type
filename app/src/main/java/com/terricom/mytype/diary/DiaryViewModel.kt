@@ -2,7 +2,6 @@ package com.terricom.mytype.diary
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -107,9 +106,13 @@ class DiaryViewModel: ViewModel() {
             val foodieDiary = users
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
             val shapeDiary = users
                 .document(userUid).collection("Shape")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -120,6 +123,7 @@ class DiaryViewModel: ViewModel() {
             .get()
             .addOnSuccessListener {
                 val items = mutableListOf<Shape>()
+                items.clear()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
@@ -136,6 +140,7 @@ class DiaryViewModel: ViewModel() {
             .get()
             .addOnSuccessListener {
                 val items = mutableListOf<Sleep>()
+                items.clear()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
@@ -158,80 +163,62 @@ class DiaryViewModel: ViewModel() {
                 storageRef = FirebaseStorage.getInstance().reference
 
                 val items = mutableListOf<Foodie>()
+//                items.clear()
                 for (document in it) {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Foodie::class.java))
                     }
-
                 }
-                if (items.size != 0) {
+                Logger.i("items.size == 0 or ${items.size}")
+                _totalWater.value = 0f
+                _totalOil.value = 0f
+                _totalVegetable.value = 0f
+                _totalProtein.value = 0f
+                _totalFruit.value = 0f
+                _totalCarbon.value = 0f
+                for (foo in items){
+                    _totalWater.value = _totalWater.value!!.plus(foo.water ?: 0f)
+                    _totalOil.value = _totalOil.value!!.plus(foo.oil ?: 0f)
+                    _totalVegetable.value = _totalVegetable.value!!.plus(foo.vegetable ?: 0f)
+                    _totalProtein.value = _totalProtein.value!!.plus(foo.protein ?: 0f)
+                    _totalCarbon.value = _totalCarbon.value!!.plus(foo.carbon ?: 0f)
+                    _totalFruit.value = _totalFruit.value!!.plus(foo.fruit ?:0f)
                 }
                 fireFoodieBack(items)
+                Logger.i("fireFoodie =${fireFoodie.value}")
+
+
             }
         }
 
     }
 
-    val totalWater: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.water != null){
-            result += foodie.water.toFloat()
-            }
-        }
-        result
-    }
+    val _totalWater = MutableLiveData<Float>()
+    val _totalOil = MutableLiveData<Float>()
+    val _totalVegetable = MutableLiveData<Float>()
+    val _totalProtein = MutableLiveData<Float>()
+    val _totalFruit = MutableLiveData<Float>()
+    val _totalCarbon = MutableLiveData<Float>()
 
-    val totalOil: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.oil != null){
-            result += foodie.oil.toFloat()
-            }
-        }
-        result
-    }
 
-    val totalVegetable: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.vegetable != null){
-            result += foodie.vegetable.toFloat()
-            }
-        }
-        result
-    }
+    val totalWater: LiveData<Float>
+        get() = _totalWater
 
-    val totalProtein: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.protein != null) {
-                result += foodie.protein.toFloat()
-            }
-        }
-        result
-    }
+    val totalOil: LiveData<Float>
+        get() = _totalOil
 
-    val totalFruit: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.fruit != null){
-            result += foodie.fruit.toFloat()
-            }
-        }
-        result
-    }
+    val totalVegetable: LiveData<Float>
+        get() = _totalVegetable
 
-    val totalCarbon: LiveData<Float> = Transformations.map(fireFoodie){it
-        var result: Float = 0.0f
-        for (foodie in it) {
-            if (foodie.carbon != null){
-            result += foodie.carbon.toFloat()
-            }
-        }
-        result
-    }
+    val totalProtein: LiveData<Float>
+        get() = _totalProtein
+
+    val totalFruit: LiveData<Float>
+        get() = _totalFruit
+
+    val totalCarbon: LiveData<Float>
+        get() = _totalCarbon
 
     fun getTime(timestamp: Date):String{
         val sdf = SimpleDateFormat("HH:mm a")
