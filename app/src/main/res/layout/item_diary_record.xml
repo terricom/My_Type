@@ -17,13 +17,14 @@
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="0.01dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="0.01dp"
                 android:scaleType="matrix"
                 app:imageUrl="@{foodie.photo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/foodie_time_stamp"
-                tools:background="@drawable/icon_line_chart" />
+                app:layout_constraintTop_toBottomOf="@+id/foodie_time_stamp" />
 
         <TextView
             android:id="@+id/foodie_memo"

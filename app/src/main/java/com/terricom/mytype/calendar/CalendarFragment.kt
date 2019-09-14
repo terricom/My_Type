@@ -8,15 +8,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
+import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.diary.DiaryViewModel
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
+
 
     companion object {
         const val MAX_DAY_COUNT = 35
@@ -85,6 +93,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             ))
 
         }
+
     }
 
 
@@ -117,7 +126,82 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     val viewModel = DiaryViewModel()
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    var selectedDayOut: String ?= ""
+    var selectedDayOut: Date ?= null
+    val thisMonth: List<String> ?= null
+
+
+    val userUid = UserManager.uid
+
+    val db = FirebaseFirestore.getInstance()
+    val users = db.collection("Users")
+
+    val _fireFoodieM = MutableLiveData<List<Foodie>>()
+    val fireFoodieM : LiveData<List<Foodie>>
+        get() = _fireFoodieM
+
+    fun fireFoodieBackM (foo: List<Foodie>){
+        _fireFoodieM.value = foo
+    }
+    val _date = MutableLiveData<Date>()
+    val date : LiveData<Date>
+        get() = _date
+
+    fun filterdate(dato: Date){
+        Logger.i("CalendarViewHolder filterdate = ${dato}")
+        _date.value = dato
+    }
+
+    fun getThisMonth() {
+        if (userUid!!.isNotEmpty()){
+            Logger.i("whereGreaterThanOrEqualTo ${currentDateCalendar.get(Calendar.YEAR)}" +
+                    "-${currentDateCalendar.get(Calendar.MONTH)+1}-" +
+                    "01 00:00:00.000000000" +
+                    "whereLessThanOrEqualTo ${currentDateCalendar.get(Calendar.YEAR)}" +
+                    "-${currentDateCalendar.get(Calendar.MONTH)+1}-"+
+                    "${getLastMonthLastDate()} 23:59:59.000000000")
+            val foodieDiary = users
+                .document(userUid).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf(
+                    "${currentDateCalendar.get(Calendar.YEAR)}-${currentDateCalendar.get(Calendar.MONTH)+1}-" +
+                            "${getLastMonthLastDate()} 23:59:59.000000000"
+                ))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf(
+                    "${currentDateCalendar.get(Calendar.YEAR)}-${currentDateCalendar.get(Calendar.MONTH)+1}-" +
+                            "01 00:00:00.000000000"
+                ))
+
+
+            foodieDiary
+                .get()
+                .addOnSuccessListener {
+                    val items = mutableListOf<Foodie>()
+                    for (document in it) {
+                        val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
+                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
+                            "${sdf.format(convertDate).split("-")[1]}" ==
+                            "${sdf.format(date.value)!!.split("-")[0]}-" +
+                            "${sdf.format(date.value)!!.split("-")[1]}"){
+                            items.add(document.toObject(Foodie::class.java))
+                        }
+                    }
+                    if (items.size != 0) {
+                    }
+                    fireFoodieBackM(items)
+                    Logger.i("fireFoodieM in CalendarAdapter =${fireFoodieM.value}")
+                }
+        }
+    }
+
+    fun getLastMonthLastDate(): Int {
+//        val calendar = Calendar.getInstance()
+        currentDateCalendar.add(Calendar.MONTH, 0)
+
+        val max = currentDateCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        currentDateCalendar.set(Calendar.DAY_OF_MONTH, max)
+
+        return currentDateCalendar.get(Calendar.DAY_OF_MONTH)
+    }
 
 
     override fun onDateSelect(selectDate: Date) {
@@ -127,9 +211,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} ")
-        selectedDayOut = sdf.format(selectDate)
-        viewModel.filterdate(selectDate)
+        Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} selectDate = $selectDate ")
+        filterdate(selectDate)
+        getThisMonth()
+//        viewModel.filterdate(selectDate)
+        selectedDayOut = selectDate
         setHeader(tempCalendar)
     }
 

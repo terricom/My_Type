@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.R
+import com.terricom.mytype.databinding.ItemCalendarDayBinding
 import com.terricom.mytype.diary.DiaryViewModel
 import java.util.*
 
@@ -16,11 +16,89 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     var selectedDate: Date ?= null
     var listener: ListenerCellSelect? = null
 
+//    val userUid = UserManager.uid
+//
+//    val db = FirebaseFirestore.getInstance()
+//    val users = db.collection("Users")
+//
+//    val _fireFoodieM = MutableLiveData<List<Foodie>>()
+//    val fireFoodieM : LiveData<List<Foodie>>
+//        get() = _fireFoodieM
+//
+//    fun fireFoodieBackM (foo: List<Foodie>){
+//        _fireFoodieM.value = foo
+//    }
+
+//    val sdf = SimpleDateFormat("yyyy-MM-dd")
+//
+//    val _date = MutableLiveData<Date>()
+//    val date : LiveData<Date>
+//        get() = _date
+//
+//    fun filterdate(dato: Date){
+//        Logger.i("CalendarViewHolder filterdate = ${dato}")
+//        _date.value = dato
+//    }
+//
+//    fun getThisMonth() {
+//        if (userUid!!.isNotEmpty()){
+//            Logger.i("whereGreaterThanOrEqualTo ${showingDateCalendar.get(Calendar.YEAR)}" +
+//                    "-${showingDateCalendar.get(Calendar.MONTH)}-" +
+//                    "01 00:00:00.000000000" +
+//                    "whereLessThanOrEqualTo ${showingDateCalendar.get(Calendar.YEAR)}" +
+//                    "-${showingDateCalendar.get(Calendar.MONTH)}-"+
+//                    "${getLastMonthLastDate()} 23:59:59.000000000")
+//            val foodieDiary = users
+//                .document(userUid).collection("Foodie")
+//                .orderBy("timestamp", Query.Direction.DESCENDING)
+//                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf(
+//                "${showingDateCalendar.get(Calendar.YEAR)}-${showingDateCalendar.get(Calendar.MONTH)}-" +
+//                        "${getLastMonthLastDate()} 23:59:59.000000000"
+//                ))
+//                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf(
+//                    "${showingDateCalendar.get(Calendar.YEAR)}-${showingDateCalendar.get(Calendar.MONTH)}-" +
+//                            "01 00:00:00.000000000"
+//                ))
+//
+//
+//            foodieDiary
+//                .get()
+//                .addOnSuccessListener {
+//                    val items = mutableListOf<Foodie>()
+//                    for (document in it) {
+//                        val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
+//                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
+//                            "${sdf.format(convertDate).split("-")[1]}" ==
+//                            "${sdf.format(date.value)!!.split("-")[0]}-" +
+//                            "${sdf.format(date.value)!!.split("-")[1]}"){
+//                            items.add(document.toObject(Foodie::class.java))
+//                        }
+//                    }
+//                    if (items.size != 0) {
+//                    }
+//                    fireFoodieBackM(items)
+//                    Logger.i("fireFoodieM in CalendarAdapter =${fireFoodieM.value}")
+//                }
+//        }
+//    }
+//
+//    fun getLastMonthLastDate(): Int {
+////        val calendar = Calendar.getInstance()
+//        showingDateCalendar.add(Calendar.MONTH, -1)
+//
+//        val max = showingDateCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+//        showingDateCalendar.set(Calendar.DAY_OF_MONTH, max)
+//
+//        return showingDateCalendar.get(Calendar.DAY_OF_MONTH)
+//    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day, parent, false)
-        return CalendarViewHolder(view)
+//        filterdate(selectedDate ?: Date())
+//        getThisMonth()
+        return CalendarViewHolder(ItemCalendarDayBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun getItemCount(): Int {
@@ -35,12 +113,6 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
             listener,
             viewModel = DiaryViewModel()
         )
-//        if(selectedDate != null){
-//            val selectedDateTime = viewHolder.getCalendarFromTimestamp(selectedDate!!.time)
-//            val sdf = SimpleDateFormat("yyyy-MM-dd")
-//            Logger.i("itemView.setOnClickListener = ${sdf.format(Date(selectedDateTime.time.time))}")
-//            DiaryViewModel().filterdate("${sdf.format(Date(selectedDateTime.time.time))}")
-//        }
     }
 
 

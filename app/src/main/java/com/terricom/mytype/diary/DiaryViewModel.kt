@@ -89,9 +89,6 @@ class DiaryViewModel: ViewModel() {
 
 
     init {
-        filterdate(Date())
-        getDiary()
-        getThisMonth()
         calendarClickedAgain()
     }
 
@@ -107,7 +104,7 @@ class DiaryViewModel: ViewModel() {
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp(date.value!!.time))
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
                 .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
 
         shapeDiary
@@ -245,13 +242,15 @@ class DiaryViewModel: ViewModel() {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
                         "${sdf.format(convertDate).split("-")[1]}" ==
-                        "${sdf.format(date.value)!!.split("-")[0]}-${sdf.format(date.value)!!.split("-")[1]}"){
+                        "${sdf.format(date.value)!!.split("-")[0]}-" +
+                        "${sdf.format(date.value)!!.split("-")[1]}"){
                         items.add(document.toObject(Foodie::class.java))
                     }
                 }
                 if (items.size != 0) {
                 }
                 fireFoodieBackM(items)
+                Logger.i("fireFoodieM =${fireFoodieM.value}")
             }
         }
     }

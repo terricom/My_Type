@@ -18,6 +18,7 @@ import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragment
@@ -69,9 +70,11 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 binding.buttonSaveCalendar.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.visibility = View.GONE
+                    viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?:Date())
                     if (viewModel.fireFoodie.value!!.size <= 0){
                         binding.diaryHintAddFoodie.visibility = View.VISIBLE
-
+                        binding.iconMyType.visibility = View.VISIBLE
+                        binding.backgroundOfIcon.visibility = View.VISIBLE
                     }
                     viewModel.calendarClickedAgain()
                 }
@@ -80,6 +83,8 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
                     binding.diaryHintAddFoodie.visibility = View.INVISIBLE
+                    binding.iconMyType.visibility = View.INVISIBLE
+                    binding.backgroundOfIcon.visibility = View.INVISIBLE
                     viewModel.calendarClicked()
                 }
 
@@ -103,18 +108,16 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             //告訴使用者網路無法使用
         }
 
+        viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?: Date())
+        Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
+
         viewModel.date.observe(this, Observer {
             Logger.i("viewModel.date.observe === $it")
             val sdf = SimpleDateFormat("yyyy-MM-dd")
-
+            viewModel.getDiary()
+            viewModel.getThisMonth()
             binding.diaryDate.text = sdf.format(it)
         })
-
-//        if ( binding.diaryDate.text == ""){
-//            val sdf = SimpleDateFormat("yyyy-MM-dd")
-//            val currentDate = sdf.format(Date())
-//            viewModel.filterdate(currentDate)
-//        }
 
 
         return binding.root
