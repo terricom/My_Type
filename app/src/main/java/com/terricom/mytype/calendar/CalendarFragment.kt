@@ -197,6 +197,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                             "${sdf.format(date.value)!!.split("-")[0]}-" +
                             "${sdf.format(date.value)!!.split("-")[1]}"){
                             items.add(document.toObject(Foodie::class.java))
+                            items[items.size-1].docId = document.id
                             document.toObject(Foodie::class.java).timestamp?.let {
                                 dates.add(sdf.format(java.sql.Date(it.time)))
                             }

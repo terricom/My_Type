@@ -15,5 +15,6 @@ data class Foodie (
     val protein: Float ?= null,
     val fruit: Float ?= null,
     val carbon: Float ?= null,
-    val nutritions: List<String> ?= null
+    val nutritions: List<String> ?= null,
+    var docId: String ?= ""
 ): Parcelable

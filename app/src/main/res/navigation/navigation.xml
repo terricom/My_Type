@@ -6,7 +6,7 @@
     <fragment android:id="@+id/loginFragment" android:name="com.terricom.mytype.login.LoginFragment"
               android:label="LoginFragment"/>
     <fragment android:id="@+id/foodieFragment" android:name="com.terricom.mytype.foodie.FoodieFragment"
-              android:label="FoodieFragment"/>
+              android:label="FoodieFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Foodie"/></fragment>
     <action android:id="@+id/navigate_to_login_fragment" app:destination="@id/loginFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />

@@ -15,7 +15,7 @@ import com.terricom.mytype.profile.PazzleAdapter
 fun bindImage(imgView: ImageView, imgUrl: String) {
     imgUrl?.let {
 
-        val imgUri = if (imgUrl == "null") PlaceHolder.values().toList().shuffled().first().value.toUri().buildUpon().scheme("https").build() else imgUrl.toUri().buildUpon().scheme("https").build()
+        val imgUri = if (imgUrl == "null" || imgUrl == "") PlaceHolder.values().toList().shuffled().first().value.toUri().buildUpon().scheme("https").build() else imgUrl.toUri().buildUpon().scheme("https").build()
         Logger.i("bindImage imgUri =$imgUri")
         Glide.with(imgView.context)
             .load(imgUri)

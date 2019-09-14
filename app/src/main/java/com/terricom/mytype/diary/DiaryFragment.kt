@@ -11,9 +11,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.App
-import com.terricom.mytype.Logger
-import com.terricom.mytype.R
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.*
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentDiaryBinding
@@ -41,10 +43,25 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             binding.diaryCalendar.updateCalendar()
 
         })
-//        binding.diaryCalendar.updateCalendar()
 
+//        setupItemTouchHelper()
+        binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{
+            findNavController().navigate(NavigationDirections.navigateToFoodieFragment(it))
+        })
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        val swipeHandler = object : SwipeToDeleteCallback(App.applicationContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (viewHolder is FoodieAdapter.ProductViewHolder){
+                    viewModel.delete(viewHolder.foodieSelected!!)
+                    viewModel.getDiary()
+                    (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                }
+                (binding.recyclerView.adapter as FoodieAdapter).removeAt(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        binding.recyclerView.adapter = FoodieAdapter(viewModel)
         viewModel.fireSleep.observe(this, Observer {
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
@@ -127,8 +144,44 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         })
 
 
+
+
         return binding.root
     }
+
+    companion object {
+        private val list = ArrayList<String>(100)
+
+        init {
+            for (i in 0..99) {
+                list.add("#$i")
+            }
+        }
+    }
+
+
+//    private fun setupItemTouchHelper() {
+//        val helper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+//            override fun onMove(recyclerView: RecyclerView, selected: RecyclerView.ViewHolder,
+//                                target: RecyclerView.ViewHolder): Boolean {
+//                val from = selected.adapterPosition
+//                val to = target.adapterPosition
+//                Collections.swap(list, from, to)
+//                binding.recyclerView.adapter?.notifyItemMoved(from, to)
+//
+//                return true
+//            }
+//
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                list.removeAt(viewHolder.adapterPosition)
+//                binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+//            }
+//        })
+//        helper.attachToRecyclerView(recyclerView)
+//    }
+
+
 
     override fun onCalendarNextPressed() {
         binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)

@@ -54,8 +54,8 @@
     <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n有圖有真相，上傳照片瞧瞧吧！</string>
     <string name="facebook_app_id">492524594814446</string> <string name="fb_login_protocol_scheme">fb492524594814446</string>
     <string name="internet_not_connected">當前網路不穩 請重新連線</string>
-    <string name="sleep_record_bed_time">就寢時間</string>
-    <string name="sleep_record_wake_time">起床時間</string>
+    <string name="sleep_record_bed_time">就寢</string>
+    <string name="sleep_record_wake_time">起床</string>
     <string name="sleep_record_hr">小時</string>
     <string name="sleep_record_min">分</string>
     <string name="clean_data"></string>

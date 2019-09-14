@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
@@ -20,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 private val TITLE = 0
 private val DIARY_LIST = 1
@@ -27,12 +29,12 @@ private val SHAPE_RECORD = 2
 private val SLEEP_RECORD = 3
 
 class FoodieAdapter(val viewModel: DiaryViewModel
-//                    , private val onClickListener: OnClickListener
+                    , private val onClickListener: OnClickListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback) {
 
-//    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
-//        fun onClick(foodie: Foodie) = clickListener(foodie)
-//    }
+    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
+        fun onClick(foodie: Foodie) = clickListener(foodie)
+    }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -58,15 +60,22 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         }
     }
 
+    fun removeAt(position: Int) {
+
+        notifyItemRemoved(position)
+    }
 
 
     class ProductViewHolder(private var binding: ItemDiaryRecordBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
+        var foodieSelected: Foodie ?= null
+
         fun bind(foodie: Foodie, viewModel: DiaryViewModel) {
 
             binding.lifecycleOwner =this
             binding.foodie = foodie
+            foodieSelected = foodie
             Log.i("Terri","$this foodie.foods null? = ${foodie.foods}")
             binding.recyclerDiaryFoodsItem.adapter = FoodlistAdapter(viewModel)
             (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
@@ -127,10 +136,6 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             return lifecycleRegistry
         }
 
-
-
-
-
     }
 
     class ShapeViewHolder(private var binding: ItemDiaryShapeBinding): RecyclerView.ViewHolder(binding.root),
@@ -138,8 +143,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.shape = shape
             binding.lifecycleOwner = this
-            binding.numberTdee.text = viewModel.fireShape.value!!.tdee!!.toInt().toString()
-            binding.numberBodyAge.text = viewModel.fireShape.value!!.bodyAge!!.toInt().toString()
+            binding.numberTdee.text = viewModel.fireShape.value?.tdee?.toInt().toString()
+            binding.numberBodyAge.text = viewModel.fireShape.value?.bodyAge?.toInt().toString()
             binding.viewModel = viewModel
             binding.executePendingBindings()
 
@@ -170,6 +175,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.sleep = sleep
             binding.lifecycleOwner = this
+            binding.tvBedTime.text = viewModel.getTime(viewModel.fireSleep.value?.goToBed ?: Date())
+            binding.tvWakeTime.text = viewModel.getTime(viewModel.fireSleep.value?.wakeUp ?: Date())
 
             binding.viewModel = viewModel
             binding.executePendingBindings()
@@ -230,6 +237,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is ProductViewHolder -> {
                 val header = getItem(position) as DataItem.FoodieList
                 holder.bind(header.foodie, header.viewModel)
+                holder.itemView.setOnClickListener {
+                    onClickListener.onClick(header.foodie)
+                }
             }
             is ShapeViewHolder -> {
                 val shape = getItem(position) as DataItem.ShapeItem
@@ -242,6 +252,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             else -> throw IllegalArgumentException()
         }
     }
+
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
@@ -271,6 +282,8 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is SleepViewHolder -> holder.markDetach()
         }
     }
+
+
 }
 
 sealed class DataItem {

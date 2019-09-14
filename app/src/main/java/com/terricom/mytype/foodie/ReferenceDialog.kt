@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
+import com.terricom.mytype.data.Foodie
 
 class ReferenceDialog: AppCompatDialogFragment() {
 
@@ -22,7 +23,7 @@ class ReferenceDialog: AppCompatDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Handler().postDelayed({ this.dismiss()
-            findNavController().navigate(NavigationDirections.navigateToFoodieFragment())
+            findNavController().navigate(NavigationDirections.navigateToFoodieFragment(Foodie()))
 //            (activity as MainActivity).toolbar.visibility = View.VISIBLE}, 3000)
     }, 3000)
     }

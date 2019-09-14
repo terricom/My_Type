@@ -64,6 +64,14 @@ class DiaryViewModel: ViewModel() {
         _date.value = dato
     }
 
+    fun clearFireShape(){
+        _fireShape.value = null
+    }
+
+    fun clearFireSleep(){
+        _fireSleep.value = null
+    }
+
     val _calendarClicked = MutableLiveData<Boolean>()
     val calendarClicked : LiveData<Boolean>
         get() = _calendarClicked
@@ -133,7 +141,7 @@ class DiaryViewModel: ViewModel() {
                 if (items.size != 0){
                 Logger.i("DiaryViewModel items fireShapeBack (items[0]) = ${items[0]}")
                 fireShapeBack(items[0])
-                }
+                } else {clearFireShape()}
             }
 
         sleepDiary
@@ -150,14 +158,12 @@ class DiaryViewModel: ViewModel() {
                 }
                 if (items.size != 0){
                     Logger.i("DiaryViewModel items fireSleepBack (items[0]) = ${items[0]}")
-
                     fireSleepBack(items[0])
-                }
+                } else {clearFireSleep()}
 
             }
 
-
-            foodieDiary
+        foodieDiary
             .get()
             .addOnSuccessListener {
                 storageRef = FirebaseStorage.getInstance().reference
@@ -168,6 +174,8 @@ class DiaryViewModel: ViewModel() {
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Foodie::class.java))
+                        val index = items.size -1
+                        items[index].docId = document.id
                     }
                 }
                 Logger.i("items.size == 0 or ${items.size}")
@@ -241,6 +249,7 @@ class DiaryViewModel: ViewModel() {
                         "${sdf.format(date.value)!!.split("-")[0]}-" +
                         "${sdf.format(date.value)!!.split("-")[1]}"){
                         items.add(document.toObject(Foodie::class.java))
+                        items[items.size-1].docId = document.id
                     }
                 }
                 if (items.size != 0) {
@@ -248,6 +257,31 @@ class DiaryViewModel: ViewModel() {
                 fireFoodieBackM(items)
                 Logger.i("fireFoodieM =${fireFoodieM.value}")
             }
+        }
+    }
+
+    fun delete(foodie: Foodie){
+        if (userUid!!.isNotEmpty()){
+            val foodieDiary = users
+                .document(userUid).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+
+            foodieDiary
+                .get()
+                .addOnSuccessListener {
+                    for (diary in it){
+                        if (diary.id == foodie.docId){
+                            users.document(userUid).collection("Foodie").document(foodie.docId!!).delete()
+                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!") }
+                                .addOnFailureListener { e -> Logger.i("Error deleting document exception = $e") }
+                        }
+                    }
+                }
+
+
+
         }
     }
 
