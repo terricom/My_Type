@@ -22,6 +22,7 @@ import com.terricom.mytype.diary.DiaryViewModel
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
@@ -32,7 +33,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         const val NUM_DAY_OF_WEEK = 7
     }
 
-    public val DEFAULT_DATE_FORMAT = "yyyy.MM"
+    public val DEFAULT_DATE_FORMAT = "yyyy-MM"
 
     private var dateFormat = DEFAULT_DATE_FORMAT
 
@@ -59,7 +60,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         currentDateCalendar = Calendar.getInstance().apply {
             todayMonth = this.get(Calendar.MONTH)
             todayYear = this.get(Calendar.YEAR)
-
         }
 
         context?.let {
@@ -113,10 +113,12 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         }
 
         val calendarAdapter = CalendarAdapter().apply {
+            Logger.i("calendarAdapter in CalendarFragment list Dates = $mCellList")
             this.listDates = mCellList
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@CalendarFragment
+            this.recordedDates = recordedDate.value!!
         }
 
         gridRecycler.adapter = calendarAdapter
@@ -135,6 +137,14 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
     val db = FirebaseFirestore.getInstance()
     val users = db.collection("Users")
 
+    val _recordedDate = MutableLiveData<List<String>>()
+    val recordedDate : LiveData<List<String>>
+        get() = _recordedDate
+
+    fun setRecordedDate(recordedDate: List<String>){
+        _recordedDate.value = recordedDate
+    }
+
     val _fireFoodieM = MutableLiveData<List<Foodie>>()
     val fireFoodieM : LiveData<List<Foodie>>
         get() = _fireFoodieM
@@ -150,6 +160,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         Logger.i("CalendarViewHolder filterdate = ${dato}")
         _date.value = dato
     }
+
 
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
@@ -176,6 +187,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                 .get()
                 .addOnSuccessListener {
                     val items = mutableListOf<Foodie>()
+                    val dates = mutableListOf<String>()
                     for (document in it) {
                         val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                         if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
@@ -183,12 +195,15 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                             "${sdf.format(date.value)!!.split("-")[0]}-" +
                             "${sdf.format(date.value)!!.split("-")[1]}"){
                             items.add(document.toObject(Foodie::class.java))
+                            document.toObject(Foodie::class.java).timestamp?.let {
+                                dates.add(sdf.format(java.sql.Date(it.time)))
+                            }
                         }
                     }
                     if (items.size != 0) {
                     }
                     fireFoodieBackM(items)
-                    Logger.i("fireFoodieM in CalendarAdapter =${fireFoodieM.value}")
+                    setRecordedDate(dates)
                 }
         }
     }
@@ -213,8 +228,8 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
         tempCalendar.time = selectDate
         Logger.i("CalendarFragment sdf.format(selectDate) =${sdf.format(selectDate)} selectDate = $selectDate ")
         filterdate(selectDate)
-        getThisMonth()
-//        viewModel.filterdate(selectDate)
+//        getThisMonth()
+        tempAdapter.recordedDates = recordedDate.value!!
         selectedDayOut = selectDate
         setHeader(tempCalendar)
     }

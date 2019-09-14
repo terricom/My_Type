@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
 import com.terricom.mytype.diary.DiaryViewModel
@@ -23,8 +22,7 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
     private val recordDate = binding.dateRecord
     private val puzzleDate = binding.datePuzzle
     private val cellDateLayout = binding.cellDateLayout
-//    private val context = view.context
-
+    var recorded = false
 
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
@@ -54,16 +52,10 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
         val sdf = SimpleDateFormat("d")
 
 
-        viewModel.fireFoodieM.observe(this, androidx.lifecycle.Observer {
-            if (it.size >0 ){
-                for (day in it){
-                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
-                        recordDate.visibility = View.VISIBLE
-                    }
-                }}
-
-        })
+        if(dateSelected != null){
+            val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
+            selectedDay = selectedDateTime.get(Calendar.DATE)
+        }
 
 
         if(currentMonth != viewMonth || currentYear != viewYear){
@@ -78,7 +70,9 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
                 )
             )
         } else if(selectedDay == currentDay ){
-
+            if (recorded){
+                recordDate.visibility = View.VISIBLE
+            }
             puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
@@ -87,21 +81,11 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
                     R.drawable.input_column,
                     null
                 )
-//            if (viewModel.fireFoodieM.value != null){
-//                for (day in viewModel.fireFoodieM.value!!){
-//                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-//                        recordDate.visibility = View.VISIBLE
-//                    }
-//                }}
 
         } else {
-//            if (viewModel.fireFoodieM.value != null){
-//                for (day in viewModel.fireFoodieM.value!!){
-//                    if (sdf.format(java.sql.Date(day.timestamp!!.time)) == monthOfDate.text && currentMonth == viewMonth){
-//                        Logger.i("sdf.format(java.sql.Date(day.timestamp!!.time)) = ${sdf.format(java.sql.Date(day.timestamp!!.time))}")
-//                        recordDate.visibility = View.VISIBLE
-//                    }
-//                }}
+            if (recorded){
+                recordDate.visibility = View.VISIBLE
+            }
             monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorMyType, null))
             cellDateLayout.background = ResourcesCompat.getDrawable(App.applicationContext().resources, R.drawable.calendar_date,null)
 

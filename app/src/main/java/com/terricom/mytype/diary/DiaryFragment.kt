@@ -35,7 +35,14 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.lifecycleOwner = this
 
         binding.diaryCalendar.setEventHandler(this)
-        binding.diaryCalendar.updateCalendar()
+        binding.diaryCalendar.filterdate(Date())
+        binding.diaryCalendar.getThisMonth()
+        binding.diaryCalendar.recordedDate.observe(this, Observer {
+            binding.diaryCalendar.updateCalendar()
+
+        })
+//        binding.diaryCalendar.updateCalendar()
+
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel)
         viewModel.fireSleep.observe(this, Observer {

@@ -77,6 +77,15 @@ class DiaryViewModel: ViewModel() {
         _calendarClicked.value = false
     }
 
+    val _recordedDate = MutableLiveData<List<String>>()
+    val recordedDate : LiveData<List<String>>
+        get() = _recordedDate
+
+    fun setRecordedDate(recordedDate: List<String>){
+        _recordedDate.value = recordedDate
+    }
+
+
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val sdfhms = SimpleDateFormat("yyyy-MM-dd-hhmmss")
     val currentDate = sdf.format(Date())
