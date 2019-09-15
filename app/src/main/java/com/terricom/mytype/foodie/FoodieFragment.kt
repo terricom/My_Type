@@ -38,7 +38,6 @@ import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,10 +69,42 @@ class FoodieFragment: Fragment() {
 
     private var windowManager: WindowManager? = null
 
+    private lateinit var binding: FragmentFoodieRecordBinding
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentFoodieRecordBinding.inflate(inflater)
+
+        val foodie = FoodieFragmentArgs.fromBundle(arguments!!).selectedProperty
+
+        binding = FragmentFoodieRecordBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        //處理從其他 Fragment 帶 Argument 過來的情況
+        binding.foodie = foodie
+        if (foodie.timestamp != null){
+            viewModel.setDate(foodie.timestamp!!)
+            viewModel.water.value = foodie.water
+            viewModel.fruit.value = foodie.fruit
+            viewModel.protein.value = foodie.protein
+            viewModel.vegetable.value = foodie.vegetable
+            viewModel.oil.value = foodie.oil
+            viewModel.carbon.value = foodie.carbon
+            if (foodie.foods!!.isNotEmpty()){
+                binding.dagFoodHint.visibility = View.GONE
+                binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
+                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitList(foodie.foods)
+                binding.foodsTransportedRecycler.addItemDecoration(
+                    SpaceItemDecoration(
+                        resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                        true
+                    )
+                )
+                val owner = binding.foodsTransportedRecycler.parent as ViewGroup
+                owner.removeView(binding.foodsTransportedRecycler)
+                binding.chosedFood.addView(binding.foodsTransportedRecycler)
+            }
+        }
 
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -84,7 +115,10 @@ class FoodieFragment: Fragment() {
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
-            (binding.foodsRecycler.adapter as FoodAdapter).submitList(it)
+            val newList = it.toMutableList()
+            newList.add("新增食物")
+            Logger.i("Foodie Fragment newList =$newList")
+            (binding.foodsRecycler.adapter as FoodAdapter).submitList(newList)
             binding.foodsRecycler.addItemDecoration(
                 SpaceItemDecoration(
                     resources.getDimension(R.dimen.recyclerview_between).toInt(),
@@ -106,7 +140,7 @@ class FoodieFragment: Fragment() {
             (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
         })
 
-        binding.foodiephoto.setOnClickListener{
+        binding.foodiePhoto.setOnClickListener{
             Logger.i("Clicked foodiephoto")
             //Requesting storage permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -115,38 +149,38 @@ class FoodieFragment: Fragment() {
             showFileChooser()
             Logger.i("showFileChooser() in foodiephoto")
         }
-        binding.uploadIcon.setOnClickListener{
-            Logger.i("Clicked uploadIcon")
-            viewModel.addPhoto()
-            //Requesting storage permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                requestStoragePermission()
-            }
-            showFileChooser()
-            Logger.i("showFileChooser() in uploadIcon")
+//        binding.uploadIcon.setOnClickListener{
+//            Logger.i("Clicked uploadIcon")
+//            viewModel.addPhoto()
+//            //Requesting storage permission
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                requestStoragePermission()
+//            }
+//            showFileChooser()
+//            Logger.i("showFileChooser() in uploadIcon")
+//
+//        }
 
-        }
-
-        binding.buttonAddFood.setOnClickListener {
-            binding.dagFoodHint.visibility = View.GONE
-            if (viewModel.addFood.value != null){
-                viewModel.newFuList.add("${viewModel.addFood.value}")
-            (binding.foodsRecycler.adapter as FoodAdapter).submitList(listOf(viewModel.addFood.value))
-            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
-            viewModel.addFood.value = ""
-            }
-        }
-
-        binding.buttonAddNutrition.setOnClickListener {
-            binding.dragNutritionHint.visibility = View.GONE
-            if (viewModel.addNutrition.value != null){
-                viewModel.newNuList.add("${viewModel.addNutrition.value}")
-                (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(listOf(viewModel.addNutrition.value))
-                (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
-                viewModel.addNutrition.value = ""
-            }
-
-        }
+//        binding.buttonAddFood.setOnClickListener {
+//            binding.dagFoodHint.visibility = View.GONE
+//            if (viewModel.addFood.value != null){
+//                viewModel.newFuList.add("${viewModel.addFood.value}")
+//            (binding.foodsRecycler.adapter as FoodAdapter).submitList(listOf(viewModel.addFood.value))
+//            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
+//            viewModel.addFood.value = ""
+//            }
+//        }
+//
+//        binding.buttonAddNutrition.setOnClickListener {
+//            binding.dragNutritionHint.visibility = View.GONE
+//            if (viewModel.addNutrition.value != null){
+//                viewModel.newNuList.add("${viewModel.addNutrition.value}")
+//                (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(listOf(viewModel.addNutrition.value))
+//                (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
+//                viewModel.addNutrition.value = ""
+//            }
+//
+//        }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -256,6 +290,7 @@ class FoodieFragment: Fragment() {
         return binding.root
     }
 
+
     private fun getWindowManager(context: Context): WindowManager {
         if (windowManager == null) {
             windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -303,80 +338,6 @@ class FoodieFragment: Fragment() {
         }
     }
 
-
-    fun loadScaledBitmap( path: String, maxWidth: Int, maxHeight: Int): Bitmap? {
-        val options : BitmapFactory.Options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(path, options)
-        var srcHeight = options.outHeight;
-        var srcWidth = options.outWidth;
-        // decode失败
-        if (srcHeight == -1 || srcWidth == -1) {
-            return null
-        }
-
-        // 当比例差距过大时，先通过inSampleSize加载bitmap降低内存消耗
-        val scale: Float = getScale(srcWidth.toFloat(), srcHeight.toFloat(), maxWidth.toFloat(), maxHeight.toFloat())
-        val evaluateWH = evaluateWH(srcWidth.toFloat(), srcHeight.toFloat(), maxWidth.toFloat(), maxHeight.toFloat())
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
-        options.inJustDecodeBounds = false;
-        if (evaluateWH == 0) {
-            options.inScaled = true;
-            options.inDensity = srcWidth;
-            options.inTargetDensity = maxWidth * options.inSampleSize;
-        } else if (evaluateWH == 1) {
-            options.inScaled = true;
-            options.inDensity = srcHeight;
-            options.inTargetDensity = maxHeight * options.inSampleSize;
-        } else {
-            options.inScaled = false;
-        }
-        return BitmapFactory.decodeFile(path, options);
-    }
-
-//    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
-//        val height = options.outHeight
-//        val width = options.outHeight
-//        var inSampleSize = 1
-//        if (height > reqHeight || width > reqWidth) {
-//            val halfHeight = height / 2
-//            val halfWidth = width / 2
-//
-//            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2
-//            }
-//        }
-//        return inSampleSize
-//    }
-
-    private fun getScale(srcWidth: Float, srcHeight: Float, destWidth: Float, destHeight: Float): Float {
-        val evaluateWH = evaluateWH(srcWidth, srcHeight, destWidth, destHeight)
-        return when (evaluateWH){
-            0 -> destWidth / srcWidth
-            1 -> destHeight / srcHeight;
-            else -> 1f
-        }
-    }
-
-
-    private fun evaluateWH(srcWidth: Float, srcHeight: Float, destWidth: Float, destHeight: Float): Int {
-        if (srcWidth < 1f || srcHeight < 1f || srcWidth < destWidth && srcHeight < destHeight) {
-            return -1
-        }
-        var result: Int
-        if (destWidth > 0 && destHeight > 0) {
-            result = if(destWidth / srcWidth < destHeight / srcHeight)0 else 1
-        } else if (destWidth > 0) {
-            result = 0;
-        } else if (destHeight > 0) {
-            result = 1;
-        } else {
-            result = -1;
-        }
-        return result;
-    }
-
-
     private fun ScalePic( bitmap:Bitmap, phone: Int)
     {
         //縮放比例預設為1
@@ -398,9 +359,9 @@ class FoodieFragment: Fragment() {
             bitmap.getHeight(),
             mMat,
             false)
-            foodieUploadPhoto.setImageBitmap(mScaleBitmap)
+            foodiePhoto.setImageBitmap(mScaleBitmap)
         }
-        else foodieUploadPhoto.setImageBitmap(bitmap)
+        else foodiePhoto.setImageBitmap(bitmap)
     }
 
     //計算圖片的縮放值
@@ -415,32 +376,6 @@ class FoodieFragment: Fragment() {
             inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
         }
         return inSampleSize
-    }
-
-    // 根據路徑獲得圖片並壓縮，返回bitmap用於顯示
-    fun getSmallBitmap(filePath: String): Bitmap {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(filePath, options)
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, 480, 800)
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false
-
-        return BitmapFactory.decodeFile(filePath, options)
-    }
-
-    //把bitmap轉換成String
-    fun bitmapToString(filePath: String): String {
-
-        val bm = getSmallBitmap(filePath)
-        val baos = ByteArrayOutputStream()
-
-        bm.compress(Bitmap.CompressFormat.JPEG, 40, baos)
-        val b = baos.toByteArray()
-        return Base64.getEncoder().encodeToString(b) //, Base64.DEFAULT
     }
 
 
@@ -556,7 +491,7 @@ class FoodieFragment: Fragment() {
             val sdf = SimpleDateFormat("yyyy-MM-dd-hhmmss")
             val data = compress(filePath!!)
             val imgRef = storageReference!!.child("images/users/"+ userId+"/"
-                    +sdf.format(Date(Timestamp.valueOf("${viewModel.date.value?.replace(".","-")} ${viewModel.time.value}:00.000000000").time))+".jpg")
+                    +sdf.format(viewModel.date.value)+".jpg")
             imgRef.putBytes(data!!)
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
@@ -609,28 +544,6 @@ class FoodieFragment: Fragment() {
 
         return null
     }
-
-    fun getBitMapOptions(context: Context, uri: Uri): BitmapFactory.Options {
-
-        var options: BitmapFactory.Options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        var stream: InputStream = context.contentResolver.openInputStream(uri)
-        BitmapFactory.decodeStream(stream, null, options)
-        stream.close()
-        var width = options.outWidth
-        var height = options.outHeight
-        if (width > height) {
-            val temp = width
-            width = height
-            height = temp
-        }
-        var sampleRatio = Math.max(width / 900, height / 1600)
-        options = BitmapFactory.Options()
-        options.inSampleSize = sampleRatio
-        return options
-    }
-
-
 
 
     //Requesting permission

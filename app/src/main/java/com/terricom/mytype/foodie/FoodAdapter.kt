@@ -113,7 +113,7 @@ class FoodAdapter (val viewModel: FoodieViewModel
         fun bind(food: String, viewModel: FoodieViewModel) {
 
             binding.lifecycleOwner =this
-            binding.food.text = food
+            binding.food.setText(food)
             binding.viewModel = viewModel
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements

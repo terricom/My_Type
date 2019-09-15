@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
 import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
+import java.sql.Time
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,10 +89,19 @@ class FoodieViewModel: ViewModel() {
     fun floatToString(value:Float) = value.toString()
 
 
-    val date = MutableLiveData<String>()
-    var cleanDate = date.value?.replace(".","-")
+    val _date = MutableLiveData<Date>()
+    val date: LiveData<Date>
+        get() = _date
 
-    val time = MutableLiveData<String>()
+    fun setDate(date: Date){
+        _date.value = date
+        _time.value = Time(date.time)
+    }
+
+
+    val _time = MutableLiveData<Time>()
+    val time : LiveData<Time>
+        get() = _time
 
     private val _photoUri = MutableLiveData<Uri>()
     val photoUri: LiveData<Uri>
@@ -108,9 +118,10 @@ class FoodieViewModel: ViewModel() {
 
     fun addFoodie(){
 
+        Logger.i("Timestamp Format = \"${sdf.format(date.value)} ${time.value}:00.000000000\")")
         //發文功能
         val foodieContent = hashMapOf(
-            "timestamp" to Timestamp.valueOf("${date.value?.replace(".","-")} ${time.value}:00.000000000"),
+            "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
             "water" to water.value,
             "oil" to oil.value,
             "vegetable" to vegetable.value,
@@ -154,8 +165,7 @@ class FoodieViewModel: ViewModel() {
         if (userUid != null){
             getFoodAndNuList()
         }
-        date.value = currentDate
-        time.value = currentTime
+        setDate(Date())
         _addPhoto.value = false
     }
 
@@ -198,5 +208,8 @@ class FoodieViewModel: ViewModel() {
 
             }
     }
+
+
+
 
 }

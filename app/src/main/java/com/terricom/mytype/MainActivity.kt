@@ -80,29 +80,44 @@ class MainActivity : BaseActivity(){
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment(
                 Foodie()
             ))
+            binding.fabShadow.visibility = View.GONE
         }
 
         binding.fab2.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
         binding.fab3.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
         binding.fabLayout3.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
         binding.fab4.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
         binding.fabLayout4.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
 
         binding.fabLayout1.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment(Foodie()))
+            binding.fabShadow.visibility = View.GONE
+
         }
         binding.fabLayout2.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+            binding.fabShadow.visibility = View.GONE
+
         }
 
 
