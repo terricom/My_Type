@@ -37,7 +37,7 @@ private val EDIT_FOOD = 1
 class FoodAdapter (val viewModel: FoodieViewModel
 //                   , private val onTouchListener: MyTouchListener
                     ,private val onLongClickListener: LongClickListener)
-: ListAdapter<com.terricom.mytype.foodie.DataItem, RecyclerView.ViewHolder>(DiffCallback) {
+: ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback) {
 
     class LongClickListener: View.OnLongClickListener{
         override fun onLongClick(p0: View): Boolean {
@@ -86,12 +86,12 @@ class FoodAdapter (val viewModel: FoodieViewModel
 
     fun addHeaderAndSubmitList(list : List<String>?) {
         adapterScope.launch {
-            val newList = mutableListOf<com.terricom.mytype.foodie.DataItem>()
+            val newList = mutableListOf<DataItem>()
             if (list != null) {
                 for (foodie in list) {
-                    newList.add(com.terricom.mytype.foodie.DataItem.FoodieList(foodie, viewModel))
+                    newList.add(DataItem.FoodieList(foodie, viewModel))
                 }
-                newList.add(com.terricom.mytype.foodie.DataItem.EditFood(viewModel))
+                newList.add(DataItem.EditFood(viewModel))
             }
             withContext(Dispatchers.Main) {
                 submitList(newList)
@@ -101,10 +101,10 @@ class FoodAdapter (val viewModel: FoodieViewModel
 
     fun submitFoods(list : List<String>?) {
         adapterScope.launch {
-            val newList = mutableListOf<com.terricom.mytype.foodie.DataItem>()
+            val newList = mutableListOf<DataItem>()
             if (list != null) {
                 for (foodie in list) {
-                    newList.add(com.terricom.mytype.foodie.DataItem.FoodieList(foodie, viewModel))
+                    newList.add(DataItem.FoodieList(foodie, viewModel))
                 }
             }
             withContext(Dispatchers.Main) {
@@ -226,12 +226,12 @@ class FoodAdapter (val viewModel: FoodieViewModel
      * Allows the RecyclerView to determine which items have changed when the [List] of [Product]
      * has been updated.
      */
-    companion object DiffCallback : DiffUtil.ItemCallback<com.terricom.mytype.foodie.DataItem>() {
-        override fun areItemsTheSame(oldItem: com.terricom.mytype.foodie.DataItem, newItem: com.terricom.mytype.foodie.DataItem): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<DataItem>() {
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: com.terricom.mytype.foodie.DataItem, newItem: com.terricom.mytype.foodie.DataItem): Boolean {
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem == newItem
         }
     }
@@ -248,7 +248,7 @@ class FoodAdapter (val viewModel: FoodieViewModel
         //// to pass onClicklistener into adapter in CartFragment
         when (holder){
             is FoodViewHolder -> {
-                val food = getItem(position) as com.terricom.mytype.foodie.DataItem.FoodieList
+                val food = getItem(position) as DataItem.FoodieList
                 holder.itemView.setOnLongClickListener(onLongClickListener)
                 holder.bind(food.string ,viewModel)
             }
@@ -262,8 +262,8 @@ class FoodAdapter (val viewModel: FoodieViewModel
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is com.terricom.mytype.foodie.DataItem.FoodieList -> FOODLIST
-            is com.terricom.mytype.foodie.DataItem.EditFood -> EDIT_FOOD
+            is DataItem.FoodieList -> FOODLIST
+            is DataItem.EditFood -> EDIT_FOOD
 
             else -> throw IllegalArgumentException()
         }
@@ -286,10 +286,10 @@ class FoodAdapter (val viewModel: FoodieViewModel
 }
 
 sealed class DataItem {
-    data class FoodieList(val string: String, val viewModel: FoodieViewModel): com.terricom.mytype.foodie.DataItem(){
+    data class FoodieList(val string: String, val viewModel: FoodieViewModel): DataItem(){
         override val id = string
     }
-    data class EditFood(val viewModel: FoodieViewModel) : com.terricom.mytype.foodie.DataItem(){
+    data class EditFood(val viewModel: FoodieViewModel) : DataItem(){
         override val id = (Long.MIN_VALUE).toString()
     }
 

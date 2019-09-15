@@ -16,17 +16,56 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.Logger
+import com.terricom.mytype.databinding.ItemFoodieEditNewNutritionBinding
 import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 const val IMAGEVIEW_TAG_N = "icon bitmap"
+private val NUTRITIONLIST = 0
+private val EDIT_NUTRITION = 1
 
 class NutritionAdapter(val viewModel: FoodieViewModel
 //                       , private val onTouchListener: MyTouchListener
                        ,private val onLongClickListenerNu: LongClickListenerNu
 )
 
-    : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
+    : ListAdapter<DataItemNu, RecyclerView.ViewHolder>(DiffCallback) {
+
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun addHeaderAndSubmitListNu(list : List<String>?) {
+        adapterScope.launch {
+            val newList = mutableListOf<DataItemNu>()
+            if (list != null) {
+                for (foodie in list) {
+                    newList.add(DataItemNu.NutritionList(foodie, viewModel))
+                }
+                newList.add(DataItemNu.EditNutrition(viewModel))
+            }
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+    }
+
+    fun submitNutritions(list : List<String>?) {
+        adapterScope.launch {
+            val newList = mutableListOf<DataItemNu>()
+            if (list != null) {
+                for (foodie in list) {
+                    newList.add(DataItemNu.NutritionList(foodie, viewModel))
+                }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+    }
 
     class LongClickListenerNu: View.OnLongClickListener{
         override fun onLongClick(p0: View): Boolean {
@@ -94,16 +133,50 @@ class NutritionAdapter(val viewModel: FoodieViewModel
         }
     }
 
+    class EditNutritionViewHolder(private var binding: ItemFoodieEditNewNutritionBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
+
+        fun bind(viewModel: FoodieViewModel) {
+
+            binding.lifecycleOwner =this
+            binding.viewModel = viewModel
+            Logger.i("binding.food.text =${binding.nutrition.text}")
+            binding.addNutrition.setOnClickListener {
+                viewModel.checkedAddNewNutrition()
+                binding.nutrition.setOnLongClickListener(LongClickListenerNu())
+            }
+            binding.executePendingBindings()
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+    }
+
     /**
      * Allows the RecyclerView to determine which items have changed when the [List] of [Product]
      * has been updated.
      */
-    companion object DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<DataItemNu>() {
+        override fun areItemsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
             return oldItem == newItem
         }
     }
@@ -111,14 +184,10 @@ class NutritionAdapter(val viewModel: FoodieViewModel
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NutritionViewHolder {
-        return NutritionViewHolder(
-            ItemFoodieNutritionBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
+        NUTRITIONLIST -> NutritionViewHolder(ItemFoodieNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        EDIT_NUTRITION -> EditNutritionViewHolder(ItemFoodieEditNewNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        else -> throw IllegalArgumentException()
     }
 
     private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
@@ -157,51 +226,57 @@ class NutritionAdapter(val viewModel: FoodieViewModel
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-    override fun onBindViewHolder(holder: NutritionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
-        val product = getItem(position)
-        product.let {
-            holder.itemView.setOnLongClickListener (onLongClickListenerNu)
-//            holder.itemView.setOnLongClickListener{ v: View ->
-//                // Create a new ClipData.
-//                // This is done in two steps to provide clarity. The convenience method
-//                // ClipData.newPlainText() can create a plain text ClipData in one step.
-//
-//                // Create a new ClipData.Item from the ImageView object's tag
-//                val item = ClipData.Item(v.tag as? CharSequence)
-//
-//                // Create a new ClipData using the tag as a label, the plain text MIME type, and
-//                // the already-created item. This will create a new ClipDescription object within the
-//                // ClipData, and set its MIME type entry to "text/plain"
-//                val dragData = ClipData(
-//                    v.tag as? CharSequence,
-//                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-//                    item)
-//
-//                // Instantiates the drag shadow builder.
-//                val myShadow = MyDragShadowBuilder(v)
-//
-//                // Starts the drag
-//                v.startDrag(
-//                    dragData,   // the data to be dragged
-//                    myShadow,   // the drag shadow builder
-//                    null,       // no need to use local data
-//                    0           // flags (not currently used, set to 0)
-//                )
-//            }
-            holder.bind(product, viewModel)
+        when (holder){
+            is NutritionViewHolder -> {
+                val nutrition = getItem(position) as DataItemNu.NutritionList
+                holder.itemView.setOnLongClickListener(onLongClickListenerNu)
+                holder.bind(nutrition.string ,viewModel)
+            }
+            is EditNutritionViewHolder -> {
+                holder.itemView.setOnLongClickListener(onLongClickListenerNu)
+                holder.bind(viewModel)
+            }
         }
     }
 
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is DataItemNu.NutritionList -> NUTRITIONLIST
+            is DataItemNu.EditNutrition -> EDIT_NUTRITION
+
+            else -> throw IllegalArgumentException()
+        }
 
 
-    override fun onViewAttachedToWindow(holder: NutritionViewHolder) {
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.markAttach()
+        when (holder){
+            is NutritionViewHolder -> holder.markAttach()
+            is EditNutritionViewHolder -> holder.markAttach()
+        }
     }
 
-    override fun onViewDetachedFromWindow(holder: NutritionViewHolder) {
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.markDetach()
+        when (holder){
+            is NutritionViewHolder -> holder.markDetach()
+            is EditNutritionViewHolder -> holder.markDetach()
+        }
     }
+}
+
+sealed class DataItemNu {
+    data class NutritionList(val string: String, val viewModel: FoodieViewModel): DataItemNu(){
+        override val id = string
+    }
+    data class EditNutrition(val viewModel: FoodieViewModel) : DataItemNu(){
+        override val id = (Long.MIN_VALUE).toString()
+    }
+
+    abstract val id: String
+
+
 }

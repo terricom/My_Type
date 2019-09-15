@@ -23,9 +23,13 @@
 
         <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -59,41 +63,41 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/icon_back" />
 
-<!--                <ImageView-->
-<!--                        android:id="@+id/imageView10"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/upload_icon"-->
-<!--                        app:layout_constraintEnd_toEndOf="@+id/upload_icon"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/upload_icon"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/upload_icon"-->
-<!--                        app:srcCompat="@drawable/calendar_date" />-->
+                <!--                <ImageView-->
+                <!--                        android:id="@+id/imageView10"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="0dp"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="@+id/upload_icon"-->
+                <!--                        app:layout_constraintEnd_toEndOf="@+id/upload_icon"-->
+                <!--                        app:layout_constraintStart_toStartOf="@+id/upload_icon"-->
+                <!--                        app:layout_constraintTop_toTopOf="@+id/upload_icon"-->
+                <!--                        app:srcCompat="@drawable/calendar_date" />-->
 
-<!--                <ImageView-->
-<!--                        android:id="@+id/buttonUploadPhoto"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="28dp"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:layout_marginEnd="16dp"-->
-<!--                        android:background="@drawable/calendar_date"-->
-<!--                        android:backgroundTint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#00FFFFFF") :Color.parseColor("#209387")}'-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/editTime"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintHorizontal_bias="0.5"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/editTime"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/editTime" />-->
+                <!--                <ImageView-->
+                <!--                        android:id="@+id/buttonUploadPhoto"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="28dp"-->
+                <!--                        android:layout_marginStart="8dp"-->
+                <!--                        android:layout_marginEnd="16dp"-->
+                <!--                        android:background="@drawable/calendar_date"-->
+                <!--                        android:backgroundTint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#00FFFFFF") :Color.parseColor("#209387")}'-->
+                <!--                        app:layout_constraintBottom_toBottomOf="@+id/editTime"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintHorizontal_bias="0.5"-->
+                <!--                        app:layout_constraintStart_toEndOf="@+id/editTime"-->
+                <!--                        app:layout_constraintTop_toTopOf="@+id/editTime" />-->
 
-<!--                <ImageView-->
-<!--                        android:id="@+id/upload_icon"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:paddingTop="3dp"-->
-<!--                        android:tint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#209387") :Color.parseColor("#FFFFFF")}'-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/buttonUploadPhoto"-->
-<!--                        app:layout_constraintEnd_toEndOf="@+id/buttonUploadPhoto"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/buttonUploadPhoto"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/buttonUploadPhoto"-->
-<!--                        app:srcCompat="@drawable/icon_image" />-->
+                <!--                <ImageView-->
+                <!--                        android:id="@+id/upload_icon"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="0dp"-->
+                <!--                        android:paddingTop="3dp"-->
+                <!--                        android:tint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#209387") :Color.parseColor("#FFFFFF")}'-->
+                <!--                        app:layout_constraintBottom_toBottomOf="@+id/buttonUploadPhoto"-->
+                <!--                        app:layout_constraintEnd_toEndOf="@+id/buttonUploadPhoto"-->
+                <!--                        app:layout_constraintStart_toStartOf="@+id/buttonUploadPhoto"-->
+                <!--                        app:layout_constraintTop_toTopOf="@+id/buttonUploadPhoto"-->
+                <!--                        app:srcCompat="@drawable/icon_image" />-->
 
                 <EditText
                         android:id="@+id/editDate"
@@ -430,8 +434,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/nutrition_recycler" />
 
 
-
-
                 <LinearLayout
                         android:id="@+id/chosed_food"
                         android:layout_width="0dp"
@@ -441,10 +443,10 @@
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/input_column"
                         android:orientation="horizontal"
+                        android:padding="@dimen/elevation_all"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/foodiePhoto"
-                        android:padding="@dimen/elevation_all">
+                        app:layout_constraintTop_toBottomOf="@+id/foodiePhoto">
 
                 </LinearLayout>
 
@@ -474,25 +476,36 @@
                         app:layout_constraintTop_toTopOf="@+id/chosed_food"
                         tools:listitem="@layout/item_foodie_food" />
 
-<!--                <EditText-->
-<!--                        android:id="@+id/add_food"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        android:layout_marginEnd="16dp"-->
-<!--                        android:background="@drawable/calendar_date"-->
-<!--                        android:fontFamily="@font/noto_sans"-->
-<!--                        android:hint="@string/foodie_add_food"-->
-<!--                        android:paddingHorizontal="5dp"-->
-<!--                        android:paddingVertical="1dp"-->
-<!--                        android:text="@={viewModel.addFood}"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textColor="@color/colorMyType"-->
-<!--                        android:textColorHint="@color/colorMyType"-->
-<!--                        android:textSize="@dimen/text_content"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/button_add_food"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_food" />-->
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/nutritions_transported_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
+                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
+                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition"
+                        tools:listitem="@layout/item_foodie_food" />
+
+                <!--                <EditText-->
+                <!--                        android:id="@+id/add_food"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="8dp"-->
+                <!--                        android:layout_marginEnd="16dp"-->
+                <!--                        android:background="@drawable/calendar_date"-->
+                <!--                        android:fontFamily="@font/noto_sans"-->
+                <!--                        android:hint="@string/foodie_add_food"-->
+                <!--                        android:paddingHorizontal="5dp"-->
+                <!--                        android:paddingVertical="1dp"-->
+                <!--                        android:text="@={viewModel.addFood}"-->
+                <!--                        android:textAlignment="center"-->
+                <!--                        android:textColor="@color/colorMyType"-->
+                <!--                        android:textColorHint="@color/colorMyType"-->
+                <!--                        android:textSize="@dimen/text_content"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="@+id/button_add_food"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_food" />-->
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/nutrition_recycler"
@@ -523,23 +536,23 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/button_coconut"></LinearLayout>
 
-<!--                <EditText-->
-<!--                        android:id="@+id/add_nutrition"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="8dp"-->
-<!--                        android:layout_marginEnd="16dp"-->
-<!--                        android:background="@drawable/calendar_date"-->
-<!--                        android:fontFamily="@font/noto_sans"-->
-<!--                        android:hint="@string/diary_add_nutrition"-->
-<!--                        android:paddingHorizontal="5dp"-->
-<!--                        android:paddingVertical="1dp"-->
-<!--                        android:text="@={viewModel.addNutrition}"-->
-<!--                        android:textColor="@color/colorMyType"-->
-<!--                        android:textColorHint="@color/colorMyType"-->
-<!--                        android:textSize="@dimen/text_content"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition" />-->
+                <!--                <EditText-->
+                <!--                        android:id="@+id/add_nutrition"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="8dp"-->
+                <!--                        android:layout_marginEnd="16dp"-->
+                <!--                        android:background="@drawable/calendar_date"-->
+                <!--                        android:fontFamily="@font/noto_sans"-->
+                <!--                        android:hint="@string/diary_add_nutrition"-->
+                <!--                        android:paddingHorizontal="5dp"-->
+                <!--                        android:paddingVertical="1dp"-->
+                <!--                        android:text="@={viewModel.addNutrition}"-->
+                <!--                        android:textColor="@color/colorMyType"-->
+                <!--                        android:textColorHint="@color/colorMyType"-->
+                <!--                        android:textSize="@dimen/text_content"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition" />-->
 
                 <TextView
                         android:id="@+id/dag_food_hint"
@@ -567,6 +580,20 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                        android:id="@+id/nutritionsMoveOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/nutrition_recycler"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/foods_recycler"
+                        app:layout_constraintTop_toTopOf="@+id/nutrition_recycler"
+                        app:layout_constraintVertical_bias="0.0">
+
+                </LinearLayout>
+
                 <TextView
                         android:id="@+id/drag_nutrition_hint"
                         android:layout_width="wrap_content"
@@ -579,30 +606,7 @@
                         app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
                         app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
 
-<!--                <ImageView-->
-<!--                        android:id="@+id/button_add_food"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_marginTop="2dp"-->
-<!--                        android:layout_marginBottom="2dp"-->
-<!--                        android:scaleType="fitEnd"-->
-<!--                        android:tint="@color/colorMyType"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/foods_recycler"-->
-<!--                        app:layout_constraintEnd_toStartOf="@+id/add_food"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/foods_recycler"-->
-<!--                        app:srcCompat="@android:drawable/ic_input_add" />-->
 
-<!--                <ImageView-->
-<!--                        android:id="@+id/button_add_nutrition"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="0dp"-->
-<!--                        android:layout_marginTop="2dp"-->
-<!--                        android:scaleType="fitEnd"-->
-<!--                        android:tint="@color/colorMyType"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/add_nutrition"-->
-<!--                        app:layout_constraintEnd_toStartOf="@+id/add_nutrition"-->
-<!--                        app:layout_constraintTop_toTopOf="@+id/add_nutrition"-->
-<!--                        app:srcCompat="@android:drawable/ic_input_add" />-->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

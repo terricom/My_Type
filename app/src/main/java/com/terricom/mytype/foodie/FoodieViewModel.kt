@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.Logger
+import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import java.sql.Time
@@ -65,16 +66,24 @@ class FoodieViewModel: ViewModel() {
     fun dragToList(food: String) {
         Logger.i("dragToList food =$food")
         selectedFood.add(food)
+        newFuList.add(food)
     }
 
     fun dragOutList(food: String) {
-        Logger.i("dragToList food =$food")
+        Logger.i("dragOutList food =$food")
         selectedFood.remove(food)
+//        newFuList.remove(food)
     }
 
 
     fun dragToListNu(nutrition: String) {
         selectedNutrition.add(nutrition)
+        newNuList.add(nutrition)
+    }
+
+    fun dragOutListNu (nutrition: String) {
+        selectedNutrition.remove(nutrition)
+//        newNuList.remove(nutrition)
     }
 
     val water =  MutableLiveData<Float>()
@@ -131,6 +140,26 @@ class FoodieViewModel: ViewModel() {
         _addNewFoodChecked.value = false
     }
 
+    val _addNewNutritionChecked = MutableLiveData<Boolean>()
+    val addNewNutritionChecked : LiveData<Boolean>
+        get() = _addNewNutritionChecked
+
+    fun checkedAddNewNutrition(){
+        _addNewNutritionChecked.value = true
+    }
+
+    fun unCheckedAddNewNutrition(){
+        _addNewNutritionChecked.value = false
+    }
+
+    val _updateFoodie = MutableLiveData<Foodie>()
+    val updateFoodie : LiveData<Foodie>
+        get() = _updateFoodie
+
+    fun updateFoodie(foodie: Foodie){
+        _updateFoodie.value = foodie
+    }
+
     val db = FirebaseFirestore.getInstance()
     val user = db.collection("Users")
 
@@ -147,8 +176,8 @@ class FoodieViewModel: ViewModel() {
             "fruit" to fruit.value,
             "carbon" to carbon.value,
             "photo" to photoUri.value.toString(),
-            "foods" to selectedFood,
-            "nutritions" to selectedNutrition
+            "foods" to selectedFood.distinct(),
+            "nutritions" to selectedNutrition.distinct()
         )
 
         user.get()
@@ -157,6 +186,40 @@ class FoodieViewModel: ViewModel() {
                 for (doc in result){
                     if (doc.id == userUid){
                         user.document(doc.id).collection("Foodie").document().set(foodieContent)
+                    }
+                }
+
+            }
+
+
+    }
+
+    fun adjustFoodie(){
+
+        //發文功能
+        val foodieContent = hashMapOf(
+            "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
+            "water" to water.value,
+            "oil" to oil.value,
+            "vegetable" to vegetable.value,
+            "protein" to protein.value,
+            "fruit" to fruit.value,
+            "carbon" to carbon.value,
+            "photo" to photoUri.value.toString(),
+            "foods" to selectedFood.distinct(),
+            "nutritions" to selectedNutrition.distinct()
+        )
+
+        user.get()
+            .addOnSuccessListener { result->
+                if (userUid != null){
+                    user.document(userUid).collection("Foodie").document()
+                }
+
+                Logger.i("FoodieViewModel userUid =$userUid")
+                for (doc in result){
+                    if (doc.id == userUid){
+                        user.document(doc.id).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
                     }
                 }
 
@@ -186,6 +249,7 @@ class FoodieViewModel: ViewModel() {
         setDate(Date())
         _addPhoto.value = false
         unCheckedAddNewFood()
+        unCheckedAddNewNutrition()
     }
 
     fun getFoodAndNuList(){
@@ -217,10 +281,10 @@ class FoodieViewModel: ViewModel() {
                     if (doc.id == userUid){
                         val user = doc.toObject(UserMT::class.java)
 //                        if (user.foodlist == null){
-                            db.collection("Users").document(doc.id).update("foodlist", newFuList).addOnCompleteListener{}
+                            db.collection("Users").document(doc.id).update("foodlist", newFuList.distinct()).addOnCompleteListener{}
 //                        }
 //                        if (user.nutritionlist == null){
-                            db.collection("Users").document(doc.id).update("nutritionlist", newNuList).addOnCompleteListener {  }
+                            db.collection("Users").document(doc.id).update("nutritionlist", newNuList.distinct()).addOnCompleteListener {  }
 //                        }
                     }
                 }

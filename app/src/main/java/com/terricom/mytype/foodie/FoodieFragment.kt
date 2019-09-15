@@ -83,7 +83,9 @@ class FoodieFragment: Fragment() {
         //處理從其他 Fragment 帶 Argument 過來的情況
         binding.foodie = foodie
         if (foodie.timestamp != null){
+            viewModel.updateFoodie(foodie)
             binding.foodieTitle.setText("修改食記")
+
             viewModel.setDate(foodie.timestamp!!)
             viewModel.water.value = foodie.water
             viewModel.fruit.value = foodie.fruit
@@ -91,6 +93,8 @@ class FoodieFragment: Fragment() {
             viewModel.vegetable.value = foodie.vegetable
             viewModel.oil.value = foodie.oil
             viewModel.carbon.value = foodie.carbon
+
+
             if (foodie.foods!!.isNotEmpty()){
                 binding.dagFoodHint.visibility = View.GONE
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
@@ -106,6 +110,24 @@ class FoodieFragment: Fragment() {
                 binding.chosedFood.addView(binding.foodsTransportedRecycler)
                 binding.foodsTransportedRecycler.setOnLongClickListener(FoodAdapter.LongClickListener())
             }
+
+            if (foodie.nutritions!!.isNotEmpty()){
+                binding.dragNutritionHint.visibility = View.GONE
+                binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
+                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(foodie.nutritions)
+                binding.nutritionsTransportedRecycler.addItemDecoration(
+                    SpaceItemDecoration(
+                        resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                        true
+                    )
+                )
+                val owner = binding.nutritionsTransportedRecycler.parent as ViewGroup
+                owner.removeView(binding.nutritionsTransportedRecycler)
+                binding.chosedNutrition.addView(binding.nutritionsTransportedRecycler)
+                binding.nutritionsTransportedRecycler.setOnLongClickListener(NutritionAdapter.LongClickListenerNu())
+            }
+            binding.buttonFoodieSave.setText("確認修改")
+
         }
 
         auth = FirebaseAuth.getInstance()
@@ -117,9 +139,6 @@ class FoodieFragment: Fragment() {
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
-//            val newList = it.toMutableList()
-//            newList.add("新增食物")
-//            Logger.i("Foodie Fragment newList =$newList")
             (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(it)
             binding.foodsRecycler.addItemDecoration(
                 SpaceItemDecoration(
@@ -131,7 +150,7 @@ class FoodieFragment: Fragment() {
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
         viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
-            (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(it)
+            (binding.nutritionRecycler.adapter as NutritionAdapter).addHeaderAndSubmitListNu(it)
             binding.nutritionRecycler.addItemDecoration(
                 SpaceItemDecoration(
                     resources.getDimension(R.dimen.recyclerview_between).toInt(),
@@ -150,38 +169,6 @@ class FoodieFragment: Fragment() {
             showFileChooser()
             Logger.i("showFileChooser() in foodiephoto")
         }
-//        binding.uploadIcon.setOnClickListener{
-//            Logger.i("Clicked uploadIcon")
-//            viewModel.addPhoto()
-//            //Requesting storage permission
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                requestStoragePermission()
-//            }
-//            showFileChooser()
-//            Logger.i("showFileChooser() in uploadIcon")
-//
-//        }
-
-//        binding.buttonAddFood.setOnClickListener {
-//            binding.dagFoodHint.visibility = View.GONE
-//            if (viewModel.addFood.value != null){
-//                viewModel.newFuList.add("${viewModel.addFood.value}")
-//            (binding.foodsRecycler.adapter as FoodAdapter).submitList(listOf(viewModel.addFood.value))
-//            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
-//            viewModel.addFood.value = ""
-//            }
-//        }
-//
-//        binding.buttonAddNutrition.setOnClickListener {
-//            binding.dragNutritionHint.visibility = View.GONE
-//            if (viewModel.addNutrition.value != null){
-//                viewModel.newNuList.add("${viewModel.addNutrition.value}")
-//                (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(listOf(viewModel.addNutrition.value))
-//                (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
-//                viewModel.addNutrition.value = ""
-//            }
-//
-//        }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -238,6 +225,7 @@ class FoodieFragment: Fragment() {
                         val container = v as LinearLayout
                         container.addView(view)
                         view.visibility = View.VISIBLE
+                        view.setOnTouchListener(NutritionAdapter.MyTouchListener())
                         binding.dragNutritionHint.visibility = View.INVISIBLE
                         viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
                     }
@@ -266,8 +254,38 @@ class FoodieFragment: Fragment() {
                         viewModel.dragOutList("${view.findViewById<TextView>(R.id.food).text}")
 //                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
                         (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
-                        foodie.foods = foodie.foods!!.minus("${view.findViewById<TextView>(R.id.food).text}")
+                        if ((foodie.foods ?: listOf<String>("")).isNotEmpty()){
+                        foodie.foods = foodie.foods!!.minus("${view.findViewById<TextView>(R.id.food).text}")}
                         (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
+                    }
+                    else -> {
+                    }
+                }// do nothing
+                return true
+            }
+        }
+
+        class CleanDragListenerNu : View.OnDragListener {
+
+            override fun onDrag(v: View, event: DragEvent): Boolean {
+                val action = event.action
+                when (event.action) {
+                    DragEvent.ACTION_DRAG_STARTED -> {
+                    }
+                    DragEvent.ACTION_DROP -> {
+                        // Dropped, reassign View to ViewGroup
+                        val view = event.localState as View
+                        val owner = view.parent as ViewGroup
+                        owner.removeView(view)
+                        val container = v as LinearLayout
+                        container.addView(view)
+                        view.visibility = View.GONE
+                        viewModel.dragOutListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
+//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
+                        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
+                        if ((foodie.nutritions ?: listOf("")).isNotEmpty()){
+                        foodie.nutritions = foodie.nutritions!!.minus("${view.findViewById<TextView>(R.id.nutrition).text}")}
+                        (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(foodie.nutritions)
                     }
                     else -> {
                     }
@@ -280,6 +298,7 @@ class FoodieFragment: Fragment() {
         binding.foodsMoveOut.setOnDragListener(CleanDragListener())
         binding.chosedFood.setOnDragListener(MyDragListener())
         binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
+        binding.nutritionsMoveOut.setOnDragListener(CleanDragListenerNu())
 
         //讀取手機解析度
         mPhone = DisplayMetrics()
@@ -293,10 +312,15 @@ class FoodieFragment: Fragment() {
             val userId = user.uid
             val name = sdf.format(Date().time)
 
-//            uploadFile()
-            viewModel.addFoodie()
-            viewModel.updateFoodAndNuList()
-            viewModel.clearData()
+            if (foodie.docId != ""){
+                viewModel.adjustFoodie()
+                viewModel.updateFoodAndNuList()
+                viewModel.clearData()
+            } else {
+                viewModel.addFoodie()
+                viewModel.updateFoodAndNuList()
+                viewModel.clearData()
+            }
 
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
