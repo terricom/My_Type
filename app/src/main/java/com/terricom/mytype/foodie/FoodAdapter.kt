@@ -6,10 +6,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.view.marginStart
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -17,14 +21,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
+import com.terricom.mytype.R
+import com.terricom.mytype.databinding.ItemFoodieEditNewFoodBinding
 import com.terricom.mytype.databinding.ItemFoodieFoodBinding
+import kotlinx.android.synthetic.main.item_foodie_edit_new_food.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 const val IMAGEVIEW_TAG = "icon bitmap"
+private val FOODLIST = 0
+private val EDIT_FOOD = 1
 
 class FoodAdapter (val viewModel: FoodieViewModel
 //                   , private val onTouchListener: MyTouchListener
                     ,private val onLongClickListener: LongClickListener)
-: ListAdapter<String, FoodAdapter.FoodViewHolder>(DiffCallback) {
+: ListAdapter<com.terricom.mytype.foodie.DataItem, RecyclerView.ViewHolder>(DiffCallback) {
 
     class LongClickListener: View.OnLongClickListener{
         override fun onLongClick(p0: View): Boolean {
@@ -34,6 +47,7 @@ class FoodAdapter (val viewModel: FoodieViewModel
             return true
         }
     }
+
     private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
 
         private val shadow = ColorDrawable(Color.LTGRAY)
@@ -68,6 +82,39 @@ class FoodAdapter (val viewModel: FoodieViewModel
         }
     }
 
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun addHeaderAndSubmitList(list : List<String>?) {
+        adapterScope.launch {
+            val newList = mutableListOf<com.terricom.mytype.foodie.DataItem>()
+            if (list != null) {
+                for (foodie in list) {
+                    newList.add(com.terricom.mytype.foodie.DataItem.FoodieList(foodie, viewModel))
+                }
+                newList.add(com.terricom.mytype.foodie.DataItem.EditFood(viewModel))
+            }
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+    }
+
+    fun submitFoods(list : List<String>?) {
+        adapterScope.launch {
+            val newList = mutableListOf<com.terricom.mytype.foodie.DataItem>()
+            if (list != null) {
+                for (foodie in list) {
+                    newList.add(com.terricom.mytype.foodie.DataItem.FoodieList(foodie, viewModel))
+                }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+    }
+
+
+
 
 
 
@@ -88,12 +135,14 @@ class FoodAdapter (val viewModel: FoodieViewModel
                 p1.action == MotionEvent.ACTION_DOWN
 //                && ((x2 - x1) == 0.0)
             ) {
-                val data = ClipData.Item(p0.tag as? CharSequence)
-                p0.tag = IMAGEVIEW_TAG
+                val data = ClipData.newPlainText("", "")
+
+//                val data = ClipData.Item(p0.tag as? CharSequence)
+//                p0.tag = p0.findViewById<EditText>(R.id.food).text
                 val dragData = ClipData(
                     p0.tag as? CharSequence,
                     arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                    data)
+                    data.getItemAt(0))
                 val shadowBuilder = View.DragShadowBuilder(
                     p0
                 )
@@ -139,46 +188,112 @@ class FoodAdapter (val viewModel: FoodieViewModel
         }
     }
 
+    class EditFoodViewHolder(private var binding: ItemFoodieEditNewFoodBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
+
+        fun bind(viewModel: FoodieViewModel) {
+
+            binding.lifecycleOwner =this
+            binding.viewModel = viewModel
+            Logger.i("binding.food.text =${binding.food.text}")
+            binding.addFood.setOnClickListener {
+                viewModel.checkedAddNewFood()
+                binding.food.setOnLongClickListener(LongClickListener())
+            }
+            binding.executePendingBindings()
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+    }
+
     /**
      * Allows the RecyclerView to determine which items have changed when the [List] of [Product]
      * has been updated.
      */
-    companion object DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<com.terricom.mytype.foodie.DataItem>() {
+        override fun areItemsTheSame(oldItem: com.terricom.mytype.foodie.DataItem, newItem: com.terricom.mytype.foodie.DataItem): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: com.terricom.mytype.foodie.DataItem, newItem: com.terricom.mytype.foodie.DataItem): Boolean {
             return oldItem == newItem
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
-        return FoodViewHolder(ItemFoodieFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
+        FOODLIST -> FoodViewHolder(ItemFoodieFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        EDIT_FOOD -> EditFoodViewHolder(ItemFoodieEditNewFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        else -> throw IllegalArgumentException()
     }
 
-    /**
-     * Replaces the contents of a view (invoked by the layout manager)
-     */
-    override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
-        val product = getItem(position)
-        product.let {
-            holder.itemView.setOnLongClickListener(onLongClickListener)
-            holder.bind(product,viewModel)
+        when (holder){
+            is FoodViewHolder -> {
+                val food = getItem(position) as com.terricom.mytype.foodie.DataItem.FoodieList
+                holder.itemView.setOnLongClickListener(onLongClickListener)
+                holder.bind(food.string ,viewModel)
+            }
+            is EditFoodViewHolder -> {
+                holder.itemView.setOnLongClickListener(onLongClickListener)
+                holder.bind(viewModel)
+            }
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is com.terricom.mytype.foodie.DataItem.FoodieList -> FOODLIST
+            is com.terricom.mytype.foodie.DataItem.EditFood -> EDIT_FOOD
+
+            else -> throw IllegalArgumentException()
+        }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        when (holder){
+            is FoodViewHolder -> holder.markAttach()
+            is EditFoodViewHolder -> holder.markAttach()
         }
     }
 
-    override fun onViewAttachedToWindow(holder: FoodViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.markAttach()
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        when (holder){
+            is FoodViewHolder -> holder.markDetach()
+            is EditFoodViewHolder -> holder.markDetach()
+        }
+    }
+}
+
+sealed class DataItem {
+    data class FoodieList(val string: String, val viewModel: FoodieViewModel): com.terricom.mytype.foodie.DataItem(){
+        override val id = string
+    }
+    data class EditFood(val viewModel: FoodieViewModel) : com.terricom.mytype.foodie.DataItem(){
+        override val id = (Long.MIN_VALUE).toString()
     }
 
-    override fun onViewDetachedFromWindow(holder: FoodViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holder.markDetach()
-    }
+    abstract val id: String
+
+
 }

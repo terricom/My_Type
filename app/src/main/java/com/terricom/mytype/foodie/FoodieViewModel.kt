@@ -63,8 +63,15 @@ class FoodieViewModel: ViewModel() {
 
 
     fun dragToList(food: String) {
+        Logger.i("dragToList food =$food")
         selectedFood.add(food)
     }
+
+    fun dragOutList(food: String) {
+        Logger.i("dragToList food =$food")
+        selectedFood.remove(food)
+    }
+
 
     fun dragToListNu(nutrition: String) {
         selectedNutrition.add(nutrition)
@@ -112,6 +119,17 @@ class FoodieViewModel: ViewModel() {
         Logger.i("photouri get = $photo")
     }
 
+    val _addNewFoodChecked = MutableLiveData<Boolean>()
+    val addNewFoodChecked : LiveData<Boolean>
+        get() = _addNewFoodChecked
+
+    fun checkedAddNewFood(){
+        _addNewFoodChecked.value = true
+    }
+
+    fun unCheckedAddNewFood(){
+        _addNewFoodChecked.value = false
+    }
 
     val db = FirebaseFirestore.getInstance()
     val user = db.collection("Users")
@@ -167,6 +185,7 @@ class FoodieViewModel: ViewModel() {
         }
         setDate(Date())
         _addPhoto.value = false
+        unCheckedAddNewFood()
     }
 
     fun getFoodAndNuList(){

@@ -83,6 +83,7 @@ class FoodieFragment: Fragment() {
         //處理從其他 Fragment 帶 Argument 過來的情況
         binding.foodie = foodie
         if (foodie.timestamp != null){
+            binding.foodieTitle.setText("修改食記")
             viewModel.setDate(foodie.timestamp!!)
             viewModel.water.value = foodie.water
             viewModel.fruit.value = foodie.fruit
@@ -93,7 +94,7 @@ class FoodieFragment: Fragment() {
             if (foodie.foods!!.isNotEmpty()){
                 binding.dagFoodHint.visibility = View.GONE
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
-                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitList(foodie.foods)
+                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
                 binding.foodsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
                         resources.getDimension(R.dimen.recyclerview_between).toInt(),
@@ -103,6 +104,7 @@ class FoodieFragment: Fragment() {
                 val owner = binding.foodsTransportedRecycler.parent as ViewGroup
                 owner.removeView(binding.foodsTransportedRecycler)
                 binding.chosedFood.addView(binding.foodsTransportedRecycler)
+                binding.foodsTransportedRecycler.setOnLongClickListener(FoodAdapter.LongClickListener())
             }
         }
 
@@ -115,17 +117,16 @@ class FoodieFragment: Fragment() {
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
-            val newList = it.toMutableList()
-            newList.add("新增食物")
-            Logger.i("Foodie Fragment newList =$newList")
-            (binding.foodsRecycler.adapter as FoodAdapter).submitList(newList)
+//            val newList = it.toMutableList()
+//            newList.add("新增食物")
+//            Logger.i("Foodie Fragment newList =$newList")
+            (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(it)
             binding.foodsRecycler.addItemDecoration(
                 SpaceItemDecoration(
                     resources.getDimension(R.dimen.recyclerview_between).toInt(),
                     true
                 )
             )
-            (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
         })
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
@@ -209,8 +210,11 @@ class FoodieFragment: Fragment() {
                         val container = v as LinearLayout
                         container.addView(view)
                         view.visibility = View.VISIBLE
+                        view.setOnTouchListener(FoodAdapter.MyTouchListener())
                         binding.dagFoodHint.visibility = View.INVISIBLE
                         viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
+//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
+                        (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(viewModel.userFoodList.value)
                     }
                     else -> {
                     }
@@ -244,6 +248,36 @@ class FoodieFragment: Fragment() {
             }
         }
 
+        class CleanDragListener : View.OnDragListener {
+
+            override fun onDrag(v: View, event: DragEvent): Boolean {
+                val action = event.action
+                when (event.action) {
+                    DragEvent.ACTION_DRAG_STARTED -> {
+                    }
+                    DragEvent.ACTION_DROP -> {
+                        // Dropped, reassign View to ViewGroup
+                        val view = event.localState as View
+                        val owner = view.parent as ViewGroup
+                        owner.removeView(view)
+                        val container = v as LinearLayout
+                        container.addView(view)
+                        view.visibility = View.GONE
+                        viewModel.dragOutList("${view.findViewById<TextView>(R.id.food).text}")
+//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
+                        (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
+                        foodie.foods = foodie.foods!!.minus("${view.findViewById<TextView>(R.id.food).text}")
+                        (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
+                    }
+                    else -> {
+                    }
+                }// do nothing
+                return true
+            }
+        }
+
+        Logger.i("viewModel.selectedFood = ${viewModel.selectedFood}")
+        binding.foodsMoveOut.setOnDragListener(CleanDragListener())
         binding.chosedFood.setOnDragListener(MyDragListener())
         binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
 

@@ -33,7 +33,7 @@
                     android:orientation="vertical">
 
                 <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/foodie_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
@@ -552,6 +552,20 @@
                         app:layout_constraintBottom_toBottomOf="@+id/chosed_food"
                         app:layout_constraintStart_toStartOf="@+id/chosed_food"
                         app:layout_constraintTop_toTopOf="@+id/chosed_food" />
+
+                <LinearLayout
+                        android:id="@+id/foodsMoveOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/foods_recycler"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/foods_recycler"
+                        app:layout_constraintTop_toTopOf="@+id/foods_recycler"
+                        app:layout_constraintVertical_bias="0.0">
+
+                </LinearLayout>
 
                 <TextView
                         android:id="@+id/drag_nutrition_hint"

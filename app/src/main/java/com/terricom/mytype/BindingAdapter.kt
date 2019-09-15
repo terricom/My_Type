@@ -3,6 +3,8 @@ package com.terricom.mytype
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingMethod
+import androidx.databinding.BindingMethods
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -40,3 +42,4 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Pazzle>?
         }
     }
 }
+

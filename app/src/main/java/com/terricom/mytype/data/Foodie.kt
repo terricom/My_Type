@@ -8,7 +8,7 @@ import java.util.*
 data class Foodie (
     val timestamp: Date ?= null,
     val photo: String ?= "",
-    val foods: List<String> ?= null,
+    var foods: List<String> ?= null,
     val water: Float ?= null,
     val oil: Float ?= null,
     val vegetable: Float ?= null,
