@@ -36,19 +36,19 @@
 
             <!-- date title -->
             <TextView
-                android:id="@+id/itemDate"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/toNext"
-                android:layout_toRightOf="@+id/toBack"
-                android:gravity="center"
-                android:hint="2018.12"
-                android:letterSpacing="0.15"
-                android:text='@{viewModel.dateM}'
-                android:textColor="@color/colorMyType"
-                android:textStyle="bold" />
+                    android:id="@+id/itemDate"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/toNext"
+                    android:layout_toRightOf="@+id/toBack"
+                    android:gravity="center"
+                    android:hint="2018.12"
+                    android:letterSpacing="0.15"
+                    android:text='@{viewModel.dateM}'
+                    android:textColor="@color/colorMyType"
+                    android:textSize="@dimen/text_content" />
 
             <!-- next button -->
             <ImageView

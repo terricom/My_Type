@@ -195,6 +195,7 @@ class MainActivity : BaseActivity(){
         fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
         fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
         fabLayout4.animate().translationY(-resources.getDimension(R.dimen.standard_205))
+        binding.fabShadow.visibility = View.VISIBLE
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
         binding.fab3.visibility = View.VISIBLE
@@ -209,6 +210,7 @@ class MainActivity : BaseActivity(){
 
     private fun closeFABMenu() {
         isFABOpen = false
+        binding.fabShadow.visibility = View.GONE
         fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))

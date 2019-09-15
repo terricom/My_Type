@@ -56,6 +56,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:navGraph="@navigation/navigation" />
+
+        <ImageView
+                android:id="@+id/fabShadow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/myNavHostFragment"
+                app:srcCompat="@color/colorShadow" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"
@@ -65,13 +77,11 @@
                     android:id="@+id/fab3"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="5dp"
-                    app:elevation="8dp"
                 app:tint="@color/colorWhite"
-
+                    app:fabCustomSize="45dp"
+                    app:elevation="0dp"
                 app:backgroundTint="@color/colorMyType"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:srcCompat="@drawable/icon_night"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
             <TextView
@@ -102,12 +112,11 @@
                     android:id="@+id/fab2"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="5dp"
-                    app:elevation="8dp"
+                    app:elevation="0dp"
                     app:backgroundTint="@color/colorMyType"
                 app:tint="@color/colorWhite"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:fabCustomSize="45dp"
+                    app:srcCompat="@drawable/icon_muscle"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
             <TextView
@@ -138,13 +147,11 @@
                     android:id="@+id/fab1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="5dp"
-                    app:elevation="8dp"
                 app:tint="@color/colorWhite"
-
+                    app:fabCustomSize="45dp"
+                    app:elevation="0dp"
                 app:backgroundTint="@color/colorMyType"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:srcCompat="@drawable/icon_my_type"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
             <TextView
@@ -174,13 +181,11 @@
                     android:id="@+id/fab4"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="5dp"
-                    app:elevation="8dp"
                     app:tint="@color/colorWhite"
-
+                    app:elevation="0dp"
+                    app:fabCustomSize="45dp"
                     app:backgroundTint="@color/colorMyType"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:srcCompat="@drawable/icon_goal"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
@@ -208,7 +213,6 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
                 android:layout_alignParentBottom="false"
                 android:layout_alignParentRight="false"
                 app:elevation="10dp"

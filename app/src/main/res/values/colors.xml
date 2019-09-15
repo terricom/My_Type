@@ -29,5 +29,6 @@
     <color name="colorMuscle">#A06FE0</color>
     <color name="colorPinky">#E4B6C7</color>
     <color name="colorSelectedBottomNav">#FFE873</color>
+    <color name="colorShadow">#B4000000</color>
 
 </resources>
