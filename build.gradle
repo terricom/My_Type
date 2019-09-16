@@ -36,7 +36,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$version_android_gradle_plugin"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
-        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'com.google.gms:google-services:4.3.2'
 
         classpath "com.github.dcendents:android-maven-gradle-plugin:$maven_version"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray_version"

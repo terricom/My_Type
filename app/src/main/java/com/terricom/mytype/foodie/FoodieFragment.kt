@@ -14,6 +14,7 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
@@ -22,13 +23,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
@@ -43,7 +46,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
 class FoodieFragment: Fragment() {
 
     val time = Calendar.getInstance().time
@@ -53,6 +55,7 @@ class FoodieFragment: Fragment() {
     }
 
     //Image request code
+    private val CAMERA_IMAGE = 0
     private val PICK_IMAGE_REQUEST = 1
 
     //Bitmap to get image from gallery
@@ -69,10 +72,24 @@ class FoodieFragment: Fragment() {
     private var mPhone: DisplayMetrics?= null
 
     private var windowManager: WindowManager? = null
+    val sdf = SimpleDateFormat("yyyy-MM-dd-HHmmss")
 
     private lateinit var binding: FragmentFoodieRecordBinding
     private lateinit var editableFoods: MutableList<String>
     private lateinit var editableNutritions: MutableList<String>
+
+    private var mLocationPermissionsGranted = false
+    val REQUEST_LOCATION = 1
+
+    private val FINE_LOCATION = Manifest.permission.CAMERA
+    private val COURSE_LOCATION = Manifest.permission.WRITE_EXTERNAL_STORAGE
+    private val READ_MEMORY = Manifest.permission.READ_EXTERNAL_STORAGE
+
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1234
+
+    private var imageFilePath: String? = null
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -181,9 +198,9 @@ class FoodieFragment: Fragment() {
             Logger.i("Clicked foodiephoto")
             //Requesting storage permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                requestStoragePermission()
+                getPermissions()
             }
-            showFileChooser()
+            selectImage()
             Logger.i("showFileChooser() in foodiephoto")
         }
 
@@ -399,6 +416,75 @@ class FoodieFragment: Fragment() {
         Logger.i("Inside showFileChooser()")
     }
 
+//    @Throws(IOException::class)
+    private fun fromcamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        intent.putExtra(
+//            MediaStore.EXTRA_OUTPUT,
+//            FileProvider.getUriForFile(
+//                App.applicationContext(),
+//                BuildConfig.APPLICATION_ID + ".provider",
+//                createImageFile()
+//            )
+//        )
+    if (intent.resolveActivity(App.applicationContext().packageManager)!= null){
+        var pictureFile: File ?= null
+        try {
+            pictureFile = createImageFile()
+
+        }catch (ex: IOException){
+            return
+        }
+        if (pictureFile != null){
+            val photoURI = FileProvider.getUriForFile(this.context!!
+                , App.applicationContext().packageName+ ".provider", pictureFile)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+            startActivityForResult(intent, CAMERA_IMAGE)
+        }
+        Logger.d( "ongallery: " + "camera is opened intent =$intent")}
+
+//    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//    intent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true)
+//    if (intent.resolveActivity(App.applicationContext().packageManager) != null){
+//        var pictureFile: File ?= null
+//        try {
+//            pictureFile = createImageFile()
+//
+//        }catch (ex: IOException){
+//            return
+//        }
+//        if (pictureFile != null){
+//            val photoURI = FileProvider.getUriForFile(this.context!!
+//                , App.applicationContext().packageName+ ".provider", pictureFile)
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//            startActivityForResult(intent, CAMERA_IMAGE)
+//        }
+
+    }
+
+//    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+
+        //This is the directory in which the file will be created. This is the default location of Camera photos
+        val storageDir = File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DCIM), "Camera")
+//            App.applicationContext().getExternalFilesDir(
+//            Environment.getExternalStoragePublicDirectory(
+//                Environment.DIRECTORY_PICTURES)
+//    );
+        val image = File.createTempFile(
+            sdf.format(viewModel.date.value),  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for using again
+//        val cameraFilePath = "file://" + image.getAbsolutePath();
+        imageFilePath = image.getAbsolutePath()
+        Logger.d("ongallery: "+ imageFilePath)
+
+        return image
+    }
 
 
     //handling the image chooser activity result
@@ -427,6 +513,19 @@ class FoodieFragment: Fragment() {
                 e.printStackTrace()
             }
 
+        }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
+            if (data != null && data.getExtras() != null) {
+            val imageBitmap = data.getExtras().get("data") as Bitmap
+//            foodiePhoto.setImageBitmap(imageBitmap);
+        } else {
+                Glide.with(this).load(imageFilePath).into(foodiePhoto)
+                val imagePath = File(App.applicationContext().getExternalFilesDir(Environment.DIRECTORY_DCIM), "Camera");
+                val newFile = File(imagePath, "default_image.jpg");
+                val contentUri: Uri = getUriForFile(App.applicationContext(), "com.terricom.mytype.provider", newFile)
+                filePath = contentUri
+                Logger.i("imageFilePath =$imageFilePath contentUri = $contentUri")
+                uploadCameraFile()
+            }
         }
     }
 
@@ -574,13 +673,50 @@ class FoodieFragment: Fragment() {
         }
     }
 
+    private var userChoosenTask: String? = null
+
+    fun selectImage() {
+
+        val items = arrayOf<CharSequence>("Take Photo", "Choose from Library", "Cancel")
+
+        val context = this.context
+
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("Add Photo!")
+        builder.setItems(items) { dialog, item ->
+            if (items[item] == "Cancel") {
+                dialog.dismiss()
+            } else {
+                userChoosenTask = items[item].toString()
+                callCameraOrGallery()
+            }
+        }
+        builder.show()
+    }
+
+    private fun callCameraOrGallery() {
+
+        if (userChoosenTask.equals("Take Photo")) {
+            userChoosenTask = "Take Photo"
+
+            fromcamera()
+
+        } else if (userChoosenTask.equals("Choose from Library")) {
+            userChoosenTask = "Choose from Library"
+
+            showFileChooser()
+
+        } else {
+            Logger.e( "callCameraOrGallery: somthing went wrong ")
+        }
+
+    }
 
 
     private fun uploadFile(){
         if (filePath != null){
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
-            val sdf = SimpleDateFormat("yyyy-MM-dd-HHmmss")
             val data = compress(filePath!!)
             val imgRef = storageReference!!.child("images/users/"+ userId+"/"
                     +sdf.format(viewModel.date.value)+".jpg")
@@ -606,6 +742,37 @@ class FoodieFragment: Fragment() {
                 }
         }
     }
+
+    private fun uploadCameraFile(){
+        if (filePath != null){
+            auth = FirebaseAuth.getInstance()
+            val userId = auth!!.currentUser!!.uid
+//            val data = compress(filePath!!)
+            val imgRef = storageReference!!.child("images/users/"+ userId+"/"
+                    +sdf.format(viewModel.date.value)+".jpg")
+            imgRef.putFile(filePath!!)
+                .addOnCompleteListener{
+                    imgRef.downloadUrl.addOnCompleteListener {
+                        viewModel.setPhoto(it.result!!)
+                        Logger.i("FoodieFragment uploadFile =${it.result}")
+                    }
+                        .addOnFailureListener {
+                            Logger.i("FoodieFragment uploadFile failed =$it")
+
+                        }
+                    Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(App.applicationContext(),"Upload failed", Toast.LENGTH_SHORT)
+
+                }
+                .addOnProgressListener { taskSnapshot ->
+                    val progress = 100.0 * taskSnapshot.bytesTransferred/ taskSnapshot.totalByteCount
+                    Toast.makeText(App.applicationContext(),"$progress uploaded...", Toast.LENGTH_SHORT)
+                }
+        }
+    }
+
 
 
     private fun compress(image: Uri): ByteArray? {
@@ -638,45 +805,73 @@ class FoodieFragment: Fragment() {
     }
 
 
-    //Requesting permission
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(
-                App.applicationContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
+    private fun getPermissions() {
+        Logger.d( "getLocationPermission: getting location permissions");
+        val permissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
-            return
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(
-            activity as MainActivity,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            STORAGE_PERMISSION_CODE
-        )
-    }
 
-    //This method will be called when the user will tap on allow or deny
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (ContextCompat.checkSelfPermission(App.applicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(App.applicationContext(),
+                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(App.applicationContext(),
+                        COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    mLocationPermissionsGranted = true;
+                    try {
+//                        fromcamera()
+                    } catch (e: IOException) {
+                        e.printStackTrace();
+                    }
+                }
 
-        //Checking the request code of our request
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-
-            //If permission is granted
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Displaying a toast
-                Toast.makeText(App.applicationContext(), "Permission granted now you can read the storage", Toast.LENGTH_LONG).show()
-            } else {
-                //Displaying another toast if permission is not granted
-                Toast.makeText(App.applicationContext(), "Oops you just denied the permission", Toast.LENGTH_LONG).show()
             }
+            else {
+                ActivityCompat.requestPermissions(activity as MainActivity,
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(activity as MainActivity,
+                permissions,
+                LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Logger.d( "onRequestPermissionsResult: called.")
+        mLocationPermissionsGranted = false;
+
+        when (requestCode) {
+
+            LOCATION_PERMISSION_REQUEST_CODE ->
+
+                if (grantResults.size > 0) {
+                    for (i in 0 until grantResults.size) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            mLocationPermissionsGranted = false;
+                            return;
+                        }
+                    }
+                    Logger.d("onRequestPermissionsResult: permission granted")
+                    mLocationPermissionsGranted = true;
+                    //initialize our map
+                    try {
+//                        fromcamera();
+                    } catch ( e: IOException) {
+                        e.printStackTrace();
+                    }
+                }}
+
+        }
+
 
 
 
