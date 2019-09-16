@@ -14,6 +14,7 @@ import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.*
@@ -70,7 +71,8 @@ class FoodieFragment: Fragment() {
     private var windowManager: WindowManager? = null
 
     private lateinit var binding: FragmentFoodieRecordBinding
-
+    private lateinit var editableFoods: MutableList<String>
+    private lateinit var editableNutritions: MutableList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -96,6 +98,10 @@ class FoodieFragment: Fragment() {
 
 
             if (foodie.foods!!.isNotEmpty()){
+                editableFoods = foodie.foods!!.toMutableList()
+                for (food in foodie.foods!!){
+                    viewModel.dragToList(food)
+                }
                 binding.dagFoodHint.visibility = View.GONE
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
                 (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
@@ -109,9 +115,15 @@ class FoodieFragment: Fragment() {
                 owner.removeView(binding.foodsTransportedRecycler)
                 binding.chosedFood.addView(binding.foodsTransportedRecycler)
                 binding.foodsTransportedRecycler.setOnLongClickListener(FoodAdapter.LongClickListener())
+            }else {
+                editableFoods = mutableListOf("")
             }
 
             if (foodie.nutritions!!.isNotEmpty()){
+                editableNutritions = foodie.nutritions!!.toMutableList()
+                for (nutrition in foodie.nutritions!!){
+                    viewModel.dragOutListNu(nutrition)
+                }
                 binding.dragNutritionHint.visibility = View.GONE
                 binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
                 (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(foodie.nutritions)
@@ -125,9 +137,14 @@ class FoodieFragment: Fragment() {
                 owner.removeView(binding.nutritionsTransportedRecycler)
                 binding.chosedNutrition.addView(binding.nutritionsTransportedRecycler)
                 binding.nutritionsTransportedRecycler.setOnLongClickListener(NutritionAdapter.LongClickListenerNu())
+            }else{
+                editableNutritions = mutableListOf("")
             }
             binding.buttonFoodieSave.setText("確認修改")
 
+        }else {
+            editableNutritions = mutableListOf("")
+            editableFoods = mutableListOf("")
         }
 
         auth = FirebaseAuth.getInstance()
@@ -202,7 +219,9 @@ class FoodieFragment: Fragment() {
                         viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
 //                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
                         (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(viewModel.userFoodList.value)
+                       editableFoods.add("${view.findViewById<TextView>(R.id.food).text}")
                     }
+
                     else -> {
                     }
                 }// do nothing
@@ -228,7 +247,7 @@ class FoodieFragment: Fragment() {
                         view.setOnTouchListener(NutritionAdapter.MyTouchListener())
                         binding.dragNutritionHint.visibility = View.INVISIBLE
                         viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
-                    }
+                        editableNutritions.add("${view.findViewById<TextView>(R.id.nutrition).text}")}
                     else -> {
                     }
                 }// do nothing
@@ -255,8 +274,14 @@ class FoodieFragment: Fragment() {
 //                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
                         (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
                         if ((foodie.foods ?: listOf<String>("")).isNotEmpty()){
-                        foodie.foods = foodie.foods!!.minus("${view.findViewById<TextView>(R.id.food).text}")}
-                        (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
+                            editableFoods.remove("${view.findViewById<TextView>(R.id.food).text}")
+                        }
+                        foodie.foods?.let {
+                            editableFoods.remove("")
+                            binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
+                            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(editableFoods)
+                        }
+
                     }
                     else -> {
                     }
@@ -284,8 +309,14 @@ class FoodieFragment: Fragment() {
 //                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
                         (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
                         if ((foodie.nutritions ?: listOf("")).isNotEmpty()){
-                        foodie.nutritions = foodie.nutritions!!.minus("${view.findViewById<TextView>(R.id.nutrition).text}")}
-                        (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(foodie.nutritions)
+                        editableNutritions.remove("${view.findViewById<TextView>(R.id.nutrition).text}")
+                        }
+                        foodie.nutritions?.let {
+                            editableNutritions.remove("")
+                            Logger.i("editableNutritions =${editableNutritions}")
+                            binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
+                            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(editableNutritions)
+                        }
                     }
                     else -> {
                     }
@@ -322,11 +353,14 @@ class FoodieFragment: Fragment() {
                 viewModel.clearData()
             }
 
-            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).fab.visibility = View.VISIBLE
+            Handler().postDelayed({
+                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
+            },2000)
 
+            
             if (isConnected()) {
                 Logger.i("NetworkConnection Network Connected.")
                 //執行下載任務
@@ -546,7 +580,7 @@ class FoodieFragment: Fragment() {
         if (filePath != null){
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
-            val sdf = SimpleDateFormat("yyyy-MM-dd-hhmmss")
+            val sdf = SimpleDateFormat("yyyy-MM-dd-HHmmss")
             val data = compress(filePath!!)
             val imgRef = storageReference!!.child("images/users/"+ userId+"/"
                     +sdf.format(viewModel.date.value)+".jpg")

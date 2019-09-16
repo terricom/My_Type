@@ -205,7 +205,6 @@ class FoodieViewModel: ViewModel() {
             "protein" to protein.value,
             "fruit" to fruit.value,
             "carbon" to carbon.value,
-            "photo" to photoUri.value.toString(),
             "foods" to selectedFood.distinct(),
             "nutritions" to selectedNutrition.distinct()
         )
