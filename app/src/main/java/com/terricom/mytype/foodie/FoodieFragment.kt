@@ -73,6 +73,7 @@ class FoodieFragment: Fragment() {
 
     private var windowManager: WindowManager? = null
     val sdf = SimpleDateFormat("yyyy-MM-dd-HHmmss")
+    var pictureFile: File ?= null
 
     private lateinit var binding: FragmentFoodieRecordBinding
     private lateinit var editableFoods: MutableList<String>
@@ -393,9 +394,6 @@ class FoodieFragment: Fragment() {
             Logger.i("viewModel.photoUri.observe =$it")
         })
 
-        filePathProvider = FileProvider()
-
-
         return binding.root
     }
 
@@ -419,16 +417,7 @@ class FoodieFragment: Fragment() {
 //    @Throws(IOException::class)
     private fun fromcamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        intent.putExtra(
-//            MediaStore.EXTRA_OUTPUT,
-//            FileProvider.getUriForFile(
-//                App.applicationContext(),
-//                BuildConfig.APPLICATION_ID + ".provider",
-//                createImageFile()
-//            )
-//        )
     if (intent.resolveActivity(App.applicationContext().packageManager)!= null){
-        var pictureFile: File ?= null
         try {
             pictureFile = createImageFile()
 
@@ -437,30 +426,11 @@ class FoodieFragment: Fragment() {
         }
         if (pictureFile != null){
             val photoURI = FileProvider.getUriForFile(this.context!!
-                , App.applicationContext().packageName+ ".provider", pictureFile)
+                , App.applicationContext().packageName+ ".provider", pictureFile!!)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             startActivityForResult(intent, CAMERA_IMAGE)
-        }
-        Logger.d( "ongallery: " + "camera is opened intent =$intent")}
+        }}}
 
-//    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//    intent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true)
-//    if (intent.resolveActivity(App.applicationContext().packageManager) != null){
-//        var pictureFile: File ?= null
-//        try {
-//            pictureFile = createImageFile()
-//
-//        }catch (ex: IOException){
-//            return
-//        }
-//        if (pictureFile != null){
-//            val photoURI = FileProvider.getUriForFile(this.context!!
-//                , App.applicationContext().packageName+ ".provider", pictureFile)
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-//            startActivityForResult(intent, CAMERA_IMAGE)
-//        }
-
-    }
 
 //    @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -469,18 +439,15 @@ class FoodieFragment: Fragment() {
         //This is the directory in which the file will be created. This is the default location of Camera photos
         val storageDir = File(Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_DCIM), "Camera")
-//            App.applicationContext().getExternalFilesDir(
-//            Environment.getExternalStoragePublicDirectory(
-//                Environment.DIRECTORY_PICTURES)
-//    );
+        Logger.i("storageDir = $storageDir")
         val image = File.createTempFile(
             sdf.format(viewModel.date.value),  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
-        );
+        )
         // Save a file: path for using again
 //        val cameraFilePath = "file://" + image.getAbsolutePath();
-        imageFilePath = image.getAbsolutePath()
+        imageFilePath = "file://" + image.getAbsolutePath()
         Logger.d("ongallery: "+ imageFilePath)
 
         return image
@@ -514,18 +481,13 @@ class FoodieFragment: Fragment() {
             }
 
         }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
-            if (data != null && data.getExtras() != null) {
-            val imageBitmap = data.getExtras().get("data") as Bitmap
-//            foodiePhoto.setImageBitmap(imageBitmap);
-        } else {
                 Glide.with(this).load(imageFilePath).into(foodiePhoto)
-                val imagePath = File(App.applicationContext().getExternalFilesDir(Environment.DIRECTORY_DCIM), "Camera");
-                val newFile = File(imagePath, "default_image.jpg");
-                val contentUri: Uri = getUriForFile(App.applicationContext(), "com.terricom.mytype.provider", newFile)
+
+                val contentUri: Uri = getUriForFile(this.context!!
+                    , App.applicationContext().packageName+ ".provider", pictureFile!!)
                 filePath = contentUri
-                Logger.i("imageFilePath =$imageFilePath contentUri = $contentUri")
+                Logger.i("filePath from contentUri = $contentUri")
                 uploadCameraFile()
-            }
         }
     }
 
@@ -555,20 +517,6 @@ class FoodieFragment: Fragment() {
         else foodiePhoto.setImageBitmap(bitmap)
     }
 
-    //計算圖片的縮放值
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
-        val height = options.outHeight
-        val width = options.outWidth
-        var inSampleSize = 1
-
-        if (height > reqHeight || width > reqWidth) {
-            val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
-            val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
-            inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
-        }
-        return inSampleSize
-    }
-
 
     private fun isConnected(): Boolean{
         val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
@@ -581,32 +529,6 @@ class FoodieFragment: Fragment() {
 
 
     companion object {
-
-
-        //storage permission code
-        private val STORAGE_PERMISSION_CODE = 123
-
-        /** Calculate inSampleSize to fit within requestSize */
-        fun calculateInSampleSize(context: Context, uri: Uri, requestSize: Int): Int {
-            var stream: InputStream? = null
-            val options = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true
-            }
-            return try {
-                stream = context.contentResolver.openInputStream(uri)
-                BitmapFactory.decodeStream(stream, null, options)
-                val longer = Math.max(options.outWidth, options.outHeight)
-                if (longer > requestSize) {
-                    longer / requestSize
-                } else {
-                    1
-                }
-            } catch (e: Exception) {
-                1
-            } finally {
-                stream?.close()
-            }
-        }
 
         /** Acquire image rotation from Uri */
         fun getImageRotation(context: Context, uri: Uri): Int {
@@ -632,45 +554,6 @@ class FoodieFragment: Fragment() {
             }
         }
 
-        /** Retrieve the reduced image below requestSize */
-        fun createReducedBitmap(context: Context, uri: Uri, requestSize: Int): Bitmap? {
-            var stream: InputStream? = null
-            val options = BitmapFactory.Options().apply {
-                inSampleSize = calculateInSampleSize(context, uri, requestSize)
-            }
-            return try {
-                stream = context.contentResolver.openInputStream(uri)
-                BitmapFactory.decodeStream(stream, null, options)
-            } catch (e: Exception) {
-                null
-            } finally {
-                stream?.close()
-            }
-        }
-
-        /** Save images to a file */
-        fun saveBitmapToFile(bitmap: Bitmap, file: File): Boolean {
-            var stream: OutputStream? = null
-            return try {
-                stream = FileOutputStream(file)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            } catch (e: Exception) {
-                false
-            } finally {
-                stream?.close()
-            }
-        }
-
-        /** Reset file Orientation tag */
-        fun resetOrientation(filePath: String): Boolean {
-            return try {
-                val exifInterface = ExifInterface(filePath)
-                exifInterface.setAttribute(ExifInterface.TAG_ORIENTATION, "0")
-                true
-            } catch (e: Exception) {
-                false
-            }
-        }
     }
 
     private var userChoosenTask: String? = null
@@ -750,6 +633,7 @@ class FoodieFragment: Fragment() {
 //            val data = compress(filePath!!)
             val imgRef = storageReference!!.child("images/users/"+ userId+"/"
                     +sdf.format(viewModel.date.value)+".jpg")
+            Logger.i("imgRef =$imgRef")
             imgRef.putFile(filePath!!)
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {

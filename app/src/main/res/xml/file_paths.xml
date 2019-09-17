@@ -5,7 +5,7 @@
     <cache-path name="cache-path" path="." />
 
     <!--/storage/emulated/0/Android/data/...-->
-
+    <external-path name="external_files" path="."/>
     <external-files-path name="external_file_path" path="." />
     <!--代表app 外部儲存區域根目錄下的檔案 Context.getExternalCacheDir目錄下的目錄-->
     <external-cache-path name="external_cache_path" path="." />
