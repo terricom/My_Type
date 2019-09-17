@@ -43,15 +43,16 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-//        viewModel.date.value = "$year-$month-$day 12:00:00.000000000"
-
-
-
         binding.smartCustomCalendar.setEventHandler(this)
-        binding.smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
+
 
         viewModel.date.observe(this, androidx.lifecycle.Observer {
-            Logger.i("ShapeRecordFragment viewModel.date.observe = $it")
+            viewModel.getThisMonth()
         })
 
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -71,7 +72,9 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
                 //告訴使用者網路無法使用
             }
-            viewModel.upDate("${binding.smartCustomCalendar.selectDateOut}")
+            binding.smartCustomCalendar.selectDateOut?.let {
+                viewModel.setDate(it)
+            }
             viewModel.addShape()
             viewModel.clearData()
         }

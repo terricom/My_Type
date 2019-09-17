@@ -29,17 +29,6 @@ class FoodieViewModel: ViewModel() {
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
 
-    val _addPhoto = MutableLiveData<Boolean>()
-    val addPhoto : LiveData<Boolean>
-        get() = _addPhoto
-
-    fun addPhoto(){
-        _addPhoto.value = true
-    }
-
-    val addFood = MutableLiveData<String>()
-    val addNutrition = MutableLiveData<String>()
-
     val newFuList = mutableListOf<String>()
     val newNuList = mutableListOf<String>()
 
@@ -237,16 +226,12 @@ class FoodieViewModel: ViewModel() {
     }
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val sdfT = SimpleDateFormat("HH:mm")
-    val currentDate = sdf.format(Date())
-    val currentTime = sdfT.format(Date())
 
     init {
         if (userUid != null){
             getFoodAndNuList()
         }
         setDate(Date())
-        _addPhoto.value = false
         unCheckedAddNewFood()
         unCheckedAddNewNutrition()
     }

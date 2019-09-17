@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
         <variable name="viewModel" type="com.terricom.mytype.shaperecord.ShapeRecordViewModel"/>
     </data>
-<com.terricom.mytype.calendar.SquareConstrainLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                    android:orientation="vertical"
+<com.terricom.mytype.calendar.SquareConstrainLayout
+        android:orientation="vertical"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
                                                     android:id="@+id/cellDateLayout">
@@ -22,12 +22,20 @@
             android:textColor="@color/colorMyType"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
     <ImageView
+            android:id="@+id/shape"
             android:layout_width="21dp"
-            android:layout_height="27dp" app:srcCompat="@drawable/icon_shape" android:id="@+id/shape"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:scaleType="fitStart" android:tint="@color/colorBananna" android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp" android:layout_marginStart="16dp"/>
+            android:layout_height="27dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="fitStart"
+            android:tint="@color/colorBananna"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_shape" />
 
 </com.terricom.mytype.calendar.SquareConstrainLayout>
 </layout>

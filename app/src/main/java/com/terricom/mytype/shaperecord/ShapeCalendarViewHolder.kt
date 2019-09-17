@@ -2,33 +2,29 @@ package com.terricom.mytype.shaperecord
 
 import android.graphics.Typeface
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.App
 import com.terricom.mytype.R
 import java.util.*
 
-class ShapeCalendarViewHolder(val view: View
-                              , val viewModel: ShapeRecordViewModel
-,private var binding: com.terricom.mytype.databinding.ItemCalendarSquareBinding
-) : RecyclerView.ViewHolder(view)
+class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databinding.ItemCalendarSquareBinding
+) : RecyclerView.ViewHolder(binding.root)
 , LifecycleOwner {
 
-    private val monthOfDate = view.findViewById<TextView>(R.id.itemDate)
-    private val shape = view.findViewById<ImageView>(R.id.shape)
-    private val cellDateLayout = view.findViewById<ConstraintLayout>(R.id.cellDateLayout)
-    private val context = view.context
+    private val monthOfDate = binding.itemDate
+    private val shape = binding.shape
+    private val cellDateLayout = binding.cellDateLayout
+    var recorded = false
 
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
                    dateSelected : Date?,
-                   listener: ShapeCalendarAdapter.ListenerCellSelect? = null
-//    ,viewModel: ShapeRecordViewModel
+                   listener: ShapeCalendarAdapter.ListenerCellSelect? = null,
+                   viewModel: ShapeRecordViewModel
     ){
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -47,43 +43,40 @@ class ShapeCalendarViewHolder(val view: View
         val currentYear = currentDateTime.get(Calendar.YEAR)
 
         var selectedDay = -1
+
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
-//            Logger.i("ShapeCalendarViewHolder selectedDay YEAR =${selectedDateTime.get(Calendar.YEAR)}" +
-//                    "-${selectedDateTime.get(Calendar.MONTH)}"+
-//                    "-${selectedDateTime.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000")
-//            viewModel.date.value = "${selectedDateTime.get(Calendar.YEAR)}"+
-//                    "-${selectedDateTime.get(Calendar.MONTH)}" +
-//                    "-${selectedDateTime.get(Calendar.DAY_OF_MONTH)} 00:00:00.000000000"
-
-
         }
 
         if(currentMonth != viewMonth || currentYear != viewYear){
-            monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorAllTransparent, null))
+            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorAllTransparent, null))
             shape.visibility = View.INVISIBLE
             cellDateLayout.setBackgroundColor(
                 ResourcesCompat.getColor(
-                    context.resources,
+                    App.applicationContext().resources,
                     R.color.colorAllTransparent,
                     null
                 )
             )
         } else if(selectedDay == currentDay ){
-
-
+            if (recorded){
+                shape.visibility = View.VISIBLE
+            }
             monthOfDate.setTypeface(null, Typeface.BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(
-                    context.resources,
+                    App.applicationContext().resources,
                     R.drawable.input_column,
                     null
                 )
 
         } else {
-            monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorMyType, null))
-            cellDateLayout.background = ResourcesCompat.getDrawable(context.resources, R.drawable.calendar_date,null)
+            if (recorded){
+                shape.visibility = View.VISIBLE
+            }
+            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorMyType, null))
+            cellDateLayout.background = ResourcesCompat.getDrawable(App.applicationContext().resources, R.drawable.calendar_date,null)
 
 
             itemView.setOnClickListener{
@@ -101,7 +94,7 @@ class ShapeCalendarViewHolder(val view: View
     private fun resetViewDefault() {
         itemView.setOnClickListener(null)
         monthOfDate.setTypeface(null, Typeface.NORMAL)
-        monthOfDate.setTextColor(ResourcesCompat.getColor(context.resources, R.color.colorWhite, null))
+        monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorWhite, null))
     }
 
 

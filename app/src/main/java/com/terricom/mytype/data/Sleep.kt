@@ -9,5 +9,6 @@ data class Sleep (
     val wakeUp: Date ?= null ,
     val sleepHr: Float ?= null,
     val goToBed: Date ?= null,
-    val timestamp: Date ?= null
+    val timestamp: Date ?= null,
+    var docId: String ?= ""
 ): Parcelable
