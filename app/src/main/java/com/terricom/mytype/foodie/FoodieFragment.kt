@@ -32,7 +32,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
@@ -42,12 +41,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 class FoodieFragment: Fragment() {
-
-    val time = Calendar.getInstance().time
 
     private val viewModel: FoodieViewModel by lazy {
         ViewModelProviders.of(this).get(FoodieViewModel::class.java)
@@ -66,8 +62,6 @@ class FoodieFragment: Fragment() {
     private var storageReference: StorageReference ?= null
     private var auth: FirebaseAuth ?= null
 
-    private var filePathProvider: FileProvider ?= null
-
     private var mPhone: DisplayMetrics?= null
 
     private var windowManager: WindowManager? = null
@@ -79,15 +73,13 @@ class FoodieFragment: Fragment() {
     private lateinit var editableNutritions: MutableList<String>
 
     private var mLocationPermissionsGranted = false
-    val REQUEST_LOCATION = 1
 
     private val FINE_LOCATION = Manifest.permission.CAMERA
     private val COURSE_LOCATION = Manifest.permission.WRITE_EXTERNAL_STORAGE
-    private val READ_MEMORY = Manifest.permission.READ_EXTERNAL_STORAGE
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1234
 
-    private var imageFilePath: String? = null
+    private var imageFilePathFromCamera: String? = null
 
 
 
@@ -195,13 +187,11 @@ class FoodieFragment: Fragment() {
         })
 
         binding.foodiePhoto.setOnClickListener{
-            Logger.i("Clicked foodiephoto")
             //Requesting storage permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getPermissions()
             }
             selectImage()
-            Logger.i("showFileChooser() in foodiephoto")
         }
 
         val callback = object : OnBackPressedCallback(true) {
@@ -354,11 +344,6 @@ class FoodieFragment: Fragment() {
 
 
         binding.buttonFoodieSave.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
-
-            val user: FirebaseUser = auth!!.currentUser as FirebaseUser
-            val userId = user.uid
-            val name = sdf.format(Date().time)
 
             if (foodie.docId != ""){
                 viewModel.adjustFoodie()
@@ -386,12 +371,7 @@ class FoodieFragment: Fragment() {
                 //告訴使用者網路無法使用
             }
 
-
         }
-
-        viewModel.photoUri.observe(this, androidx.lifecycle.Observer {
-            Logger.i("viewModel.photoUri.observe =$it")
-        })
 
         return binding.root
     }
@@ -413,7 +393,6 @@ class FoodieFragment: Fragment() {
         Logger.i("Inside showFileChooser()")
     }
 
-//    @Throws(IOException::class)
     private fun fromcamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     if (intent.resolveActivity(App.applicationContext().packageManager)!= null){
@@ -430,10 +409,8 @@ class FoodieFragment: Fragment() {
             startActivityForResult(intent, CAMERA_IMAGE)
         }}}
 
-
-//    @Throws(IOException::class)
+    // Create an image file name
     private fun createImageFile(): File {
-        // Create an image file name
 
         //This is the directory in which the file will be created. This is the default location of Camera photos
         val storageDir = File(Environment.getExternalStoragePublicDirectory(
@@ -445,9 +422,7 @@ class FoodieFragment: Fragment() {
                 storageDir      /* directory */
         )
         // Save a file: path for using again
-//        val cameraFilePath = "file://" + image.getAbsolutePath();
-        imageFilePath = "file://" + image.getAbsolutePath()
-        Logger.d("ongallery: "+ imageFilePath)
+        imageFilePathFromCamera = "file://" + image.getAbsolutePath()
 
         return image
     }
@@ -498,14 +473,6 @@ class FoodieFragment: Fragment() {
         }
     }
 
-    private fun getBitmapOption(inSampleSize: Int): BitmapFactory.Options {
-        System.gc();
-        val options: BitmapFactory.Options = BitmapFactory.Options();
-        options.inPurgeable = true;
-        options.inSampleSize = inSampleSize;
-        return options;
-    }
-
     private fun ScalePic( bitmap:Bitmap, phone: Int)
     {
         //縮放比例預設為1
@@ -541,12 +508,7 @@ class FoodieFragment: Fragment() {
         } else false
     }
 
-
-
-    companion object {
-
-        /** Acquire image rotation from Uri */
-        fun getImageRotation(context: Context, uri: Uri): Int {
+    private fun getImageRotation(context: Context, uri: Uri): Int {
             var stream: InputStream? = null
             return try {
                 stream = context.contentResolver.openInputStream(uri)
@@ -569,7 +531,6 @@ class FoodieFragment: Fragment() {
             }
         }
 
-    }
 
     private var userChoosenTask: String? = null
 
@@ -605,7 +566,6 @@ class FoodieFragment: Fragment() {
             showFileChooser()
 
         } else {
-            Logger.e( "callCameraOrGallery: somthing went wrong ")
         }
 
     }
@@ -712,7 +672,6 @@ class FoodieFragment: Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        Logger.d( "onRequestPermissionsResult: called.")
         mLocationPermissionsGranted = false;
 
         when (requestCode) {
@@ -730,7 +689,6 @@ class FoodieFragment: Fragment() {
                     mLocationPermissionsGranted = true;
                     //initialize our map
                     try {
-//                        fromcamera();
                     } catch ( e: IOException) {
                         e.printStackTrace();
                     }

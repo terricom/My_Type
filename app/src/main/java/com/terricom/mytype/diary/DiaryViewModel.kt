@@ -102,10 +102,22 @@ class DiaryViewModel: ViewModel() {
 
     private var storageRef : StorageReference?= null
 
+    val _callDeleteAction = MutableLiveData<Boolean>()
+    val callDeleteAction : LiveData<Boolean>
+        get() = _callDeleteAction
+
+    fun callDeleteAction(){
+        _callDeleteAction.value = true
+    }
+
+    fun finishCallDeleteAction(){
+        _callDeleteAction.value = false
+    }
 
 
     init {
         calendarClickedAgain()
+        _callDeleteAction.value = false
     }
 
     fun getDiary() {

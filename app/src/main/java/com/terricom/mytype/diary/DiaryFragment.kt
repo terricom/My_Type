@@ -7,15 +7,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.Logger
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentDiaryBinding
@@ -44,23 +45,20 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         })
 
-//        setupItemTouchHelper()
-        binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{
-            findNavController().navigate(NavigationDirections.navigateToFoodieFragment(it))
-        })
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        val swipeHandler = object : SwipeToDeleteCallback(App.applicationContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                if (viewHolder is FoodieAdapter.ProductViewHolder){
-                    viewModel.delete(viewHolder.foodieSelected!!)
-                    viewModel.getDiary()
-                    (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+        binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
+            viewModel.callDeleteAction.observe(this, Observer {
+                if (it == false){
+                    findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
+                } else {
+                    view!!.findViewById<ImageView>(R.id.add2Garbage).setOnClickListener {
+                        viewModel.delete(foodie)
+                        viewModel.getDiary()
+                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                    }
                 }
-                (binding.recyclerView.adapter as FoodieAdapter).removeAt(viewHolder.adapterPosition)
-            }
-        }
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+            })
+
+        })
 
         viewModel.fireSleep.observe(this, Observer {
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)

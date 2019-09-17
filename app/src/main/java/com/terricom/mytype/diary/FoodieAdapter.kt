@@ -1,27 +1,40 @@
 package com.terricom.mytype.diary
 
+import android.content.ClipData
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.databinding.ItemDiaryRecordBinding
 import com.terricom.mytype.databinding.ItemDiaryShapeBinding
 import com.terricom.mytype.databinding.ItemDiarySleepBinding
 import com.terricom.mytype.databinding.ItemDiarySumBinding
+import com.terricom.mytype.foodie.FoodieFragment
+import kotlinx.android.synthetic.main.item_diary_record.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import java.util.logging.Handler
 
 private val TITLE = 0
 private val DIARY_LIST = 1
@@ -237,8 +250,16 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is ProductViewHolder -> {
                 val header = getItem(position) as DataItem.FoodieList
                 holder.bind(header.foodie, header.viewModel)
+
                 holder.itemView.setOnClickListener {
                     onClickListener.onClick(header.foodie)
+                }
+                holder.itemView.setOnLongClickListener {
+                    viewModel.callDeleteAction()
+                    it.findViewById<ImageView>(R.id.add2Garbage).visibility = View.VISIBLE
+                    it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.VISIBLE
+
+                    it.clipToOutline
                 }
             }
             is ShapeViewHolder -> {
@@ -280,6 +301,36 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is SumViewHolder -> holder.markDetach()
             is ShapeViewHolder -> holder.markDetach()
             is SleepViewHolder -> holder.markDetach()
+        }
+    }
+
+    class LongClickListener: View.OnLongClickListener{
+        override fun onLongClick(p0: View): Boolean {
+            val data = ClipData.newPlainText("", "")
+            val myShadow = MyDragShadowBuilder(p0)
+            p0?.startDrag(data, MyDragShadowBuilder(p0), p0, 0)
+            return true
+        }
+    }
+
+    private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
+
+        private val shadow = ColorDrawable(Color.LTGRAY)
+
+        override fun onProvideShadowMetrics(size: Point, touch: Point) {
+            val width: Int = view.width / 2
+
+            val height: Int = view.height / 2
+
+            shadow.setBounds(0, 0, width, height)
+
+            size.set(width, height)
+
+            touch.set(width / 2, height / 2)
+        }
+
+        override fun onDrawShadow(canvas: Canvas) {
+            shadow.draw(canvas)
         }
     }
 
