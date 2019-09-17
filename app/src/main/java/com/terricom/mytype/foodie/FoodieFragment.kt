@@ -31,7 +31,6 @@ import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
@@ -481,14 +480,30 @@ class FoodieFragment: Fragment() {
             }
 
         }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
-                Glide.with(this).load(imageFilePath).into(foodiePhoto)
+            val contentUri: Uri = getUriForFile(this.context!!
+                , App.applicationContext().packageName+ ".provider", pictureFile!!)
+            filePath = contentUri
+            bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
+            val degree = getImageRotation(App.applicationContext(),filePath!!)
+            Logger.i("degree = $degree")
+            val matrix = Matrix()
+            matrix.postRotate(degree.toFloat())
+            val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
+            val baos = ByteArrayOutputStream()
+            outBitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
+            if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
+            else ScalePic(outBitmap!!, mPhone!!.widthPixels)
 
-                val contentUri: Uri = getUriForFile(this.context!!
-                    , App.applicationContext().packageName+ ".provider", pictureFile!!)
-                filePath = contentUri
-                Logger.i("filePath from contentUri = $contentUri")
-                uploadCameraFile()
+                uploadFile()
         }
+    }
+
+    private fun getBitmapOption(inSampleSize: Int): BitmapFactory.Options {
+        System.gc();
+        val options: BitmapFactory.Options = BitmapFactory.Options();
+        options.inPurgeable = true;
+        options.inSampleSize = inSampleSize;
+        return options;
     }
 
     private fun ScalePic( bitmap:Bitmap, phone: Int)
@@ -625,39 +640,6 @@ class FoodieFragment: Fragment() {
                 }
         }
     }
-
-    private fun uploadCameraFile(){
-        if (filePath != null){
-            auth = FirebaseAuth.getInstance()
-            val userId = auth!!.currentUser!!.uid
-//            val data = compress(filePath!!)
-            val imgRef = storageReference!!.child("images/users/"+ userId+"/"
-                    +sdf.format(viewModel.date.value)+".jpg")
-            Logger.i("imgRef =$imgRef")
-            imgRef.putFile(filePath!!)
-                .addOnCompleteListener{
-                    imgRef.downloadUrl.addOnCompleteListener {
-                        viewModel.setPhoto(it.result!!)
-                        Logger.i("FoodieFragment uploadFile =${it.result}")
-                    }
-                        .addOnFailureListener {
-                            Logger.i("FoodieFragment uploadFile failed =$it")
-
-                        }
-                    Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
-                }
-                .addOnFailureListener {
-                    Toast.makeText(App.applicationContext(),"Upload failed", Toast.LENGTH_SHORT)
-
-                }
-                .addOnProgressListener { taskSnapshot ->
-                    val progress = 100.0 * taskSnapshot.bytesTransferred/ taskSnapshot.totalByteCount
-                    Toast.makeText(App.applicationContext(),"$progress uploaded...", Toast.LENGTH_SHORT)
-                }
-        }
-    }
-
-
 
     private fun compress(image: Uri): ByteArray? {
 
