@@ -92,6 +92,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="messageDialog">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-257" />
+                            <option name="y" value="332" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="navigate_to_achivement_fragment">
                     <value>
                       <LayoutPositions />

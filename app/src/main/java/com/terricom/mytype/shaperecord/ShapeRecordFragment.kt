@@ -56,6 +56,13 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
+        binding.buttonBack2Main.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+        }
+
         binding.buttonShaperecordSave.setOnClickListener {
             if (isConnected()) {
                 Logger.i("NetworkConnection Network Connected.")

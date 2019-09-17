@@ -173,6 +173,7 @@ class MainActivity : BaseActivity(){
             if (it.value == App.instance?.getString(R.string.title_foodie) ||
                 it.value == App.instance?.getString(R.string.title_shape_record) ||
                 it.value == App.instance?.getString(R.string.title_sleep) ||
+                it.value == App.instance?.getString(R.string.title_goal_setting) ||
                 it.value == App.instance?.getString(R.string.title_dream_puzzle) ){
                 hideBottomNavView()
                 hideFABView()

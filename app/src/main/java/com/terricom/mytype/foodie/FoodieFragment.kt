@@ -149,7 +149,7 @@ class FoodieFragment: Fragment() {
             }else{
                 editableNutritions = mutableListOf("")
             }
-            binding.buttonFoodieSave.setText("確認修改")
+            binding.textFoodieSave.setText("確認修改")
 
         }else {
             editableNutritions = mutableListOf("")
@@ -203,6 +203,13 @@ class FoodieFragment: Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+        binding.buttonBack2Main.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+        }
 
 
 

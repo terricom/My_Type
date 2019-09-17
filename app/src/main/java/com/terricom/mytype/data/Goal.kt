@@ -16,5 +16,6 @@ data class Goal (
     val carbon: Float ?= null,
     val weight: Float ?= null,
     val bodyFat: Float ?= null,
-    val muscle: Float ?= null
+    val muscle: Float ?= null,
+    val cheerUp: String ?=""
     ): Parcelable

@@ -40,6 +40,9 @@
     <action android:id="@+id/navigate_to_dream_board_fragment" app:destination="@id/dreamboardFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_message_dialog" app:destination="@id/messageDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -60,4 +63,11 @@
             android:id="@+id/goalSettingFragment"
             android:name="com.terricom.mytype.goalsetting.GoalSettingFragment"
             android:label="GoalSettingFragment" />
+    <dialog
+            android:id="@+id/messageDialog"
+            android:name="com.terricom.mytype.MessageDialog"
+            android:label="MessageDialog">
+        <argument android:name="messageTypeKey"
+            app:argType="com.terricom.mytype.MessageDialog$MessageType"
+            app:nullable="false"/></dialog>
 </navigation>

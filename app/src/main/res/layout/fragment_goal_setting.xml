@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="com.terricom.mytype.Converter"/>
+        <variable
+                name="viewModel"
+                type="com.terricom.mytype.goalsetting.GoalSettingViewModel" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,9 +28,8 @@
     <EditText
             android:id="@+id/editDate"
             android:layout_width="90dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/tag_left_corners"
             android:ems="10"
             android:fontFamily="@font/noto_sans"
@@ -34,23 +39,27 @@
             android:paddingTop="@dimen/elevation_all"
             android:paddingRight="@dimen/elevation_all"
             android:paddingBottom="@dimen/elevation_all"
+            android:text="@{Converter.dateToString(viewModel.date)}"
             android:textAlignment="center"
             android:textColor="@color/colorMyType"
             android:textColorHint="@color/colorMyType"
             android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="@+id/goal_content"
             app:layout_constraintEnd_toStartOf="@+id/editTime"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_title_set_date" />
+            app:layout_constraintTop_toTopOf="@+id/goal_content" />
 
     <EditText
             android:id="@+id/goal_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/tag_right_corners"
             android:fontFamily="@font/noto_sans"
-            android:hint="把目標具體化寫下來會更容易實現喔！"
+            android:hint="@string/goal_setting_hint_add_cheer_up"
+            android:text="@={viewModel.cheerUp}"
             android:paddingLeft="7dp"
             android:paddingTop="@dimen/elevation_all"
             android:paddingRight="@dimen/elevation_all"
@@ -62,7 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/editDate"
-            app:layout_constraintTop_toTopOf="@+id/editDate" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_title_set_date" />
 
     <TextView
             android:id="@+id/textView"
@@ -95,7 +104,7 @@
 
     <ImageView
             android:id="@+id/button_water"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -117,6 +126,7 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.water)}"
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -129,7 +139,7 @@
 
     <ImageButton
             android:id="@+id/button_vegetable"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:background="@drawable/tag_left_corners"
             android:paddingLeft="@dimen/elevation_all"
@@ -151,6 +161,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.vegetable)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -162,7 +174,7 @@
 
     <ImageButton
             android:id="@+id/button_fruit"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:background="@drawable/tag_left_corners"
             android:paddingLeft="@dimen/elevation_all"
@@ -184,6 +196,8 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.fruit)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -218,6 +232,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.oil)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -249,6 +265,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.protein)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -281,6 +299,7 @@
             android:paddingRight="@dimen/elevation_all"
             android:paddingBottom="@dimen/elevation_all"
             android:scaleType="fitCenter"
+
             app:layout_constraintBottom_toBottomOf="@+id/button_protein"
             app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
             app:layout_constraintStart_toStartOf="@+id/button_vegetable"
@@ -293,6 +312,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/tag_right_corners"
             android:hint="0.3"
+            android:text="@={viewModel.floatToString(viewModel.carbon)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -330,6 +351,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.0"
+            android:text="@={viewModel.floatToString(viewModel.weight)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -362,6 +385,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/tag_right_corners"
             android:hint="0.0"
+            android:text="@={viewModel.floatToString(viewModel.muscle)}"
+
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -395,6 +420,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/tag_right_corners"
+            android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
+
             android:hint="0.0"
             android:padding="@dimen/elevation_all"
             android:textAlignment="center"
@@ -406,15 +433,11 @@
             app:layout_constraintStart_toStartOf="@+id/number_carbon"
             app:layout_constraintTop_toBottomOf="@+id/number_carbon" />
 
-    <Button
-            android:id="@+id/button_shaperecord_save"
+    <ImageView
+            android:id="@+id/button_goal_setting_save"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/button_background"
-            android:backgroundTint="@color/colorMyType"
+            android:layout_height="@dimen/height_all_bottom_layout"
+            android:background="@color/colorMyType"
             android:fontFamily="@font/noto_sans"
             android:paddingLeft="@dimen/elevation_all"
             android:paddingTop="@dimen/elevation_all"
@@ -438,6 +461,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon_back" />
+    <TextView
+            android:id="@+id/text_goal_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.15"
+            android:text="@string/foodie_save"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_content_title"
+            app:layout_constraintBottom_toBottomOf="@+id/button_goal_setting_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/button_goal_setting_save"
+            app:layout_constraintTop_toTopOf="@+id/button_goal_setting_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

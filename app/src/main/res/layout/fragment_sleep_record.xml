@@ -252,25 +252,36 @@
             tools:text="7:45 AM" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/button_shaperecord_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/calendar_date"
-        android:fontFamily="@font/noto_sans"
-        android:onClick="@{() -> viewModel.addSleepHr()}"
-        android:paddingLeft="@dimen/elevation_all"
-        android:paddingTop="@dimen/elevation_all"
-        android:paddingRight="@dimen/elevation_all"
-        android:text="@string/foodie_save"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <ImageView
+            android:id="@+id/button_sleep_save"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/height_all_bottom_layout"
+            android:background="@color/colorMyType"
+            android:fontFamily="@font/noto_sans"
+            android:onClick="@{() -> viewModel.addSleepHr()}"
+            android:paddingLeft="@dimen/elevation_all"
+            android:paddingTop="@dimen/elevation_all"
+            android:paddingRight="@dimen/elevation_all"
+            android:text="@string/foodie_save"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+            android:id="@+id/text_sleep_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:letterSpacing="0.15"
+            android:text="@string/foodie_save"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_content_title"
+            app:layout_constraintBottom_toBottomOf="@+id/button_sleep_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/button_sleep_save"
+            app:layout_constraintTop_toTopOf="@+id/button_sleep_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

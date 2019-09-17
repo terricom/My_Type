@@ -410,16 +410,12 @@
                         app:layout_constraintStart_toStartOf="@+id/number_vegetable"
                         app:layout_constraintTop_toBottomOf="@+id/number_vegetable" />
 
-                <Button
+                <ImageView
                         android:id="@+id/button_foodie_save"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_height="@dimen/height_all_bottom_layout"
                         android:layout_marginTop="32dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="24dp"
-                        android:background="@drawable/calendar_date"
-                        android:backgroundTint="@color/colorMyType"
+                        android:background="@color/colorMyType"
                         android:fontFamily="@font/noto_sans"
                         android:paddingLeft="@dimen/elevation_all"
                         android:paddingTop="@dimen/elevation_all"
@@ -605,6 +601,20 @@
                         app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
                         app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
                         app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
+
+                <TextView
+                        android:id="@+id/text_foodie_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:letterSpacing="0.15"
+                        android:text="@string/foodie_save"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_content_title"
+                        app:layout_constraintBottom_toBottomOf="@+id/button_foodie_save"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/button_foodie_save"
+                        app:layout_constraintTop_toTopOf="@+id/button_foodie_save" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

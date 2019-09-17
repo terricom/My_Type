@@ -52,7 +52,14 @@ class SleepFragment: Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
-        binding.buttonShaperecordSave.setOnClickListener {
+        binding.buttonBack2Main.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+        }
+
+        binding.buttonSleepSave.setOnClickListener {
             if (isConnected()) {
                 Logger.i("NetworkConnection Network Connected.")
                 //執行下載任務
