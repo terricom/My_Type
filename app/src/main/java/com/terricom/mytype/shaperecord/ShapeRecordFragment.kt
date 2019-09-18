@@ -35,6 +35,8 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_achievment
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
+                (activity as MainActivity).closeFABMenu()
+
             }
         }
 
@@ -62,6 +64,8 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
+
         }
 
         binding.buttonShaperecordSave.setOnClickListener {
@@ -92,11 +96,21 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
 
     override fun onCalendarNextPressed() {
-        binding.smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
+
     }
 
     override fun onCalendarPreviousPressed() {
-        binding.smartCustomCalendar.updateCalendar()
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
+
     }
 
     override fun onStop() {

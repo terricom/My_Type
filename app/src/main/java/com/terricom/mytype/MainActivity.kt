@@ -205,12 +205,13 @@ class MainActivity : BaseActivity(){
     }
 
 
-    private fun showFABMenu() {
+    fun showFABMenu() {
         isFABOpen = true
         fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
         fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
         fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
         fabLayout4.animate().translationY(-resources.getDimension(R.dimen.standard_205))
+        fab.animate().rotation(45.0f)
         binding.fabShadow.visibility = View.VISIBLE
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
@@ -220,13 +221,12 @@ class MainActivity : BaseActivity(){
         binding.fabLayout2.visibility = View.VISIBLE
         binding.fabLayout3.visibility = View.VISIBLE
         binding.fabLayout4.visibility = View.VISIBLE
-
-
     }
 
-    private fun closeFABMenu() {
+    fun closeFABMenu() {
         isFABOpen = false
         binding.fabShadow.visibility = View.GONE
+        fab.animate().rotation(90.0f)
         fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))

@@ -30,5 +30,7 @@
     <color name="colorPinky">#E4B6C7</color>
     <color name="colorSelectedBottomNav">#FFE873</color>
     <color name="colorShadow">#B4000000</color>
+    <color name="colorGrass">#7EBD97</color>
+    <color name="colorSkin">#FFEBBC</color>
 
 </resources>

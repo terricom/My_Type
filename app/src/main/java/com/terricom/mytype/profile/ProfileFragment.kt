@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.terricom.mytype.R
@@ -56,6 +57,12 @@ class ProfileFragment: Fragment() {
                 .scrollToPosition(pazzleList.size * 100)
         }
 
+        viewModel.goal.observe(this, Observer {
+            if (it.isNotEmpty()){
+                binding.recyclerGoal.adapter = GoalAdapter(viewModel)
+                (binding.recyclerGoal.adapter as GoalAdapter).submitList(it)
+            }
+        })
 
         binding.recyclerPuzzle.addItemDecoration(
             SpaceItemDecoration(

@@ -200,6 +200,7 @@ class FoodieFragment: Fragment() {
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                 (activity as MainActivity).fab.visibility = View.VISIBLE
+                (activity as MainActivity).closeFABMenu()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -209,6 +210,7 @@ class FoodieFragment: Fragment() {
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
         }
 
 

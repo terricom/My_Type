@@ -48,6 +48,8 @@ class SleepFragment: Fragment() {
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
+                (activity as MainActivity).closeFABMenu()
+
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -57,6 +59,8 @@ class SleepFragment: Fragment() {
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
+
         }
 
         binding.buttonSleepSave.setOnClickListener {

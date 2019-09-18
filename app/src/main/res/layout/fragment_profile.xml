@@ -12,20 +12,6 @@
             android:layout_height="match_parent">
 
 
-        <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text="@string/title_shape_record"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/layout_title"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/shape_record_choose_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="0dp"
@@ -331,6 +317,7 @@
                         android:id="@+id/recyclerGoal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -570,7 +557,7 @@
             android:layout_marginStart="16dp"
             android:fontFamily="@font/noto_sans"
             android:padding="@dimen/elevation_all"
-            android:text="每個人看到都會問說你怎麼瘦的"
+            android:text="@{viewModel.cheerUp}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_content"
             app:layout_constraintStart_toEndOf="@+id/image_profile_avatar"

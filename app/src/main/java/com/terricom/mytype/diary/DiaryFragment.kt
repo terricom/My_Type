@@ -31,6 +31,8 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         ViewModelProviders.of(this).get(DiaryViewModel::class.java)
     }
     private lateinit var binding :FragmentDiaryBinding
+    private var hasFireShape = false
+    private var hasFireSleep = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentDiaryBinding.inflate(inflater)
@@ -61,15 +63,17 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         })
 
         viewModel.fireSleep.observe(this, Observer {
+            hasFireSleep = true
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireShape.observe(this, Observer {
+            hasFireShape = true
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireFoodie.observe(this, Observer {
-            if (it.size > 0){
+            if (it.size > 0 || hasFireShape || hasFireSleep){
                 Logger.i("viewModel.fireFoodie.observe = $it")
                 binding.diaryHintAddFoodie.visibility = View.GONE
                 binding.iconMyType.visibility = View.GONE
@@ -140,8 +144,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             viewModel.getThisMonth()
             binding.diaryDate.text = sdf.format(it)
         })
-
-
 
 
         return binding.root
