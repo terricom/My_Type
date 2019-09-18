@@ -77,7 +77,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 Logger.i("viewModel.fireFoodie.observe = $it")
                 binding.diaryHintAddFoodie.visibility = View.GONE
                 binding.iconMyType.visibility = View.GONE
-                binding.backgroundOfIcon.visibility = View.GONE
             }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
@@ -100,7 +99,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     if (viewModel.fireFoodie.value!!.size <= 0){
                         binding.diaryHintAddFoodie.visibility = View.VISIBLE
                         binding.iconMyType.visibility = View.VISIBLE
-                        binding.backgroundOfIcon.visibility = View.VISIBLE
                     }
                     viewModel.calendarClickedAgain()
                 }
@@ -110,7 +108,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     binding.diaryCalendar.visibility = View.VISIBLE
                     binding.diaryHintAddFoodie.visibility = View.INVISIBLE
                     binding.iconMyType.visibility = View.INVISIBLE
-                    binding.backgroundOfIcon.visibility = View.INVISIBLE
                     viewModel.calendarClicked()
                 }
 

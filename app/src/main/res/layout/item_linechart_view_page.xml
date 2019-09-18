@@ -5,6 +5,9 @@
         <variable
             name="viewModel"
             type="com.terricom.mytype.linechart.LinechartViewModel" />
+        <variable
+                name="chartEntity"
+                type="com.terricom.mytype.linechart.ChartEntity" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:orientation="vertical"
@@ -25,7 +28,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></com.terricom.mytype.linechart.LineChart>
+        app:layout_constraintTop_toTopOf="parent">
+    </com.terricom.mytype.linechart.LineChart>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

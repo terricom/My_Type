@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager2.widget.ViewPager2
-import com.terricom.mytype.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,56 +26,40 @@ class LinechartFragment: Fragment() {
 
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
-        var currentPosition = binding.viewPager2.currentItem
+        var currentPosition = 0
 
-        binding.viewPager2.adapter = LinechartAdapter(viewModel)
-        (binding.viewPager2.adapter as LinechartAdapter).notifyDataSetChanged()
-        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-
-            }
-
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                currentPosition = position
-                viewModel.clearData()
-                viewModel.setCurrentPosition(position)
-                Logger.i("Selected_Page , position.toString() = $position")
-                viewModel.newFireBack()
-                viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
-                viewModel.getThisMonth()
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-
+        viewModel.listDates.observe(this, androidx.lifecycle.Observer {
+            if (it != null && it.isNotEmpty() && it[0].values.isNotEmpty()){
+                binding.lineChart.legendArray = viewModel.fireDate.value
+                binding.lineChart.setList(it)
+                binding.lineChart.visibility = View.VISIBLE
+                binding.iconMyType.visibility = View.GONE
+                binding.shaperecordHint.visibility = View.GONE
+            } else if (it != null && it[0].values.isEmpty()){
+                binding.lineChart.visibility = View.GONE
+                binding.iconMyType.visibility = View.VISIBLE
+                binding.shaperecordHint.visibility = View.VISIBLE
             }
         })
 
 
-        if (viewModel.date.value == sdf.format(Date())){
-            binding.viewPager2.setCurrentItem(20, true)
-        }
+        viewModel.recordDate.observe(this, androidx.lifecycle.Observer {
+            viewModel.getThisMonth()
+        })
+
         binding.toBack.setOnClickListener {
             viewModel.newFireBack()
-            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
-            binding.viewPager2.setCurrentItem( currentPosition.minus(1), true)
-
+            currentPosition = currentPosition-1
+            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition))))
+            viewModel.getThisMonth()
         }
         binding.toNext.setOnClickListener {
             viewModel.newFireBack()
-            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition-20))))
-            binding.viewPager2.setCurrentItem( currentPosition.plus(1), true)
+            currentPosition = currentPosition+1
+            viewModel.setDate(Date(Date().time.plus(604800000L*(currentPosition))))
+            viewModel.getThisMonth()
+//            binding.viewPager2.setCurrentItem( currentPosition.plus(1), true)
         }
-
-//        viewModel.date.observe(this, androidx.lifecycle.Observer {
-//            viewModel.getThisMonth()
-//        })
 
         return binding.root
     }

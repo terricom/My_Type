@@ -6,126 +6,59 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.App
 import com.terricom.mytype.Logger
-import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemLinechartViewPageBinding
 import java.util.*
 
 class LinechartAdapter(val viewModel: LinechartViewModel) : RecyclerView.Adapter<LinechartAdapter.PagerVH>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
-        viewModel.run {
-            newFireBack()
-            getThisMonth()
-            Logger.i("If viewModel run")
-        }
+        Logger.i("LinechartAdapter")
+        viewModel.clearData()
+        viewModel.getThisMonth()
         return PagerVH(
             ItemLinechartViewPageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
-    //get the size of color array
-    override fun getItemCount(): Int = Int.MAX_VALUE
+    private var dates: List<Date>? = null
 
-    //binding the screen with view
-    override fun onBindViewHolder(holder: PagerVH, position: Int) = holder.itemView.run {
-        Logger.i("Linechart Adapter position =$position adapter position =${holder.adapterPosition} viewModel current position =${viewModel.currentPotition.value}")
-        viewModel.newFireBack()
-        holder.list.clear()
-        holder.bind(viewModel)
+    fun submitDates(listDates: List<Date>) {
+        this.dates = listDates
+        notifyDataSetChanged()
     }
 
+    //get the size of color array
+    override fun getItemCount(): Int {
+        return dates?.let { Int.MAX_VALUE } ?: 0
+    }
 
+    //binding the screen with view
+    override fun onBindViewHolder(holder: PagerVH, position: Int){
+        dates?.let {
+            holder.bind(viewModel, it[getRealPosition(position)])
+        }
+    }
 
-class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.ViewHolder(binding.root), LifecycleOwner{
+    class PagerVH(private var binding: ItemLinechartViewPageBinding) :
+    RecyclerView.ViewHolder(binding.root), LifecycleOwner{
 
-    val list = ArrayList<ChartEntity>()
-
-    fun bind(viewModel: LinechartViewModel){
+    fun bind(viewModel: LinechartViewModel, dates: Date){
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.executePendingBindings()
-        list.clear()
 
-        viewModel.fireBackEnd.observe(this, androidx.lifecycle.Observer {
-//            viewModel.clearData()
-            Logger.i("Before check list =${list.size}")
-            if (it == true){
-                Logger.i("viewModel.fireBackEnd.observe = $it")
-                viewModel.waterList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val waterChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorWater), it)
-                        viewModel.waterClicked.observe(this, androidx.lifecycle.Observer {
-                            if (it == true){
-                                list.add(waterChartEntity)
-                            }
-                        })
-                        }
+        Logger.i("NEW ViewHolder")
 
-                    }
-                })
-
-                viewModel.oilList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val oilChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorOil), it)
-                        list.add(oilChartEntity)
-                        }
-                    }
-                })
-
-                viewModel.vegetableList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val vegetableChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), it)
-                        list.add(vegetableChartEntity)
-                        }
-
-                    }
-                })
-
-                viewModel.proteinList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val proteinChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorProtein), it)
-                        list.add(proteinChartEntity)
-                        }
-                    }
-                })
-
-                viewModel.fruitList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val fruitChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorFruit), it)
-                        list.add(fruitChartEntity)
-                        }
-
-                    }
-                })
-
-                viewModel.carbonList.observe(this, androidx.lifecycle.Observer {
-                    it?.let{
-                        if (it.size > 0){
-                        val carbonChartEntity = ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), it)
-                        list.add(carbonChartEntity)
-                        }
-                    }
-                })
-
-                if (list.size > 0){
-                    Logger.i("After check list =${viewModel.dateM.value}${list.size}")
-
-
-                    binding.lineChart.legendArray = viewModel.fireDate.value
-                    binding.lineChart.setList(list)
-
-                }
-
+        viewModel.listDates.observe(this, androidx.lifecycle.Observer {
+            if (it != null){
+                Logger.i("After check list =${viewModel.listDates}")
+                binding.lineChart.legendArray = viewModel.fireDate.value
+                binding.lineChart.setList(it)
             }
         })
-//        list.clear()
+
     }
 
 
@@ -147,6 +80,10 @@ class PagerVH(private var binding: ItemLinechartViewPageBinding) : RecyclerView.
         return lifecycleRegistry
     }
 }
+    private fun getRealPosition(position: Int): Int = dates?.let {
+        position % it.size
+    } ?: 0
+
     override fun onViewAttachedToWindow(holder: PagerVH) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()

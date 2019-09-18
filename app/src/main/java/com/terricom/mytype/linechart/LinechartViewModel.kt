@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.App
 import com.terricom.mytype.Logger
+import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
@@ -124,7 +126,7 @@ class LinechartViewModel: ViewModel() {
         _fireBackEnd.value = true
     }
     fun newFireBack (){
-        _fireBackEnd.value = false
+        _fireBackEnd.value = null
     }
 
     val _waterClicked = MutableLiveData<Boolean>()
@@ -144,21 +146,31 @@ class LinechartViewModel: ViewModel() {
         _carbonList.value = null
     }
 
+    val _listDates = MutableLiveData<ArrayList<ChartEntity>>()
+    val listDates : LiveData<ArrayList<ChartEntity>>
+        get() = _listDates
+
+    fun setListDates(listDates: ArrayList<ChartEntity>){
+        _listDates.value = listDates
+    }
+
 
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
 
     init {
+        newFireBack()
         setDate(Date())
     }
 
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid as String).collection("Foodie")
+                .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
                 .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
                 .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
+
             foodieDiary
                 .get()
                 .addOnSuccessListener { querySnapshot ->
@@ -186,7 +198,8 @@ class LinechartViewModel: ViewModel() {
                         }
                     }
                     val cleanList = datelist.distinct()
-
+                    val chartList = mutableListOf<ChartEntity>()
+                    chartList.clear()
                     for (eachDay in cleanList){
                         waterD.clear()
                         oilD.clear()
@@ -232,7 +245,16 @@ class LinechartViewModel: ViewModel() {
                     proteinListBack(proteinList.toFloatArray())
                     fruitListBack(fruitList.toFloatArray())
                     carbonListBack(carbonList.toFloatArray())
-                    finishFireBack()
+
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorWater), waterList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorOil), oilList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), vegetableList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorProtein), proteinList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorFruit), fruitList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), carbonList.toFloatArray()))
+                    setListDates(chartList.toCollection(ArrayList()))
+                    Logger.i("chartList.size =${chartList.size}")
+                    _listDates.value = null
                     Logger.i("LinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
                 }
         }
