@@ -176,7 +176,7 @@ class LineChart : View {
         }
         var x: Float
         var y: Float
-        val xGap = (xLength / (chartEntities!![0].values.size - 1)).toFloat()
+        val xGap = if (chartEntities!![0].values.size - 1 == 0) 0.0f else(xLength / (chartEntities!![0].values.size - 1)).toFloat()
         val yGap = (yLength / 10).toFloat()
 
         for (i in 0 until 11){
@@ -254,7 +254,7 @@ class LineChart : View {
             this.p.color = chartEntities!![m].color
             this.pCircle.color = chartEntities!![m].color
 
-            val xGap = xLength / (chartEntities!![m].values.size - 1)
+            val xGap = if (chartEntities!![m].values.size - 1 == 0) 0 else xLength / (chartEntities!![m].values.size - 1)
 
             for (j in chartEntities!![m].values.indices) {
 
