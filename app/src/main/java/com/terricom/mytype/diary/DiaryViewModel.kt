@@ -245,6 +245,11 @@ class DiaryViewModel: ViewModel() {
             return sdf.format(java.sql.Date(timestamp.time).time)
     }
 
+    fun getTimeWithoutZone(timestamp: Date):String{
+        val sdf = SimpleDateFormat("HH:mm")
+        return sdf.format(java.sql.Date(timestamp.time).time)
+    }
+
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users

@@ -56,16 +56,20 @@
                 app:srcCompat="@drawable/icon_delete" />
 
         <TextView
-            android:id="@+id/foodie_memo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="6dp"
-            android:fontFamily="@font/noto_sans"
-            android:textColor="@color/colorMyType"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/foodie_memo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:text="@{foodie.memo}"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
                 android:id="@+id/foodie_time_stamp"
@@ -74,7 +78,7 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/noto_sans"
-                android:text="@{viewModel.getTime(foodie.timestamp)}"
+                android:text="@{viewModel.getTimeWithoutZone(foodie.timestamp)}"
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
@@ -82,31 +86,32 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_diary_foods_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            tools:listitem="@layout/item_foodie_food" />
+                android:id="@+id/recycler_diary_foods_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:paddingTop="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/foodie_memo"
+                tools:listitem="@layout/item_foodie_food" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_diary_nutrition_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_diary_foods_item"
-            tools:listitem="@layout/item_diary_nutritionlist" />
+                android:id="@+id/recycler_diary_nutrition_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal"
+                android:paddingTop="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_diary_foods_item"
+                tools:listitem="@layout/item_diary_nutritionlist" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

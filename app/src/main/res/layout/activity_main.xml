@@ -209,33 +209,35 @@
                     app:layout_constraintTop_toTopOf="@+id/fab4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
+                style="@style/MyFloatingActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="false"
                 android:layout_alignParentRight="false"
+                android:layout_alignParentBottom="false"
+                android:layout_marginBottom="16dp"
                 app:elevation="10dp"
-                app:backgroundTint="@color/colorWhite"
-                app:srcCompat="@android:drawable/ic_input_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="16dp"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:rippleColor="@color/colorMyType"
+                app:srcCompat="@android:drawable/ic_input_add" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/height_bottom_nav_view_main"
+                android:background="@color/colorWhite"
                 app:itemIconSize="@dimen/size_bottom_nav_icon"
-                android:background="@color/colorMyType"
                 app:itemIconTint="@color/btm_navigation_selector"
                 app:itemTextColor="@color/btm_navigation_selector"
+                app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:labelVisibilityMode="labeled"
                 app:menu="@menu/bottom_nav_menu">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>

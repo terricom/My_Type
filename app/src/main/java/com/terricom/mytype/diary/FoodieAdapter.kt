@@ -94,6 +94,11 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
             binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
             (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.nutritions)
+            if (foodie.memo != "" && foodie.memo != null){
+                binding.foodieMemo.visibility = View.VISIBLE
+            } else {
+                binding.foodieMemo.visibility = View.GONE
+            }
             binding.viewModel = viewModel
             Logger.i("binding.imageView2.maxHeight =${binding.imageView2.maxHeight} binding.imageView2.maxWeight = ${binding.imageView2.maxWidth}" +
                     "binding.imageView2.width =${binding.imageView2.width} binding.imageView2.height =${binding.imageView2.height}")

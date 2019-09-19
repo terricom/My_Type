@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#7EBD97</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorSecondary">#209387</color>
@@ -11,7 +11,7 @@
     <color name="black_3f3a3a">#3F3A3A</color>
     <color name="colorOrangeSave">#C8FF8C00</color>
     <color name="colorBananna">#E6FFD500</color>
-    <color name="colorMyType">#209387</color>
+    <color name="colorMyType">#7EBD97</color>
     <color name="colorButton">#D5D5D5</color>
     <color name="translucent_80">#cc000000</color>
     <color name="calendar_highlight">#209387</color>

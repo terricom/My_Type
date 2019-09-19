@@ -23,6 +23,7 @@
 
 
     <style name="MyFloatingActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="materialThemeOverlay">@style/MyFabOverlay</item>
     </style>
 

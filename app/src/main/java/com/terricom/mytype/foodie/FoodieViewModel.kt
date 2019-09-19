@@ -81,6 +81,7 @@ class FoodieViewModel: ViewModel() {
     val protein = MutableLiveData<Float>()
     val fruit = MutableLiveData<Float>()
     val carbon = MutableLiveData<Float>()
+    val memo = MutableLiveData<String>()
 
     fun convertStringToFloat(string: String): Float {
         return try {
@@ -166,7 +167,8 @@ class FoodieViewModel: ViewModel() {
             "carbon" to carbon.value,
             "photo" to photoUri.value.toString(),
             "foods" to selectedFood.distinct(),
-            "nutritions" to selectedNutrition.distinct()
+            "nutritions" to selectedNutrition.distinct(),
+            "memo" to memo.value
         )
 
         user.get()
@@ -195,7 +197,8 @@ class FoodieViewModel: ViewModel() {
             "fruit" to fruit.value,
             "carbon" to carbon.value,
             "foods" to selectedFood.distinct(),
-            "nutritions" to selectedNutrition.distinct()
+            "nutritions" to selectedNutrition.distinct(),
+            "memo" to memo.value
         )
 
         user.get()

@@ -170,17 +170,17 @@
             app:srcCompat="@drawable/icon_night" />
 
         <TextView
-            android:id="@+id/tvBedTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:paddingVertical="@dimen/elevation_all"
-            android:paddingRight="7dp"
-            android:text="@string/sleep_record_bed_time"
-            android:textColor="@color/colorMyType"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/tvBedTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:paddingRight="7dp"
+                android:text="@string/sleep_record_bed_time_long"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -210,19 +210,19 @@
     >
 
         <TextView
-            android:id="@+id/tvWakeTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:paddingVertical="@dimen/elevation_all"
-            android:paddingLeft="30dp"
-            android:paddingRight="7dp"
-            android:text="@string/sleep_record_wake_time"
-            android:textColor="@color/colorMyType"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SmallSp" />
+                android:id="@+id/tvWakeTimeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:paddingLeft="30dp"
+                android:paddingRight="7dp"
+                android:text="@string/sleep_record_wake_time_long"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
 
         <ImageView
             android:id="@+id/imageView7"
