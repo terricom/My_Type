@@ -16,9 +16,9 @@
         <TextView
                 android:id="@+id/time"
                 android:layout_width="84dp"
-                android:layout_height="0dp"
+                android:layout_height="22dp"
                 android:fontFamily="@font/noto_sans"
-                android:paddingLeft="@dimen/dialog_padding"
+                android:paddingLeft="@dimen/elevation_all"
                 android:text="2019/08/31"
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
@@ -29,18 +29,18 @@
 
         <TextView
                 android:id="@+id/number_weight"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
-                android:text="58.0"
+                android:text="158.0"
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_water"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/time"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/time" />
 
         <TextView
                 android:id="@+id/number_body_water"
@@ -51,11 +51,11 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/number_weight"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/time" />
 
         <TextView
                 android:id="@+id/number_body_fat"
@@ -66,7 +66,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_tdeet"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/number_body_water"
@@ -74,18 +74,18 @@
 
         <TextView
                 android:id="@+id/number_tdeet"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="1200"
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_muscle"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/number_body_fat"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/time" />
 
         <TextView
                 android:id="@+id/number_muscle"
@@ -96,15 +96,15 @@
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_age"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/number_tdeet"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/time" />
 
         <TextView
                 android:id="@+id/number_body_age"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:paddingRight="@dimen/dialog_padding"
@@ -112,20 +112,9 @@
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/number_muscle" />
-
-        <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="0.01dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/number_weight"
-                app:layout_constraintStart_toEndOf="@+id/time"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/colorMyType" />
+                app:layout_constraintTop_toTopOf="@+id/time" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

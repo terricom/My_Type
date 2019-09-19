@@ -10,7 +10,6 @@ import com.terricom.mytype.App
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -26,7 +25,6 @@ class LinechartViewModel: ViewModel() {
     val currentDate = sdf.format(Date())
 
     private val _date = MutableLiveData<String>()
-
     val date: LiveData<String>
         get() = _date
 
@@ -179,54 +177,54 @@ class LinechartViewModel: ViewModel() {
 
             val chartList = mutableListOf<ChartEntity>()
 
-            shapeDiary
-                .get()
-                .addOnSuccessListener {
-                    val items = mutableListOf<Shape>()
-                    val datelist = mutableListOf<String>()
-                    val weightList = mutableListOf<Float>()
-                    val bodyFatList = mutableListOf<Float>()
-                    val muscleList = mutableListOf<Float>()
-                    val weightListD = mutableListOf<Float>()
-                    val bodyFatListD = mutableListOf<Float>()
-                    val muscleListD = mutableListOf<Float>()
-
-                    for (document in it){
-                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-                            "${sdf.format(convertDate).split("-")[1]}" ==
-                            "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
-                            items.add(document.toObject(Shape::class.java))
-                            datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
-                        }
-                    }
-                    val cleanList = datelist.distinct()
-                    chartList.clear()
-                    for (eachDay in cleanList){
-                        weightListD.clear()
-                        bodyFatListD.clear()
-                        muscleListD.clear()
-                        for (i in 0 until items.size){
-                            if (sdfM.format(items[i].timestamp?.time) == eachDay){
-                                items[i].weight?.let {
-                                    weightListD.add(it)
-                                }
-                                items[i].bodyFat?.let {
-                                    bodyFatListD.add(it)
-                                }
-                                items[i].muscle?.let {
-                                    muscleListD.add(it)
-                                }
-                            }
-                        }
-                        weightList.add(weightListD[0])
-                        bodyFatList.add(bodyFatListD[0])
-                        muscleList.add(muscleListD[0])
-                    }
-                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorPinky), weightList.toFloatArray()))
-                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.browser_actions_title_color), bodyFatList.toFloatArray()))
-                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.blue_facebook), muscleList.toFloatArray()))
-                }
+//            shapeDiary
+//                .get()
+//                .addOnSuccessListener {
+//                    val items = mutableListOf<Shape>()
+//                    val datelist = mutableListOf<String>()
+//                    val weightList = mutableListOf<Float>()
+//                    val bodyFatList = mutableListOf<Float>()
+//                    val muscleList = mutableListOf<Float>()
+//                    val weightListD = mutableListOf<Float>()
+//                    val bodyFatListD = mutableListOf<Float>()
+//                    val muscleListD = mutableListOf<Float>()
+//
+//                    for (document in it){
+//                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
+//                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
+//                            "${sdf.format(convertDate).split("-")[1]}" ==
+//                            "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
+//                            items.add(document.toObject(Shape::class.java))
+//                            datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
+//                        }
+//                    }
+//                    val cleanList = datelist.distinct()
+//                    chartList.clear()
+//                    for (eachDay in cleanList){
+//                        weightListD.clear()
+//                        bodyFatListD.clear()
+//                        muscleListD.clear()
+//                        for (i in 0 until items.size){
+//                            if (sdfM.format(items[i].timestamp?.time) == eachDay){
+//                                items[i].weight?.let {
+//                                    weightListD.add(it)
+//                                }
+//                                items[i].bodyFat?.let {
+//                                    bodyFatListD.add(it)
+//                                }
+//                                items[i].muscle?.let {
+//                                    muscleListD.add(it)
+//                                }
+//                            }
+//                        }
+//                        weightList.add(weightListD[0])
+//                        bodyFatList.add(bodyFatListD[0])
+//                        muscleList.add(muscleListD[0])
+//                    }
+//                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorPinky), weightList.toFloatArray()))
+//                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.browser_actions_title_color), bodyFatList.toFloatArray()))
+//                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.blue_facebook), muscleList.toFloatArray()))
+//                }
 
             foodieDiary
                 .get()

@@ -27,7 +27,7 @@
                 android:id="@+id/diary_title_total_nutrition"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/diary_title_today_compliment"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorMyType"

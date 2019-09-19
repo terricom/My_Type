@@ -29,7 +29,7 @@ class ShapeAdapter(val viewModel: AchievementViewModel
             binding.lifecycleOwner =this
             binding.shape = shape
             binding.viewModel = viewModel
-            val sdf = SimpleDateFormat("yyyy/MM/dd")
+            val sdf = SimpleDateFormat("yyyy.M.d")
             binding.time.text = sdf.format(shape.timestamp!!.time)
             binding.numberBodyAge.text = if (shape.bodyAge.toString().split(".")[0] == null || shape.bodyAge.toString().split(".")[0] == "null" ) "-" else shape.bodyAge.toString().split(".")[0]
             binding.numberBodyFat.text = if (shape.bodyFat.toString() == null || shape.bodyFat.toString() == "null") "" else shape.bodyFat.toString()

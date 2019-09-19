@@ -11,30 +11,32 @@
             android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:scaleType="fitStart"
-            app:layout_constraintBottom_toBottomOf="@+id/title_item_diary_shape"
-            app:layout_constraintStart_toEndOf="@+id/title_item_diary_shape"
-            app:layout_constraintTop_toTopOf="@+id/title_item_diary_shape"
-            app:srcCompat="@drawable/icon_info" />
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:scaleType="fitStart"
+                app:layout_constraintBottom_toBottomOf="@+id/title_item_diary_shape"
+                app:layout_constraintStart_toEndOf="@+id/title_item_diary_shape"
+                app:layout_constraintTop_toTopOf="@+id/title_item_diary_shape"
+                app:srcCompat="@drawable/icon_info" />
 
 
         <ImageView
-            android:id="@+id/button_water"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/tag_left_corners"
-            android:padding="@dimen/elevation_all"
-            android:paddingTop="@dimen/elevation_all"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@+id/number_weight"
-            app:layout_constraintEnd_toStartOf="@+id/number_weight"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/number_weight"
-            app:srcCompat="@drawable/icon_weight" />
+                android:id="@+id/button_water"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_weight"
+                app:layout_constraintEnd_toStartOf="@+id/number_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/number_weight"
+                app:srcCompat="@drawable/icon_weight" />
 
         <TextView
             android:id="@+id/number_weight"
@@ -56,21 +58,21 @@
             app:layout_constraintTop_toBottomOf="@+id/title_item_diary_shape" />
 
         <ImageButton
-            android:id="@+id/button_vegetable"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/tag_left_corners"
-            android:paddingLeft="@dimen/elevation_all"
-            android:paddingTop="@dimen/elevation_all"
-            android:paddingRight="@dimen/elevation_all"
-            android:paddingBottom="@dimen/elevation_all"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
-            app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/number_body_water"
-            app:layout_constraintTop_toTopOf="@+id/button_water"
-            app:srcCompat="@drawable/icon_body_fat" />
+                android:id="@+id/button_vegetable"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_body_water"
+                app:layout_constraintTop_toTopOf="@+id/button_water"
+                app:srcCompat="@drawable/icon_body_fat" />
 
         <TextView
             android:id="@+id/number_body_fat"
@@ -89,21 +91,21 @@
             app:layout_constraintTop_toTopOf="@+id/button_water" />
 
         <ImageButton
-            android:id="@+id/button_fruit"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/tag_left_corners"
-            android:paddingLeft="@dimen/elevation_all"
-            android:paddingTop="@dimen/elevation_all"
-            android:paddingRight="@dimen/elevation_all"
-            android:paddingBottom="@dimen/elevation_all"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@+id/number_body_water"
-            app:layout_constraintEnd_toStartOf="@+id/number_body_water"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/number_weight"
-            app:layout_constraintTop_toTopOf="@+id/button_water"
-            app:srcCompat="@drawable/icon_body_water" />
+                android:id="@+id/button_fruit"
+                android:layout_width="40dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_water"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_water"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_weight"
+                app:layout_constraintTop_toTopOf="@+id/button_water"
+                app:srcCompat="@drawable/icon_body_water" />
 
         <TextView
             android:id="@+id/number_body_water"
