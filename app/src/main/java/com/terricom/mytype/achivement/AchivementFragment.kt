@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import kotlinx.android.synthetic.main.fragment_achivement.*
 import java.util.*
 
 class AchivementFragment: Fragment() {
@@ -46,11 +47,61 @@ class AchivementFragment: Fragment() {
                 binding.iconMyType.visibility = View.GONE
                 binding.shaperecordHint.visibility = View.GONE
                 binding.recyclerShape.visibility = View.VISIBLE
+                binding.let {
+                    icon_body_water.visibility = View.VISIBLE
+                    icon_weight.visibility = View.VISIBLE
+                    icon_body_age.visibility = View.VISIBLE
+                    icon_body_fat.visibility = View.VISIBLE
+                    icon_muscle.visibility = View.VISIBLE
+                    icon_tdee.visibility = View.VISIBLE
+                    icon_calendar.visibility = View.VISIBLE
+                    number_body_age_show.visibility = View.VISIBLE
+                    number_body_fat_show.visibility = View.VISIBLE
+                    number_body_water_show.visibility = View.VISIBLE
+                    number_muscle_show.visibility = View.VISIBLE
+                    number_tdeet_show.visibility = View.VISIBLE
+                    number_weight_show.visibility = View.VISIBLE
+                    date_show.visibility = View.VISIBLE
+                    diff_body_fat.visibility = View.VISIBLE
+                    diff_muscle.visibility = View.VISIBLE
+                    diff_weight.visibility = View.VISIBLE
+                    icon_weight_goal.visibility = View.VISIBLE
+                    icon_body_fat_goal.visibility = View.VISIBLE
+                    icon_muscle_goal.visibility = View.VISIBLE
+                    goal_body_fat.visibility = View.VISIBLE
+                    goal_muscle.visibility = View.VISIBLE
+                    goal_weight.visibility = View.VISIBLE
+                }
             } else if (it != null && it[0].values.isEmpty()){
                 binding.lineChart.visibility = View.GONE
                 binding.recyclerShape.visibility = View.GONE
                 binding.iconMyType.visibility = View.VISIBLE
                 binding.shaperecordHint.visibility = View.VISIBLE
+                binding.let {
+                    icon_body_water.visibility = View.GONE
+                    icon_weight.visibility = View.GONE
+                    icon_body_age.visibility = View.GONE
+                    icon_body_fat.visibility = View.GONE
+                    icon_muscle.visibility = View.GONE
+                    icon_tdee.visibility = View.GONE
+                    icon_calendar.visibility = View.GONE
+                    number_body_age_show.visibility = View.GONE
+                    number_body_fat_show.visibility = View.GONE
+                    number_body_water_show.visibility = View.GONE
+                    number_muscle_show.visibility = View.GONE
+                    number_tdeet_show.visibility = View.GONE
+                    number_weight_show.visibility = View.GONE
+                    date_show.visibility = View.GONE
+                    diff_body_fat.visibility = View.GONE
+                    diff_muscle.visibility = View.GONE
+                    diff_weight.visibility = View.GONE
+                    icon_weight_goal.visibility = View.GONE
+                    icon_body_fat_goal.visibility = View.GONE
+                    icon_muscle_goal.visibility = View.GONE
+                    goal_body_fat.visibility = View.GONE
+                    goal_muscle.visibility = View.GONE
+                    goal_weight.visibility = View.GONE
+                }
             }
         })
         viewModel.fireShape.observe(this, Observer {

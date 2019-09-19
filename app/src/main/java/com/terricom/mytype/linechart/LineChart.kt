@@ -25,6 +25,7 @@ class LineChart : View {
     var maxValue: Long = 0
     var marginTop: Int = 50
     var legendArray: ArrayList<String>? = null
+    var legendYArray: ArrayList<String>? = null
 
     var lineColor: Int = 0
     var bgColor: Int = 0
@@ -181,14 +182,15 @@ class LineChart : View {
 
         for (i in 0 until 11){
             val rect = Rect()
+            val values = chartEntities!![0].values.sortedDescending()[0]
 
-            val text = i.toString()
+            val text = "%.2f".format(values/10*i)
             pMarkTextY.measureText(text)
             pMarkTextY.textSize = 20f
             pMarkTextY.typeface = typeFace
 
             y = yGap * i
-            x = rect.exactCenterX() - 40
+            x = rect.exactCenterX() - 60
 
             val degree: Int = 0
             val px = (-(20 + rect.width())).toFloat()
@@ -203,8 +205,6 @@ class LineChart : View {
                 px,
                 py
             )
-
-
         }
 
         for (i in chartEntities!![0].values.indices) {
@@ -277,7 +277,7 @@ class LineChart : View {
                     x = (xGap * t).toFloat()
                     y = yLength * chartEntities!![m].values[t] / maxValue
                     graphCanvasWrapper.drawCircle(x, y, 2.0f, pCircle)
-                    graphCanvasWrapper.drawCircle(x, y, 0.5f, pCircleBG)
+//                    graphCanvasWrapper.drawCircle(x, y, 0.5f, pCircleBG)
                 }
             }
         }

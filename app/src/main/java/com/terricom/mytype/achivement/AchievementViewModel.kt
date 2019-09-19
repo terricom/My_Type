@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
+import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.linechart.ChartEntity
@@ -25,6 +26,13 @@ class AchievementViewModel: ViewModel() {
 
     val currentCalendar = Calendar.getInstance()
 
+    val goalWeight = MutableLiveData<Float>()
+    val goalBodyFat = MutableLiveData<Float>()
+    val goalMuscle = MutableLiveData<Float>()
+
+    val diffWeight = MutableLiveData<Float>()
+    val diffBodyFat = MutableLiveData<Float>()
+    val diffMuscle = MutableLiveData<Float>()
 
     private val _date = MutableLiveData<String>()
     val date: LiveData<String>
@@ -110,6 +118,7 @@ class AchievementViewModel: ViewModel() {
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
 
+            getGoal()
 
             val shapeDiary = user
                 .document(userUid).collection("Shape")
@@ -177,12 +186,24 @@ class AchievementViewModel: ViewModel() {
                         weightList.add(weightListD[0])
                         bodyFatList.add(bodyFatListD[0])
                         muscleList.add(muscleListD[0])
+
                     }
+
+                    if (weightList.size >0) {
+                        diffWeight.value = weightList[weightList.lastIndex].minus(goalWeight.value ?: 0f)
+                    }
+                    if (bodyFatList.size >0) {
+                        diffBodyFat.value = bodyFatList[bodyFatList.lastIndex].minus(goalBodyFat.value ?: 0f)
+                    }
+                    if (muscleList.size >0) {
+                        diffMuscle.value = muscleList[muscleList.lastIndex].minus(goalMuscle.value ?: 0f)
+                    }
+
                     fireDateBack(ArrayList(cleanList))
                     Logger.i("shapeList = $shapeList")
 
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorPinky), weightList.toFloatArray()))
-                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.browser_actions_title_color), bodyFatList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorButton), bodyFatList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.blue_facebook), muscleList.toFloatArray()))
                     setListDates(chartList.toCollection(ArrayList()))
                     if (shapeListD.size != 0){
@@ -193,6 +214,44 @@ class AchievementViewModel: ViewModel() {
 
                 }
 
+        }
+    }
+
+    fun getGoal() {
+        Logger.i("userUID = $userUid")
+        val db = FirebaseFirestore.getInstance()
+        val users = db.collection("Users")
+
+        if (userUid!!.isNotEmpty()){
+            val goal = users
+                .document(userUid)
+                .collection("Goal")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf(
+                    "${currentCalendar.get(Calendar.YEAR)}-${currentCalendar.get(Calendar.MONTH)+1}-" +
+                            "${getLastMonthLastDate()} 23:59:59.000000000"
+                ))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf(
+                    "${currentCalendar.get(Calendar.YEAR)}-${currentCalendar.get(Calendar.MONTH)+1}-" +
+                            "01 00:00:00.000000000"
+                ))
+
+            goal
+                .get()
+                .addOnSuccessListener {
+                    val items = mutableListOf<Goal>()
+                    if (it.isEmpty){
+
+                    }else {
+                        for (document in it) {
+                            items.add(document.toObject(Goal::class.java))
+                            items[items.size-1].docId = document.id
+                        }
+                        goalWeight.value = items[0].weight
+                        goalBodyFat.value = items[0].bodyFat
+                        goalMuscle.value = items[0].muscle
+                    }
+                }
         }
     }
 

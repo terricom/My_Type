@@ -30,6 +30,7 @@ class LinechartFragment: Fragment() {
 
         viewModel.listDates.observe(this, androidx.lifecycle.Observer {
             if (it != null && it.isNotEmpty() && it[0].values.isNotEmpty()){
+
                 binding.lineChart.legendArray = viewModel.fireDate.value
                 binding.lineChart.setList(it)
                 binding.lineChart.visibility = View.VISIBLE

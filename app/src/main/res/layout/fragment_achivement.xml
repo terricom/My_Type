@@ -67,7 +67,8 @@
         <com.terricom.mytype.linechart.LineChart
                 android:id="@+id/lineChart"
                 android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_height="290dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:chart_bg_color="@color/colorWhite"
                 app:chart_line_color="@color/colorButton"
@@ -78,6 +79,159 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"></com.terricom.mytype.linechart.LineChart>
+
+        <ImageView
+                android:id="@+id/icon_weight_goal"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_weight"
+                app:layout_constraintEnd_toStartOf="@+id/diff_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/diff_weight"
+                app:srcCompat="@drawable/icon_weight" />
+
+        <TextView
+                android:id="@+id/diff_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffWeight)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPinky"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_body_fat_goal"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_weight_goal"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <TextView
+                android:id="@+id/goal_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorPinky"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalWeight)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_weight"
+                app:layout_constraintStart_toEndOf="@+id/icon_weight_goal"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <ImageView
+                android:id="@+id/icon_muscle_goal"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_muscle"
+                app:layout_constraintEnd_toStartOf="@+id/diff_muscle"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_body_fat"
+                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal"
+                app:srcCompat="@drawable/icon_muscle" />
+
+        <TextView
+                android:id="@+id/diff_muscle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffMuscle)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/blue_facebook"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/icon_muscle_goal"
+                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal" />
+
+        <TextView
+                android:id="@+id/diff_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffBodyFat)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorButton"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_muscle_goal"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_body_fat_goal"
+                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal" />
+
+        <TextView
+                android:id="@+id/goal_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalBodyFat)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_body_fat"
+                app:layout_constraintStart_toStartOf="@+id/diff_body_fat"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <ImageView
+                android:id="@+id/icon_body_fat_goal"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_body_fat"
+                app:layout_constraintEnd_toStartOf="@+id/diff_body_fat"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_weight"
+                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal"
+                app:srcCompat="@drawable/icon_body_fat" />
+
+        <TextView
+                android:id="@+id/goal_muscle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/blue_facebook"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalMuscle)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_muscle"
+                app:layout_constraintStart_toStartOf="@+id/diff_muscle"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
 
         <TextView
                 android:id="@+id/time"
@@ -177,7 +331,7 @@
                 app:layout_constraintTop_toTopOf="@+id/time" />
 
         <ImageView
-                android:id="@+id/imageView16"
+                android:id="@+id/icon_calendar"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/icon_weight"
@@ -191,7 +345,7 @@
                 android:layout_width="84dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/noto_sans"
                 android:paddingLeft="@dimen/elevation_all"
                 android:textAlignment="center"
@@ -216,7 +370,7 @@
                 app:layout_constraintTop_toTopOf="@+id/time_show" />
 
         <TextView
-                android:id="@+id/number_weight_show2"
+                android:id="@+id/date_show"
                 android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
@@ -315,7 +469,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_weight_show2"
+                app:layout_constraintTop_toBottomOf="@+id/date_show"
                 tools:listitem="@layout/item_achivement_shape" />
 
         <ImageView
@@ -341,7 +495,7 @@
                 app:srcCompat="@drawable/icon_body_water" />
 
         <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/icon_body_fat"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
@@ -352,7 +506,7 @@
                 app:srcCompat="@drawable/icon_body_fat" />
 
         <ImageView
-                android:id="@+id/imageView13"
+                android:id="@+id/icon_tdee"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
@@ -363,7 +517,7 @@
                 app:srcCompat="@drawable/icon_tdee" />
 
         <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/icon_muscle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
@@ -375,7 +529,7 @@
                 app:srcCompat="@drawable/icon_muscle" />
 
         <ImageView
-                android:id="@+id/imageView15"
+                android:id="@+id/icon_body_age"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
@@ -392,7 +546,7 @@
                 android:layout_height="120dp"
                 android:layout_marginBottom="100dp"
                 android:elevation="@dimen/elevation_all"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -405,7 +559,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/achievement_add_record_hint"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_my_type" />
