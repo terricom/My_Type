@@ -50,9 +50,10 @@ class MessageDialog : AppCompatDialogFragment() {
                 message = getString(R.string.dialog_message_add_new_success)
             }
             MessageType.MESSAGE -> {
-                iconRes = App.instance!!.getDrawable(R.drawable.ic_launcher_foreground)
+                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type)
                 message = messageType.value.message
             }
+
             else -> {
 
             }

@@ -53,8 +53,10 @@
                 app:defaultNavHost="true"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:navGraph="@navigation/navigation" />
 
         <ImageView
@@ -69,107 +71,136 @@
                 app:srcCompat="@color/colorShadow" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fabLayout3"
                 android:layout_width="0dp"
-                android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"
-                app:layout_constraintTop_toTopOf="@+id/fab" app:layout_constraintStart_toStartOf="@+id/fab"
-                app:layout_constraintEnd_toEndOf="parent" android:id="@+id/fabLayout3" android:visibility="invisible">
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab3"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                app:tint="@color/colorWhite"
-                    app:fabCustomSize="45dp"
+                    app:backgroundTint="@color/colorMyType"
                     app:elevation="0dp"
-                app:backgroundTint="@color/colorMyType"
+                    app:fabCustomSize="45dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icon_night"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:tint="@color/colorWhite" />
+
             <TextView
-                    android:text="@string/title_sleep"
+                    android:id="@+id/text_sleep_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_sleep_title"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/input_column"
                     android:fontFamily="@font/noto_sans"
-                    android:background="@drawable/input_column" android:textColor="@color/colorWhite"
+                    android:paddingLeft="@dimen/dialog_padding"
+                    android:paddingTop="@dimen/dialog_padding"
+                    android:paddingRight="@dimen/dialog_padding"
+                    android:paddingBottom="@dimen/dialog_padding"
+                    android:text="@string/title_sleep"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/fab3"
                     app:layout_constraintStart_toEndOf="@+id/fab3"
-                    app:layout_constraintTop_toTopOf="@+id/fab3" android:textAlignment="center"
-                    android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab3"
-            />
+                    app:layout_constraintTop_toTopOf="@+id/fab3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fabLayout2"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp" app:layout_constraintTop_toTopOf="@+id/fab"
-                app:layout_constraintBottom_toBottomOf="@+id/fab" app:layout_constraintStart_toStartOf="@+id/fab"
-                android:id="@+id/fabLayout2" android:visibility="invisible">
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab2"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    app:elevation="0dp"
                     app:backgroundTint="@color/colorMyType"
-                app:tint="@color/colorWhite"
+                    app:elevation="0dp"
                     app:fabCustomSize="45dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icon_muscle"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:tint="@color/colorWhite" />
+
             <TextView
-                    android:text="@string/title_shape_record"
+                    android:id="@+id/text_shape_record_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_shape_record_title"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/input_column"
                     android:fontFamily="@font/noto_sans"
-                    android:background="@drawable/input_column" android:textColor="@color/colorWhite"
+                    android:paddingLeft="@dimen/dialog_padding"
+                    android:paddingTop="@dimen/dialog_padding"
+                    android:paddingRight="@dimen/dialog_padding"
+                    android:paddingBottom="@dimen/dialog_padding"
+                    android:text="@string/title_shape_record"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/fab2"
                     app:layout_constraintStart_toEndOf="@+id/fab2"
-                    app:layout_constraintTop_toTopOf="@+id/fab2" android:textAlignment="center"
-                    android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab2"
-            />
+                    app:layout_constraintTop_toTopOf="@+id/fab2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/fabLayout1"
                 android:layout_width="0dp"
-                android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"
-                app:layout_constraintTop_toTopOf="@+id/fab" app:layout_constraintStart_toStartOf="@+id/fab"
-                app:layout_constraintEnd_toEndOf="parent" android:id="@+id/fabLayout1" android:visibility="invisible">
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                app:tint="@color/colorWhite"
-                    app:fabCustomSize="45dp"
+                    app:backgroundTint="@color/colorMyType"
                     app:elevation="0dp"
-                app:backgroundTint="@color/colorMyType"
+                    app:fabCustomSize="45dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icon_my_type"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:tint="@color/colorWhite" />
+
             <TextView
-                    android:text="@string/title_foodie"
+                    android:id="@+id/text_foodie_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/text_foodie_title"
-                    android:paddingLeft="@dimen/dialog_padding"
-                    android:paddingRight="@dimen/dialog_padding"
-                    android:paddingTop="@dimen/dialog_padding"
-                    android:paddingBottom="@dimen/dialog_padding"
-                    android:textSize="@dimen/text_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/input_column"
                     android:fontFamily="@font/noto_sans"
-                    android:background="@drawable/input_column" android:textColor="@color/colorWhite"
+                    android:paddingLeft="@dimen/dialog_padding"
+                    android:paddingTop="@dimen/dialog_padding"
+                    android:paddingRight="@dimen/dialog_padding"
+                    android:paddingBottom="@dimen/dialog_padding"
+                    android:text="@string/title_foodie"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/fab1"
                     app:layout_constraintStart_toEndOf="@+id/fab1"
-                    app:layout_constraintTop_toTopOf="@+id/fab1" android:textAlignment="center"
-                    android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="@+id/fab1"
-            />
+                    app:layout_constraintTop_toTopOf="@+id/fab1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -223,8 +254,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toStartOf="parent"
-                app:rippleColor="@color/colorMyType"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                app:rippleColor="@color/colorMyType" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
@@ -241,6 +271,21 @@
                 app:menu="@menu/bottom_nav_menu">
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        <ImageView
+                android:id="@+id/fab_custom_pic"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:elevation="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintEnd_toEndOf="@+id/fab"
+                app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab"
+                app:srcCompat="@drawable/icon_plus" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

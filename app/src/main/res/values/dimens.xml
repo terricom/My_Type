@@ -56,7 +56,7 @@
     <dimen name="diary_up_side_down_205">205dp</dimen>
     <dimen name="rotate_180">180dp</dimen>
     <dimen name="height_profile_pazzle">250dp</dimen>
-    <dimen name="size_message">123dp</dimen>
+    <dimen name="size_message">200dp</dimen>
 
 
 </resources>

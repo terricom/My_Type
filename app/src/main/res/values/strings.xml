@@ -75,5 +75,11 @@
     <string name="goal_setting_hint_add_cheer_up">把目標具體化會更容易實現喔！</string>
     <string name="shaperecord_add_record_hint">這週還沒有紀錄 趕快去新增吧！</string>
     <string name="foodie_mood_hint">紀錄下努力的心得，也歡迎告解：）</string>
+    <string name="achievement_add_record_hint">這個月還沒有紀錄 趕快去新增吧！</string>
+    <string name="dialog_message_sleep_record_failure">還沒睡醒嗎？\n今天已新增過睡眠時間囉！</string>
+    <string name="dialog_message_shape_record_failure">選擇日期已有成果\n可以到成果頁面確認喔！</string>
+
+
+
 
 </resources>

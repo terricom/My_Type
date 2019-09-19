@@ -363,13 +363,14 @@ class FoodieFragment: Fragment() {
                 viewModel.updateFoodAndNuList()
                 viewModel.clearData()
             }
-
+            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
             Handler().postDelayed({
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                 (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
-            },2000)
+                (activity as MainActivity).closeFABMenu()
+            },2005)
 
             
             if (isConnected()) {
@@ -453,7 +454,7 @@ class FoodieFragment: Fragment() {
                 matrix.postRotate(degree.toFloat())
                 val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
                 val baos = ByteArrayOutputStream()
-                outBitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
+                outBitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos)
                 if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
                 else ScalePic(outBitmap!!, mPhone!!.widthPixels)
 //                bitmap!!.recycle()
@@ -474,11 +475,10 @@ class FoodieFragment: Fragment() {
             matrix.postRotate(degree.toFloat())
             val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
             val baos = ByteArrayOutputStream()
-            outBitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos)
+            outBitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos)
             if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
             else ScalePic(outBitmap!!, mPhone!!.widthPixels)
-
-                uploadFile()
+            uploadFile()
         }
     }
 

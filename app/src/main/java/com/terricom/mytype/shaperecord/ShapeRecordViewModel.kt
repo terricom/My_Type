@@ -49,6 +49,26 @@ class ShapeRecordViewModel: ViewModel() {
         _fireShapeM.value = shape
     }
 
+    val _recordedDates = MutableLiveData<List<String>>()
+    val recordedDates : LiveData<List<String>>
+        get() = _recordedDates
+
+    fun getRecordedDates(list: List<String>){
+        _recordedDates.value = list
+    }
+
+
+    val _addShapeResult = MutableLiveData<Boolean>()
+    val addShapeResult : LiveData<Boolean>
+        get() = _addShapeResult
+
+    fun addShapeSuccess(){
+        _addShapeResult.value = true
+    }
+
+    fun addShapeFail(){
+        _addShapeResult.value = false
+    }
 
     init {
         setDate(Date())
@@ -77,15 +97,45 @@ class ShapeRecordViewModel: ViewModel() {
         if (userUid!!.isNotEmpty()) {
             user.get()
                 .addOnSuccessListener { result ->
-                    for (doc in result) {
-                        if (doc.id == userUid) {
-                            user.document(doc.id).collection("Shape").document().set(shapeContent)
+//                    for (doc in result) {
+                        if (recordedDates.value!!.contains("${sdf.format(date.value)}")) {
+                            addShapeFail()
+                        } else {
+                            user.document(userUid).collection("Shape").document().set(shapeContent)
+                            addShapeSuccess()
                         }
-                    }
+//                    }
 
                 }
         }
 
+    }
+
+    fun getToday(): Boolean {
+        val items = mutableListOf<Shape>()
+
+        if (userUid!!.isNotEmpty()){
+            val shapeRecord = user
+                .document(userUid)
+                .collection("Shape")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
+
+            shapeRecord
+                .get()
+                .addOnSuccessListener {
+                    for (document in it) {
+                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
+                            items.add(document.toObject(Shape::class.java))
+                            items[items.size-1].docId = document.id
+                    }
+                }
+        }
+        Logger.i("items = $items")
+        Logger.i("getToday() items = $items")
+        Logger.i("date = ${sdf.format(date.value)}  ")
+        return items.size == 0
     }
 
     fun getThisMonth() {
@@ -99,6 +149,7 @@ class ShapeRecordViewModel: ViewModel() {
                 .get()
                 .addOnSuccessListener {
                     val items = mutableListOf<Shape>()
+                    val cleanDates = mutableListOf<String>()
                     for (document in it) {
                         val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
                         if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
@@ -107,9 +158,10 @@ class ShapeRecordViewModel: ViewModel() {
                             "${sdf.format(date.value)!!.split("-")[1]}"){
                             items.add(document.toObject(Shape::class.java))
                             items[items.size-1].docId = document.id
+                            cleanDates.add(sdf.format(Date(document.toObject(Shape::class.java).timestamp!!.time)))
                         }
                     }
-
+                    getRecordedDates(cleanDates.distinct())
                     fireShapeBackM(items)
                     Logger.i("fireFoodieM =${fireShapeM.value}")
                 }

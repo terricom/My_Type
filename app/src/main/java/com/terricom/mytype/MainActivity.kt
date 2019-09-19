@@ -212,6 +212,7 @@ class MainActivity : BaseActivity(){
         fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
         fabLayout4.animate().translationY(-resources.getDimension(R.dimen.standard_205))
         fab.animate().rotation(45.0f)
+        fab_custom_pic.animate().rotation(45.0f)
         binding.fabShadow.visibility = View.VISIBLE
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
@@ -227,6 +228,7 @@ class MainActivity : BaseActivity(){
         isFABOpen = false
         binding.fabShadow.visibility = View.GONE
         fab.animate().rotation(90.0f)
+        fab_custom_pic.animate().rotation(90.0f)
         fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))

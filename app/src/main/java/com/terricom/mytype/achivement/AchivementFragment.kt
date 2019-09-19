@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import java.util.*
 
 class AchivementFragment: Fragment() {
 
@@ -34,6 +35,8 @@ class AchivementFragment: Fragment() {
             viewModel.getThisMonth()
         })
 
+        var currentPosition = 0
+
 
         viewModel.listDates.observe(this, Observer {
             if (it != null && it.isNotEmpty() && it[0].values.isNotEmpty()){
@@ -42,8 +45,10 @@ class AchivementFragment: Fragment() {
                 binding.lineChart.visibility = View.VISIBLE
                 binding.iconMyType.visibility = View.GONE
                 binding.shaperecordHint.visibility = View.GONE
+                binding.recyclerShape.visibility = View.VISIBLE
             } else if (it != null && it[0].values.isEmpty()){
                 binding.lineChart.visibility = View.GONE
+                binding.recyclerShape.visibility = View.GONE
                 binding.iconMyType.visibility = View.VISIBLE
                 binding.shaperecordHint.visibility = View.VISIBLE
             }
@@ -55,6 +60,22 @@ class AchivementFragment: Fragment() {
             }
         })
 
+        val currentCalendar = Calendar.getInstance()
+
+        binding.toBack.setOnClickListener {
+            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.add(Calendar.MONTH, -1)
+            currentPosition = currentPosition-1
+            viewModel.setDate(currentCalendar.time)
+            viewModel.getThisMonth()
+        }
+        binding.toNext.setOnClickListener {
+            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.add(Calendar.MONTH, 1)
+            viewModel.setDate(currentCalendar.time)
+            viewModel.getThisMonth()
+//            binding.viewPager2.setCurrentItem( currentPosition.plus(1), true)
+        }
 
         return binding.root
     }

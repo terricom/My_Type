@@ -390,8 +390,9 @@
                 android:id="@+id/icon_my_type"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
+                android:layout_marginBottom="100dp"
                 android:elevation="@dimen/elevation_all"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -402,13 +403,12 @@
                 android:id="@+id/shaperecord_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/shaperecord_add_record_hint"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="32dp"
+                android:text="@string/achievement_add_record_hint"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/lineChart" />
+                app:layout_constraintTop_toBottomOf="@+id/icon_my_type" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

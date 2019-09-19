@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,32 @@ class SleepFragment: Fragment() {
                 //告訴使用者網路無法使用
             }
         }
+
+        viewModel.addSleepResult.observe(this, androidx.lifecycle.Observer {
+            if (it == true){
+                Handler().postDelayed({
+                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
+                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                    (activity as MainActivity).fab.visibility = View.VISIBLE
+                    (activity as MainActivity).closeFABMenu()
+                },2000)
+
+            } else if (it == false){
+                findNavController().navigate(NavigationDirections.navigateToMessageDialog(
+                    MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_sleep_record_failure) }
+                ))
+                Handler().postDelayed({
+                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                    (activity as MainActivity).fab.visibility = View.VISIBLE
+                    (activity as MainActivity).closeFABMenu()
+                },2005)
+
+            }
+        })
 
         return binding.root
     }
