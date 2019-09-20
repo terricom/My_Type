@@ -19,6 +19,7 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
     private val shape = binding.shape
     private val cellDateLayout = binding.cellDateLayout
     var recorded = false
+    var selected = false
 
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
@@ -47,6 +48,16 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
+        }
+        if (selected){
+            shape.visibility = View.VISIBLE
+            monthOfDate.setTypeface(null, Typeface.BOLD)
+            cellDateLayout.background =
+                ResourcesCompat.getDrawable(
+                    App.applicationContext().resources,
+                    R.drawable.input_column,
+                    null
+                )
         }
 
         if(currentMonth != viewMonth || currentYear != viewYear){

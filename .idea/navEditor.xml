@@ -139,6 +139,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="navigate_to_message_dialog">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="navigate_to_profile_fragment">
                     <value>
                       <LayoutPositions />

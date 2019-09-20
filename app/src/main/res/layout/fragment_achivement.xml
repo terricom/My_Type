@@ -67,7 +67,7 @@
         <com.terricom.mytype.linechart.LineChart
                 android:id="@+id/lineChart"
                 android:layout_width="0dp"
-                android:layout_height="290dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:chart_bg_color="@color/colorWhite"
@@ -76,6 +76,7 @@
                 app:chart_padding_left="35dp"
                 app:chart_padding_right="20dp"
                 app:chart_padding_top="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"></com.terricom.mytype.linechart.LineChart>
@@ -244,11 +245,11 @@
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lineChart" />
+                app:layout_constraintTop_toTopOf="@+id/lineChart_guide" />
 
         <TextView
                 android:id="@+id/number_weight"
-                android:layout_width="42dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:textAlignment="center"
@@ -356,7 +357,7 @@
 
         <TextView
                 android:id="@+id/number_weight_show"
-                android:layout_width="42dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_weight"
@@ -420,7 +421,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_tdee"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/time_show"
@@ -435,7 +436,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_muscle"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/time_show"
@@ -446,7 +447,7 @@
 
         <TextView
                 android:id="@+id/number_body_age_show"
-                android:layout_width="42dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/noto_sans"
@@ -563,6 +564,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_my_type" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/lineChart_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

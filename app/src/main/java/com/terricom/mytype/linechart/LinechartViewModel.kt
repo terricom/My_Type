@@ -10,7 +10,8 @@ import com.terricom.mytype.App
 import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Sleep
+import com.terricom.mytype.data.FoodieSum
+import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -154,6 +155,28 @@ class LinechartViewModel: ViewModel() {
         _listDates.value = listDates
     }
 
+    val _foodieSum = MutableLiveData<List<FoodieSum>>()
+    val foodieSum : LiveData<List<FoodieSum>>
+        get() = _foodieSum
+
+    fun setFoodieSum(fooSum: List<FoodieSum>){
+        _foodieSum.value = fooSum
+    }
+
+    val goalWater = MutableLiveData<Float>()
+    val goalFruit = MutableLiveData<Float>()
+    val goalVegetable = MutableLiveData<Float>()
+    val goalOil = MutableLiveData<Float>()
+    val goalProtein = MutableLiveData<Float>()
+    val goalCarbon = MutableLiveData<Float>()
+
+    val diffWater = MutableLiveData<Float>()
+    val diffFruit = MutableLiveData<Float>()
+    val diffCarbon = MutableLiveData<Float>()
+    val diffOil = MutableLiveData<Float>()
+    val diffProtein = MutableLiveData<Float>()
+    val diffVegetable = MutableLiveData<Float>()
+
 
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
@@ -178,7 +201,7 @@ class LinechartViewModel: ViewModel() {
 
             val chartList = mutableListOf<ChartEntity>()
 
-
+            getGoal()
 
             foodieDiary
                 .get()
@@ -191,6 +214,7 @@ class LinechartViewModel: ViewModel() {
                     val proteinList = mutableListOf<Float>()
                     val fruitList = mutableListOf<Float>()
                     val carbonList = mutableListOf<Float>()
+                    val foodieSum = mutableListOf<FoodieSum>()
 
                     var waterD= mutableListOf<Float>()
                     val oilD= mutableListOf<Float>()
@@ -209,28 +233,8 @@ class LinechartViewModel: ViewModel() {
                     }
                     val cleanList = datelist.distinct()
                     val sleepList = mutableListOf<Float>()
-                    val itemSleep = mutableListOf<Sleep>()
-                    val dateListSleep = mutableListOf<String>()
+                    val dateListClean = mutableListOf<String>()
 
-//                    sleepDiary
-//                        .get()
-//                        .addOnSuccessListener {
-//
-//                            val sleepListD = mutableListOf<Float>()
-//
-//                            for (document in it){
-//                                val convertDate = java.sql.Date(document.toObject(Sleep::class.java).timestamp!!.time)
-//                                if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-//                                    "${sdf.format(convertDate).split("-")[1]}" ==
-//                                    "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
-//                                    itemSleep.add(document.toObject(Sleep::class.java))
-//                                    dateListSleep.add(sdfM.format(document.toObject(Sleep::class.java).timestamp))
-//                                }
-//                            }
-//
-//                        }
-//                    Logger.i("itemSleep =$itemSleep")
-//                    chartList.clear()
                     for (eachDay in cleanList){
                         waterD.clear()
                         oilD.clear()
@@ -240,6 +244,7 @@ class LinechartViewModel: ViewModel() {
                         carbonD.clear()
                         for (i in 0 until items.size){
                             if (sdfM.format(items[i].timestamp?.time) == eachDay){
+                                dateListClean.add(sdf.format(items[i].timestamp?.time))
                                 items[i].water?.let {
                                     waterD.add(it)
                                 }
@@ -266,6 +271,15 @@ class LinechartViewModel: ViewModel() {
                         proteinList.add(proteinD.sum())
                         fruitList.add(fruitD.sum())
                         carbonList.add(carbonD.sum())
+                        foodieSum.add(FoodieSum(
+                            dateListClean[waterD.size-1],
+                            waterD.sum(),
+                            oilD.sum(),
+                            vegetableD.sum(),
+                            proteinD.sum(),
+                            fruitD.sum(),
+                            carbonD.sum()
+                        ))
 
 //                        for (i in 0 until itemSleep.size){
 //                        if (dateListSleep.contains(eachDay)){
@@ -275,6 +289,25 @@ class LinechartViewModel: ViewModel() {
 //                        }
 //                        }
 
+                    }
+                    setFoodieSum(foodieSum)
+                    if (waterList.size > 0){
+                        diffWater.value = waterList[waterList.lastIndex].minus(goalWater.value ?: 0f)
+                    }
+                    if (fruitList.size > 0){
+                        diffFruit.value = fruitList[fruitList.lastIndex].minus(goalFruit.value ?: 0f)
+                    }
+                    if (oilList.size > 0){
+                        diffOil.value = oilList[oilList.lastIndex].minus(goalOil.value ?: 0f)
+                    }
+                    if (proteinList.size > 0){
+                        diffProtein.value = proteinList[proteinList.lastIndex].minus(goalProtein.value ?: 0f)
+                    }
+                    if (vegetableList.size > 0){
+                        diffVegetable.value = vegetableList[vegetableList.lastIndex].minus(goalVegetable.value ?: 0f)
+                    }
+                    if (carbonList.size > 0){
+                        diffCarbon.value = carbonList[carbonList.lastIndex].minus(goalCarbon.value ?: 0f)
                     }
                     Logger.i("waterList =$waterList oilList = $oilList sleepList =$sleepList")
                     fireFoodieBack(items)
@@ -298,6 +331,43 @@ class LinechartViewModel: ViewModel() {
                     Logger.i("chartList.size =${chartList.size}")
                     _listDates.value = null
                     Logger.i("LinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
+                }
+        }
+    }
+
+    fun getGoal() {
+        Logger.i("userUID = $userUid")
+        val db = FirebaseFirestore.getInstance()
+        val users = db.collection("Users")
+
+        if (userUid!!.isNotEmpty()){
+            val goal = users
+                .document(userUid)
+                .collection("Goal")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
+
+            goal
+                .get()
+                .addOnSuccessListener {
+                    val items = mutableListOf<Goal>()
+                    if (it.isEmpty){
+
+                    }else {
+                        for (document in it) {
+                            items.add(document.toObject(Goal::class.java))
+                            items[items.size-1].docId = document.id
+                        }
+                        if (items.size > 0 ){
+                        goalWater.value = items[0].water
+                        goalCarbon.value = items[0].carbon
+                        goalOil.value = items[0].oil
+                        goalFruit.value = items[0].fruit
+                        goalProtein.value = items[0].protein
+                        goalVegetable.value = items[0].vegetable
+                        }
+                    }
                 }
         }
     }

@@ -19,7 +19,7 @@ class ListAchivement: Fragment() {
         val binding = com.terricom.mytype.databinding.AchivementListBinding.inflate(inflater)
         binding.setLifecycleOwner(this)
 
-        binding.recyclerShape.adapter = ShapeAdapter(viewModel)
+//        binding.recyclerShape.adapter = ShapeAdapter(viewModel)
         val shapeList: MutableList<Shape> = mutableListOf(
             Shape(
                 Timestamp.valueOf("2018-10-16 11:49:45"),

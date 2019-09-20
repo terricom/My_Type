@@ -26,8 +26,8 @@
     <string name="login_greet">吃飽睡好還能瘦是什麼魔法？</string>
     <string name="foodie_title_nutrition">選擇營養</string>
     <string name="foodie_add_food">新增食物</string>
-    <string name="shape_weight">體重</string>
-    <string name="shape_body_fat">體脂</string>
+    <string name="shape_weight">體  重</string>
+    <string name="shape_body_fat">體脂率</string>
     <string name="shape_body_water">含水量</string>
     <string name="shape_muscle">肌肉量</string>
     <string name="shape_tdee">日代謝</string>
@@ -79,6 +79,15 @@
     <string name="dialog_message_sleep_record_failure">還沒睡醒嗎？\n今天已新增過睡眠時間囉！</string>
     <string name="dialog_message_shape_record_failure">選擇日期已有成果\n可以到成果頁面確認喔！</string>
     <string name="title_just_goal">目標</string>
+    <string name="foodie_water">水 份</string>
+    <string name="foodie_fruit">水 果</string>
+    <string name="foodie_vegetable">蔬 菜</string>
+    <string name="foodie_oil">油 脂</string>
+    <string name="foodie_protein">蛋白質</string>
+    <string name="foodie_carbon">醣 類</string>
+    <string name="shaperecord_edit_accumulation">修改成果</string>
+    <string name="foodie_edit_foodie">修改食記</string>
+    <string name="add_new_confirm">確認修改</string>
 
 
 </resources>

@@ -25,10 +25,32 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
     }
     private lateinit var binding: FragmentShapeRecordBinding
 
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentShapeRecordBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val shape = ShapeRecordFragmentArgs.fromBundle(arguments!!).selectedProperty
+        binding.shape = shape
+        if (shape.timestamp != null){
+            viewModel.updateShape(shape)
+            binding.shapeRecordTitle.setText(App.applicationContext().getString(R.string.shaperecord_edit_accumulation))
+
+            viewModel.setDate(shape.timestamp!!)
+            viewModel.weight.value = shape.weight
+            viewModel.bodyFat.value = shape.bodyFat
+            viewModel.muscle.value = shape.muscle
+            viewModel.bodyAge.value = shape.bodyAge
+            viewModel.bodyWater.value = shape.bodyWater
+            viewModel.tdee.value = shape.tdee
+            binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
+            binding.smartCustomCalendar.getThisMonth()
+
+            binding.smartCustomCalendar.selectDateOut = shape.timestamp
+
+        }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

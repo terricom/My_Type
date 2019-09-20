@@ -34,7 +34,7 @@ class ProfileFragment: Fragment() {
             PlaceHolder.PUMPKIN.value
         )
         val pazzleMock2 = Pazzle(
-            listOf(10,14,16,18),
+            listOf(10,14,3),
             PlaceHolder.AVOCADO.value
         )
 

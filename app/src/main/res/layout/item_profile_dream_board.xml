@@ -35,279 +35,195 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_1" />
+                app:srcCompat="@drawable/pazzle_new_1" />
 
         <ImageView
                 android:id="@+id/puzzle_2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_2" />
+                app:srcCompat="@drawable/pazzle_new_2" />
 
         <ImageView
                 android:id="@+id/puzzle_3"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_3" />
+                app:srcCompat="@drawable/pazzle_new_3" />
 
         <ImageView
                 android:id="@+id/puzzle_4"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_4" />
+                app:srcCompat="@drawable/pazzle_new_4" />
 
         <ImageView
                 android:id="@+id/puzzle_5"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_5" />
+                app:srcCompat="@drawable/pazzle_new_5" />
 
         <ImageView
                 android:id="@+id/puzzle_6"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_6" />
+                app:srcCompat="@drawable/pazzle_new_6" />
 
         <ImageView
                 android:id="@+id/puzzle_7"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_7" />
+                app:srcCompat="@drawable/pazzle_new_7" />
 
         <ImageView
                 android:id="@+id/puzzle_8"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_8" />
+                app:srcCompat="@drawable/pazzle_new_8" />
 
         <ImageView
                 android:id="@+id/puzzle_9"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_9" />
+                app:srcCompat="@drawable/pazzle_new_9" />
 
         <ImageView
                 android:id="@+id/puzzle_10"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_10" />
+                app:srcCompat="@drawable/pazzle_new_10" />
 
         <ImageView
                 android:id="@+id/puzzle_11"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_11" />
+                app:srcCompat="@drawable/pazzle_new_11" />
 
         <ImageView
                 android:id="@+id/puzzle_12"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_12" />
+                app:srcCompat="@drawable/pazzle_new_12" />
 
         <ImageView
                 android:id="@+id/puzzle_13"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_13" />
+                app:srcCompat="@drawable/pazzle_new_13" />
 
         <ImageView
                 android:id="@+id/puzzle_14"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_14" />
+                app:srcCompat="@drawable/pazzle_new_14" />
 
         <ImageView
                 android:id="@+id/puzzle_15"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
-                android:tint="@color/colorButton"
                 app:layout_constraintBottom_toBottomOf="parent"
 
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_15" />
+                app:srcCompat="@drawable/pazzle_new_15" />
 
-        <ImageView
-                android:id="@+id/puzzle_16"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:tint="@color/colorButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintDimensionRatio="3:4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_16" />
-
-        <ImageView
-                android:id="@+id/puzzle_17"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:tint="@color/colorButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintDimensionRatio="3:4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_17" />
-
-        <ImageView
-                android:id="@+id/puzzle_18"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:tint="@color/colorButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintDimensionRatio="3:4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_18" />
-
-        <ImageView
-                android:id="@+id/puzzle_19"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:tint="@color/colorButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintDimensionRatio="3:4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_19" />
-
-        <ImageView
-                android:id="@+id/puzzle_20"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="fitXY"
-                android:tint="@color/colorButton"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintDimensionRatio="3:4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/puzzle_20" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

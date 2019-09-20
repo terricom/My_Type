@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.iid.FirebaseInstanceId
 import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
@@ -84,7 +85,9 @@ class MainActivity : BaseActivity(){
         }
 
         binding.fab2.setOnClickListener {
-            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment(
+                Shape()
+            ))
             binding.fabShadow.visibility = View.GONE
 
         }
@@ -115,7 +118,9 @@ class MainActivity : BaseActivity(){
 
         }
         binding.fabLayout2.setOnClickListener {
-            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment())
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment(
+                Shape()
+            ))
             binding.fabShadow.visibility = View.GONE
 
         }

@@ -70,6 +70,15 @@ class ShapeRecordViewModel: ViewModel() {
         _addShapeResult.value = false
     }
 
+    val _updateShape = MutableLiveData<Shape>()
+    val updateShape : LiveData<Shape>
+        get() = _updateShape
+
+    fun updateShape(shape: Shape){
+        _updateShape.value = shape
+    }
+
+
     init {
         setDate(Date())
     }

@@ -63,16 +63,6 @@ class PazzleAdapter(val viewModel: ProfileViewModel
                     if (pazzle.position!!.contains(13)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle15.visibility =
                     if (pazzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
-                binding.puzzle16.visibility =
-                    if (pazzle.position!!.contains(15)) View.INVISIBLE else View.VISIBLE
-                binding.puzzle17.visibility =
-                    if (pazzle.position!!.contains(16)) View.INVISIBLE else View.VISIBLE
-                binding.puzzle18.visibility =
-                    if (pazzle.position!!.contains(17)) View.INVISIBLE else View.VISIBLE
-                binding.puzzle19.visibility =
-                    if (pazzle.position!!.contains(18)) View.INVISIBLE else View.VISIBLE
-                binding.puzzle20.visibility =
-                    if (pazzle.position!!.contains(19)) View.INVISIBLE else View.VISIBLE
             }
 //            val displayMetrics = DisplayMetrics()
 //            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)

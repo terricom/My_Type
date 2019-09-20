@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.Logger
+import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_achivement.*
@@ -24,7 +26,9 @@ class AchivementFragment: Fragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
-        binding.recyclerShape.adapter = ShapeAdapter(viewModel)
+        binding.recyclerShape.adapter = ShapeAdapter(viewModel, ShapeAdapter.OnClickListener{
+            findNavController().navigate(NavigationDirections.navigateToShapeRecordFragment(it))
+        })
         binding.recyclerShape.addItemDecoration(
             SpaceItemDecoration(
                 resources.getDimension(R.dimen._1sdp).toInt(),

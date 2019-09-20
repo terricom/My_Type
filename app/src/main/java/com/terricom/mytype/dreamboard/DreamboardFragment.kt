@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.terricom.mytype.Logger
 import com.terricom.mytype.MainActivity
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
@@ -55,11 +54,6 @@ class DreamboardFragment: Fragment() {
         binding.puzzle13.visibility = if (pazzle.position!!.contains(12)) View.INVISIBLE else View.VISIBLE
         binding.puzzle14.visibility = if (pazzle.position!!.contains(13)) View.INVISIBLE else View.VISIBLE
         binding.puzzle15.visibility = if (pazzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
-        binding.puzzle16.visibility = if (pazzle.position!!.contains(15)) View.INVISIBLE else View.VISIBLE
-        binding.puzzle17.visibility = if (pazzle.position!!.contains(16)) View.INVISIBLE else View.VISIBLE
-        binding.puzzle18.visibility = if (pazzle.position!!.contains(17)) View.INVISIBLE else View.VISIBLE
-        binding.puzzle19.visibility = if (pazzle.position!!.contains(18)) View.INVISIBLE else View.VISIBLE
-        binding.puzzle20.visibility = if (pazzle.position!!.contains(19)) View.INVISIBLE else View.VISIBLE
 //        }
 
 

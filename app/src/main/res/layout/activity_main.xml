@@ -285,7 +285,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/fab"
                 app:layout_constraintStart_toStartOf="@+id/fab"
                 app:layout_constraintTop_toTopOf="@+id/fab"
-                app:srcCompat="@drawable/icon_plus" />
+                app:srcCompat="@drawable/icon_add" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

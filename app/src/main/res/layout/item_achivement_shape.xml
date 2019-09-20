@@ -29,7 +29,7 @@
 
         <TextView
                 android:id="@+id/number_weight"
-                android:layout_width="42dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="158.0"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="1200"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintBottom_toBottomOf="@+id/time"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="30.0"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintBottom_toBottomOf="@+id/time"
@@ -104,12 +104,11 @@
 
         <TextView
                 android:id="@+id/number_body_age"
-                android:layout_width="42dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
-                android:paddingRight="@dimen/dialog_padding"
                 android:text="30"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintBottom_toBottomOf="@+id/time"

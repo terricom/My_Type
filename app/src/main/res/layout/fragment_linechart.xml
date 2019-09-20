@@ -64,328 +64,334 @@
                     android:tint="@color/colorMyType" />
         </RelativeLayout>
 
-        <ImageButton
-                android:id="@+id/number_water"
+        <com.terricom.mytype.linechart.LineChart
+                android:id="@+id/lineChart"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/calendar_date"
-                android:onClick="@{() -> viewModel.watchWaterClicked()}"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintEnd_toStartOf="@+id/number_oil"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_height="0dp"
+                android:layout_marginTop="42dp"
+                android:orientation="vertical"
+                app:chart_bg_color="@color/colorWhite"
+                app:chart_line_color="@color/colorButton"
+                app:chart_padding_bottom="35dp"
+                app:chart_padding_left="35dp"
+                app:chart_padding_right="20dp"
+                app:chart_padding_top="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"></com.terricom.mytype.linechart.LineChart>
+
+        <ImageView
+                android:id="@+id/icon_water_goal"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_water"
+                app:layout_constraintEnd_toStartOf="@+id/diff_water"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/diff_water"
+                app:srcCompat="@drawable/icon_water" />
+
+        <TextView
+                android:id="@+id/diff_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffWater)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorWater"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_fruit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <TextView
+                android:id="@+id/goal_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorWater"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalWater)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_water"
+                app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
 
         <ImageView
-                android:id="@+id/line_water"
-                android:layout_width="0dp"
+                android:id="@+id/icon_vegetable_goal"
+                android:layout_width="32dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water"
-                app:layout_constraintEnd_toEndOf="@+id/number_water"
-                app:layout_constraintStart_toStartOf="@+id/iwater"
-                app:layout_constraintTop_toTopOf="@+id/number_water"
-                app:srcCompat="@color/colorWater" />
-
-        <ImageView
-                android:id="@+id/iwater"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="2dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water"
-                app:layout_constraintEnd_toEndOf="@+id/number_water"
-                app:layout_constraintStart_toStartOf="@+id/number_water"
-                app:layout_constraintTop_toTopOf="@+id/number_water"
-                app:srcCompat="@drawable/icon_water" />
-
-        <ImageButton
-                android:id="@+id/number_oil"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintEnd_toStartOf="@+id/number_vegetable"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_vegetable"
+                app:layout_constraintEnd_toStartOf="@+id/diff_vegetable"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_water"
-                app:layout_constraintTop_toTopOf="@+id/number_water" />
-
-        <ImageView
-                android:id="@+id/line_oil"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_oil"
-                app:layout_constraintEnd_toEndOf="@+id/number_oil"
-                app:layout_constraintStart_toStartOf="@+id/oil"
-                app:layout_constraintTop_toTopOf="@+id/number_oil"
-                app:srcCompat="@color/colorOil" />
-
-        <ImageView
-                android:id="@+id/oil"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="24dp"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/iwater"
-                app:layout_constraintEnd_toEndOf="@+id/number_oil"
-                app:layout_constraintStart_toStartOf="@+id/number_oil"
-                app:layout_constraintTop_toTopOf="@+id/iwater"
-                app:srcCompat="@drawable/icon_coconut" />
-
-        <ImageButton
-                android:id="@+id/number_vegetable"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintEnd_toStartOf="@+id/number_protein"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_oil"
-                app:layout_constraintTop_toTopOf="@+id/number_water" />
-
-        <ImageView
-                android:id="@+id/line_vegetable"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_vegetable"
-                app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
-                app:layout_constraintStart_toStartOf="@+id/vegetable"
-                app:layout_constraintTop_toTopOf="@+id/number_vegetable"
-                app:srcCompat="@color/colorVegetable" />
-
-        <ImageView
-                android:id="@+id/vegetable"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="24dp"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/iwater"
-                app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
-                app:layout_constraintStart_toStartOf="@+id/number_vegetable"
-                app:layout_constraintTop_toTopOf="@+id/iwater"
+                app:layout_constraintStart_toEndOf="@+id/diff_fruit"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
                 app:srcCompat="@drawable/icon_vegetable" />
 
-        <ImageButton
-                android:id="@+id/number_protein"
+        <TextView
+                android:id="@+id/diff_vegetable"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintEnd_toStartOf="@+id/number_fruit"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffVegetable)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorVegetable"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/icon_vegetable_goal"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
+
+        <TextView
+                android:id="@+id/diff_fruit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffFruit)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorFruit"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_vegetable_goal"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_vegetable"
-                app:layout_constraintTop_toTopOf="@+id/number_water" />
+                app:layout_constraintStart_toEndOf="@+id/icon_fruit"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
+
+        <TextView
+                android:id="@+id/goal_fruit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorFruit"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalFruit)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_fruit"
+                app:layout_constraintStart_toEndOf="@+id/icon_fruit"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
 
         <ImageView
-                android:id="@+id/line_protein"
-                android:layout_width="0dp"
+                android:id="@+id/icon_fruit"
+                android:layout_width="32dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_protein"
-                app:layout_constraintEnd_toEndOf="@+id/number_protein"
-                app:layout_constraintStart_toStartOf="@+id/protein"
-                app:layout_constraintTop_toTopOf="@+id/number_protein"
-                app:srcCompat="@color/colorProtein" />
-
-        <ImageView
-                android:id="@+id/protein"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="24dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/iwater"
-                app:layout_constraintEnd_toEndOf="@+id/number_protein"
-                app:layout_constraintStart_toStartOf="@+id/number_protein"
-                app:layout_constraintTop_toTopOf="@+id/iwater"
-                app:srcCompat="@drawable/icon_protein" />
-
-        <ImageButton
-                android:id="@+id/number_fruit"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="@+id/number_protein"
-                app:layout_constraintEnd_toStartOf="@+id/number_water1"
-                app:layout_constraintStart_toEndOf="@+id/number_protein"
-                app:layout_constraintTop_toTopOf="@+id/number_protein" />
-
-        <ImageView
-                android:id="@+id/line_fruit"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_fruit"
-                app:layout_constraintEnd_toEndOf="@+id/number_fruit"
-                app:layout_constraintStart_toStartOf="@+id/fruit"
-                app:layout_constraintTop_toTopOf="@+id/number_fruit"
-                app:srcCompat="@color/colorFruit" />
-
-        <ImageView
-                android:id="@+id/fruit"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="24dp"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/iwater"
-                app:layout_constraintEnd_toEndOf="@+id/number_fruit"
-                app:layout_constraintStart_toStartOf="@+id/number_fruit"
-                app:layout_constraintTop_toTopOf="@+id/iwater"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_fruit"
+                app:layout_constraintEnd_toStartOf="@+id/diff_fruit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_water"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
                 app:srcCompat="@drawable/icon_fruit" />
 
-        <ImageButton
-                android:id="@+id/number_water1"
+        <TextView
+                android:id="@+id/goal_vegetable"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="@+id/number_fruit"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_fruit"
-                app:layout_constraintTop_toTopOf="@+id/number_fruit" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorVegetable"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalVegetable)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_vegetable"
+                app:layout_constraintStart_toStartOf="@+id/diff_vegetable"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
 
         <ImageView
-                android:id="@+id/line_water1"
-                android:layout_width="0dp"
+                android:id="@+id/icon_oil_goal"
+                android:layout_width="32dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water1"
-                app:layout_constraintEnd_toEndOf="@+id/number_water1"
-                app:layout_constraintStart_toStartOf="@+id/iwater1"
-                app:layout_constraintTop_toTopOf="@+id/number_water1"
-                app:srcCompat="@color/colorOrangeSave" />
-
-        <ImageView
-                android:id="@+id/iwater1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water1"
-                app:layout_constraintEnd_toEndOf="@+id/number_water1"
-                app:layout_constraintStart_toStartOf="@+id/number_water1"
-                app:layout_constraintTop_toTopOf="@+id/number_water1"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
+                app:layout_constraintEnd_toStartOf="@+id/diff_oil"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil"
+                app:srcCompat="@drawable/icon_coconut" />
+
+        <TextView
+                android:id="@+id/diff_oil"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffOil)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorOil"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_oil_goal"
+                app:layout_constraintEnd_toStartOf="@+id/icon_protein_goal"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
+
+        <TextView
+                android:id="@+id/goal_oil"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorOil"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalOil)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/diff_oil"
+                app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
+                app:layout_constraintTop_toBottomOf="@+id/goal_water" />
+
+        <ImageView
+                android:id="@+id/icon_carbon"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_carbon"
+                app:layout_constraintEnd_toStartOf="@+id/diff_carbon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_protein"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
                 app:srcCompat="@drawable/icon_carbon" />
 
-        <ImageButton
-                android:id="@+id/number_oil1"
+        <TextView
+                android:id="@+id/diff_carbon"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/calendar_date"
-                android:paddingLeft="@dimen/dialog_padding"
-                android:paddingTop="@dimen/dialog_padding"
-                android:paddingRight="@dimen/dialog_padding"
-                android:paddingBottom="@dimen/dialog_padding"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water1"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffCarbon)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorCarbon"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_water1"
-                app:layout_constraintTop_toTopOf="@+id/number_water1" />
+                app:layout_constraintStart_toEndOf="@+id/icon_carbon"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
 
-        <ImageView
-                android:id="@+id/line_oil1"
+        <TextView
+                android:id="@+id/diff_protein"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/number_oil1"
-                app:layout_constraintEnd_toEndOf="@+id/number_oil1"
-                app:layout_constraintStart_toStartOf="@+id/oil1"
-                app:layout_constraintTop_toTopOf="@+id/number_oil1"
-                app:srcCompat="@color/colorNight" />
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.diffProtein)}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorProtein"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_carbon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_protein_goal"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
+
+        <TextView
+                android:id="@+id/goal_protein"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorProtein"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalProtein)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
+                app:layout_constraintEnd_toEndOf="@+id/diff_protein"
+                app:layout_constraintStart_toStartOf="@+id/diff_protein"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
 
         <ImageView
-                android:id="@+id/oil1"
-                android:layout_width="0dp"
+                android:id="@+id/icon_protein_goal"
+                android:layout_width="32dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_left_corners"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/iwater1"
-                app:layout_constraintEnd_toEndOf="@+id/number_oil1"
-                app:layout_constraintStart_toStartOf="@+id/number_oil1"
-                app:layout_constraintTop_toTopOf="@+id/iwater1"
-                app:srcCompat="@drawable/icon_night" />
+                app:layout_constraintBottom_toBottomOf="@+id/diff_protein"
+                app:layout_constraintEnd_toStartOf="@+id/diff_protein"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_oil"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
+                app:srcCompat="@drawable/icon_protein" />
+
+        <TextView
+                android:id="@+id/goal_carbon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorCarbon"
+                android:hint="0.3"
+                android:paddingVertical="@dimen/elevation_all"
+                android:text="@{String.valueOf(viewModel.goalCarbon)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
+                app:layout_constraintEnd_toEndOf="@+id/diff_carbon"
+                app:layout_constraintStart_toStartOf="@+id/diff_carbon"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
+
 
         <!--        <androidx.viewpager2.widget.ViewPager2-->
         <!--            android:id="@+id/view_pager_2"-->
@@ -397,45 +403,343 @@
         <!--            app:layout_constraintTop_toBottomOf="@+id/number_vegetable1">-->
         <!--        </androidx.viewpager2.widget.ViewPager2>-->
 
-        <com.terricom.mytype.linechart.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                app:chart_bg_color="@color/colorWhite"
-                app:chart_line_color="@color/colorButton"
-                app:chart_padding_bottom="35dp"
-                app:chart_padding_left="35dp"
-                app:chart_padding_right="20dp"
-                app:chart_padding_top="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_oil1"></com.terricom.mytype.linechart.LineChart>
-
         <ImageView
                 android:id="@+id/icon_my_type"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="100dp"
                 android:elevation="@dimen/elevation_all"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/number_protein"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"
                 app:srcCompat="@drawable/icon_my_type" />
 
         <TextView
                 android:id="@+id/shaperecord_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:text="@string/shaperecord_add_record_hint"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_my_type" />
+
+        <TextView
+                android:id="@+id/time"
+                android:layout_width="84dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:paddingLeft="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/lineChart_guide" />
+
+        <TextView
+                android:id="@+id/number_weight"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_water"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/time"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <TextView
+                android:id="@+id/number_body_water"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_fat"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_weight"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <TextView
+                android:id="@+id/number_body_fat"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toStartOf="@+id/number_tdeet"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_body_water"
+                app:layout_constraintTop_toTopOf="@+id/number_body_water" />
+
+        <TextView
+                android:id="@+id/number_tdeet"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toStartOf="@+id/number_muscle"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_body_fat"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <TextView
+                android:id="@+id/number_muscle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_age"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_tdeet"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <TextView
+                android:id="@+id/number_body_age"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:paddingRight="@dimen/dialog_padding"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <ImageView
+                android:id="@+id/icon_calendar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_weight"
+                app:layout_constraintEnd_toEndOf="@+id/time"
+                app:layout_constraintStart_toStartOf="@+id/time"
+                app:layout_constraintTop_toTopOf="@+id/time"
+                app:srcCompat="@drawable/icon_calendar" />
+
+        <TextView
+                android:id="@+id/time_show"
+                android:layout_width="84dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/noto_sans"
+                android:paddingLeft="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/time" />
+
+        <TextView
+                android:id="@+id/number_weight_show"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_water"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_water_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/time_show"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <TextView
+                android:id="@+id/date_show"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/achivement_title_date"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toEndOf="@+id/time_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/time_show"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <TextView
+                android:id="@+id/number_body_water_show"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_fruit"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_fat_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_weight_show"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <TextView
+                android:id="@+id/number_body_fat_show"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_vegetable"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_water_show"
+                app:layout_constraintEnd_toStartOf="@+id/number_tdeet_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_body_water_show"
+                app:layout_constraintTop_toTopOf="@+id/number_body_water_show" />
+
+        <TextView
+                android:id="@+id/number_tdeet_show"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_oil"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toStartOf="@+id/number_muscle_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_body_fat_show"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <TextView
+                android:id="@+id/number_muscle_show"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_protein"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toStartOf="@+id/number_body_age_show"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/number_tdeet_show"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <TextView
+                android:id="@+id/number_body_age_show"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/foodie_carbon"
+                android:textAlignment="center"
+                android:textColor="@color/colorMyType"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_show"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/time_show" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_foodie_sum"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_show"
+                tools:listitem="@layout/item_achivement_shape" />
+
+        <ImageView
+                android:id="@+id/icon_weight"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_weight"
+                app:layout_constraintEnd_toEndOf="@+id/number_weight"
+                app:layout_constraintStart_toStartOf="@+id/number_weight"
+                app:layout_constraintTop_toTopOf="@+id/number_weight"
+                app:srcCompat="@drawable/icon_water" />
+
+        <ImageView
+                android:id="@+id/icon_body_water"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_water"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_water"
+                app:layout_constraintStart_toStartOf="@+id/number_body_water"
+                app:layout_constraintTop_toTopOf="@+id/number_body_water"
+                app:srcCompat="@drawable/icon_fruit" />
+
+        <ImageView
+                android:id="@+id/icon_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_fat"
+                app:layout_constraintStart_toStartOf="@+id/number_body_fat"
+                app:layout_constraintTop_toTopOf="@+id/number_body_fat"
+                app:srcCompat="@drawable/icon_vegetable" />
+
+        <ImageView
+                android:id="@+id/icon_tdee"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_tdeet"
+                app:layout_constraintEnd_toEndOf="@+id/number_tdeet"
+                app:layout_constraintStart_toStartOf="@+id/number_tdeet"
+                app:layout_constraintTop_toTopOf="@+id/number_tdeet"
+                app:srcCompat="@drawable/icon_coconut" />
+
+        <ImageView
+                android:id="@+id/icon_muscle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/number_muscle"
+                app:layout_constraintEnd_toEndOf="@+id/number_muscle"
+                app:layout_constraintStart_toStartOf="@+id/number_muscle"
+                app:layout_constraintTop_toTopOf="@+id/number_muscle"
+                app:srcCompat="@drawable/icon_protein" />
+
+        <ImageView
+                android:id="@+id/icon_body_age"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:paddingStart="@dimen/elevation_all"
+                app:layout_constraintBottom_toBottomOf="@+id/number_body_age"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_age"
+                app:layout_constraintStart_toStartOf="@+id/number_body_age"
+                app:layout_constraintTop_toTopOf="@+id/number_body_age"
+                app:srcCompat="@drawable/icon_carbon" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/lineChart_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,6 +2,9 @@
 <layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="viewModel" type="com.terricom.mytype.shaperecord.ShapeRecordViewModel"/>
+        <variable
+                name="shape"
+                type="com.terricom.mytype.data.Shape" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
@@ -247,7 +250,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-                android:id="@+id/textView"
+                android:id="@+id/shape_record_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"

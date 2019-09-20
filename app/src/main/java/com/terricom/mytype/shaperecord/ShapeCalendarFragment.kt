@@ -121,6 +121,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@ShapeCalendarFragment
             this.recordedDates = recordedDate.value!!
+            this.selectedDateBefore = selectedDayOut
         }
 
         gridRecycler.adapter = calendarAdapter

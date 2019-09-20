@@ -45,7 +45,8 @@
                     android:letterSpacing="0.15"
                     android:text="2018.12"
                     android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/colorMyType" />
+                    android:textColor="@color/colorMyType"
+                    android:textSize="@dimen/text_content" />
 
             <!-- next button -->
             <ImageView

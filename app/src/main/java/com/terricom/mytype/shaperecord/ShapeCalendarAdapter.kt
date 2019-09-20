@@ -19,6 +19,8 @@ class ShapeCalendarAdapter(
     var listener: ListenerCellSelect? = null
     lateinit var recordedDates: List<String>
     val sdf = SimpleDateFormat("yyyy-MM-dd")
+    var selectedDateBefore: Date? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): ShapeCalendarViewHolder {
         context = parent.context
@@ -33,6 +35,10 @@ class ShapeCalendarAdapter(
         Logger.i("recordedDates =$recordedDates")
         if (recordedDates.contains(sdf.format(listDates[position]))){
             viewHolder.recorded = true
+        }
+        Logger.i("selectedDate = $selectedDate selectedDateBefore = $selectedDateBefore")
+        if (selectedDate == selectedDateBefore){
+            viewHolder.selected = true
         }
         viewHolder.myBindView(
             listDates[position],

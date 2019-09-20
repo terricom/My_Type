@@ -133,7 +133,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="12dp"
                         android:text="@string/profile_title_my_goal"
                         android:textAlignment="center"
                         android:textColor="@color/colorMyType"
@@ -539,13 +539,14 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        app:pazzles="@{viewModel.pazzle}"
+                        android:layout_marginBottom="16dp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board"
+                        app:pazzles="@{viewModel.pazzle}"
                         tools:listitem="@layout/item_profile_dream_board" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

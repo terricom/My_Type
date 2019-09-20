@@ -50,7 +50,7 @@
     <fragment android:id="@+id/profileFragment" android:name="com.terricom.mytype.profile.ProfileFragment"
               android:label="HarvestFragment"/>
     <fragment android:id="@+id/shaperecordFragment" android:name="com.terricom.mytype.shaperecord.ShapeRecordFragment"
-              android:label="ShaperecordFragment"/>
+              android:label="ShaperecordFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Shape"/></fragment>
     <fragment android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
               android:label="ReferenceDialog"/>
     <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"

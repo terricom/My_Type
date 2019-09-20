@@ -19,3 +19,14 @@ data class Foodie (
     var docId: String ?= "",
     val memo: String ?=""
 ): Parcelable
+
+@Parcelize
+data class FoodieSum (
+    val day: String ?= "",
+    val water: Float ?= null,
+    val oil: Float ?= null,
+    val vegetable: Float ?= null,
+    val protein: Float ?= null,
+    val fruit: Float ?= null,
+    val carbon: Float ?= null
+): Parcelable

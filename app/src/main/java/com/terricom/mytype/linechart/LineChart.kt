@@ -184,7 +184,7 @@ class LineChart : View {
             val rect = Rect()
             val values = chartEntities!![0].values.sortedDescending()[0]
 
-            val text = "%.2f".format(values/10*i)
+            val text = "%.1f".format(values/10*i)
             pMarkTextY.measureText(text)
             pMarkTextY.textSize = 20f
             pMarkTextY.typeface = typeFace
