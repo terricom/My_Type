@@ -277,6 +277,7 @@ class DiaryViewModel: ViewModel() {
         }
     }
 
+
     fun delete(foodie: Foodie){
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users

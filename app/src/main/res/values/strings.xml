@@ -88,6 +88,8 @@
     <string name="shaperecord_edit_accumulation">修改成果</string>
     <string name="foodie_edit_foodie">修改食記</string>
     <string name="add_new_confirm">確認修改</string>
+    <string name="profile_puzzle_first_congrat">恭喜你完成第一塊拼圖，健康生活的第一步就從解身體的渴開始</string>
+    <string name="profile_puzzle_second_congrat">你知道酪梨含有滿滿的不飽和脂肪酸嗎？今天也來點好油脂吧！</string>
 
 
 </resources>

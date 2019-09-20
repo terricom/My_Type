@@ -6,10 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.UserMT
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
 import java.sql.Time
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -182,6 +181,7 @@ class FoodieViewModel: ViewModel() {
 
             }
 
+        updatePuzzle()
 
     }
 
@@ -216,8 +216,103 @@ class FoodieViewModel: ViewModel() {
 
             }
 
+        updatePuzzle()
+
 
     }
+
+    fun updatePuzzle() {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = user
+                .document(userUid).collection("Diary")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+                    val dates = mutableListOf<Date>()
+                    for (document in it) {
+                        dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time))
+                    }
+                    if (dates.distinct().size%7 == 0){
+
+
+                        val puzzle = user
+                            .document(userUid).collection("Puzzle")
+                            .orderBy("timestamp", Query.Direction.DESCENDING)
+
+                        val pazzleAll = mutableListOf<Pazzle>()
+
+                        puzzle
+                            .get()
+                            .addOnSuccessListener {
+                                for (document in it){
+                                    if (it.size() != 0){
+                                        pazzleAll.add(document.toObject(Pazzle::class.java))
+                                        pazzleAll[pazzleAll.size-1].docId = document.id
+                                    }
+                                }
+
+                                val pazzleOld = hashMapOf(
+                                    "position" to listOf((1..15).random()),
+                                    "imgURL" to PuzzleImg.values()[if (pazzleAll.size -1==-1)0 else pazzleAll.size -1 ].value,
+                                    "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000")
+                                )
+
+                                if ( pazzleAll.size != 0 ){
+                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 120 && pazzleAll[pazzleAll.lastIndex].timestamp != date.value){
+                                        val addNewPazzle = pazzleAll[pazzleAll.lastIndex].position!!.toMutableList()
+                                        addNewPazzle.add((1..15).minus(addNewPazzle).random())
+                                        user.document(userUid).collection("Puzzle").document(pazzleAll[pazzleAll.lastIndex].docId!!).update(
+                                            "position", addNewPazzle
+                                        )
+                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 120 && pazzleAll[pazzleAll.lastIndex].timestamp != date.value){
+                                        user.document(userUid).collection("Puzzle").document().set(pazzleOld)
+                                    }
+                                } else if ( pazzleAll.size == 0 ){
+                                    user.document(userUid).collection("Puzzle").document().set(pazzleOld)
+                                }
+                            }
+
+                    }
+                }
+        }
+
+        if (userUid!!.isNotEmpty()){
+            //發文功能
+            val foodieContent = hashMapOf(
+                "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
+                "water" to water.value,
+                "oil" to oil.value,
+                "vegetable" to vegetable.value,
+                "protein" to protein.value,
+                "fruit" to fruit.value,
+                "carbon" to carbon.value,
+                "foods" to selectedFood.distinct(),
+                "nutritions" to selectedNutrition.distinct(),
+                "memo" to memo.value
+            )
+
+            user.get()
+                .addOnSuccessListener { result->
+                    if (userUid != null){
+                        user.document(userUid).collection("Foodie").document()
+                    }
+
+                    Logger.i("FoodieViewModel userUid =$userUid")
+                    for (doc in result){
+                        if (doc.id == userUid){
+                            user.document(doc.id).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
+                        }
+                    }
+
+                }
+        }
+
+
+    }
+
 
     fun clearData(){
         water.value = 0.0f

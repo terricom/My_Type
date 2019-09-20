@@ -79,6 +79,9 @@ class ProfileViewModel: ViewModel() {
         }
     }
 
+    val db = FirebaseFirestore.getInstance()
+    val users = db.collection("Users")
+
     init {
         getThisMonth()
     }
@@ -86,6 +89,30 @@ class ProfileViewModel: ViewModel() {
     @InverseMethod("convertStringToFloat")
     fun floatToString(value:Float) = value.toString()
 
+    fun getPazzle(){
+        if (userUid!!.isNotEmpty()){
+            val goal = users
+                .document(userUid)
+                .collection("Puzzle")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+            goal
+                .get()
+                .addOnSuccessListener {
+                    val items = mutableListOf<Goal>()
+                    if (it.isEmpty){
+
+                    }else {
+                        for (document in it) {
+                            items.add(document.toObject(Goal::class.java))
+                            items[items.size-1].docId = document.id
+                        }
+                        cheerUp.value = items[0].cheerUp
+                        fireGoalBack(items)
+                    }
+                }
+        }
+    }
 
 
     fun getThisMonth() {

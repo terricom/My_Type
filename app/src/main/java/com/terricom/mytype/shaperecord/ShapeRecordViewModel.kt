@@ -120,6 +120,7 @@ class ShapeRecordViewModel: ViewModel() {
 
     }
 
+
     fun getToday(): Boolean {
         val items = mutableListOf<Shape>()
 

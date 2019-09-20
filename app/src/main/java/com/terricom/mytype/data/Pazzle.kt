@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class Pazzle (
     val position: List<Int>?= null,
     val imgURL: String?= "",
-    var docId: String ?= ""
+    var docId: String ?= "",
+    val timestamp: java.util.Date?= null
 ): Parcelable
