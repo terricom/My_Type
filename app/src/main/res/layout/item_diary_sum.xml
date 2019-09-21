@@ -11,7 +11,7 @@
 
 
         <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/diary_item_sum_show_info"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"

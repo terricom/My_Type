@@ -163,19 +163,19 @@ class LinechartViewModel: ViewModel() {
         _foodieSum.value = fooSum
     }
 
-    val goalWater = MutableLiveData<Float>()
-    val goalFruit = MutableLiveData<Float>()
-    val goalVegetable = MutableLiveData<Float>()
-    val goalOil = MutableLiveData<Float>()
-    val goalProtein = MutableLiveData<Float>()
-    val goalCarbon = MutableLiveData<Float>()
+    val goalWater = MutableLiveData<String>()
+    val goalFruit = MutableLiveData<String>()
+    val goalVegetable = MutableLiveData<String>()
+    val goalOil = MutableLiveData<String>()
+    val goalProtein = MutableLiveData<String>()
+    val goalCarbon = MutableLiveData<String>()
 
-    val diffWater = MutableLiveData<Float>()
-    val diffFruit = MutableLiveData<Float>()
-    val diffCarbon = MutableLiveData<Float>()
-    val diffOil = MutableLiveData<Float>()
-    val diffProtein = MutableLiveData<Float>()
-    val diffVegetable = MutableLiveData<Float>()
+    val diffWater = MutableLiveData<String>()
+    val diffFruit = MutableLiveData<String>()
+    val diffCarbon = MutableLiveData<String>()
+    val diffOil = MutableLiveData<String>()
+    val diffProtein = MutableLiveData<String>()
+    val diffVegetable = MutableLiveData<String>()
 
 
     val db = FirebaseFirestore.getInstance()
@@ -265,6 +265,7 @@ class LinechartViewModel: ViewModel() {
                                 }
                             }
                         }
+                        dateListClean.distinct()
                         waterList.add(waterD.sum())
                         oilList.add(oilD.sum())
                         vegetableList.add(vegetableD.sum())
@@ -272,7 +273,7 @@ class LinechartViewModel: ViewModel() {
                         fruitList.add(fruitD.sum())
                         carbonList.add(carbonD.sum())
                         foodieSum.add(FoodieSum(
-                            dateListClean[waterD.size-1],
+                            dateListClean[dateListClean.size-1],
                             waterD.sum(),
                             oilD.sum(),
                             vegetableD.sum(),
@@ -292,22 +293,28 @@ class LinechartViewModel: ViewModel() {
                     }
                     setFoodieSum(foodieSum)
                     if (waterList.size > 0){
-                        diffWater.value = waterList[waterList.lastIndex].minus(goalWater.value ?: 0f)
+                        diffWater.value = "%.1f".format(waterList[waterList.lastIndex].minus(
+                            (if (goalWater.value == "null" || goalWater.value.isNullOrEmpty())"0" else goalWater.value)!!.toFloat()))
                     }
                     if (fruitList.size > 0){
-                        diffFruit.value = fruitList[fruitList.lastIndex].minus(goalFruit.value ?: 0f)
+                        diffFruit.value = "%.1f".format(fruitList[fruitList.lastIndex].minus(
+                            (if (goalFruit.value == "null" || goalFruit.value.isNullOrEmpty())"0" else goalFruit.value)!!.toFloat()))
                     }
                     if (oilList.size > 0){
-                        diffOil.value = oilList[oilList.lastIndex].minus(goalOil.value ?: 0f)
+                        diffOil.value = "%.1f".format(oilList[oilList.lastIndex].minus(
+                            (if (goalOil.value == "null" || goalOil.value.isNullOrEmpty())"0" else goalOil.value)!!.toFloat()))
                     }
                     if (proteinList.size > 0){
-                        diffProtein.value = proteinList[proteinList.lastIndex].minus(goalProtein.value ?: 0f)
+                        diffProtein.value = "%.1f".format(proteinList[proteinList.lastIndex].minus(
+                            (if (goalProtein.value == "null" || goalProtein.value.isNullOrEmpty())"0" else goalProtein.value)!!.toFloat()))
                     }
                     if (vegetableList.size > 0){
-                        diffVegetable.value = vegetableList[vegetableList.lastIndex].minus(goalVegetable.value ?: 0f)
+                        diffVegetable.value = "%.1f".format(vegetableList[vegetableList.lastIndex].minus(
+                            (if (goalVegetable.value == "null" || goalVegetable.value.isNullOrEmpty())"0" else goalVegetable.value)!!.toFloat()))
                     }
                     if (carbonList.size > 0){
-                        diffCarbon.value = carbonList[carbonList.lastIndex].minus(goalCarbon.value ?: 0f)
+                        diffCarbon.value = "%.1f".format(carbonList[carbonList.lastIndex].minus(
+                            (if (goalCarbon.value == "null" || goalCarbon.value.isNullOrEmpty())"0" else goalCarbon.value)!!.toFloat()))
                     }
                     Logger.i("waterList =$waterList oilList = $oilList sleepList =$sleepList")
                     fireFoodieBack(items)
@@ -360,12 +367,12 @@ class LinechartViewModel: ViewModel() {
                             items[items.size-1].docId = document.id
                         }
                         if (items.size > 0 ){
-                        goalWater.value = items[0].water
-                        goalCarbon.value = items[0].carbon
-                        goalOil.value = items[0].oil
-                        goalFruit.value = items[0].fruit
-                        goalProtein.value = items[0].protein
-                        goalVegetable.value = items[0].vegetable
+                        goalWater.value = "%.1f".format(items[0].water)
+                        goalCarbon.value = "%.1f".format(items[0].carbon)
+                        goalOil.value = "%.1f".format(items[0].oil)
+                        goalFruit.value = "%.1f".format(items[0].fruit)
+                        goalProtein.value = "%.1f".format(items[0].protein)
+                        goalVegetable.value = "%.1f".format(items[0].vegetable)
                         }
                     }
                 }

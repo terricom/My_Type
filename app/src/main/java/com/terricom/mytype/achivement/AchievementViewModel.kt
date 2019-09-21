@@ -26,13 +26,13 @@ class AchievementViewModel: ViewModel() {
 
     val currentCalendar = Calendar.getInstance()
 
-    val goalWeight = MutableLiveData<Float>()
-    val goalBodyFat = MutableLiveData<Float>()
-    val goalMuscle = MutableLiveData<Float>()
+    val goalWeight = MutableLiveData<String>()
+    val goalBodyFat = MutableLiveData<String>()
+    val goalMuscle = MutableLiveData<String>()
 
-    val diffWeight = MutableLiveData<Float>()
-    val diffBodyFat = MutableLiveData<Float>()
-    val diffMuscle = MutableLiveData<Float>()
+    val diffWeight = MutableLiveData<String>()
+    val diffBodyFat = MutableLiveData<String>()
+    val diffMuscle = MutableLiveData<String>()
 
     private val _date = MutableLiveData<String>()
     val date: LiveData<String>
@@ -190,13 +190,16 @@ class AchievementViewModel: ViewModel() {
                     }
 
                     if (weightList.size >0) {
-                        diffWeight.value = weightList[weightList.lastIndex].minus(goalWeight.value ?: 0f)
+                        diffWeight.value = "%.1f".format(weightList[weightList.lastIndex].minus(
+                            (if (goalWeight.value == "null" || goalWeight.value.isNullOrEmpty())"0" else goalWeight.value)!!.toFloat()))
                     }
                     if (bodyFatList.size >0) {
-                        diffBodyFat.value = bodyFatList[bodyFatList.lastIndex].minus(goalBodyFat.value ?: 0f)
+                        diffBodyFat.value = "%.1f".format(bodyFatList[bodyFatList.lastIndex].minus(
+                            (if (goalBodyFat.value == "null" || goalBodyFat.value.isNullOrEmpty())"0" else goalBodyFat.value)!!.toFloat()))
                     }
                     if (muscleList.size >0) {
-                        diffMuscle.value = muscleList[muscleList.lastIndex].minus(goalMuscle.value ?: 0f)
+                        diffMuscle.value = "%.1f".format(muscleList[muscleList.lastIndex].minus(
+                            (if (goalMuscle.value == "null" || goalMuscle.value.isNullOrEmpty())"0" else goalMuscle.value)!!.toFloat()))
                     }
 
                     fireDateBack(ArrayList(cleanList))
@@ -247,9 +250,9 @@ class AchievementViewModel: ViewModel() {
                             items.add(document.toObject(Goal::class.java))
                             items[items.size-1].docId = document.id
                         }
-                        goalWeight.value = items[0].weight
-                        goalBodyFat.value = items[0].bodyFat
-                        goalMuscle.value = items[0].muscle
+                        goalWeight.value = "%.1f".format(items[0].weight)
+                        goalBodyFat.value = "%.1f".format(items[0].bodyFat)
+                        goalMuscle.value = "%.1f".format(items[0].muscle)
                     }
                 }
         }

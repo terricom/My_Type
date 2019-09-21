@@ -62,6 +62,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         })
 
+
         viewModel.fireSleep.observe(this, Observer {
             hasFireSleep = true
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)

@@ -174,6 +174,16 @@ class MainActivity : BaseActivity(){
                 hideBottomNavView()
                 hideToolbar()
                 hideFABView()
+                Handler().postDelayed({
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+                    binding.fabShadow.visibility = View.GONE
+                    fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
+                    fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
+                    fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
+                    fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
+                    binding.fab.visibility = View.VISIBLE
+                    binding.bottomNavView.visibility = View.VISIBLE
+                },2000)
             }
             if (it.value == App.instance?.getString(R.string.title_foodie) ||
                 it.value == App.instance?.getString(R.string.title_shape_record) ||
@@ -219,6 +229,7 @@ class MainActivity : BaseActivity(){
         fab.animate().rotation(45.0f)
         fab_custom_pic.animate().rotation(45.0f)
         binding.fabShadow.visibility = View.VISIBLE
+        binding.fab.visibility = View.VISIBLE
         binding.fab1.visibility = View.VISIBLE
         binding.fab2.visibility = View.VISIBLE
         binding.fab3.visibility = View.VISIBLE

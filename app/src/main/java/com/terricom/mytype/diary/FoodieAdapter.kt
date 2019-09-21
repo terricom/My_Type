@@ -13,14 +13,14 @@ import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.Logger
-import com.terricom.mytype.NavigationDirections
-import com.terricom.mytype.R
+import com.terricom.mytype.*
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.databinding.ItemDiaryRecordBinding
@@ -28,6 +28,7 @@ import com.terricom.mytype.databinding.ItemDiaryShapeBinding
 import com.terricom.mytype.databinding.ItemDiarySleepBinding
 import com.terricom.mytype.databinding.ItemDiarySumBinding
 import com.terricom.mytype.foodie.FoodieFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_diary_record.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -132,6 +133,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind(viewModel: DiaryViewModel){
             binding.lifecycleOwner = this
             binding.viewModel = viewModel
+            binding.diaryItemSumShowInfo.setOnClickListener {
+                findNavController(it).navigate(NavigationDirections.navigateToReferenceDialog())
+            }
             binding.executePendingBindings()
 
         }

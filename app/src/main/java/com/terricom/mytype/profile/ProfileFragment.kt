@@ -38,7 +38,7 @@ class ProfileFragment: Fragment() {
             PuzzleImg.GOODOIL.value
         )
 
-        viewModel.setPazzle(listOf(pazzleMock, pazzleMock2))
+//        viewModel.setPazzle(listOf(pazzleMock, pazzleMock2))
 
         val linearSnapHelper = LinearSnapHelper().apply {
             attachToRecyclerView(binding.recyclerPuzzle)

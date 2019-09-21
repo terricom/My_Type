@@ -84,6 +84,7 @@ class ProfileViewModel: ViewModel() {
 
     init {
         getThisMonth()
+        getPazzle()
     }
 
     @InverseMethod("convertStringToFloat")
@@ -99,16 +100,15 @@ class ProfileViewModel: ViewModel() {
             goal
                 .get()
                 .addOnSuccessListener {
-                    val items = mutableListOf<Goal>()
+                    val items = mutableListOf<Pazzle>()
                     if (it.isEmpty){
 
                     }else {
                         for (document in it) {
-                            items.add(document.toObject(Goal::class.java))
+                            items.add(document.toObject(Pazzle::class.java))
                             items[items.size-1].docId = document.id
                         }
-                        cheerUp.value = items[0].cheerUp
-                        fireGoalBack(items)
+                        setPazzle(items)
                     }
                 }
         }
