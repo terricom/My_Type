@@ -58,7 +58,8 @@
                     android:layout_centerVertical="true"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@mipmap/ic_forward"
-                    android:visibility="invisible" android:tint="@color/colorMyType"/>
+                    android:tint="@color/colorMyType"
+                    android:visibility="visible" />
         </RelativeLayout>
 
         <!-- days header -->

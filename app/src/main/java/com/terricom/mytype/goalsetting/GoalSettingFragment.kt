@@ -16,13 +16,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentGoalSettingBinding
+import com.terricom.mytype.shaperecord.ShapeCalendarFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class GoalSettingFragment: Fragment() {
+class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
     private val viewModel: GoalSettingViewModel by lazy {
         ViewModelProviders.of(this).get(GoalSettingViewModel::class.java)
     }
+
+    private lateinit var binding : FragmentGoalSettingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +33,15 @@ class GoalSettingFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = FragmentGoalSettingBinding.inflate(inflater)
+        binding = FragmentGoalSettingBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         binding.buttonGoalSettingSave.setOnClickListener{
+            binding.smartCustomCalendar.selectDateOut?.let {
+                Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
+                viewModel.setDate(it)
+            }
             if (isConnected()) {
                 viewModel.addGoal()
                 Logger.i("NetworkConnection Network Connected.")
@@ -47,9 +54,14 @@ class GoalSettingFragment: Fragment() {
 
         viewModel.addGoal.observe(this, Observer {
             if (it == true){
+                findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
                 Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                },2000)
+                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                    (activity as MainActivity).fab.visibility = View.VISIBLE
+                    (activity as MainActivity).closeFABMenu()
+                },2005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_goal_setting_failure) }
@@ -82,6 +94,14 @@ class GoalSettingFragment: Fragment() {
             findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
         }
 
+        binding.smartCustomCalendar.setEventHandler(this)
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
+
+
         return binding.root
     }
 
@@ -100,6 +120,24 @@ class GoalSettingFragment: Fragment() {
         (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
+
+    }
+
+    override fun onCalendarNextPressed() {
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
+
+    }
+
+    override fun onCalendarPreviousPressed() {
+        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+            binding.smartCustomCalendar.updateCalendar()
+        })
 
     }
 }

@@ -72,7 +72,7 @@ class GoalSettingViewModel: ViewModel() {
 
         //發文功能
         val goalContent = hashMapOf(
-            "timestamp" to Timestamp.valueOf("${sdfDetail.format(Date().time)}.000000000"),
+            "timestamp" to Timestamp.valueOf("${sdfDetail.format(date.value!!.time)}.000000000"),
             "deadline" to Timestamp.valueOf("${sdf.format(date.value)} 12:00:00.000000000"),
             "water" to water.value,
             "oil" to oil.value,
@@ -105,7 +105,9 @@ class GoalSettingViewModel: ViewModel() {
                         val goal = doc.toObject(Goal::class.java)
                         items.add(goal)
                     }
-                    if (items[0].deadline!!.before(Date())){
+                        com.terricom.mytype.Logger.i("items = $items")
+                    if (items[0].deadline!!.time < Date().time && sdf.format(items[0].deadline)!= sdf.format(date.value)
+                        && sdf.format(items[0].deadline)!= sdf.format(Date())){
                         user.document(userUid).collection("Goal").document().set(goalContent)
                         addGoal2FirebaseSuccess()
                     } else {

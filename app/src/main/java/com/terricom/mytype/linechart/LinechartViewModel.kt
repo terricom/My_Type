@@ -192,7 +192,7 @@ class LinechartViewModel: ViewModel() {
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
                 .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
                 .orderBy("timestamp", Query.Direction.ASCENDING)

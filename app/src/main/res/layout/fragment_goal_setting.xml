@@ -11,66 +11,55 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="60dp" />
+
+    <com.terricom.mytype.shaperecord.ShapeCalendarFragment
+            android:id="@+id/smartCustomCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shape_record_title"></com.terricom.mytype.shaperecord.ShapeCalendarFragment>
+
     <TextView
             android:id="@+id/profile_title_set_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
             android:text="@string/profile_title_set_date"
             android:textAlignment="center"
             android:textColor="@color/colorMyType"
             android:textSize="@dimen/text_content_title"
             app:layout_constraintBottom_toBottomOf="@+id/diary_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-            android:id="@+id/editDate"
-            android:layout_width="90dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/tag_left_corners"
-            android:ems="10"
-            android:fontFamily="@font/noto_sans"
-            android:hint="2019.08.25"
-            android:inputType="date"
-            android:paddingLeft="@dimen/elevation_all"
-            android:paddingTop="@dimen/elevation_all"
-            android:paddingRight="@dimen/elevation_all"
-            android:paddingBottom="@dimen/elevation_all"
-            android:text="@{Converter.dateToString(viewModel.date)}"
-            android:textAlignment="center"
-            android:textColor="@color/colorMyType"
-            android:textColorHint="@color/colorMyType"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintBottom_toBottomOf="@+id/goal_content"
-            app:layout_constraintEnd_toStartOf="@+id/editTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/goal_content" />
+            app:layout_constraintTop_toBottomOf="@+id/smartCustomCalendar" />
 
     <EditText
             android:id="@+id/goal_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/tag_right_corners"
+            android:background="@drawable/input_column"
             android:fontFamily="@font/noto_sans"
             android:hint="@string/goal_setting_hint_add_cheer_up"
-            android:text="@={viewModel.cheerUp}"
             android:paddingLeft="7dp"
             android:paddingTop="@dimen/elevation_all"
             android:paddingRight="@dimen/elevation_all"
             android:paddingBottom="@dimen/elevation_all"
+            android:text="@={viewModel.cheerUp}"
             android:textAlignment="viewStart"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
             android:textSize="@dimen/text_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/editDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_title_set_date" />
 
     <TextView
@@ -82,7 +71,7 @@
             android:textColor="@color/colorMyType"
             android:textSize="@dimen/layout_title"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/profile_title_set_date"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +88,7 @@
             android:textSize="@dimen/text_content_title"
             app:layout_constraintBottom_toBottomOf="@+id/diary_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editDate" />
+            app:layout_constraintTop_toBottomOf="@+id/goal_content" />
 
 
     <ImageView
@@ -459,7 +448,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:scaleType="fitStart"
-            app:layout_constraintBottom_toTopOf="@+id/profile_title_set_date"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/icon_back" />
