@@ -16,16 +16,21 @@
         <!--        android:text="@{String.valueOf(viewModel.date)}"-->
         <ImageView
                 android:id="@+id/button_save_calendar"
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="30dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorAllTransparent"
                 android:tint="@color/colorMyType"
                 app:layout_constraintBottom_toBottomOf="@+id/diary_date"
-                app:layout_constraintEnd_toEndOf="@+id/diary_date"
-                app:layout_constraintStart_toStartOf="@+id/diary_date"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="@+id/diary_date" />
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
         <TextView
                 android:id="@+id/diary_date"

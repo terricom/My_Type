@@ -5,6 +5,7 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
@@ -190,6 +191,7 @@ class FoodieViewModel: ViewModel() {
         //發文功能
         val foodieContent = hashMapOf(
             "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
+            "photo" to photoUri.value.toString(),
             "water" to water.value,
             "oil" to oil.value,
             "vegetable" to vegetable.value,
@@ -225,18 +227,18 @@ class FoodieViewModel: ViewModel() {
 
         if (userUid!!.isNotEmpty()){
             val diary = user
-                .document(userUid).collection("Diary")
+                .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
 
             diary
                 .get()
                 .addOnSuccessListener {
-                    val dates = mutableListOf<Date>()
+                    val dates = mutableListOf<String>()
                     for (document in it) {
-                        dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time))
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
                     }
+                    Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
                     if (dates.distinct().size%7 == 0){
-
 
                         val puzzle = user
                             .document(userUid).collection("Puzzle")
@@ -257,17 +259,25 @@ class FoodieViewModel: ViewModel() {
                                 val pazzleOld = hashMapOf(
                                     "position" to listOf((1..15).random()),
                                     "imgURL" to PuzzleImg.values()[if (pazzleAll.size -1==-1)0 else pazzleAll.size -1 ].value,
-                                    "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000")
+                                    "recordedDates" to listOf(sdf.format(date.value)),
+                                    "timestamp" to FieldValue.serverTimestamp()
+
                                 )
 
                                 if ( pazzleAll.size != 0 ){
-                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 120 && pazzleAll[pazzleAll.lastIndex].timestamp != date.value){
+                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 120 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
                                         val addNewPazzle = pazzleAll[pazzleAll.lastIndex].position!!.toMutableList()
+                                        val addOldPazzleTS = pazzleAll[pazzleAll.lastIndex].recordedDates!!.toMutableList()
                                         addNewPazzle.add((1..15).minus(addNewPazzle).random())
+                                        addOldPazzleTS.add(sdf.format(date.value!!))
                                         user.document(userUid).collection("Puzzle").document(pazzleAll[pazzleAll.lastIndex].docId!!).update(
-                                            "position", addNewPazzle
+                                            mapOf(
+                                            "position" to addNewPazzle,
+                                            "recordedDates" to addOldPazzleTS,
+                                                "timestamp" to FieldValue.serverTimestamp()
+                                            )
                                         )
-                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 120 && pazzleAll[pazzleAll.lastIndex].timestamp != date.value){
+                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 120 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
                                         user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                     }
                                 } else if ( pazzleAll.size == 0 ){

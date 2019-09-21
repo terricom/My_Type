@@ -95,9 +95,9 @@ class FoodieFragment: Fragment() {
         binding.foodie = foodie
         if (foodie.timestamp != null){
             viewModel.updateFoodie(foodie)
-            binding.foodieTitle.setText("修改食記")
+            binding.foodieTitle.text = "修改食記"
 
-            viewModel.setDate(foodie.timestamp!!)
+            viewModel.setDate(foodie.timestamp)
             viewModel.water.value = foodie.water
             viewModel.fruit.value = foodie.fruit
             viewModel.protein.value = foodie.protein
@@ -149,7 +149,7 @@ class FoodieFragment: Fragment() {
             }else{
                 editableNutritions = mutableListOf("")
             }
-            binding.textFoodieSave.setText("確認修改")
+            binding.textFoodieSave.text = "確認修改"
 
         }else {
             editableNutritions = mutableListOf("")
@@ -345,7 +345,7 @@ class FoodieFragment: Fragment() {
 
         //讀取手機解析度
         mPhone = DisplayMetrics()
-        getWindowManager(App.applicationContext()).getDefaultDisplay().getMetrics(mPhone)
+        getWindowManager(App.applicationContext()).defaultDisplay.getMetrics(mPhone)
 
 
         binding.buttonFoodieSave.setOnClickListener {
@@ -428,7 +428,7 @@ class FoodieFragment: Fragment() {
                 storageDir      /* directory */
         )
         // Save a file: path for using again
-        imageFilePathFromCamera = "file://" + image.getAbsolutePath()
+        imageFilePathFromCamera = "file://" + image.absolutePath
 
         return image
     }
@@ -451,9 +451,10 @@ class FoodieFragment: Fragment() {
                 val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
                 val baos = ByteArrayOutputStream()
                 outBitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos)
-                if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
-                else ScalePic(outBitmap!!, mPhone!!.widthPixels)
-//                bitmap!!.recycle()
+                if(outBitmap!!.width > outBitmap.height)ScalePic(outBitmap, mPhone!!.widthPixels)
+                else ScalePic(outBitmap, mPhone!!.widthPixels)
+                bitmap!!.recycle()
+
                 uploadFile()
 
             } catch (e: IOException) {
@@ -472,8 +473,9 @@ class FoodieFragment: Fragment() {
             val outBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap!!.width, bitmap!!.height, matrix, false)
             val baos = ByteArrayOutputStream()
             outBitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos)
-            if(outBitmap!!.getWidth()>outBitmap!!.getHeight())ScalePic(outBitmap!!, mPhone!!.heightPixels)
-            else ScalePic(outBitmap!!, mPhone!!.widthPixels)
+            if(outBitmap!!.width > outBitmap.height)ScalePic(outBitmap, mPhone!!.widthPixels)
+            else ScalePic(outBitmap, mPhone!!.widthPixels)
+
             uploadFile()
         }
     }
@@ -484,10 +486,10 @@ class FoodieFragment: Fragment() {
         var mScale = 1f
 
         //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
-        if(bitmap.getWidth() > phone )
+        if(bitmap.width > phone )
         {
             //判斷縮放比例
-            mScale = phone.toFloat()/ bitmap.getWidth().toFloat()
+            mScale = phone.toFloat()/ bitmap.width.toFloat()
 
             val mMat: Matrix = Matrix()
             mMat.setScale(mScale, mScale)
@@ -495,8 +497,8 @@ class FoodieFragment: Fragment() {
             var mScaleBitmap = Bitmap.createBitmap(bitmap,
             0,
             0,
-            bitmap.getWidth(),
-            bitmap.getHeight(),
+            bitmap.width,
+            bitmap.height,
             mMat,
             false)
             foodiePhoto.setImageBitmap(mScaleBitmap)
@@ -621,7 +623,7 @@ class FoodieFragment: Fragment() {
 
         var stream: ByteArrayOutputStream? = ByteArrayOutputStream()
         //Qaulity was 35
-        bmp.compress(Bitmap.CompressFormat.JPEG, 10, stream)
+        bmp.compress(Bitmap.CompressFormat.JPEG, 15, stream)
         val byteArray = stream!!.toByteArray()
         try {
             stream.close()
@@ -637,7 +639,7 @@ class FoodieFragment: Fragment() {
 
 
     private fun getPermissions() {
-        Logger.d( "getLocationPermission: getting location permissions");
+        Logger.d( "getLocationPermission: getting location permissions")
         val permissions = arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -651,11 +653,11 @@ class FoodieFragment: Fragment() {
                     COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(App.applicationContext(),
                         COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    mLocationPermissionsGranted = true;
+                    mLocationPermissionsGranted = true
                     try {
 //                        fromcamera()
                     } catch (e: IOException) {
-                        e.printStackTrace();
+                        e.printStackTrace()
                     }
                 }
 
@@ -663,12 +665,12 @@ class FoodieFragment: Fragment() {
             else {
                 ActivityCompat.requestPermissions(activity as MainActivity,
                     permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE);
+                    LOCATION_PERMISSION_REQUEST_CODE)
             }
         } else {
             ActivityCompat.requestPermissions(activity as MainActivity,
                 permissions,
-                LOCATION_PERMISSION_REQUEST_CODE);
+                LOCATION_PERMISSION_REQUEST_CODE)
         }
     }
 
@@ -677,7 +679,7 @@ class FoodieFragment: Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        mLocationPermissionsGranted = false;
+        mLocationPermissionsGranted = false
 
         when (requestCode) {
 
@@ -686,16 +688,16 @@ class FoodieFragment: Fragment() {
                 if (grantResults.size > 0) {
                     for (i in 0 until grantResults.size) {
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            mLocationPermissionsGranted = false;
-                            return;
+                            mLocationPermissionsGranted = false
+                            return
                         }
                     }
                     Logger.d("onRequestPermissionsResult: permission granted")
-                    mLocationPermissionsGranted = true;
+                    mLocationPermissionsGranted = true
                     //initialize our map
                     try {
                     } catch ( e: IOException) {
-                        e.printStackTrace();
+                        e.printStackTrace()
                     }
                 }}
 

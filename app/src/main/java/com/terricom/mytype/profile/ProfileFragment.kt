@@ -9,13 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Pazzle
 import com.terricom.mytype.data.PuzzleImg
 import com.terricom.mytype.databinding.FragmentProfileBinding
-
 
 
 
@@ -53,6 +53,9 @@ class ProfileFragment: Fragment() {
                 linearSnapHelper
             )
         }
+
+        (binding.recyclerGoal.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.recyclerGoal.setHasFixedSize(true)
 
         binding.profileGoalSettingReference.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())

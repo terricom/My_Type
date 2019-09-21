@@ -57,6 +57,9 @@
     <dimen name="rotate_180">180dp</dimen>
     <dimen name="height_profile_pazzle">250dp</dimen>
     <dimen name="size_message">200dp</dimen>
+    <dimen name="profile_goal_animation">38dp</dimen>
+    <dimen name="profile_goal_expand">134dp</dimen>
+
 
 
 </resources>

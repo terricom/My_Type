@@ -63,6 +63,18 @@ class ProfileViewModel: ViewModel() {
         }
     }
 
+    val _goalExpandClicked = MutableLiveData<Boolean>()
+    val goalExpandClicked : LiveData<Boolean>
+        get() = _goalExpandClicked
+
+    fun goalExpand(){
+        _goalExpandClicked.value = true
+    }
+
+    fun goalCLose(){
+        _goalExpandClicked.value = false
+    }
+
     private val _snapPosition = MutableLiveData<Int>()
 
     val snapPosition: LiveData<Int>
@@ -85,6 +97,7 @@ class ProfileViewModel: ViewModel() {
     init {
         getThisMonth()
         getPazzle()
+        goalCLose()
     }
 
     @InverseMethod("convertStringToFloat")
