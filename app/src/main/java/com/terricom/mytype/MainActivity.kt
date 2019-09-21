@@ -1,11 +1,14 @@
 package com.terricom.mytype
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -71,7 +74,8 @@ class MainActivity : BaseActivity(){
 
     val totalCarbon = MutableLiveData<Float>()
 
-
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
 
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -189,10 +193,37 @@ class MainActivity : BaseActivity(){
                 Logger.d("Firebase token from firebase =$token")
             })
 
+        alarmMgr = App.applicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(App.applicationContext(), AlarmReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(App.applicationContext(), 0, intent, 0)
+        }
+
+        // Set the alarm to start at 8:30 a.m.
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 12)
+            set(Calendar.MINUTE, 30)
+        }
+
+        // setRepeating() lets you specify a precise custom interval--in this case,
+        // 20 minutes.
+        alarmMgr?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            1000 * 60 * 20,
+            alarmIntent
+        )
+
+        //開機執行
+        val receiver = ComponentName(App.applicationContext(), BootUpReceiver::class.java)
+        val pm = App.applicationContext().packageManager
+        pm.setComponentEnabledSetting(
+            receiver,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
 
 
-        //取消 Firebase 的系統自動推播
-//        FirebaseMessaging.getInstance().isAutoInitEnabled = false
 
     }
 
