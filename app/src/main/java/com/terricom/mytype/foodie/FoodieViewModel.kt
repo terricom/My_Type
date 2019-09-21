@@ -279,37 +279,6 @@ class FoodieViewModel: ViewModel() {
                 }
         }
 
-        if (userUid!!.isNotEmpty()){
-            //發文功能
-            val foodieContent = hashMapOf(
-                "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
-                "water" to water.value,
-                "oil" to oil.value,
-                "vegetable" to vegetable.value,
-                "protein" to protein.value,
-                "fruit" to fruit.value,
-                "carbon" to carbon.value,
-                "foods" to selectedFood.distinct(),
-                "nutritions" to selectedNutrition.distinct(),
-                "memo" to memo.value
-            )
-
-            user.get()
-                .addOnSuccessListener { result->
-                    if (userUid != null){
-                        user.document(userUid).collection("Foodie").document()
-                    }
-
-                    Logger.i("FoodieViewModel userUid =$userUid")
-                    for (doc in result){
-                        if (doc.id == userUid){
-                            user.document(doc.id).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
-                        }
-                    }
-
-                }
-        }
-
 
     }
 

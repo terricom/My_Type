@@ -159,7 +159,6 @@ class MainActivity : BaseActivity(){
                 R.id.achivementFragment -> CurrentFragmentType.HARVEST
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
-                R.id.referenceDialog -> CurrentFragmentType.REF
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.dreamboardFragment -> CurrentFragmentType.DREAMBOARD
                 R.id.sleepFragment -> CurrentFragmentType.SLEEP

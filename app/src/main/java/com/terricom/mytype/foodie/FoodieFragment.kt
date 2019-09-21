@@ -159,10 +159,6 @@ class FoodieFragment: Fragment() {
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
 
-        binding.buttonFoodieShowInfo.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
-        }
-
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
             (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(it)

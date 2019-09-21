@@ -3,7 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="dialog" type="com.terricom.mytype.foodie.ReferenceDialog"/>
         <import type="android.view.View"/>
     </data>
 
@@ -25,7 +24,7 @@
                     android:id="@+id/text_message_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
@@ -47,6 +46,46 @@
                     android:textSize="@dimen/text_content"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
                     app:layout_constraintTop_toBottomOf="@+id/text_message_content" />
+
+            <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/shape_weight"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView15"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/shape_body_age"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView16"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView15"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+            <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/shape_muscle"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintEnd_toEndOf="@+id/textView5"
+                    app:layout_constraintTop_toTopOf="@+id/textView9" />
 
             <TextView
                     android:id="@+id/textView3"
@@ -114,17 +153,15 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="點選營養圖示也可以增加 0.1 單位喔！"
+                    android:text="身體數據圖示"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -199,6 +236,40 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView6"
                     app:srcCompat="@drawable/icon_fruit" />
+
+            <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="32dp"
+                    android:layout_height="22dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="@+id/imageView11"
+                    app:layout_constraintTop_toTopOf="@+id/textView"
+                    app:srcCompat="@drawable/icon_weight" />
+
+            <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_width="32dp"
+                    android:layout_height="22dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                    app:layout_constraintEnd_toStartOf="@+id/textView9"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="@+id/textView9"
+                    app:srcCompat="@drawable/icon_body_fat" />
+
+            <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="32dp"
+                    android:layout_height="22dp"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                    app:layout_constraintEnd_toStartOf="@+id/textView11"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="@+id/textView11"
+                    app:srcCompat="@drawable/icon_muscle" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

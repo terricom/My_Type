@@ -78,6 +78,10 @@ class GoalSettingFragment: Fragment() {
 
         }
 
+        binding.profileGoalSettingReference.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
+        }
+
         return binding.root
     }
 

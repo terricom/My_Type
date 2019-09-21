@@ -13,7 +13,7 @@
     <color name="colorBananna">#E6FFD500</color>
     <color name="colorMyType">#7EBD97</color>
     <color name="colorButton">#D5D5D5</color>
-    <color name="translucent_80">#cc000000</color>
+    <color name="translucent_80">#CC1A1A1A</color>
     <color name="calendar_highlight">#209387</color>
     <color name="calendar_date_disable">#646464</color>
     <color name="calendar_date_enable_normal">#000000</color>

@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Pazzle
@@ -50,6 +52,10 @@ class ProfileFragment: Fragment() {
                 binding.recyclerPuzzle.layoutManager,
                 linearSnapHelper
             )
+        }
+
+        binding.profileGoalSettingReference.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
         }
 
         viewModel.pazzle.value?.let {pazzleList ->

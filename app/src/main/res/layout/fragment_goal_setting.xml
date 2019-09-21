@@ -278,10 +278,12 @@
             app:layout_constraintTop_toTopOf="@+id/button_protein" />
 
     <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/profile_goal_setting_reference"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:scaleType="fitStart"
             app:layout_constraintBottom_toBottomOf="@+id/profile_title_my_menu"
             app:layout_constraintStart_toEndOf="@+id/profile_title_my_menu"

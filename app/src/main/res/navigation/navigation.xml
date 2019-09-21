@@ -43,6 +43,12 @@
     <action android:id="@+id/navigate_to_message_dialog" app:destination="@id/messageDialog"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_goal_setting_dialog" app:destination="@id/goalSettingDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_shape_record_dialog" app:destination="@id/shapeRecordDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -51,7 +57,7 @@
               android:label="HarvestFragment"/>
     <fragment android:id="@+id/shaperecordFragment" android:name="com.terricom.mytype.shaperecord.ShapeRecordFragment"
               android:label="ShaperecordFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Shape"/></fragment>
-    <fragment android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
+    <dialog android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
               android:label="ReferenceDialog"/>
     <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"
               android:label="AchivementFragment"/>
@@ -70,4 +76,12 @@
         <argument android:name="messageTypeKey"
             app:argType="com.terricom.mytype.MessageDialog$MessageType"
             app:nullable="false"/></dialog>
+    <dialog
+            android:id="@+id/goalSettingDialog"
+            android:name="com.terricom.mytype.goalsetting.GoalSettingDialog"
+            android:label="GoalSettingDialog" />
+    <dialog
+            android:id="@+id/shapeRecordDialog"
+            android:name="com.terricom.mytype.shaperecord.ShapeRecordDialog"
+            android:label="ShapeRecordDialog" />
 </navigation>

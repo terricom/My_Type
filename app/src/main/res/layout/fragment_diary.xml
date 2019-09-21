@@ -222,7 +222,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/diary_hint_add_foodie"
                 app:layout_constraintEnd_toEndOf="@+id/recyclerView"
                 app:layout_constraintStart_toStartOf="@+id/recyclerView"
-                app:srcCompat="@drawable/icon_my_type" />
+                app:srcCompat="@drawable/icon_my_type_border" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

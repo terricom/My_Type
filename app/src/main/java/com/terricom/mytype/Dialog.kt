@@ -46,11 +46,11 @@ class MessageDialog : AppCompatDialogFragment() {
 //                message = getString(R.string.login_success)
 //            }
             MessageType.ADDED_SUCCESS -> {
-                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type)
+                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type_border)
                 message = getString(R.string.dialog_message_add_new_success)
             }
             MessageType.MESSAGE -> {
-                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type)
+                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type_border)
                 message = messageType.value.message
             }
 

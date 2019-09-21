@@ -130,6 +130,10 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             }
         })
 
+        binding.buttonShapeShowInfo.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToShapeRecordDialog())
+        }
+
         return binding.root
     }
 

@@ -13,13 +13,13 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/height_profile_header"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/colorMyType" />
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_profile_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/colorMyType" />
 
         <ImageView
                 android:id="@+id/image_profile_avatar"
@@ -325,7 +325,7 @@
                         tools:listitem="@layout/item_profile_goal" />
 
                 <ImageView
-                        android:id="@+id/imageView3"
+                        android:id="@+id/profile_goal_setting_reference"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="8dp"

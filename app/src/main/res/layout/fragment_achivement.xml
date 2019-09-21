@@ -552,7 +552,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/lineChart"
-                app:srcCompat="@drawable/icon_my_type" />
+                app:srcCompat="@drawable/icon_my_type_border" />
 
         <TextView
                 android:id="@+id/shaperecord_hint"
