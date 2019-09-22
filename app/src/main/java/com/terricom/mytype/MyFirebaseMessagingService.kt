@@ -90,7 +90,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService(){
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
 
-        if (userUid != null){
+        if (userUid!!.isNotEmpty()){
             val foodieDiary = users
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)

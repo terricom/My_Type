@@ -87,21 +87,6 @@ class BootUpReceiver : BroadcastReceiver() {
                 alarmIntent
             )
 
-            //建立通知發布鬧鐘
-//            val calendar: Calendar = Calendar.getInstance().apply {
-//                timeInMillis = System.currentTimeMillis()
-//                set(Calendar.HOUR_OF_DAY, 20)
-//                add(Calendar.MINUTE, 35)
-//
-//            }
-//            add_alarm(context, calendar)
-
-//            val cal = GregorianCalendar(TimeZone.getTimeZone("GMT+8:00")) //取得時間
-//
-//            cal.add(Calendar.MINUTE, 1)    //加一分鐘
-//            cal.set(Calendar.SECOND, 0)    //設定秒數為0
-//            add_alarm(context, cal)        //註冊鬧鐘
-
         }
 
 

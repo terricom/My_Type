@@ -69,11 +69,11 @@ class AlarmReceiver : BroadcastReceiver() {
 //        }
 //        add_alarm(context, calendar)
 
-        val cal = GregorianCalendar(TimeZone.getTimeZone("GMT+8:00")) //取得時間
-
-        cal.add(Calendar.MINUTE, 1)    //加一分鐘
-        cal.set(Calendar.SECOND, 0)    //設定秒數為0
-        add_alarm(context, cal)        //註冊鬧鐘
+//        val cal = GregorianCalendar(TimeZone.getTimeZone("GMT+8:00")) //取得時間
+//
+//        cal.add(Calendar.MINUTE, 1)    //加一分鐘
+//        cal.set(Calendar.SECOND, 0)    //設定秒數為0
+//        add_alarm(context, cal)        //註冊鬧鐘
 
 
     }
@@ -163,6 +163,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     .bigText(textContent))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setColor(App.applicationContext().resources.getColor(R.color.colorMyType))
 
 
         // Create the NotificationChannel, but only on API 26+ because

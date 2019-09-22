@@ -63,18 +63,18 @@
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorAccent" />
+                android:resource="@color/colorMyType" />
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel"
                 android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".MyFirebaseMessagingService"
-                android:enabled="true"
-                android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+<!--        <service android:name=".MyFirebaseMessagingService"-->
+<!--                android:enabled="true"-->
+<!--                android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
                 android:name="preloaded_fonts"

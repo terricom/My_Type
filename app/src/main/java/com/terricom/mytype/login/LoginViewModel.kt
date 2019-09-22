@@ -2,6 +2,7 @@ package com.terricom.mytype.login
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +19,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.json.JSONException
 import java.io.IOException
+
+
 
 
 
@@ -56,6 +59,8 @@ class LoginViewModel: ViewModel() {
     var user_email = ""
     var user_picture = ""
 
+    private var mProfileTracker: ProfileTracker ?= null
+
 
     fun loginFB() {
         callbackManager = CallbackManager.Factory.create()
@@ -78,18 +83,20 @@ class LoginViewModel: ViewModel() {
                                 Logger.d( "Facebook name:$name")
                                 Logger.d( "Facebook email:$email")
 
-                                // 此時如果登入成功，就可以順便取得用戶大頭照
+                                Handler().postDelayed({
+                                    // 此時如果登入成功，就可以順便取得用戶大頭照
                                 val profile = Profile.getCurrentProfile()
-                                // 設定大頭照大小
-                                val userPhoto = profile.getProfilePictureUri(300, 300)
 
-                                UserManager.userToken = id.toString()
-                                UserManager.name = name
-                                UserManager.picture = userPhoto.toString()
-                                user_name = name
-                                user_email = email
-                                user_picture = userPhoto.toString()
-                                loginFacebook()
+                                var userPhoto = profile.getProfilePictureUri(300, 300)
+
+                                    UserManager.userToken = id.toString()
+                                    UserManager.name = name
+                                    UserManager.picture = userPhoto.toString()
+                                    user_name = name
+                                    user_email = email
+                                    user_picture = userPhoto.toString()
+                                },500)
+
 
                             }
                         } catch (e: IOException) {
@@ -99,10 +106,13 @@ class LoginViewModel: ViewModel() {
                         }
                     }
 
-                    val parameters = Bundle()
-                    parameters.putString("fields", "id,name,email")
-                    graphRequest.parameters = parameters
-                    graphRequest.executeAsync()
+                    Handler().postDelayed({
+                        val parameters = Bundle()
+                        parameters.putString("fields", "id,name,email")
+                        graphRequest.parameters = parameters
+                        graphRequest.executeAsync()
+                        loginFacebook()
+                    },600)
 
                 }
 
@@ -122,7 +132,7 @@ class LoginViewModel: ViewModel() {
         _loginFacebook.value = true
     }
     fun onLoginFacebookCompleted() {
-        _loginFacebook.value = null
+        _loginFacebook.value = false
     }
 
     val db = FirebaseFirestore.getInstance()

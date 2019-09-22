@@ -23,6 +23,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/size_my_type"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:padding="@dimen/elevation_all"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toTopOf="@+id/my_type"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/login_facebook_button"
                 android:backgroundTint="@color/blue_facebook"
                 android:fontFamily="@font/noto_sans"
@@ -61,15 +63,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/login_greet"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/my_type" />
+
+        <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_type"
+                app:srcCompat="@drawable/login_greet" />
+
+        <ImageView
+                android:id="@+id/imageView21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/logo_my_type"
+                app:layout_constraintStart_toStartOf="@+id/logo_my_type"
+                app:layout_constraintTop_toBottomOf="@+id/logo_my_type"
+                app:srcCompat="@drawable/login_my_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

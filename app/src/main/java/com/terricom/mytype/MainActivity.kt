@@ -24,12 +24,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.iid.FirebaseInstanceId
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
@@ -81,11 +79,7 @@ class MainActivity : BaseActivity(){
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_diary -> {
-                if (UserManager.userToken != ""){
-                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
-                }
-                else findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLoginFragment())
-
+                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_accumulation -> {
@@ -108,10 +102,7 @@ class MainActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setMessage()
-        Handler().postDelayed({
-            createNotificationChannel()
-        }, 5000)
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
@@ -179,19 +170,19 @@ class MainActivity : BaseActivity(){
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Logger.w( "Firebase getInstanceId failed ${task.exception}")
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result?.token
-
-                // Log and toast
-                Logger.d("Firebase token from firebase =$token")
-            })
+//        FirebaseInstanceId.getInstance().instanceId
+//            .addOnCompleteListener(OnCompleteListener { task ->
+//                if (!task.isSuccessful) {
+//                    Logger.w( "Firebase getInstanceId failed ${task.exception}")
+//                    return@OnCompleteListener
+//                }
+//
+//                // Get new Instance ID token
+//                val token = task.result?.token
+//
+//                // Log and toast
+//                Logger.d("Firebase token from firebase =$token")
+//            })
 
         alarmMgr = App.applicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(App.applicationContext(), AlarmReceiver::class.java).let { intent ->
@@ -223,6 +214,10 @@ class MainActivity : BaseActivity(){
             PackageManager.DONT_KILL_APP
         )
 
+        setMessage()
+        Handler().postDelayed({
+            createNotificationChannel()
+        }, 5000)
 
 
     }
@@ -251,16 +246,16 @@ class MainActivity : BaseActivity(){
                 hideBottomNavView()
                 hideToolbar()
                 hideFABView()
-                Handler().postDelayed({
-                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
-                    binding.fabShadow.visibility = View.GONE
-                    fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
-                    fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
-                    fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
-                    fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
-                    binding.fab.visibility = View.VISIBLE
-                    binding.bottomNavView.visibility = View.VISIBLE
-                },2000)
+//                Handler().postDelayed({
+//                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+//                    binding.fabShadow.visibility = View.GONE
+//                    fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
+//                    fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
+//                    fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
+//                    fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
+//                    binding.fab.visibility = View.VISIBLE
+//                    binding.bottomNavView.visibility = View.VISIBLE
+//                },2000)
             }
             if (it.value == App.instance?.getString(R.string.title_foodie) ||
                 it.value == App.instance?.getString(R.string.title_shape_record) ||
@@ -357,6 +352,7 @@ class MainActivity : BaseActivity(){
                     .bigText(textContent))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setColor(App.applicationContext().resources.getColor(R.color.colorMyType))
 
 
         // Create the NotificationChannel, but only on API 26+ because
@@ -388,7 +384,7 @@ class MainActivity : BaseActivity(){
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
 
-        if (userUid != null){
+        if (userUid!!.isNotEmpty()){
             val foodieDiary = users
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -469,9 +465,9 @@ class MainActivity : BaseActivity(){
                             val diffFruit = goalFruit.value?.minus(totalFruit.value!!.toFloat())
                             val diffCarbon = goalCarbon.value?.minus(totalCarbon.value!!.toFloat())
 
-                            textTitle = "好的開始是成功的一半"
+                            textTitle = "好的開始是成功的一半 距離今日目標"
                             textContent =
-                                "距離今日目標\n\uD83D\uDCA7飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
+                                "\uD83D\uDCA7飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
                                         "\uD83E\uDD51油脂還差 ${if (diffOil!! <= 0.0f) 0.0f else diffOil} 份\n " +
                                         "\uD83E\uDD66蔬菜還差 ${if (diffVegetable!! <= 0.0f) 0.0f else diffVegetable} 份  " +
                                         "\uD83C\uDF73蛋白質還差 ${if (diffProtein!! <= 0.0f) 0.0f else diffProtein} 份\n" +

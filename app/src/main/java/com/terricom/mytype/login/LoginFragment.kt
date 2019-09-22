@@ -2,7 +2,6 @@ package com.terricom.mytype.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,28 +38,36 @@ class LoginFragment: Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        if (UserManager.userToken!!.isNotEmpty()){
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+        } else {
+
         binding.buttonLoginFacebook.setOnClickListener {
+
             viewModel.loginFB()
-            Log.i("getUserProfile", UserManager.userToken)
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
         }
 
 
 
         viewModel.loginFacebook.observe(this, Observer {
-            it?.let {
-                handleFacebookAccessToken(viewModel.accessToken as AccessToken)
-                LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
+            if (it){
+//                    LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
+                    handleFacebookAccessToken(viewModel.accessToken as AccessToken)
+//                LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
+//                if (it){
+                    Logger.i("UserManager.userToken = ${UserManager.userToken}")
+
+
                 viewModel.onLoginFacebookCompleted()
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-//                (activity as MainActivity).toolbar.visibility = View.VISIBLE
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
             }
         })
 
         auth = FirebaseAuth.getInstance()
+        }
 
         return binding.root
     }
@@ -76,13 +83,19 @@ class LoginFragment: Fragment() {
                     Logger.d( "signInWithCredential:success")
                     var user = auth.currentUser
                     viewModel.checkUser(user!!.uid)
+                    Logger.i("UserManager.userToken onActivityResult=${UserManager.userToken}")
+                    if (UserManager.userToken!!.isNotEmpty()){
+                        findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                        (activity as MainActivity).fab.visibility = View.VISIBLE
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Logger.w("signInWithCredential:failure ${task.exception}")
                     Toast.makeText(
                         App.applicationContext(), "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-//                    updateUI(null)
                 }
 
                 // ...
@@ -91,6 +104,8 @@ class LoginFragment: Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         viewModel.callbackManager?.onActivityResult(requestCode, resultCode, data)
+
+
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -99,6 +114,7 @@ class LoginFragment: Fragment() {
         (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
         (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
+        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
         (activity as MainActivity).isFABOpen = false
 
     }
