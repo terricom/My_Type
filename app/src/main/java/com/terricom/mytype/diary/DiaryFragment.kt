@@ -69,6 +69,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
         viewModel.fireShape.observe(this, Observer {
+
             hasFireShape = true
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()

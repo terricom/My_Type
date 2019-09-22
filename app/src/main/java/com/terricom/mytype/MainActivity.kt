@@ -5,10 +5,8 @@ import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -205,19 +203,19 @@ class MainActivity : BaseActivity(){
             alarmIntent
         )
 
-        //開機執行
-        val receiver = ComponentName(App.applicationContext(), BootUpReceiver::class.java)
-        val pm = App.applicationContext().packageManager
-        pm.setComponentEnabledSetting(
-            receiver,
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP
-        )
+//        //開機執行
+//        val receiver = ComponentName(App.applicationContext(), BootUpReceiver::class.java)
+//        val pm = App.applicationContext().packageManager
+//        pm.setComponentEnabledSetting(
+//            receiver,
+//            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//            PackageManager.DONT_KILL_APP
+//        )
 
-        setMessage()
-        Handler().postDelayed({
-            createNotificationChannel()
-        }, 5000)
+//        setMessage()
+//        Handler().postDelayed({
+//            createNotificationChannel()
+//        }, 5000)
 
 
     }

@@ -68,7 +68,14 @@ class ProfileFragment: Fragment() {
 
         viewModel.goal.observe(this, Observer {
             if (it.isNotEmpty()){
-                binding.recyclerGoal.adapter = GoalAdapter(viewModel)
+                binding.recyclerGoal.adapter = GoalAdapter(viewModel, GoalAdapter.OnClickListener{
+
+                    if (viewModel.goalExpandClicked.value == true){
+                        viewModel.goalCLose()
+                    } else if (viewModel.goalExpandClicked.value == false){
+                        viewModel.goalExpand()
+                    }
+                })
                 (binding.recyclerGoal.adapter as GoalAdapter).submitList(it)
             }
         })

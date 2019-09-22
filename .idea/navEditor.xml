@@ -171,6 +171,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="navigate_to_shape_record_dialog">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="navigate_to_shape_record_fragment">
                     <value>
                       <LayoutPositions />

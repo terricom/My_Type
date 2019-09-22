@@ -152,21 +152,29 @@ class LoginViewModel: ViewModel() {
         user.get()
             .addOnSuccessListener { result->
                 for (doc in result){
+                    //老用戶登入
                     if (doc.id == uid ){
                         var pref: SharedPreferences? = null
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
+
+                    //新用戶和其他老用戶
                     }else{
                         var pref: SharedPreferences? = null
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
 
-                        newOne = uid
+                        if (doc["user_name"] != null){
+
+                        }else if (doc["user_name"] == null){
+                            newOne = uid
+                            user.document(newOne).set(userData)
+                        }
                     }
                 }
-                user.document(newOne).set(userData)
+
             }
 
 

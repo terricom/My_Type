@@ -16,7 +16,12 @@ import com.terricom.mytype.data.Goal
 import com.terricom.mytype.databinding.ItemProfileGoalBinding
 
 
-class GoalAdapter(val viewModel: ProfileViewModel) : ListAdapter<Goal, GoalAdapter.GoalViewHolder>(DiffCallback) {
+class GoalAdapter(val viewModel: ProfileViewModel , private val onClickListener: OnClickListener) :
+    ListAdapter<Goal, GoalAdapter.GoalViewHolder>(DiffCallback) {
+
+    class OnClickListener(val clickListener: (goal : Goal) -> Unit) {
+        fun onClick(goal: Goal) = clickListener(goal)
+    }
 
     private var originalHeight = 0
     class GoalViewHolder(private var binding: ItemProfileGoalBinding, val viewModel: ProfileViewModel):
@@ -25,16 +30,13 @@ class GoalAdapter(val viewModel: ProfileViewModel) : ListAdapter<Goal, GoalAdapt
                 binding.lifecycleOwner = this
                 binding.goal = goal
                 binding.viewModel = viewModel
-                binding.buttonExpandArrow.setOnClickListener {
-                    if (viewModel.goalExpandClicked.value == true){
-                        viewModel.goalCLose()
-                    } else if (viewModel.goalExpandClicked.value == false){
-                        viewModel.goalExpand()
-                    }
-                }
-            binding.buttonSaveCalendar.setOnClickListener {
-                viewModel.goalExpand()
-            }
+//                binding.buttonExpandArrow.setOnClickListener {
+//                    if (viewModel.goalExpandClicked.value == true){
+//                        viewModel.goalCLose()
+//                    } else if (viewModel.goalExpandClicked.value == false){
+//                        viewModel.goalExpand()
+//                    }
+//                }
 
                 viewModel.goalExpandClicked.observe(this, Observer {
                     Logger.i("viewModel.goalExpandClicked.observe = $it")
@@ -153,6 +155,13 @@ class GoalAdapter(val viewModel: ProfileViewModel) : ListAdapter<Goal, GoalAdapt
 
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val product = getItem(position)
+
+        product.let {
+            holder.bind(product)
+            holder.itemView.setOnClickListener{
+                onClickListener.onClick(product)
+            }
+        }
     }
 }

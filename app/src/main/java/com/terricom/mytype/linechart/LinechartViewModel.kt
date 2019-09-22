@@ -231,7 +231,7 @@ class LinechartViewModel: ViewModel() {
                             datelist.add(sdfM.format(document.toObject(Foodie::class.java).timestamp))
                         }
                     }
-                    val cleanList = datelist.distinct()
+                    val cleanList = datelist.distinct().dropLastWhile { datelist.size == 8 }
                     val sleepList = mutableListOf<Float>()
                     val dateListClean = mutableListOf<String>()
 
@@ -282,14 +282,6 @@ class LinechartViewModel: ViewModel() {
                             carbonD.sum()
                         ))
 
-//                        for (i in 0 until itemSleep.size){
-//                        if (dateListSleep.contains(eachDay)){
-//                            sleepList.add(itemSleep[i].sleepHr ?: 0f)
-//                        } else if (sdfM.format(itemSleep[i].timestamp) != eachDay){
-//                            sleepList.add(0f)
-//                        }
-//                        }
-
                     }
                     setFoodieSum(foodieSum)
                     if (waterList.size > 0){
@@ -332,7 +324,6 @@ class LinechartViewModel: ViewModel() {
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorProtein), proteinList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorFruit), fruitList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), carbonList.toFloatArray()))
-//                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorNight), sleepList.toFloatArray()))
 
                     setListDates(chartList.toCollection(ArrayList()))
                     Logger.i("chartList.size =${chartList.size}")
