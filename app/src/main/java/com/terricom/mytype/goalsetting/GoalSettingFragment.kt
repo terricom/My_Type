@@ -33,9 +33,34 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         savedInstanceState: Bundle?
     ): View? {
 
+        val goal = GoalSettingFragmentArgs.fromBundle(arguments!!).selectedProperty
+
         binding = FragmentGoalSettingBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        binding.goal = goal
+
+        if (goal.deadline != null){
+            viewModel.updateGoal(goal)
+            binding.shapeRecordTitle.text = "修改目標"
+
+            viewModel.setDate(goal.deadline)
+            viewModel.water.value = goal.water
+            viewModel.fruit.value = goal.fruit
+            viewModel.protein.value = goal.protein
+            viewModel.vegetable.value = goal.vegetable
+            viewModel.oil.value = goal.oil
+            viewModel.carbon.value = goal.carbon
+            viewModel.weight.value = goal.weight
+            viewModel.bodyFat.value = goal.bodyFat
+            viewModel.muscle.value = goal.muscle
+            viewModel.cheerUp.value = goal.cheerUp
+
+            binding.textGoalSave.text = "確認修改"
+
+        }else {
+
+        }
 
         binding.buttonGoalSettingSave.setOnClickListener{
             binding.smartCustomCalendar.selectDateOut?.let {

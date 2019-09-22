@@ -58,6 +58,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+                android:id="@+id/button_login_google"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/login_facebook_button"
+                android:backgroundTint="@color/colorWhite"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/login_google"
+                android:textColor="@color/colorMyType"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/button_login_facebook"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
                 android:id="@+id/login_greet"
                 android:layout_width="wrap_content"

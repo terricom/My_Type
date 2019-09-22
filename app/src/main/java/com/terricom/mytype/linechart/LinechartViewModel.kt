@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class LinechartViewModel: ViewModel() {
 
     val userUid = UserManager.uid
@@ -318,7 +319,7 @@ class LinechartViewModel: ViewModel() {
                     fruitListBack(fruitList.toFloatArray())
                     carbonListBack(carbonList.toFloatArray())
 
-                    chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorWater), waterList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext().getColor(com.terricom.mytype.R.color.colorWater), waterList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorOil), oilList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), vegetableList.toFloatArray()))
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorProtein), proteinList.toFloatArray()))
@@ -342,21 +343,22 @@ class LinechartViewModel: ViewModel() {
             val goal = users
                 .document(userUid)
                 .collection("Goal")
-                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
 
             goal
                 .get()
                 .addOnSuccessListener {
                     val items = mutableListOf<Goal>()
                     if (it.isEmpty){
-
+                        Logger.i("Goal Document is empty")
                     }else {
                         for (document in it) {
                             items.add(document.toObject(Goal::class.java))
                             items[items.size-1].docId = document.id
                         }
+                        Logger.i("items in LinechartViewModel = $items")
                         if (items.size > 0 ){
                         goalWater.value = "%.1f".format(items[0].water)
                         goalCarbon.value = "%.1f".format(items[0].carbon)
@@ -369,4 +371,5 @@ class LinechartViewModel: ViewModel() {
                 }
         }
     }
+
 }

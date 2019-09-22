@@ -30,13 +30,13 @@ class GoalAdapter(val viewModel: ProfileViewModel , private val onClickListener:
                 binding.lifecycleOwner = this
                 binding.goal = goal
                 binding.viewModel = viewModel
-//                binding.buttonExpandArrow.setOnClickListener {
-//                    if (viewModel.goalExpandClicked.value == true){
-//                        viewModel.goalCLose()
-//                    } else if (viewModel.goalExpandClicked.value == false){
-//                        viewModel.goalExpand()
-//                    }
-//                }
+                binding.buttonExpandArrow.setOnClickListener {
+                    if (viewModel.goalExpandClicked.value == true){
+                        viewModel.goalCLose()
+                    } else if (viewModel.goalExpandClicked.value == false){
+                        viewModel.goalExpand()
+                    }
+                }
 
                 viewModel.goalExpandClicked.observe(this, Observer {
                     Logger.i("viewModel.goalExpandClicked.observe = $it")

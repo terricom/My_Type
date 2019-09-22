@@ -167,6 +167,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             binding.lifecycleOwner = this
             binding.numberTdee.text = viewModel.fireShape.value?.tdee?.toInt().toString()
             binding.numberBodyAge.text = viewModel.fireShape.value?.bodyAge?.toInt().toString()
+            binding.imageView4.setOnClickListener {
+                findNavController(it).navigate(NavigationDirections.navigateToShapeRecordDialog())
+            }
             binding.viewModel = viewModel
             binding.executePendingBindings()
 

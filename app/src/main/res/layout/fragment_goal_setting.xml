@@ -6,6 +6,9 @@
         <variable
                 name="viewModel"
                 type="com.terricom.mytype.goalsetting.GoalSettingViewModel" />
+        <variable
+                name="goal"
+                type="com.terricom.mytype.data.Goal" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical" android:layout_width="match_parent"

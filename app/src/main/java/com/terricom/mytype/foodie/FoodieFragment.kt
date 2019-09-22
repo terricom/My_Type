@@ -40,6 +40,8 @@ import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
+import java.sql.Date
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 
@@ -209,8 +211,6 @@ class FoodieFragment: Fragment() {
             (activity as MainActivity).closeFABMenu()
         }
 
-
-
         class MyDragListener : View.OnDragListener {
 
             override fun onDrag(v: View, event: DragEvent): Boolean {
@@ -347,8 +347,19 @@ class FoodieFragment: Fragment() {
         mPhone = DisplayMetrics()
         getWindowManager(App.applicationContext()).defaultDisplay.getMetrics(mPhone)
 
+        binding.editDate.addTextChangedListener(DateMask())
 
-        binding.buttonFoodieSave.setOnClickListener {
+            binding.buttonFoodieSave.setOnClickListener {
+            Logger.i("timestamp from foodie${binding.editDate.text.toString().replace("/","-")+" "+binding.editTime.text.toString()+":00.000000000"}")
+            if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
+                viewModel.setDate(java.util.Date())
+            }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
+                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString().replace("/","-")+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
+            }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
+            }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString().replace("/","-")+" "+binding.editTime.text.toString()+":00.000000000").time))
+            }
 
             if (foodie.docId != ""){
                 viewModel.adjustFoodie()

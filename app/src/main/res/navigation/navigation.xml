@@ -68,7 +68,7 @@
     <fragment
             android:id="@+id/goalSettingFragment"
             android:name="com.terricom.mytype.goalsetting.GoalSettingFragment"
-            android:label="GoalSettingFragment" />
+            android:label="GoalSettingFragment" ><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Goal"/></fragment>
     <dialog
             android:id="@+id/messageDialog"
             android:name="com.terricom.mytype.MessageDialog"

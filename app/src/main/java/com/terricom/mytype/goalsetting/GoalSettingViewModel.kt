@@ -4,6 +4,7 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.Goal
@@ -34,6 +35,15 @@ class GoalSettingViewModel: ViewModel() {
     fun addGoal2FirebaseComplete(){
         _addGoal.value = null
     }
+
+    val _updateGoal = MutableLiveData<Goal>()
+    val updateGoal : LiveData<Goal>
+        get() = _updateGoal
+
+    fun updateGoal(goal: Goal){
+        _updateGoal.value = goal
+    }
+
 
     val cheerUp = MutableLiveData<String>()
     val water =  MutableLiveData<Float>()
@@ -72,7 +82,7 @@ class GoalSettingViewModel: ViewModel() {
 
         //發文功能
         val goalContent = hashMapOf(
-            "timestamp" to Timestamp.valueOf("${sdfDetail.format(date.value!!.time)}.000000000"),
+            "timestamp" to FieldValue.serverTimestamp(),
             "deadline" to Timestamp.valueOf("${sdf.format(date.value)} 12:00:00.000000000"),
             "water" to water.value,
             "oil" to oil.value,

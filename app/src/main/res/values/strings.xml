@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">種天菜</string>
-
+    <string name="login_google">Google 登入</string>
     <string name="login_facebook">Facebook 登入</string>
     <string name="setting_dream_board">你的夢想版是空的 \n 快上傳你的夢想吧！</string>
     <string name="upload_dream_board">上傳夢想版</string>

@@ -144,7 +144,9 @@ class LoginViewModel: ViewModel() {
         val userData = hashMapOf(
             "user_name" to user_name,
             "user_picture" to user_picture,
-            "user_email" to user_email
+            "user_email" to user_email,
+            "foodlist" to listOf<String>(),
+            "nutritionlist" to listOf<String>()
         )
 
         var newOne = ""
@@ -159,25 +161,23 @@ class LoginViewModel: ViewModel() {
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
 
-                    //新用戶和其他老用戶
+                    //其他老用戶
                     }else{
                         var pref: SharedPreferences? = null
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
+                        newOne = uid
 
-                        if (doc["user_name"] != null){
-
-                        }else if (doc["user_name"] == null){
-                            newOne = uid
-                            user.document(newOne).set(userData)
-                        }
                     }
+                    //全新用戶
+                    user.document(newOne).set(userData)
                 }
 
             }
 
 
     }
+
 
 }

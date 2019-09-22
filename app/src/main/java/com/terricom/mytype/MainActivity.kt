@@ -140,12 +140,16 @@ class MainActivity : BaseActivity(){
 
         }
         binding.fab4.setOnClickListener {
-            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment(
+                Goal()
+            ))
             binding.fabShadow.visibility = View.GONE
 
         }
         binding.fabLayout4.setOnClickListener {
-            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment())
+            findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment(
+                Goal()
+            ))
             binding.fabShadow.visibility = View.GONE
 
         }
@@ -216,7 +220,6 @@ class MainActivity : BaseActivity(){
 //        Handler().postDelayed({
 //            createNotificationChannel()
 //        }, 5000)
-
 
     }
 

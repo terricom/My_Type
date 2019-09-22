@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_linechart.*
@@ -120,6 +121,8 @@ class LinechartFragment: Fragment() {
                 (binding.recyclerFoodieSum.adapter as FoodieSumAdapter).submitList(it)
             }
         })
+
+        Logger.i("viewModel.goalWater.value = ${viewModel.goalWater.value}")
 
 
         viewModel.recordDate.observe(this, androidx.lifecycle.Observer {
