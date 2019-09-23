@@ -24,7 +24,7 @@ class LinechartViewModel: ViewModel() {
     val userUid = UserManager.uid
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val sdfM = SimpleDateFormat("M/d")
+    val sdfM = SimpleDateFormat("MM-dd")
     val currentDate = sdf.format(Date())
 
     private val _date = MutableLiveData<String>()
@@ -50,7 +50,7 @@ class LinechartViewModel: ViewModel() {
 
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
-        _dateM.value = "${sdfM.format(date.time.minus(518400000L))}-${sdfM.format(date)}"
+        _dateM.value = "${sdfM.format(date.time.minus(518400000L))} ~ ${sdfM.format(date)}"
         _recordDate.value = date
         Logger.i("viewModel.date.observe = ${dateM.value}")
 

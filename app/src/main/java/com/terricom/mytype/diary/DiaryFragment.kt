@@ -64,21 +64,36 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
 
         viewModel.fireSleep.observe(this, Observer {
-            hasFireSleep = true
-            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
-            (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-        })
-        viewModel.fireShape.observe(this, Observer {
-
-            hasFireShape = true
-            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
-            (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-        })
-        viewModel.fireFoodie.observe(this, Observer {
-            if (it.size > 0 || hasFireShape || hasFireSleep){
-                Logger.i("viewModel.fireFoodie.observe = $it")
+            Logger.i("viewModel.fireSleep.observe = $it")
+            if (it != null){
+                hasFireSleep = true
                 binding.diaryHintAddFoodie.visibility = View.GONE
                 binding.iconMyType.visibility = View.GONE
+                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+            }
+
+        })
+        viewModel.fireShape.observe(this, Observer {
+            Logger.i("viewModel.fireShape.observe =$it")
+            if (it != null){
+                hasFireShape = true
+                binding.diaryHintAddFoodie.visibility = View.GONE
+                binding.iconMyType.visibility = View.GONE
+                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+            }
+
+        })
+        viewModel.fireFoodie.observe(this, Observer {
+            if (!it.isNullOrEmpty() || hasFireSleep || hasFireShape){
+                Logger.i("viewModel.fireFoodie.observe = $it")
+                Logger.i("hasFireSleep = $hasFireSleep hasFireShape = $hasFireShape")
+                binding.diaryHintAddFoodie.visibility = View.GONE
+                binding.iconMyType.visibility = View.GONE
+            } else if (it.isNullOrEmpty() || !hasFireSleep || !hasFireShape){
+                binding.diaryHintAddFoodie.visibility = View.VISIBLE
+                binding.iconMyType.visibility = View.VISIBLE
             }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
@@ -98,9 +113,12 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.visibility = View.GONE
                     viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?:Date())
-                    if (viewModel.fireFoodie.value!!.size <= 0){
+                    if (viewModel.fireFoodie.value!!.size == 0 || !hasFireShape || !hasFireSleep ){
                         binding.diaryHintAddFoodie.visibility = View.VISIBLE
                         binding.iconMyType.visibility = View.VISIBLE
+                    } else if (viewModel.fireFoodie.value!!.size == 0 || hasFireSleep || hasFireShape){
+                        binding.diaryHintAddFoodie.visibility = View.GONE
+                        binding.iconMyType.visibility = View.GONE
                     }
                     viewModel.calendarClickedAgain()
                 }

@@ -22,7 +22,7 @@ class AchievementViewModel: ViewModel() {
 
     val userUid = UserManager.uid
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val sdfM = SimpleDateFormat("M/d")
+    val sdfM = SimpleDateFormat("MM-dd")
 
     val currentCalendar = Calendar.getInstance()
 
@@ -56,7 +56,7 @@ class AchievementViewModel: ViewModel() {
 
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
-        _dateM.value = SimpleDateFormat("yyyy-M").format(date)
+        _dateM.value = SimpleDateFormat("yyyy-MM").format(date)
         _recordDate.value = date
         Logger.i("viewModel.date.observe = ${dateM.value}")
 

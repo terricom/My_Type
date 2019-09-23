@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.data.Pazzle
+import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.databinding.ItemProfileDreamBoardBinding
 
 class PazzleAdapter(val viewModel: ProfileViewModel
@@ -17,11 +17,11 @@ class PazzleAdapter(val viewModel: ProfileViewModel
 
     private lateinit var context: Context
     // the data of adapter
-    private var pazzles: List<Pazzle>? = null
+    private var puzzles: List<Puzzle>? = null
 
 
-    fun submitPazzles(pazzles: List<Pazzle>) {
-        this.pazzles = pazzles
+    fun submitPazzles(puzzles: List<Puzzle>) {
+        this.puzzles = puzzles
         notifyDataSetChanged()
     }
 
@@ -30,39 +30,39 @@ class PazzleAdapter(val viewModel: ProfileViewModel
     class PazzleViewHolder(private var binding: ItemProfileDreamBoardBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(context: Context, pazzle: Pazzle) {
-            binding.pazzle = pazzle
-            pazzle?.let {
+        fun bind(context: Context, puzzle: Puzzle) {
+            binding.puzzle = puzzle
+            puzzle?.let {
                 binding.puzzle1.visibility =
-                    if (pazzle.position!!.contains(0)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(0)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle2.visibility =
-                    if (pazzle.position!!.contains(1)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(1)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle3.visibility =
-                    if (pazzle.position!!.contains(2)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(2)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle4.visibility =
-                    if (pazzle.position!!.contains(3)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(3)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle5.visibility =
-                    if (pazzle.position!!.contains(4)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(4)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle6.visibility =
-                    if (pazzle.position!!.contains(5)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(5)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle7.visibility =
-                    if (pazzle.position!!.contains(6)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(6)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle8.visibility =
-                    if (pazzle.position!!.contains(7)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(7)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle9.visibility =
-                    if (pazzle.position!!.contains(8)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(8)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle10.visibility =
-                    if (pazzle.position!!.contains(9)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(9)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle11.visibility =
-                    if (pazzle.position!!.contains(10)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(10)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle12.visibility =
-                    if (pazzle.position!!.contains(11)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(11)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle13.visibility =
-                    if (pazzle.position!!.contains(12)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(12)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle14.visibility =
-                    if (pazzle.position!!.contains(13)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(13)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle15.visibility =
-                    if (pazzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
             }
 //            val displayMetrics = DisplayMetrics()
 //            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -113,17 +113,17 @@ class PazzleAdapter(val viewModel: ProfileViewModel
 
     override fun onBindViewHolder(holder: PazzleViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
-            pazzles?.let {
+            puzzles?.let {
                 holder.bind(context, it[getRealPosition(position)])
             }
         }
 
 
     override fun getItemCount(): Int {
-        return pazzles?.let { Int.MAX_VALUE } ?: 0
+        return puzzles?.let { Int.MAX_VALUE } ?: 0
     }
 
-    private fun getRealPosition(position: Int): Int = pazzles?.let {
+    private fun getRealPosition(position: Int): Int = puzzles?.let {
         position % it.size
     } ?: 0
 

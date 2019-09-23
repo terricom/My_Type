@@ -244,14 +244,14 @@ class FoodieViewModel: ViewModel() {
                             .document(userUid).collection("Puzzle")
                             .orderBy("timestamp", Query.Direction.DESCENDING)
 
-                        val pazzleAll = mutableListOf<Pazzle>()
+                        val pazzleAll = mutableListOf<Puzzle>()
 
                         puzzle
                             .get()
                             .addOnSuccessListener {
                                 for (document in it){
                                     if (it.size() != 0){
-                                        pazzleAll.add(document.toObject(Pazzle::class.java))
+                                        pazzleAll.add(document.toObject(Puzzle::class.java))
                                         pazzleAll[pazzleAll.size-1].docId = document.id
                                     }
                                 }
@@ -263,9 +263,10 @@ class FoodieViewModel: ViewModel() {
                                     "timestamp" to FieldValue.serverTimestamp()
 
                                 )
+                                Logger.i("pazzleAll.size = ${pazzleAll.size} pazzle = $pazzleAll")
 
                                 if ( pazzleAll.size != 0 ){
-                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 120 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
+                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 105 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
                                         val addNewPazzle = pazzleAll[pazzleAll.lastIndex].position!!.toMutableList()
                                         val addOldPazzleTS = pazzleAll[pazzleAll.lastIndex].recordedDates!!.toMutableList()
                                         addNewPazzle.add((1..15).minus(addNewPazzle).random())
@@ -277,7 +278,7 @@ class FoodieViewModel: ViewModel() {
                                                 "timestamp" to FieldValue.serverTimestamp()
                                             )
                                         )
-                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 120 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
+                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 105 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
                                         user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                     }
                                 } else if ( pazzleAll.size == 0 ){

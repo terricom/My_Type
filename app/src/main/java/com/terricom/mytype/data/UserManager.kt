@@ -53,5 +53,14 @@ object UserManager {
             Log.i("UserManager.Uid", value)
         }
 
+    var mail : String? = null
+        get(){
+            return prefs?.getString("mail", "")
+        }
+        set(value){
+            field = prefs?.edit()?.putString("mail",value)?.apply().toString()
+            Log.i("UserManager.mail", value)
+        }
+
 
 }

@@ -241,7 +241,7 @@ class DiaryViewModel: ViewModel() {
         get() = _totalCarbon
 
     fun getTime(timestamp: Date):String{
-        val sdf = SimpleDateFormat("HH:mm a")
+        val sdf = SimpleDateFormat("a HH:mm")
             return sdf.format(java.sql.Date(timestamp.time).time)
     }
 

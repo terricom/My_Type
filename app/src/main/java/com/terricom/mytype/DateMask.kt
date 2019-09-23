@@ -39,14 +39,14 @@ class DateMask : TextWatcher {
             val month = digits.substring(0, 2)
             val day = digits.substring(2)
 
-            updatedText = String.format(Locale.US, "%s/%s", month, day)
+            updatedText = String.format(Locale.US, "%s-%s", month, day)
         } else {
             val year = digits.substring(0 ,4)
             val month = digits.substring(4,6)
             val day = digits.substring(6)
 
 
-            updatedText = String.format(Locale.US, "%s/%s/%s", year, month, day)
+            updatedText = String.format(Locale.US, "%s-%s-%s", year, month, day)
         }
     }
 

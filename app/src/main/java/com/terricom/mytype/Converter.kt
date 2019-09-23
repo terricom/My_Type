@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Converter {
-    private val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     //Without this annotation, the Kotlin compiler would generate the static method that is required in the layout

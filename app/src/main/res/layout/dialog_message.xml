@@ -16,7 +16,7 @@
                 android:id="@+id/layout_message"
                 android:layout_width="@dimen/size_message"
                 android:layout_height="@dimen/size_message"
-                android:background="@drawable/bg_message"
+                android:background="@drawable/calendar_date"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,6 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text='@{dialog.message ?? ""}'
-                    android:textColor="@color/colorWhite"
                     android:textSize="15sp"
                     android:visibility='@{dialog.message != null ? View.VISIBLE : View. GONE}'
                     app:layout_constraintEnd_toEndOf="parent"

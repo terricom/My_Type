@@ -3,13 +3,11 @@ package com.terricom.mytype
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.databinding.BindingMethod
-import androidx.databinding.BindingMethods
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.terricom.mytype.data.Pazzle
 import com.terricom.mytype.data.PlaceHolder
+import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.profile.PazzleAdapter
 
 
@@ -24,14 +22,14 @@ fun bindImage(imgView: ImageView, imgUrl: String) {
             .apply(
                 RequestOptions()
                     .placeholder(
-                        R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background))
+                        R.drawable.icon_placeholder)
+                    .error(R.drawable.icon_placeholder_error))
             .into(imgView)
     }
 }
 
-@BindingAdapter("pazzles")
-fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Pazzle>?) {
+@BindingAdapter("puzzles")
+fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Puzzle>?) {
     images?.let {
         recyclerView.adapter?.apply {
             when (this) {

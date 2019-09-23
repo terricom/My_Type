@@ -192,6 +192,10 @@ class FoodieFragment: Fragment() {
             selectImage()
         }
 
+        binding.buttonShapeShowInfo.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToReferenceDialog())
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
@@ -350,15 +354,15 @@ class FoodieFragment: Fragment() {
         binding.editDate.addTextChangedListener(DateMask())
 
             binding.buttonFoodieSave.setOnClickListener {
-            Logger.i("timestamp from foodie${binding.editDate.text.toString().replace("/","-")+" "+binding.editTime.text.toString()+":00.000000000"}")
+            Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
             if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
                 viewModel.setDate(java.util.Date())
             }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString().replace("/","-")+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
+                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
             }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
                 viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
             }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString().replace("/","-")+" "+binding.editTime.text.toString()+":00.000000000").time))
+                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
             }
 
             if (foodie.docId != ""){
@@ -554,14 +558,17 @@ class FoodieFragment: Fragment() {
 
     fun selectImage() {
 
-        val items = arrayOf<CharSequence>("Take Photo", "Choose from Library", "Cancel")
+        val items = arrayOf<CharSequence>(
+            App.applicationContext().resources.getText(R.string.foodie_add_photo)
+            , App.applicationContext().resources.getText(R.string.foodie_choose_from_gallery)
+            , App.applicationContext().resources.getText(R.string.foodie_cancel))
 
         val context = this.context
 
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Add Photo!")
+        builder.setTitle(App.applicationContext().resources.getText(R.string.foodie_add_photo_title))
         builder.setItems(items) { dialog, item ->
-            if (items[item] == "Cancel") {
+            if (items[item] == App.applicationContext().resources.getText(R.string.foodie_cancel)) {
                 dialog.dismiss()
             } else {
                 userChoosenTask = items[item].toString()
@@ -573,13 +580,13 @@ class FoodieFragment: Fragment() {
 
     private fun callCameraOrGallery() {
 
-        if (userChoosenTask.equals("Take Photo")) {
-            userChoosenTask = "Take Photo"
+        if (userChoosenTask!!.equals(App.applicationContext().resources.getText(R.string.foodie_add_photo))) {
+            userChoosenTask = App.applicationContext().resources.getString(R.string.foodie_add_photo)
 
             fromcamera()
 
-        } else if (userChoosenTask.equals("Choose from Library")) {
-            userChoosenTask = "Choose from Library"
+        } else if (userChoosenTask!!.equals(App.applicationContext().resources.getText(R.string.foodie_choose_from_gallery))) {
+            userChoosenTask = App.applicationContext().resources.getString(R.string.foodie_choose_from_gallery)
 
             showFileChooser()
 

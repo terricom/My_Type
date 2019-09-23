@@ -186,23 +186,6 @@
                 app:layout_constraintStart_toEndOf="@+id/button_fruit"
                 app:layout_constraintTop_toTopOf="@+id/button_water" />
 
-        <TextView
-                android:id="@+id/diary_hint_add_foodie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="180dp"
-                android:lineSpacingExtra="4sp"
-                android:text="@string/diary_hint_2_foodie"
-                android:textAlignment="viewStart"
-                android:textColor="@color/colorMyType"
-                android:textSize="@dimen/text_content_title"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/recyclerView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/diary_date" />
-
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
@@ -219,16 +202,37 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <TextView
+                android:id="@+id/diary_hint_add_foodie"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/icon_postit"
+                android:lineSpacingExtra="4sp"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="80dp"
+                android:text="@string/diary_hint_2_foodie"
+                android:textAlignment="viewStart"
+                android:textSize="@dimen/text_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_calendar" />
+
         <ImageView
                 android:id="@+id/icon_my_type"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="40dp"
                 android:elevation="@dimen/elevation_all"
+                android:rotation="340.0"
+                android:scaleType="fitStart"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/diary_hint_add_foodie"
-                app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-                app:layout_constraintStart_toStartOf="@+id/recyclerView"
+                app:layout_constraintBottom_toBottomOf="@+id/diary_hint_add_foodie"
+                app:layout_constraintEnd_toEndOf="@+id/diary_hint_add_foodie"
+                app:layout_constraintStart_toStartOf="@+id/diary_hint_add_foodie"
                 app:srcCompat="@drawable/icon_my_type_border" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

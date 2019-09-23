@@ -22,6 +22,7 @@
                 android:hint="@string/diary_add_nutrition"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="1dp"
+                android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textColorHint="@color/colorMyType"
                 android:textSize="@dimen/text_content"

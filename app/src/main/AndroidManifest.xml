@@ -17,9 +17,9 @@
     <application
             android:name=".App"
             android:allowBackup="true"
-            android:icon="@drawable/icon_green_background"
+            android:icon="@mipmap/ic_launcher_my_type"
             android:label="@string/app_name"
-            android:roundIcon="@drawable/icon_green_background"
+            android:roundIcon="@mipmap/ic_launcher_my_type_round"
             android:supportsRtl="true"
             android:usesCleartextTraffic="true"
             android:theme="@style/AppTheme">

@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Goal
-import com.terricom.mytype.data.Pazzle
+import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.data.UserManager
 import java.text.SimpleDateFormat
 
@@ -38,13 +38,13 @@ class ProfileViewModel: ViewModel() {
     val date = MutableLiveData<String>()
 //    val goal = MutableLiveData<String>()
 
-    val _pazzle = MutableLiveData<List<Pazzle>>()
-    val pazzle :LiveData<List<Pazzle>>
-        get() = _pazzle
+    val _puzzle = MutableLiveData<List<Puzzle>>()
+    val puzzle :LiveData<List<Puzzle>>
+        get() = _puzzle
 
-    fun setPazzle(pazzle: List<Pazzle>){
-        _pazzle.value = pazzle
-        Logger.i("pazzle = $pazzle")
+    fun setPazzle(puzzle: List<Puzzle>){
+        _puzzle.value = puzzle
+        Logger.i("puzzle = $puzzle")
     }
 
     val _goal = MutableLiveData<List<Goal>>()
@@ -73,6 +73,30 @@ class ProfileViewModel: ViewModel() {
 
     fun goalCLose(){
         _goalExpandClicked.value = false
+    }
+
+    val _getGoalOrNot = MutableLiveData<Boolean>()
+    val getGoalOrNot: LiveData<Boolean>
+     get() = _getGoalOrNot
+
+    fun getGoalNOt(){
+        _getGoalOrNot.value = false
+    }
+
+    fun getGoal(){
+        _getGoalOrNot.value = true
+    }
+
+    val _getPazzleOrNot = MutableLiveData<Boolean>()
+    val getPazzleOrNot: LiveData<Boolean>
+        get() = _getPazzleOrNot
+
+    fun getPazzleNot(){
+        _getPazzleOrNot.value = false
+    }
+
+    fun getPazzleSuccess(){
+        _getPazzleOrNot.value = true
     }
 
     private val _snapPosition = MutableLiveData<Int>()
@@ -113,15 +137,16 @@ class ProfileViewModel: ViewModel() {
             goal
                 .get()
                 .addOnSuccessListener {
-                    val items = mutableListOf<Pazzle>()
+                    val items = mutableListOf<Puzzle>()
                     if (it.isEmpty){
-
+                        getPazzleNot()
                     }else {
                         for (document in it) {
-                            items.add(document.toObject(Pazzle::class.java))
+                            items.add(document.toObject(Puzzle::class.java))
                             items[items.size-1].docId = document.id
                         }
                         setPazzle(items)
+                        getPazzleSuccess()
                     }
                 }
         }
@@ -151,7 +176,12 @@ class ProfileViewModel: ViewModel() {
                             items[items.size-1].docId = document.id
                         }
                         cheerUp.value = items[0].cheerUp
-                        fireGoalBack(items)
+                        if (items.size > 0){
+                            fireGoalBack(items)
+                            getGoal()
+                        }else if (it.isEmpty){
+                            getGoalNOt()
+                        }
                     }
                 }
         }

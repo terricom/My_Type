@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class Pazzle (
+data class Puzzle (
     val position: List<Int>?= null,
     val imgURL: String?= "",
     var docId: String ?= "",

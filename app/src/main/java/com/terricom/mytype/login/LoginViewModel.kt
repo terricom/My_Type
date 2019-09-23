@@ -13,6 +13,7 @@ import com.facebook.login.LoginResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
 import com.terricom.mytype.Logger
+import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -142,9 +143,9 @@ class LoginViewModel: ViewModel() {
 
         //發文功能
         val userData = hashMapOf(
-            "user_name" to user_name,
-            "user_picture" to user_picture,
-            "user_email" to user_email,
+            "user_name" to UserManager.name,
+            "user_picture" to UserManager.picture,
+            "user_email" to UserManager.mail,
             "foodlist" to listOf<String>(),
             "nutritionlist" to listOf<String>()
         )
@@ -153,6 +154,7 @@ class LoginViewModel: ViewModel() {
 
         user.get()
             .addOnSuccessListener { result->
+                val items = mutableListOf<UserMT>()
                 for (doc in result){
                     //老用戶登入
                     if (doc.id == uid ){
@@ -160,6 +162,7 @@ class LoginViewModel: ViewModel() {
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
+                        items.add(doc.toObject(UserMT::class.java))
 
                     //其他老用戶
                     }else{
@@ -170,9 +173,15 @@ class LoginViewModel: ViewModel() {
                         newOne = uid
 
                     }
-                    //全新用戶
+
+                }
+                //全新用戶
+                Logger.i("items UserMT = $items")
+                if (items.size == 1){
+                }else if (items.isEmpty()){
                     user.document(newOne).set(userData)
                 }
+
 
             }
 

@@ -62,7 +62,7 @@
     <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"
               android:label="AchivementFragment"/>
     <fragment android:id="@+id/dreamboardFragment" android:name="com.terricom.mytype.dreamboard.DreamboardFragment"
-            android:label="DreamboardFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Pazzle"/></fragment>
+            android:label="DreamboardFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Puzzle"/></fragment>
     <fragment android:id="@+id/sleepFragment" android:name="com.terricom.mytype.sleep.SleepFragment"
               android:label="SleepFragment"/>
     <fragment

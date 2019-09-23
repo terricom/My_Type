@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.terricom.mytype.*
 import com.terricom.mytype.data.UserManager
@@ -32,6 +33,7 @@ class LoginFragment: Fragment() {
         ViewModelProviders.of(this).get(LoginViewModel::class.java)}
     private lateinit var binding: FragmentLoginBinding
     private lateinit var auth: FirebaseAuth
+    private var currentUser : FirebaseUser ?= null
 
 
     override fun onStart() {
@@ -39,13 +41,15 @@ class LoginFragment: Fragment() {
 //        (activity as MainActivity).toolbar.visibility = View.GONE
         (activity as MainActivity).bottom_nav_view.visibility = View.GONE
         // Configure Google Sign In
-        val currentUser = auth.currentUser
+        currentUser = auth.currentUser
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        auth = FirebaseAuth.getInstance()
 
         if (UserManager.userToken!!.isNotEmpty()){
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
@@ -79,7 +83,6 @@ class LoginFragment: Fragment() {
         })
 
 
-        auth = FirebaseAuth.getInstance()
         }
 
         return binding.root
@@ -115,6 +118,7 @@ class LoginFragment: Fragment() {
             }
     }
 
+
     val RC_SIGN_IN: Int = 1
 
 
@@ -142,27 +146,14 @@ class LoginFragment: Fragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
-                UserManager.userToken = account.idToken
+
+                UserManager.userToken = account!!.idToken
                 UserManager.name = account.displayName
                 UserManager.picture = account.photoUrl.toString()
-                Logger.i("UserManager.UserToken =${UserManager.userToken} account.uid")
-                val user = FirebaseAuth.getInstance().currentUser
-                user?.let {
-                    // Name, email address, and profile photo Url
-                    val name = user.displayName
-                    val email = user.email
-                    val photoUrl = user.photoUrl
+                UserManager.mail = account.email
 
-                    // Check if user's email is verified
-                    val emailVerified = user.isEmailVerified
-
-                    // The user's ID, unique to the Firebase project. Do NOT use this value to
-                    // authenticate with your backend server, if you have one. Use
-                    // FirebaseUser.getToken() instead.
-                    val uid = user.uid
-                    viewModel.checkUser(uid)
-                }
+                firebaseAuthWithGoogle(account)
+                Logger.i("ServerAuthCode =${account.serverAuthCode} account.id =${account.id}")
                 if (UserManager.userToken!!.isNotEmpty()){
                     findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
@@ -190,6 +181,7 @@ class LoginFragment: Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Logger.d("signInWithCredential:success")
                     val user = auth.currentUser
+                    viewModel.checkUser(user!!.uid)
                 } else {
                     // If sign in fails, display a message to the user.
                     Logger.w("signInWithCredential:failure ${task.exception}")

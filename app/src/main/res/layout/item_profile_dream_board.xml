@@ -5,8 +5,8 @@
                 name="viewModel"
                 type="com.terricom.mytype.profile.ProfileViewModel" />
         <variable
-                name="pazzle"
-                type="com.terricom.mytype.data.Pazzle" />
+                name="puzzle"
+                type="com.terricom.mytype.data.Puzzle" />
     </data>
 
 
@@ -23,7 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{pazzle.imgURL}"
+                app:imageUrl="@{puzzle.imgURL}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -224,6 +224,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/pazzle_new_15" />
+
+        <ImageView
+                android:id="@+id/imageView22"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/pazzle_frame" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

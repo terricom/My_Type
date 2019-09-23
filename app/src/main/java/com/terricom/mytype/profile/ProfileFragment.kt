@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.terricom.mytype.Logger
+import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import com.terricom.mytype.data.Pazzle
+import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.data.PuzzleImg
 import com.terricom.mytype.databinding.FragmentProfileBinding
 
@@ -31,11 +33,11 @@ class ProfileFragment: Fragment() {
         binding = FragmentProfileBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner= this
-        val pazzleMock = Pazzle(
+        val pazzleMock = Puzzle(
             listOf(0,4,6,8),
             PuzzleImg.DRINKWATER.value
         )
-        val pazzleMock2 = Pazzle(
+        val pazzleMock2 = Puzzle(
             listOf(10,14,3),
             PuzzleImg.GOODOIL.value
         )
@@ -58,21 +60,54 @@ class ProfileFragment: Fragment() {
         binding.recyclerGoal.setHasFixedSize(true)
 
         binding.profileGoalSettingReference.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
+            if (viewModel.getGoalOrNot.value == true){
+                findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
+            }else if (viewModel.getGoalOrNot.value == false){
+                findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
+                    value.message = getString(R.string.profile_hint_add_goal)
+                }))
+            }
         }
 
-        viewModel.pazzle.value?.let {pazzleList ->
+        binding.profilePuzzleReference.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
+                value.message = getString(R.string.profile_puzzle_info)
+            }))
+        }
+
+        viewModel.puzzle.value?.let { pazzleList ->
             binding.recyclerPuzzle
                 .scrollToPosition(pazzleList.size * 100)
         }
 
         viewModel.goal.observe(this, Observer {
+            Logger.i("viewModel.goal.observe = $it")
             if (it.isNotEmpty()){
                 binding.recyclerGoal.adapter = GoalAdapter(viewModel, GoalAdapter.OnClickListener{
                     findNavController().navigate(NavigationDirections.navigateToGoalSettingFragment(it))
 
                 })
                 (binding.recyclerGoal.adapter as GoalAdapter).submitList(it)
+            }
+        })
+
+        viewModel.getPazzleOrNot.observe(this, Observer {
+            if (it){
+                binding.iconMyType.visibility = View.INVISIBLE
+                binding.profileHintAddGoal.visibility = View.INVISIBLE
+            } else if (!it){
+                binding.iconMyType.visibility = View.VISIBLE
+                binding.profileHintAddGoal.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.getGoalOrNot.observe(this, Observer {
+            if (it){
+                binding.iconMyType.visibility = View.INVISIBLE
+                binding.profileHintAddGoal.visibility = View.INVISIBLE
+            } else if (!it){
+                binding.iconMyType.visibility = View.VISIBLE
+                binding.profileHintAddGoal.visibility = View.VISIBLE
             }
         })
 

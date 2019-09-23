@@ -43,16 +43,17 @@
     <string name="profile_title_my_goal">我的目標</string>
     <string name="profile_button_logout">登出</string>
     <string name="profile_title_my_menu">我的菜單</string>
-    <string name="monday">Mon</string>
-    <string name="tuesday">Tue</string>
-    <string name="wednesday">Wed</string>
-    <string name="thursday">Thu</string>
-    <string name="friday">Fri</string>
-    <string name="saturday">Sat</string>
-    <string name="sunday">Sun</string>
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+    <string name="sunday">日</string>
     <string name="diary_add_nutrition">新增營養</string>
     <string name="foodie_green_upload_photo">Hi 今天吃得好嗎？\n有圖有真相，上傳照片瞧瞧吧！</string>
-    <string name="facebook_app_id">492524594814446</string> <string name="fb_login_protocol_scheme">fb492524594814446</string>
+    <string name="facebook_app_id">492524594814446</string>
+    <string name="fb_login_protocol_scheme">fb492524594814446</string>
     <string name="internet_not_connected">當前網路不穩 請重新連線</string>
     <string name="sleep_record_bed_time">就寢</string>
     <string name="sleep_record_wake_time">起床</string>
@@ -72,6 +73,7 @@
     <string name="default_notification_channel_id">MyType</string>
     <string name="dialog_message_add_new_success">新增成功</string>
     <string name="dialog_message_goal_setting_failure">還有目標尚未完成\n請先確認進行中的目標喔！</string>
+    <string name="profile_puzzle_info">新增七天的食記就能獲得一片拼圖\n想知道拼圖的內容是什麼嗎？\n一起來玩吧！</string>
     <string name="goal_setting_hint_add_cheer_up">把目標具體化會更容易實現喔！</string>
     <string name="shaperecord_add_record_hint">這週還沒有紀錄 趕快去新增吧！</string>
     <string name="foodie_mood_hint">紀錄下努力的心得，也歡迎告解：）</string>
@@ -90,6 +92,11 @@
     <string name="add_new_confirm">確認修改</string>
     <string name="profile_puzzle_first_congrat">恭喜你完成第一塊拼圖，健康生活的第一步就從解身體的渴開始</string>
     <string name="profile_puzzle_second_congrat">你知道酪梨含有滿滿的不飽和脂肪酸嗎？今天也來點好油脂吧！</string>
+    <string name="foodie_add_photo">拍照</string>
+    <string name="foodie_choose_from_gallery">選擇相片</string>
+    <string name="foodie_cancel">取消</string>
+    <string name="foodie_add_photo_title">新增照片</string>
+    <string name="profile_hint_add_goal">目前尚未新增目標\n可以點選下方新增按鈕新增每日的飲食目標和設定體態的目標喔！</string>
 
 
 </resources>
