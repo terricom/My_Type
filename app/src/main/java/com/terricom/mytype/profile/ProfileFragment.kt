@@ -62,7 +62,7 @@ class ProfileFragment: Fragment() {
         binding.profileGoalSettingReference.setOnClickListener {
             if (viewModel.getGoalOrNot.value == true){
                 findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
-            }else if (viewModel.getGoalOrNot.value == false){
+            }else if (viewModel.getGoalOrNot.value == false || viewModel.getGoalOrNot.value == null){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
                     value.message = getString(R.string.profile_hint_add_goal)
                 }))

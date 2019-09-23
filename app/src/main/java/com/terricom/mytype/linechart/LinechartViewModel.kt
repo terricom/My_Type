@@ -178,6 +178,12 @@ class LinechartViewModel: ViewModel() {
     val diffProtein = MutableLiveData<String>()
     val diffVegetable = MutableLiveData<String>()
 
+    val diffWaterNum = MutableLiveData<Float>()
+    val diffFruitNum = MutableLiveData<Float>()
+    val diffCarbonNum = MutableLiveData<Float>()
+    val diffOilNum = MutableLiveData<Float>()
+    val diffProteinNum = MutableLiveData<Float>()
+    val diffVegetableNum = MutableLiveData<Float>()
 
     val db = FirebaseFirestore.getInstance()
     val users: CollectionReference = db.collection("Users")
@@ -288,26 +294,38 @@ class LinechartViewModel: ViewModel() {
                     if (waterList.size > 0){
                         diffWater.value = "%.1f".format(waterList[waterList.lastIndex].minus(
                             (if (goalWater.value == "null" || goalWater.value.isNullOrEmpty())"0" else goalWater.value)!!.toFloat()))
+                        diffWaterNum.value = waterList[waterList.lastIndex].minus(
+                            (if (goalWater.value == "null" || goalWater.value.isNullOrEmpty())"0" else goalWater.value)!!.toFloat())
                     }
                     if (fruitList.size > 0){
                         diffFruit.value = "%.1f".format(fruitList[fruitList.lastIndex].minus(
                             (if (goalFruit.value == "null" || goalFruit.value.isNullOrEmpty())"0" else goalFruit.value)!!.toFloat()))
+                        diffFruitNum.value = fruitList[fruitList.lastIndex].minus(
+                            (if (goalFruit.value == "null" || goalFruit.value.isNullOrEmpty())"0" else goalFruit.value)!!.toFloat())
                     }
                     if (oilList.size > 0){
                         diffOil.value = "%.1f".format(oilList[oilList.lastIndex].minus(
                             (if (goalOil.value == "null" || goalOil.value.isNullOrEmpty())"0" else goalOil.value)!!.toFloat()))
+                        diffOilNum.value = oilList[oilList.lastIndex].minus(
+                            (if (goalOil.value == "null" || goalOil.value.isNullOrEmpty())"0" else goalOil.value)!!.toFloat())
                     }
                     if (proteinList.size > 0){
                         diffProtein.value = "%.1f".format(proteinList[proteinList.lastIndex].minus(
                             (if (goalProtein.value == "null" || goalProtein.value.isNullOrEmpty())"0" else goalProtein.value)!!.toFloat()))
+                        diffProteinNum.value = proteinList[proteinList.lastIndex].minus(
+                            (if (goalProtein.value == "null" || goalProtein.value.isNullOrEmpty())"0" else goalProtein.value)!!.toFloat())
                     }
                     if (vegetableList.size > 0){
                         diffVegetable.value = "%.1f".format(vegetableList[vegetableList.lastIndex].minus(
                             (if (goalVegetable.value == "null" || goalVegetable.value.isNullOrEmpty())"0" else goalVegetable.value)!!.toFloat()))
+                        diffVegetableNum.value = vegetableList[vegetableList.lastIndex].minus(
+                            (if (goalVegetable.value == "null" || goalVegetable.value.isNullOrEmpty())"0" else goalVegetable.value)!!.toFloat())
                     }
                     if (carbonList.size > 0){
                         diffCarbon.value = "%.1f".format(carbonList[carbonList.lastIndex].minus(
                             (if (goalCarbon.value == "null" || goalCarbon.value.isNullOrEmpty())"0" else goalCarbon.value)!!.toFloat()))
+                        diffCarbonNum.value = carbonList[carbonList.lastIndex].minus(
+                            (if (goalCarbon.value == "null" || goalCarbon.value.isNullOrEmpty())"0" else goalCarbon.value)!!.toFloat())
                     }
                     Logger.i("waterList =$waterList oilList = $oilList sleepList =$sleepList")
                     fireFoodieBack(items)
@@ -366,6 +384,13 @@ class LinechartViewModel: ViewModel() {
                         goalFruit.value = "%.1f".format(items[0].fruit)
                         goalProtein.value = "%.1f".format(items[0].protein)
                         goalVegetable.value = "%.1f".format(items[0].vegetable)
+                        } else if (items.size == 0){
+                            goalWater.value = "%.1f".format(0.0f)
+                            goalCarbon.value = "%.1f".format(0.0f)
+                            goalOil.value = "%.1f".format(0.0f)
+                            goalFruit.value = "%.1f".format(0.0f)
+                            goalProtein.value = "%.1f".format(0.0f)
+                            goalVegetable.value = "%.1f".format(0.0f)
                         }
                     }
                 }

@@ -36,7 +36,7 @@ class MessageDialog : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler().postDelayed({ this.dismiss() }, 2000)
+        Handler().postDelayed({ this.dismiss() }, 4000)
     }
 
     private fun init() {

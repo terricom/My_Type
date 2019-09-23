@@ -86,7 +86,7 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                     (activity as MainActivity).fab.visibility = View.VISIBLE
                     (activity as MainActivity).closeFABMenu()
-                },2005)
+                },4005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_goal_setting_failure) }

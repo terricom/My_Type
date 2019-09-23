@@ -578,7 +578,7 @@
                         android:lineSpacingExtra="4sp"
                         android:paddingHorizontal="24dp"
                         android:paddingTop="80dp"
-                        android:text="@string/profile_hint_add_goal"
+                        android:text="@string/profile_hint_add_goal_postit"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/text_content"
                         android:visibility="visible"

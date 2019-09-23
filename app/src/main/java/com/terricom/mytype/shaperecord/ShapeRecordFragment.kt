@@ -116,7 +116,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                     (activity as MainActivity).fab.visibility = View.VISIBLE
                     (activity as MainActivity).closeFABMenu()
-                },2005)
+                },4005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_shape_record_failure)}
@@ -125,7 +125,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                     (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_achievment
                     (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()},2005)
+                    (activity as MainActivity).closeFABMenu()},4005)
 
             }
         })

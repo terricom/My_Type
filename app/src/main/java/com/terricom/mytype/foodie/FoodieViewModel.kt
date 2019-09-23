@@ -179,10 +179,11 @@ class FoodieViewModel: ViewModel() {
                         user.document(doc.id).collection("Foodie").document().set(foodieContent)
                     }
                 }
+                updatePuzzle()
 
             }
 
-        updatePuzzle()
+
 
     }
 
@@ -215,11 +216,9 @@ class FoodieViewModel: ViewModel() {
                         user.document(doc.id).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
                     }
                 }
+                updatePuzzle()
 
             }
-
-        updatePuzzle()
-
 
     }
 
@@ -250,15 +249,15 @@ class FoodieViewModel: ViewModel() {
                             .get()
                             .addOnSuccessListener {
                                 for (document in it){
-                                    if (it.size() != 0){
+//                                    if (it.size() != 0){
                                         pazzleAll.add(document.toObject(Puzzle::class.java))
                                         pazzleAll[pazzleAll.size-1].docId = document.id
-                                    }
+//                                    }
                                 }
 
                                 val pazzleOld = hashMapOf(
-                                    "position" to listOf((1..15).random()),
-                                    "imgURL" to PuzzleImg.values()[if (pazzleAll.size -1==-1)0 else pazzleAll.size -1 ].value,
+                                    "position" to listOf((0..14).random()),
+                                    "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
                                     "recordedDates" to listOf(sdf.format(date.value)),
                                     "timestamp" to FieldValue.serverTimestamp()
 
@@ -278,7 +277,9 @@ class FoodieViewModel: ViewModel() {
                                                 "timestamp" to FieldValue.serverTimestamp()
                                             )
                                         )
-                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 105 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
+                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 105
+//                                        && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))
+                                    ){
                                         user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                     }
                                 } else if ( pazzleAll.size == 0 ){
@@ -308,6 +309,7 @@ class FoodieViewModel: ViewModel() {
     init {
         if (userUid != null){
             getFoodAndNuList()
+            updatePuzzle()
         }
         setDate(Date())
         unCheckedAddNewFood()

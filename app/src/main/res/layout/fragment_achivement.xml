@@ -6,6 +6,7 @@
         <variable
             name="viewModel"
             type="com.terricom.mytype.achivement.AchievementViewModel" />
+        <import type="android.graphics.Color"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,10 +103,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffWeight)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorPinky"
+                android:textColor='@{viewModel.diffWeightNum >= 0 ?Color.parseColor("#"+"E4B6C7") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_body_fat_goal"
@@ -157,7 +159,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffMuscle)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/blue_facebook"
+                android:textColor='@{viewModel.diffMuscleNum >= 0 ?Color.parseColor("#"+"3B5998") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -170,10 +172,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffBodyFat)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorButton"
+                android:textColor='@{viewModel.diffBodyFatNum >= 0 ?Color.parseColor("#"+"D5D5D5") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_muscle_goal"

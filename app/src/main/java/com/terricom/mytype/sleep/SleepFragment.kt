@@ -83,7 +83,7 @@ class SleepFragment: Fragment() {
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                     (activity as MainActivity).fab.visibility = View.VISIBLE
                     (activity as MainActivity).closeFABMenu()
-                },2000)
+                },4005)
 
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
@@ -95,7 +95,7 @@ class SleepFragment: Fragment() {
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                     (activity as MainActivity).fab.visibility = View.VISIBLE
                     (activity as MainActivity).closeFABMenu()
-                },2005)
+                },4005)
 
             }
         })

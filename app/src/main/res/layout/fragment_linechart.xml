@@ -5,6 +5,7 @@
         <variable
             name="viewModel"
             type="com.terricom.mytype.linechart.LinechartViewModel" />
+        <import type="android.graphics.Color"/>
 
     </data>
 
@@ -104,10 +105,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffWater)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorWater"
+                android:textColor='@{viewModel.diffWaterNum >= 0 ?Color.parseColor("#"+"05A5DB") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_fruit"
@@ -156,10 +158,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffVegetable)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorVegetable"
+                android:textColor='@{viewModel.diffVegetableNum >= 0 ? Color.parseColor("#"+"368047") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -172,10 +175,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffFruit)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorFruit"
+                android:textColor='@{viewModel.diffFruitNum >= 0 ?Color.parseColor("#"+"DC4C32") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_vegetable_goal"
@@ -257,10 +261,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffOil)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorOil"
+                android:textColor='@{viewModel.diffOilNum >= 0 ? Color.parseColor("#"+"A0B880") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/icon_oil_goal"
@@ -311,10 +316,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffCarbon)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorCarbon"
+                android:textColor='@{viewModel.diffCarbonNum >= 0 ? Color.parseColor("#"+"F59C4D") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -327,10 +333,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
+                android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffProtein)}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/colorProtein"
+                android:textColor='@{viewModel.diffProteinNum >= 0 ? Color.parseColor("#"+"F9D936") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_carbon"

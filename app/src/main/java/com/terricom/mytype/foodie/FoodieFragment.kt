@@ -353,7 +353,7 @@ class FoodieFragment: Fragment() {
 
         binding.editDate.addTextChangedListener(DateMask())
 
-            binding.buttonFoodieSave.setOnClickListener {
+        binding.buttonFoodieSave.setOnClickListener {
             Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
             if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
                 viewModel.setDate(java.util.Date())
@@ -381,7 +381,7 @@ class FoodieFragment: Fragment() {
                 (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                 (activity as MainActivity).fab.visibility = View.VISIBLE
                 (activity as MainActivity).closeFABMenu()
-            },2005)
+            },4005)
 
             
             if (isConnected()) {

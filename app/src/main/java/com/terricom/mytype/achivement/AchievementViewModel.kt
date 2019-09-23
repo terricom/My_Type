@@ -34,6 +34,10 @@ class AchievementViewModel: ViewModel() {
     val diffBodyFat = MutableLiveData<String>()
     val diffMuscle = MutableLiveData<String>()
 
+    val diffWeightNum = MutableLiveData<Float>()
+    val diffBodyFatNum = MutableLiveData<Float>()
+    val diffMuscleNum = MutableLiveData<Float>()
+
     private val _date = MutableLiveData<String>()
     val date: LiveData<String>
         get() = _date
@@ -192,14 +196,20 @@ class AchievementViewModel: ViewModel() {
                     if (weightList.size >0) {
                         diffWeight.value = "%.1f".format(weightList[weightList.lastIndex].minus(
                             (if (goalWeight.value == "null" || goalWeight.value.isNullOrEmpty())"0" else goalWeight.value)!!.toFloat()))
+                        diffWeightNum.value = weightList[weightList.lastIndex].minus(
+                            (if (goalWeight.value == "null" || goalWeight.value.isNullOrEmpty())"0" else goalWeight.value)!!.toFloat())
                     }
                     if (bodyFatList.size >0) {
                         diffBodyFat.value = "%.1f".format(bodyFatList[bodyFatList.lastIndex].minus(
                             (if (goalBodyFat.value == "null" || goalBodyFat.value.isNullOrEmpty())"0" else goalBodyFat.value)!!.toFloat()))
+                        diffBodyFatNum.value = bodyFatList[bodyFatList.lastIndex].minus(
+                            (if (goalBodyFat.value == "null" || goalBodyFat.value.isNullOrEmpty())"0" else goalBodyFat.value)!!.toFloat())
                     }
                     if (muscleList.size >0) {
                         diffMuscle.value = "%.1f".format(muscleList[muscleList.lastIndex].minus(
                             (if (goalMuscle.value == "null" || goalMuscle.value.isNullOrEmpty())"0" else goalMuscle.value)!!.toFloat()))
+                        diffMuscleNum.value = muscleList[muscleList.lastIndex].minus(
+                            (if (goalMuscle.value == "null" || goalMuscle.value.isNullOrEmpty())"0" else goalMuscle.value)!!.toFloat())
                     }
 
                     fireDateBack(ArrayList(cleanList))
