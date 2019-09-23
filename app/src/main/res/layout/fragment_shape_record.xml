@@ -31,22 +31,22 @@
                 app:srcCompat="@drawable/icon_weight" />
 
         <EditText
-            android:id="@+id/number_weight"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.weight)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_water"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_weight"
-            app:layout_constraintTop_toBottomOf="@+id/foodie_title_nutrition" />
+                android:id="@+id/number_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.weight)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_water"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_weight"
+                app:layout_constraintTop_toBottomOf="@+id/foodie_title_nutrition" />
 
         <ImageView
                 android:id="@+id/shaperecord_title_body_water"
@@ -66,22 +66,22 @@
                 app:srcCompat="@drawable/icon_body_water" />
 
         <EditText
-            android:id="@+id/number_body_water"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.bodyWater)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_water"
-            app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_fat"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_water"
-            app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_water" />
+                android:id="@+id/number_body_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.bodyWater)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_water"
+                app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_fat"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_water"
+                app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_water" />
 
         <ImageView
                 android:id="@+id/shaperecord_title_body_fat"
@@ -101,23 +101,23 @@
                 app:srcCompat="@drawable/icon_body_fat" />
 
         <EditText
-            android:id="@+id/number_body_fat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_fat"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
-            app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_fat" />
+                android:id="@+id/number_body_fat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.bodyFat)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_fat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
+                app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_fat" />
 
         <ImageView
             android:id="@+id/shaperecord_title_tdee"
@@ -138,22 +138,22 @@
             app:srcCompat="@drawable/icon_tdee" />
 
         <EditText
-            android:id="@+id/number_tdee"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.tdee)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintEnd_toEndOf="@+id/number_weight"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_tdee"
-            app:layout_constraintTop_toBottomOf="@+id/number_weight" />
+                android:id="@+id/number_tdee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.tdee)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintEnd_toEndOf="@+id/number_weight"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_tdee"
+                app:layout_constraintTop_toBottomOf="@+id/number_weight" />
 
         <ImageView
             android:id="@+id/shaperecord_title_muscle"
@@ -171,22 +171,22 @@
             app:srcCompat="@drawable/icon_muscle" />
 
         <EditText
-            android:id="@+id/number_muscle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.muscle)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_muscle"
-            app:layout_constraintEnd_toEndOf="@+id/number_body_water"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_water"
-            app:layout_constraintTop_toTopOf="@+id/shaperecord_title_muscle" />
+                android:id="@+id/number_muscle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.muscle)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_muscle"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_water"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_water"
+                app:layout_constraintTop_toTopOf="@+id/shaperecord_title_muscle" />
 
         <ImageView
             android:id="@+id/shaperecord_title_body_age"
@@ -205,23 +205,23 @@
             app:srcCompat="@drawable/icon_body_age" />
 
         <EditText
-            android:id="@+id/number_body_age"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/tag_right_corners"
-            android:hint="0.0"
-            android:padding="@dimen/elevation_all"
-            android:text="@={viewModel.floatToString(viewModel.bodyAge)}"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_age"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
-            app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_age" />
+                android:id="@+id/number_body_age"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/tag_right_corners"
+                android:hint="0.0"
+                android:padding="@dimen/elevation_all"
+                android:text="@={viewModel.floatToString(viewModel.bodyAge)}"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_age"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/shaperecord_title_body_fat"
+                app:layout_constraintTop_toTopOf="@+id/shaperecord_title_body_age" />
 
         <com.terricom.mytype.shaperecord.ShapeCalendarFragment
                 android:id="@+id/smartCustomCalendar"
