@@ -427,8 +427,8 @@
 
         <TextView
                 android:id="@+id/shaperecord_hint"
-                android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/icon_postit"

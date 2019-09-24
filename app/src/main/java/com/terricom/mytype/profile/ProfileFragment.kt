@@ -91,15 +91,15 @@ class ProfileFragment: Fragment() {
             }
         })
 
-        viewModel.getPazzleOrNot.observe(this, Observer {
-            if (it){
-                binding.iconMyType.visibility = View.INVISIBLE
-                binding.profileHintAddGoal.visibility = View.INVISIBLE
-            } else if (!it){
-                binding.iconMyType.visibility = View.VISIBLE
-                binding.profileHintAddGoal.visibility = View.VISIBLE
-            }
-        })
+//        viewModel.getPazzleOrNot.observe(this, Observer {
+//            if (it){
+//                binding.iconMyType.visibility = View.INVISIBLE
+//                binding.profileHintAddGoal.visibility = View.INVISIBLE
+//            } else if (!it){
+//                binding.iconMyType.visibility = View.VISIBLE
+//                binding.profileHintAddGoal.visibility = View.VISIBLE
+//            }
+//        })
 
         viewModel.getGoalOrNot.observe(this, Observer {
             if (it){

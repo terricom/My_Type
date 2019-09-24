@@ -92,19 +92,30 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         }
 
         binding.buttonShaperecordSave.setOnClickListener {
-            if (isConnected()) {
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
+            it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+            if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
+                    .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
+                    .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
+                if (isConnected()) {
+                    Logger.i("NetworkConnection Network Connected.")
+                    //執行下載任務
+                }else{
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                    //告訴使用者網路無法使用
+                }
+                binding.smartCustomCalendar.selectDateOut?.let {
+                    Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
+                    viewModel.setDate(it)
+                }
+                viewModel.addShape()
+                viewModel.clearData()
+                }else if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
+                    .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
+                    .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
+                it.background = App.applicationContext().getDrawable(R.color.colorMyType)
             }
-            binding.smartCustomCalendar.selectDateOut?.let {
-                Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
-                viewModel.setDate(it)
-            }
-            viewModel.addShape()
-            viewModel.clearData()
+
         }
 
         viewModel.addShapeResult.observe(this, androidx.lifecycle.Observer {

@@ -31,8 +31,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         ViewModelProviders.of(this).get(DiaryViewModel::class.java)
     }
     private lateinit var binding :FragmentDiaryBinding
-    private var hasFireShape = false
-    private var hasFireSleep = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentDiaryBinding.inflate(inflater)
@@ -66,9 +64,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.fireSleep.observe(this, Observer {
             Logger.i("viewModel.fireSleep.observe = $it")
             if (it != null){
-                hasFireSleep = true
-                binding.diaryHintAddFoodie.visibility = View.GONE
-                binding.iconMyType.visibility = View.GONE
+
                 (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
                 (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
             }
@@ -77,24 +73,12 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.fireShape.observe(this, Observer {
             Logger.i("viewModel.fireShape.observe =$it")
             if (it != null){
-                hasFireShape = true
-                binding.diaryHintAddFoodie.visibility = View.GONE
-                binding.iconMyType.visibility = View.GONE
                 (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
                 (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
             }
 
         })
         viewModel.fireFoodie.observe(this, Observer {
-            if (!it.isNullOrEmpty() || hasFireSleep || hasFireShape){
-                Logger.i("viewModel.fireFoodie.observe = $it")
-                Logger.i("hasFireSleep = $hasFireSleep hasFireShape = $hasFireShape")
-                binding.diaryHintAddFoodie.visibility = View.GONE
-                binding.iconMyType.visibility = View.GONE
-            } else if (it.isNullOrEmpty() || !hasFireSleep || !hasFireShape){
-                binding.diaryHintAddFoodie.visibility = View.VISIBLE
-                binding.iconMyType.visibility = View.VISIBLE
-            }
             (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
             (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
@@ -109,25 +93,19 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.calendarClicked.observe(this, Observer {
             Logger.i("viewModel.calendarClicked.observe =$it")
             if (it == true){
-                binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(180f).start()
+                binding.diaryDate.setOnClickListener {
+                    binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.visibility = View.GONE
                     viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?:Date())
-                    if (viewModel.fireFoodie.value!!.size == 0 || !hasFireShape || !hasFireSleep ){
-                        binding.diaryHintAddFoodie.visibility = View.VISIBLE
-                        binding.iconMyType.visibility = View.VISIBLE
-                    } else if (viewModel.fireFoodie.value!!.size == 0 || hasFireSleep || hasFireShape){
-                        binding.diaryHintAddFoodie.visibility = View.GONE
-                        binding.iconMyType.visibility = View.GONE
+                    if (viewModel.fireFoodie.value!!.size == 0){
+                    } else if (viewModel.fireFoodie.value!!.size == 0){
                     }
                     viewModel.calendarClickedAgain()
                 }
             }else if (it == false){
-                binding.buttonSaveCalendar.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(0f).start()
+                binding.diaryDate.setOnClickListener {
+                    binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
-                    binding.diaryHintAddFoodie.visibility = View.INVISIBLE
-                    binding.iconMyType.visibility = View.INVISIBLE
                     viewModel.calendarClicked()
                 }
 

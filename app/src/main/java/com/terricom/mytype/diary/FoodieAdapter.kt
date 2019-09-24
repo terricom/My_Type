@@ -23,10 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.databinding.ItemDiaryRecordBinding
-import com.terricom.mytype.databinding.ItemDiaryShapeBinding
-import com.terricom.mytype.databinding.ItemDiarySleepBinding
-import com.terricom.mytype.databinding.ItemDiarySumBinding
+import com.terricom.mytype.databinding.*
 import com.terricom.mytype.foodie.FoodieFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_diary_record.view.*
@@ -41,6 +38,7 @@ private val TITLE = 0
 private val DIARY_LIST = 1
 private val SHAPE_RECORD = 2
 private val SLEEP_RECORD = 3
+private val PLACEHOLDER = 4
 
 class FoodieAdapter(val viewModel: DiaryViewModel
                     , private val onClickListener: OnClickListener
@@ -57,9 +55,13 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             val newList = mutableListOf<DataItem>()
             if (list != null) {
                 newList.add(DataItem.Header( viewModel))
-                for (foodie in list) {
-                    Logger.i("addHeaderAndSubmitList ")
-                    newList.add(DataItem.FoodieList(foodie, viewModel))
+                if (list.isEmpty()){
+                    newList.add(DataItem.PlaceHolder(viewModel))
+                }else {
+                    for (foodie in list) {
+                        Logger.i("addHeaderAndSubmitList ")
+                        newList.add(DataItem.FoodieList(foodie, viewModel))
+                    }
                 }
                 if (viewModel.fireShape.value != null){
                     newList.add(DataItem.ShapeItem(viewModel))
@@ -160,6 +162,36 @@ class FoodieAdapter(val viewModel: DiaryViewModel
 
     }
 
+    class PlaceViewHolder(private var binding: ItemDiaryNoFoodieBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
+        fun bind(viewModel: DiaryViewModel){
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
+
+            binding.executePendingBindings()
+
+        }
+
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
+
+    }
+
     class ShapeViewHolder(private var binding: ItemDiaryShapeBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
         fun bind( viewModel: DiaryViewModel){
@@ -200,8 +232,14 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.sleep = sleep
             binding.lifecycleOwner = this
-            binding.tvBedTime.text = viewModel.getTime(viewModel.fireSleep.value?.goToBed ?: Date())
-            binding.tvWakeTime.text = viewModel.getTime(viewModel.fireSleep.value?.wakeUp ?: Date())
+            viewModel.fireSleep.value?.let {
+                it.goToBed?.let {
+                    binding.tvBedTime.text = viewModel.getTime(it)
+                }
+                it.wakeUp?.let {
+                    binding.tvWakeTime.text = viewModel.getTime(it)
+                }
+            }
 
             binding.viewModel = viewModel
             binding.executePendingBindings()
@@ -245,6 +283,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         DIARY_LIST -> ProductViewHolder(ItemDiaryRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         SHAPE_RECORD -> ShapeViewHolder(ItemDiaryShapeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         SLEEP_RECORD -> SleepViewHolder(ItemDiarySleepBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        PLACEHOLDER -> PlaceViewHolder(ItemDiaryNoFoodieBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         else -> throw IllegalArgumentException()
     }
 
@@ -282,6 +321,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
                 val sleep = getItem(position) as DataItem.SleepItem
                 holder.bind( sleep.viewModel)
             }
+            is PlaceViewHolder ->{
+                val header = getItem(position) as DataItem.PlaceHolder
+                holder.bind(header.viewModel)
+            }
             else -> throw IllegalArgumentException()
         }
     }
@@ -293,6 +336,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is DataItem.FoodieList -> DIARY_LIST
             is DataItem.ShapeItem -> SHAPE_RECORD
             is DataItem.SleepItem -> SLEEP_RECORD
+            is DataItem.PlaceHolder -> PLACEHOLDER
             else -> throw IllegalArgumentException()
         }
 
@@ -303,6 +347,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is SumViewHolder -> holder.markAttach()
             is ShapeViewHolder -> holder.markAttach()
             is SleepViewHolder -> holder.markAttach()
+            is PlaceViewHolder -> holder.markAttach()
         }
     }
 
@@ -313,6 +358,7 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             is SumViewHolder -> holder.markDetach()
             is ShapeViewHolder -> holder.markDetach()
             is SleepViewHolder -> holder.markDetach()
+            is PlaceViewHolder -> holder.markDetach()
         }
     }
 
@@ -366,6 +412,12 @@ sealed class DataItem {
     }
     data class Header (val viewModel: DiaryViewModel): DataItem() {
         override val id = (Long.MIN_VALUE+2).toString()
+    }
+    data class PlaceHolder(
+//        val sleep: Sleep,
+        val viewModel: DiaryViewModel) : DataItem(){
+        override val id = (Long.MIN_VALUE+3).toString()
+
     }
     abstract val id: String
 
