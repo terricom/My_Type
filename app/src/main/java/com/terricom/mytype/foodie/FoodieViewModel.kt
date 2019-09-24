@@ -87,7 +87,7 @@ class FoodieViewModel: ViewModel() {
         return try {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
-            0.0f
+            0f
         }
     }
 

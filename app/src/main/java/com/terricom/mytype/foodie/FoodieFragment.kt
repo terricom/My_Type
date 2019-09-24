@@ -354,43 +354,52 @@ class FoodieFragment: Fragment() {
         binding.editDate.addTextChangedListener(DateMask())
 
         binding.buttonFoodieSave.setOnClickListener {
-            Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
-            if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
-                viewModel.setDate(java.util.Date())
-            }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
-            }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
-            }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+            if ((viewModel.water.value ?: 0.0f).plus(viewModel.fruit.value ?: 0.0f)
+                    .plus(viewModel.vegetable.value ?: 0.0f).plus(viewModel.oil.value ?: 0.0f)
+                    .plus(viewModel.protein.value ?: 0.0f).plus(viewModel.carbon.value ?: 0.0f) != 0.0f){
+
+                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+                    Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
+                    if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
+                        viewModel.setDate(java.util.Date())
+                    }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
+                    }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
+                    }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+                    }
+
+                    if (foodie.docId != ""){
+                        viewModel.adjustFoodie()
+                        viewModel.updateFoodAndNuList()
+                        viewModel.clearData()
+                    } else {
+                        viewModel.addFoodie()
+                        viewModel.updateFoodAndNuList()
+                        viewModel.clearData()
+                    }
+                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
+                    Handler().postDelayed({
+                        findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                        (activity as MainActivity).fab.visibility = View.VISIBLE
+                        (activity as MainActivity).closeFABMenu()
+                    },4005)
+
+
+                    if (isConnected()) {
+                        Logger.i("NetworkConnection Network Connected.")
+                        //執行下載任務
+                    }else{
+                        Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                        //告訴使用者網路無法使用
+                    }
+            }else {
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.foodie_input_hint), Toast.LENGTH_SHORT).show()
             }
 
-            if (foodie.docId != ""){
-                viewModel.adjustFoodie()
-                viewModel.updateFoodAndNuList()
-                viewModel.clearData()
-            } else {
-                viewModel.addFoodie()
-                viewModel.updateFoodAndNuList()
-                viewModel.clearData()
-            }
-            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-            Handler().postDelayed({
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-                (activity as MainActivity).closeFABMenu()
-            },4005)
-
-            
-            if (isConnected()) {
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
-            }
 
         }
 

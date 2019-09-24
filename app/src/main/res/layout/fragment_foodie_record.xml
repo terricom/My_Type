@@ -226,7 +226,6 @@
                 <EditText
                         android:id="@+id/number_water"
                         android:layout_width="0dp"
-
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="12dp"
@@ -239,6 +238,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toStartOf="@+id/button_fruit"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/button_water"
@@ -276,6 +277,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/button_vegetable"
@@ -312,6 +315,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toStartOf="@+id/button_vegetable"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/button_fruit"
@@ -349,6 +354,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toEndOf="@+id/number_water"
                         app:layout_constraintStart_toStartOf="@+id/number_water"
                         app:layout_constraintTop_toBottomOf="@+id/number_water" />
@@ -384,6 +391,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toEndOf="@+id/number_fruit"
                         app:layout_constraintStart_toStartOf="@+id/number_fruit"
                         app:layout_constraintTop_toBottomOf="@+id/number_fruit" />
@@ -419,6 +428,8 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:digits="1234567890."
+                        android:maxLength="4"
                         app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
                         app:layout_constraintStart_toStartOf="@+id/number_vegetable"
                         app:layout_constraintTop_toBottomOf="@+id/number_vegetable" />

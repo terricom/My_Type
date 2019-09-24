@@ -99,5 +99,6 @@
     <string name="profile_hint_add_goal">目前尚未新增目標\n點選下方按鈕去設定\n每日的飲食目標喔！</string>
     <string name="profile_hint_add_goal_postit">目前尚未新增目標\n點選下方按鈕可以設定每日的飲食目標喔！</string>
     <string name="shaperecord_input_hint">無法新增空白的成果，請再確認喔！</string>
+    <string name="foodie_input_hint">這一餐攝取了多少營養呢？別忘了記錄下來</string>
 
 </resources>

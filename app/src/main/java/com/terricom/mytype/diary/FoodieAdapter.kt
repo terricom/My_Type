@@ -197,8 +197,41 @@ class FoodieAdapter(val viewModel: DiaryViewModel
         fun bind( viewModel: DiaryViewModel){
 //            binding.shape = shape
             binding.lifecycleOwner = this
-            binding.numberTdee.text = viewModel.fireShape.value?.tdee?.toInt().toString()
-            binding.numberBodyAge.text = viewModel.fireShape.value?.bodyAge?.toInt().toString()
+            viewModel.fireShape.value?.let {
+                if ((it.weight ?: 0.0f).equals(0.0f) || it.weight == null || it.weight.toString() == "null"){
+                    binding.numberWeight.text = "-"
+                }else {
+                    binding.numberWeight.text = "%.1f".format(it.weight)
+                }
+                if ((it.bodyWater ?: 0.0f).equals(0.0f) || it.bodyWater == null || it.bodyWater.toString() == "null"){
+                    binding.numberBodyWater.text = "-"
+                }else {
+                    binding.numberBodyWater.text = "%.1f".format(it.bodyWater)
+                }
+                if ((it.bodyFat ?: 0.0f).equals(0.0f) || it.bodyFat == null || it.bodyFat.toString() == "null"){
+                    binding.numberBodyFat.text = "-"
+                }else {
+                    binding.numberBodyFat.text = "%.1f".format(it.bodyFat)
+                }
+                if ((it.tdee ?: 0.0f).equals(0f) || it.tdee == null || it.tdee.toString() == "null"){
+                    binding.numberTdee.text = "-"
+                }else {
+                    binding.numberTdee.text = "%.0f".format(it.tdee)
+                }
+                if ((it.muscle ?: 0.0f).equals(0.0f) || it.muscle == null || it.muscle.toString() == "null"){
+                    binding.numberMuscle.text = "-"
+                }else {
+                    binding.numberMuscle.text = "%.1f".format(it.muscle)
+                }
+                Logger.i("bodyAge??? = ${it.bodyAge}")
+                if ((it.bodyAge ?: 0f).equals(0f) || it.bodyAge == null || "%.1f".format(it.bodyAge) == "null"){
+                    binding.numberBodyAge.text = "-"
+                }else {
+                    binding.numberBodyAge.text = "%.1f".format(it.bodyAge)
+                }
+
+            }
+
             binding.imageView4.setOnClickListener {
                 findNavController(it).navigate(NavigationDirections.navigateToShapeRecordDialog())
             }
