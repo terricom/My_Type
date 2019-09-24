@@ -234,7 +234,6 @@ class MainActivity : BaseActivity(){
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
-                R.id.dreamboardFragment -> CurrentFragmentType.DREAMBOARD
                 R.id.sleepFragment -> CurrentFragmentType.SLEEP
                 R.id.goalSettingFragment -> CurrentFragmentType.GOAL
                 else -> viewModel.currentFragmentType.value
@@ -261,8 +260,7 @@ class MainActivity : BaseActivity(){
             if (it.value == App.instance?.getString(R.string.title_foodie) ||
                 it.value == App.instance?.getString(R.string.title_shape_record) ||
                 it.value == App.instance?.getString(R.string.title_sleep) ||
-                it.value == App.instance?.getString(R.string.title_goal_setting) ||
-                it.value == App.instance?.getString(R.string.title_dream_puzzle) ){
+                it.value == App.instance?.getString(R.string.title_goal_setting)){
                 hideBottomNavView()
                 hideFABView()
             }

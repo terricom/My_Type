@@ -249,26 +249,17 @@ class FoodieViewModel: ViewModel() {
                             .get()
                             .addOnSuccessListener {
                                 for (document in it){
-//                                    if (it.size() != 0){
                                         pazzleAll.add(document.toObject(Puzzle::class.java))
                                         pazzleAll[pazzleAll.size-1].docId = document.id
-//                                    }
                                 }
 
-                                val pazzleOld = hashMapOf(
-                                    "position" to listOf((0..14).random()),
-                                    "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
-                                    "recordedDates" to listOf(sdf.format(date.value)),
-                                    "timestamp" to FieldValue.serverTimestamp()
-
-                                )
                                 Logger.i("pazzleAll.size = ${pazzleAll.size} pazzle = $pazzleAll")
 
                                 if ( pazzleAll.size != 0 ){
                                     if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 105 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
                                         val addNewPazzle = pazzleAll[pazzleAll.lastIndex].position!!.toMutableList()
                                         val addOldPazzleTS = pazzleAll[pazzleAll.lastIndex].recordedDates!!.toMutableList()
-                                        addNewPazzle.add((1..15).minus(addNewPazzle).random())
+                                        addNewPazzle.add((0..14).minus(addNewPazzle).random())
                                         addOldPazzleTS.add(sdf.format(date.value!!))
                                         user.document(userUid).collection("Puzzle").document(pazzleAll[pazzleAll.lastIndex].docId!!).update(
                                             mapOf(
@@ -280,9 +271,23 @@ class FoodieViewModel: ViewModel() {
                                     } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 105
 //                                        && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))
                                     ){
+                                        val pazzleOld = hashMapOf(
+                                            "position" to listOf((0..14).random()),
+                                            "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
+                                            "recordedDates" to listOf(sdf.format(date.value)),
+                                            "timestamp" to FieldValue.serverTimestamp()
+
+                                        )
                                         user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                     }
                                 } else if ( pazzleAll.size == 0 ){
+                                    val pazzleOld = hashMapOf(
+                                        "position" to listOf((0..14).random()),
+                                        "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
+                                        "recordedDates" to listOf(sdf.format(date.value)),
+                                        "timestamp" to FieldValue.serverTimestamp()
+
+                                    )
                                     user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                 }
                             }
@@ -309,7 +314,7 @@ class FoodieViewModel: ViewModel() {
     init {
         if (userUid != null){
             getFoodAndNuList()
-            updatePuzzle()
+//            updatePuzzle()
         }
         setDate(Date())
         unCheckedAddNewFood()
