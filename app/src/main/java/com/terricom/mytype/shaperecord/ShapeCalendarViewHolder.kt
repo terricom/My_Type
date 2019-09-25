@@ -49,16 +49,6 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
         }
-        if (selected){
-            shape.visibility = View.VISIBLE
-            monthOfDate.setTypeface(null, Typeface.BOLD)
-            cellDateLayout.background =
-                ResourcesCompat.getDrawable(
-                    App.applicationContext().resources,
-                    R.drawable.input_column,
-                    null
-                )
-        }
 
         if(currentMonth != viewMonth || currentYear != viewYear){
             monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorAllTransparent, null))

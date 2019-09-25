@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape

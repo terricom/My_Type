@@ -59,8 +59,10 @@
     <string name="sleep_record_wake_time">起床</string>
     <string name="sleep_record_bed_time_long">就寢時間</string>
     <string name="sleep_record_wake_time_long">起床時間</string>
+    <string name="sleep_record_hours">睡眠長度</string>
     <string name="sleep_record_hr">小時</string>
     <string name="sleep_record_min">分</string>
+    <string name="diary_sleep_reminder">充足的睡眠也是讓身體獲得能量的重要來源\n今天睡得好嗎？</string>
     <string name="clean_data"></string>
     <string name="diary_title_shape">今日規格</string>
     <string name="foodie_drag_nutrition_hint">點選下方歷史補充品，也可以自行新增喔！</string>
@@ -100,5 +102,7 @@
     <string name="profile_hint_add_goal_postit">目前尚未新增目標\n點選下方按鈕可以設定每日的飲食目標喔！</string>
     <string name="shaperecord_input_hint">無法新增空白的成果，請再確認喔！</string>
     <string name="foodie_input_hint">這一餐攝取了多少營養呢？別忘了記錄下來</string>
+    <string name="diary_title_sleep_today">今日睡眠</string>
+    <string name="diary_dialog_sleep">睡眠圖示</string>
 
 </resources>

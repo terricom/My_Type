@@ -49,6 +49,9 @@
     <action android:id="@+id/navigate_to_shape_record_dialog" app:destination="@id/shapeRecordDialog"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_sleep_dialog" app:destination="@id/sleepDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -84,4 +87,8 @@
             android:id="@+id/shapeRecordDialog"
             android:name="com.terricom.mytype.shaperecord.ShapeRecordDialog"
             android:label="ShapeRecordDialog" />
+    <dialog
+            android:id="@+id/sleepDialog"
+            android:name="com.terricom.mytype.sleep.SleepDialog"
+            android:label="SleepDialog" />
 </navigation>

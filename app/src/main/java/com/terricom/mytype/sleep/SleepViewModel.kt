@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp

@@ -1,4 +1,4 @@
-package com.terricom.mytype
+package com.terricom.mytype.tools
 
 import android.app.Activity
 import android.content.Context
@@ -113,7 +113,10 @@ class DrawEdxtView : EditText, OnTouchListener {
 
                 v.setFocusable(false)
                 v.setFocusableInTouchMode(false)
-                hideSoftInput((mContext as Activity?)!!, v)
+                hideSoftInput(
+                    (mContext as Activity?)!!,
+                    v
+                )
             }
             MotionEvent.ACTION_UP -> {
                 upX = event.rawX.toInt()

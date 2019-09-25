@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager

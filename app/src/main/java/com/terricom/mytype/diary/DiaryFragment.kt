@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
@@ -96,16 +96,14 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.visibility = View.GONE
-                    viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?:Date())
-                    if (viewModel.fireFoodie.value!!.size == 0){
-                    } else if (viewModel.fireFoodie.value!!.size == 0){
-                    }
+                    viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
                     viewModel.calendarClickedAgain()
                 }
             }else if (it == false){
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
+                    binding.diaryCalendar.getThisMonth()
                     viewModel.calendarClicked()
                 }
 

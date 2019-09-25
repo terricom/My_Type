@@ -5,17 +5,17 @@
         <import type="android.view.View"/>
         <variable name="viewModel" type="com.terricom.mytype.diary.DiaryViewModel"/>
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <!-- date toolbar -->
         <RelativeLayout
                 android:id="@+id/toolbarCurrentDate"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:paddingLeft="@dimen/default_screen_padding"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingRight="@dimen/default_screen_padding"
@@ -31,7 +31,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@mipmap/ic_arrow_left" android:tint="@color/colorMyType"/>
+                    android:src="@mipmap/ic_arrow_left"
+                    android:tint="@color/colorMyType" />
 
             <!-- date title -->
             <TextView
@@ -58,7 +59,8 @@
                     android:layout_centerVertical="true"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@mipmap/ic_forward"
-                    android:visibility="invisible" android:tint="@color/colorMyType"/>
+                    android:tint="@color/colorMyType"
+                    android:visibility="invisible" />
         </RelativeLayout>
 
         <!-- days header -->
@@ -66,12 +68,13 @@
                 android:id="@+id/calendarHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate">
 
             <TextView
                     android:layout_width="0dp"
@@ -79,12 +82,12 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="center_horizontal"
-                    android:text="@string/sunday"/>
+                    android:text="@string/sunday" />
 
             <TextView
                     style="@style/HorizontalBreakLine"
                     android:layout_marginStart="@dimen/_1sdp"
-                    android:layout_marginLeft="@dimen/_1sdp"/>
+                    android:layout_marginLeft="@dimen/_1sdp" />
 
             <TextView
                     android:layout_width="0dp"
@@ -92,22 +95,10 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="center_horizontal"
-                    android:text="@string/monday"
-            />
+                    android:text="@string/monday" />
 
 
-            <TextView style="@style/HorizontalBreakLine"/>
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorWhite"
-                    android:gravity="center_horizontal"
-                    android:text="@string/tuesday"
-            />
-
-            <TextView style="@style/HorizontalBreakLine"/>
+            <TextView style="@style/HorizontalBreakLine" />
 
             <TextView
                     android:layout_width="0dp"
@@ -115,21 +106,9 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="center_horizontal"
-                    android:text="@string/wednesday"
-            />
+                    android:text="@string/tuesday" />
 
-            <TextView style="@style/HorizontalBreakLine"/>
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorWhite"
-                    android:gravity="center_horizontal"
-                    android:text="@string/thursday"
-            />
-
-            <TextView style="@style/HorizontalBreakLine"/>
+            <TextView style="@style/HorizontalBreakLine" />
 
             <TextView
                     android:layout_width="0dp"
@@ -137,10 +116,29 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="center_horizontal"
-                    android:text="@string/friday"
-            />
+                    android:text="@string/wednesday" />
 
-            <TextView style="@style/HorizontalBreakLine"/>
+            <TextView style="@style/HorizontalBreakLine" />
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:gravity="center_horizontal"
+                    android:text="@string/thursday" />
+
+            <TextView style="@style/HorizontalBreakLine" />
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:gravity="center_horizontal"
+                    android:text="@string/friday" />
+
+            <TextView style="@style/HorizontalBreakLine" />
 
             <TextView
                     android:layout_width="0dp"
@@ -149,8 +147,7 @@
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
                     android:gravity="center_horizontal"
-                    android:text="@string/saturday"
-            />
+                    android:text="@string/saturday" />
         </LinearLayout>
 
         <!-- days view -->
@@ -158,10 +155,14 @@
                 android:id="@+id/gridCalendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
                 android:overScrollMode="never"
-                app:layout_constraintTop_toBottomOf="@+id/calendarHeader"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp" android:layout_marginStart="16dp"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/calendarHeader" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

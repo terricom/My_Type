@@ -19,6 +19,7 @@ import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*

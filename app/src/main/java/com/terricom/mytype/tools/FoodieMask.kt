@@ -1,11 +1,9 @@
-package com.terricom.mytype
+package com.terricom.mytype.tools
 
 import android.text.Editable
 import android.text.TextWatcher
-import java.util.*
 
-
-class DateMask : TextWatcher {
+class FoodieMask : TextWatcher {
 
     private var updatedText: String? = null
     private var editing: Boolean = false
@@ -35,18 +33,15 @@ class DateMask : TextWatcher {
             digits = digits.substring(0, MAX_LENGTH)
         }
 
-        if (length <= 4) {
-            val month = digits.substring(0, 2)
-            val day = digits.substring(2)
+        if (length == 2) {
+            val month = digits.substring(0, 1)
+            val day = digits.substring(1)
 
-            updatedText = String.format(Locale.US, "%s-%s", month, day)
+            updatedText = String.format("%s.%s", month, day)
         } else {
-            val year = digits.substring(0 ,4)
-            val month = digits.substring(4,6)
-            val day = digits.substring(6)
+            val year = digits.substring(0 )
 
-
-            updatedText = String.format(Locale.US, "%s-%s-%s", year, month, day)
+            updatedText = String.format("%s.0", year)
         }
     }
 
@@ -64,8 +59,8 @@ class DateMask : TextWatcher {
 
     companion object {
 
-        private val MAX_LENGTH = 8
-        private val MIN_LENGTH = 2
+        private val MAX_LENGTH = 2
+        private val MIN_LENGTH = 1
     }
 
 }

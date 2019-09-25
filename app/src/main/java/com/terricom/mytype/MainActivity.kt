@@ -31,6 +31,7 @@ import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.ActivityMainBinding
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat

@@ -14,25 +14,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.*
-import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.databinding.*
-import com.terricom.mytype.foodie.FoodieFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_diary_record.view.*
+import com.terricom.mytype.tools.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
-import java.util.logging.Handler
 
 private val TITLE = 0
 private val DIARY_LIST = 1
@@ -55,6 +47,12 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             val newList = mutableListOf<DataItem>()
             if (list != null) {
                 newList.add(DataItem.Header( viewModel))
+                if (viewModel.fireShape.value != null){
+                    newList.add(DataItem.ShapeItem(viewModel))
+                }
+                if (viewModel.fireSleep.value != null){
+                    newList.add(DataItem.SleepItem(viewModel))
+                }
                 if (list.isEmpty()){
                     newList.add(DataItem.PlaceHolder(viewModel))
                 }else {
@@ -62,12 +60,6 @@ class FoodieAdapter(val viewModel: DiaryViewModel
                         Logger.i("addHeaderAndSubmitList ")
                         newList.add(DataItem.FoodieList(foodie, viewModel))
                     }
-                }
-                if (viewModel.fireShape.value != null){
-                    newList.add(DataItem.ShapeItem(viewModel))
-                }
-                if (viewModel.fireSleep.value != null){
-                    newList.add(DataItem.SleepItem(viewModel))
                 }
             }
             withContext(Dispatchers.Main) {
@@ -272,6 +264,12 @@ class FoodieAdapter(val viewModel: DiaryViewModel
                 it.wakeUp?.let {
                     binding.tvWakeTime.text = viewModel.getTime(it)
                 }
+                it.sleepHr?.let {
+                    binding.numberSleep.text = "%.1f".format(it)
+                }
+            }
+            binding.diaryItemSleepShowInfo.setOnClickListener {
+                findNavController(it).navigate(NavigationDirections.navigateToSleepDialog())
             }
 
             binding.viewModel = viewModel

@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentGoalSettingBinding
 import com.terricom.mytype.shaperecord.ShapeCalendarFragment
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 
 class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 

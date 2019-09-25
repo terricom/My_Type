@@ -234,6 +234,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="sleepDialog">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-706" />
+                            <option name="y" value="-379" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="sleepFragment">
                     <value>
                       <LayoutPositions>

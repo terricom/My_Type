@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration

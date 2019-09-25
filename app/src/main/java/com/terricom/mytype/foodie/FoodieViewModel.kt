@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.*
 import java.sql.Time
 import java.sql.Timestamp

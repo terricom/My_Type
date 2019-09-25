@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.databinding.ItemFoodieEditNewNutritionBinding
 import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
 

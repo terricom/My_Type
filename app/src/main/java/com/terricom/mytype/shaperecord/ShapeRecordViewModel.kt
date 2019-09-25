@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import java.sql.Timestamp
@@ -91,7 +91,7 @@ class ShapeRecordViewModel: ViewModel() {
 
     fun addShape(){
 
-        com.terricom.mytype.Logger.i("date.value = ${date.value}")
+        Logger.i("date.value = ${date.value}")
         //發文功能
         val shapeContent = hashMapOf(
             "timestamp" to Timestamp(date.value!!.time),

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_linechart.*

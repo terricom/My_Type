@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -115,7 +116,7 @@ class GoalSettingViewModel: ViewModel() {
                         val goal = doc.toObject(Goal::class.java)
                         items.add(goal)
                     }
-                        com.terricom.mytype.Logger.i("items = $items")
+                        Logger.i("items = $items")
                     if (items[0].deadline!!.time < Date().time && sdf.format(items[0].deadline)!= sdf.format(date.value)
                         && sdf.format(items[0].deadline)!= sdf.format(Date())){
                         user.document(userUid).collection("Goal").document().set(goalContent)

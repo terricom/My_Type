@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R

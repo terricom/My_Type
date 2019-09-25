@@ -4,6 +4,9 @@
     <data>
         <import type="com.terricom.mytype.CurrentFragmentType"/>
         <import type="android.view.View"/>
+        <variable
+                name="activity"
+                type="com.terricom.mytype.MainActivity" />
         <variable name="viewModel" type="com.terricom.mytype.MainViewModel"/>
     </data>
     <!--<androidx.drawerlayout.widget.DrawerLayout-->
@@ -63,6 +66,7 @@
                 android:id="@+id/fabShadow"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:onClick="@{()->activity.closeFABMenu()}"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,12 +76,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fabLayout3"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/fab"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/fab"
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
@@ -159,12 +162,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/fabLayout1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/fab"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/fab"
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
@@ -200,22 +202,28 @@
                     app:layout_constraintTop_toTopOf="@+id/fab1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="@+id/fab"
-                app:layout_constraintTop_toTopOf="@+id/fab" app:layout_constraintStart_toStartOf="@+id/fab"
-                app:layout_constraintEnd_toEndOf="parent" android:id="@+id/fabLayout4" android:visibility="invisible">
+                android:id="@+id/fabLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/fab"
+                app:layout_constraintStart_toStartOf="@+id/fab"
+                app:layout_constraintTop_toTopOf="@+id/fab">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab4"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    app:tint="@color/colorWhite"
+                    app:backgroundTint="@color/colorMyType"
                     app:elevation="0dp"
                     app:fabCustomSize="45dp"
-                    app:backgroundTint="@color/colorMyType"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/icon_goal"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:tint="@color/colorWhite" />
 
             <TextView
                     android:id="@+id/text_goal_setting_title"

@@ -38,6 +38,9 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.tools.DateMask
+import com.terricom.mytype.tools.FoodieMask
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
@@ -256,144 +259,17 @@ class FoodieFragment: Fragment() {
                 true
             )
         )
-
-//        class MyDragListener : View.OnDragListener {
-//
-//            override fun onDrag(v: View, event: DragEvent): Boolean {
-//                val action = event.action
-//                when (event.action) {
-//                    DragEvent.ACTION_DRAG_STARTED -> {
-//                    }
-//                    DragEvent.ACTION_DROP -> {
-//                        // Dropped, reassign View to ViewGroup
-//                        val view = event.localState as View
-//                        val owner = view.parent as ViewGroup
-//                        owner.removeView(view)
-//                        val container = v as LinearLayout
-//                        container.addView(view)
-//                        view.visibility = View.VISIBLE
-//                        view.setOnTouchListener(FoodAdapter.MyTouchListener())
-//                        binding.dagFoodHint.visibility = View.INVISIBLE
-//                        viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
-////                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-////                        (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(viewModel.userFoodList.value)
-//                       editableFoods.add("${view.findViewById<TextView>(R.id.food).text}")
-//                    }
-//
-//                    else -> {
-//                    }
-//                }// do nothing
-//                return true
-//            }
-//        }
-//
-//        class MyDragListenerNu : View.OnDragListener {
-//
-//            override fun onDrag(v: View, event: DragEvent): Boolean {
-//                val action = event.action
-//                when (event.action) {
-//                    DragEvent.ACTION_DRAG_STARTED -> {
-//                    }
-//                    DragEvent.ACTION_DROP -> {
-//                        // Dropped, reassign View to ViewGroup
-//                        val view = event.localState as View
-//                        val owner = view.parent as ViewGroup
-//                        owner.removeView(view)
-//                        val container = v as LinearLayout
-//                        container.addView(view)
-//                        view.visibility = View.VISIBLE
-//                        view.setOnTouchListener(NutritionAdapter.MyTouchListener())
-//                        binding.dragNutritionHint.visibility = View.INVISIBLE
-//                        viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
-//                        editableNutritions.add("${view.findViewById<TextView>(R.id.nutrition).text}")}
-//                    else -> {
-//                    }
-//                }// do nothing
-//                return true
-//            }
-//        }
-//
-//        class CleanDragListener : View.OnDragListener {
-//
-//            override fun onDrag(v: View, event: DragEvent): Boolean {
-//                val action = event.action
-//                when (event.action) {
-//                    DragEvent.ACTION_DRAG_STARTED -> {
-//                    }
-//                    DragEvent.ACTION_DROP -> {
-//                        // Dropped, reassign View to ViewGroup
-//                        val view = event.localState as View
-//                        val owner = view.parent as ViewGroup
-//                        owner.removeView(view)
-//                        val container = v as LinearLayout
-//                        container.addView(view)
-//                        view.visibility = View.GONE
-//                        viewModel.dragOutList("${view.findViewById<TextView>(R.id.food).text}")
-////                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-//                        (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
-//                        if ((foodie.foods ?: listOf<String>("")).isNotEmpty()){
-//                            editableFoods.remove("${view.findViewById<TextView>(R.id.food).text}")
-//                        }
-//                        foodie.foods?.let {
-//                            editableFoods.remove("")
-////                            binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
-////                            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(editableFoods)
-//                        }
-//
-//                    }
-//                    else -> {
-//                    }
-//                }// do nothing
-//                return true
-//            }
-//        }
-//
-//        class CleanDragListenerNu : View.OnDragListener {
-//
-//            override fun onDrag(v: View, event: DragEvent): Boolean {
-//                val action = event.action
-//                when (event.action) {
-//                    DragEvent.ACTION_DRAG_STARTED -> {
-//                    }
-//                    DragEvent.ACTION_DROP -> {
-//                        // Dropped, reassign View to ViewGroup
-//                        val view = event.localState as View
-//                        val owner = view.parent as ViewGroup
-//                        owner.removeView(view)
-//                        val container = v as LinearLayout
-//                        container.addView(view)
-//                        view.visibility = View.GONE
-//                        viewModel.dragOutListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
-////                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-//                        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
-//                        if ((foodie.nutritions ?: listOf("")).isNotEmpty()){
-//                        editableNutritions.remove("${view.findViewById<TextView>(R.id.nutrition).text}")
-//                        }
-//                        foodie.nutritions?.let {
-//                            editableNutritions.remove("")
-//                            Logger.i("editableNutritions =${editableNutritions}")
-//                            binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
-//                            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(editableNutritions)
-//                        }
-//                    }
-//                    else -> {
-//                    }
-//                }// do nothing
-//                return true
-//            }
-//        }
-//
-//        Logger.i("viewModel.selectedFood = ${viewModel.selectedFood}")
-//        binding.foodsMoveOut.setOnDragListener(CleanDragListener())
-//        binding.chosedFood.setOnDragListener(MyDragListener())
-//        binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
-//        binding.nutritionsMoveOut.setOnDragListener(CleanDragListenerNu())
+        //判斷 EditText
+        binding.numberWater.addTextChangedListener(FoodieMask())
+        binding.numberFruit.addTextChangedListener(FoodieMask())
+        binding.numberCarbon.addTextChangedListener(FoodieMask())
+        binding.numberCoconut.addTextChangedListener(FoodieMask())
+        binding.numberProtein.addTextChangedListener(FoodieMask())
+        binding.numberVegetable.addTextChangedListener(FoodieMask())
 
         //讀取手機解析度
         mPhone = DisplayMetrics()
         getWindowManager(App.applicationContext()).defaultDisplay.getMetrics(mPhone)
-
-        binding.editDate.addTextChangedListener(DateMask())
 
         binding.buttonFoodieSave.setOnClickListener {
 

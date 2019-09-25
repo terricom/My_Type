@@ -15,7 +15,7 @@
         <RelativeLayout
                 android:id="@+id/toolbarCurrentDate"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:paddingLeft="@dimen/default_screen_padding"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingRight="@dimen/default_screen_padding"
@@ -31,7 +31,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@mipmap/ic_arrow_left" android:tint="@color/colorMyType"/>
+                    android:src="@mipmap/ic_arrow_left"
+                    android:tint="@color/colorMyType" />
 
             <!-- date title -->
             <TextView

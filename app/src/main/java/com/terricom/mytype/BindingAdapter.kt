@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.terricom.mytype.data.PlaceHolder
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.profile.PazzleAdapter
+import com.terricom.mytype.tools.Logger
 
 
 @BindingAdapter("imageUrl")
