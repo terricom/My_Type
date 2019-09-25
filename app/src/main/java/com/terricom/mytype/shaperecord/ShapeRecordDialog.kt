@@ -1,7 +1,6 @@
 package com.terricom.mytype.shaperecord
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +18,13 @@ class ShapeRecordDialog: AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler().postDelayed({ this.dismiss() }, 2000)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = com.terricom.mytype.databinding.DialogShapeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-
+        binding.dialog = this
+        this.isCancelable = true
 
         return binding.root
     }

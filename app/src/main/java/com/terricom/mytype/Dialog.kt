@@ -2,7 +2,6 @@ package com.terricom.mytype
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ class MessageDialog : AppCompatDialogFragment() {
         val binding = DialogMessageBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.dialog = this
+        this.isCancelable = true
 
 
         return binding.root
@@ -36,7 +36,7 @@ class MessageDialog : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler().postDelayed({ this.dismiss() }, 4000)
+//        Handler().postDelayed({ this.dismiss() }, 4000)
     }
 
     private fun init() {

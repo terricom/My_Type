@@ -5,6 +5,9 @@
 
 
     <data>
+        <variable
+                name="dialog"
+                type="com.terricom.mytype.shaperecord.ShapeRecordDialog" />
         <import type="android.view.View"/>
     </data>
 
@@ -20,7 +23,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{() -> dialog.dismiss()}">
 
             <TextView
                     android:id="@+id/textView"

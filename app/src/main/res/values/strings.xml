@@ -63,8 +63,8 @@
     <string name="sleep_record_min">分</string>
     <string name="clean_data"></string>
     <string name="diary_title_shape">今日規格</string>
-    <string name="foodie_drag_nutrition_hint">請拖曳加入本餐營養補充品，也可以自行新增喔！</string>
-    <string name="foodie_drag_food_hint">請拖曳加入本餐菜單，也可以自行新增食物喔！</string>
+    <string name="foodie_drag_nutrition_hint">點選下方歷史補充品，也可以自行新增喔！</string>
+    <string name="foodie_drag_food_hint">點選下方歷史菜單，也可以自行新增喔！</string>
     <string name="diary_hint_2_foodie">Hi 今天吃得好嗎？\n點選新增按鈕開始紀錄營養充滿的一天吧！</string>
     <string name="title_shape_record_info">紀錄成果</string>
     <string name="title_shape_record_choose_date">選擇日期</string>
@@ -75,7 +75,7 @@
     <string name="dialog_message_goal_setting_failure">還有目標尚未完成\n請先確認進行中的目標喔！</string>
     <string name="profile_puzzle_info">新增七天的食記\n就能獲得一片拼圖\n一起來蒐集吧！</string>
     <string name="goal_setting_hint_add_cheer_up">把目標具體化會更容易實現喔！</string>
-    <string name="shaperecord_add_record_hint">這週還沒有紀錄 趕快去新增吧！</string>
+    <string name="shaperecord_add_record_hint">這週還沒有紀錄 趕快去新增食記吧！</string>
     <string name="foodie_mood_hint">紀錄下努力的心得，也歡迎告解：）</string>
     <string name="achievement_add_record_hint">這個月還沒有紀錄 趕快去新增吧！</string>
     <string name="dialog_message_sleep_record_failure">還沒睡醒嗎？\n今天已新增過睡眠時間囉！</string>

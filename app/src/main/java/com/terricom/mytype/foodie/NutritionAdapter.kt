@@ -19,10 +19,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.Logger
 import com.terricom.mytype.databinding.ItemFoodieEditNewNutritionBinding
 import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 const val IMAGEVIEW_TAG_N = "icon bitmap"
@@ -31,41 +27,19 @@ private val EDIT_NUTRITION = 1
 
 class NutritionAdapter(val viewModel: FoodieViewModel
 //                       , private val onTouchListener: MyTouchListener
-                       ,private val onLongClickListenerNu: LongClickListenerNu
+//                       ,private val onLongClickListenerNu: LongClickListenerNu
+                    ,private val onClickListener: OnClickListener
 )
 
-    : ListAdapter<DataItemNu, RecyclerView.ViewHolder>(DiffCallback) {
+    : ListAdapter<String, NutritionAdapter.NutritionViewHolder>(DiffCallback) {
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
+    var addOrRemove : Boolean = true
 
-    fun addHeaderAndSubmitListNu(list : List<String>?) {
-        adapterScope.launch {
-            val newList = mutableListOf<DataItemNu>()
-            if (list != null) {
-                for (foodie in list) {
-                    newList.add(DataItemNu.NutritionList(foodie, viewModel))
-                }
-                newList.add(DataItemNu.EditNutrition(viewModel))
-            }
-            withContext(Dispatchers.Main) {
-                submitList(newList)
-            }
-        }
+    class OnClickListener(val clickListener: (nutrition: String) -> Unit) {
+        fun onClick(nutrition: String) = clickListener(nutrition)
     }
 
-    fun submitNutritions(list : List<String>?) {
-        adapterScope.launch {
-            val newList = mutableListOf<DataItemNu>()
-            if (list != null) {
-                for (foodie in list) {
-                    newList.add(DataItemNu.NutritionList(foodie, viewModel))
-                }
-            }
-            withContext(Dispatchers.Main) {
-                submitList(newList)
-            }
-        }
-    }
+
 
     class LongClickListenerNu: View.OnLongClickListener{
         override fun onLongClick(p0: View): Boolean {
@@ -171,12 +145,12 @@ class NutritionAdapter(val viewModel: FoodieViewModel
      * Allows the RecyclerView to determine which items have changed when the [List] of [Product]
      * has been updated.
      */
-    companion object DiffCallback : DiffUtil.ItemCallback<DataItemNu>() {
-        override fun areItemsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
     }
@@ -184,10 +158,8 @@ class NutritionAdapter(val viewModel: FoodieViewModel
     /**
      * Create new [RecyclerView] item views (invoked by the layout manager)
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
-        NUTRITIONLIST -> NutritionViewHolder(ItemFoodieNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        EDIT_NUTRITION -> EditNutritionViewHolder(ItemFoodieEditNewNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        else -> throw IllegalArgumentException()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NutritionViewHolder {
+        return NutritionViewHolder(ItemFoodieNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
@@ -226,57 +198,30 @@ class NutritionAdapter(val viewModel: FoodieViewModel
     /**
      * Replaces the contents of a view (invoked by the layout manager)
      */
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NutritionViewHolder, position: Int) {
         //// to pass onClicklistener into adapter in CartFragment
-        when (holder){
-            is NutritionViewHolder -> {
-                val nutrition = getItem(position) as DataItemNu.NutritionList
-                holder.itemView.setOnLongClickListener(onLongClickListenerNu)
-                holder.bind(nutrition.string ,viewModel)
+                val nutrition = getItem(position)
+        if (addOrRemove){
+            holder.itemView.setOnClickListener {
+                viewModel.dragToListNu(nutrition)
             }
-            is EditNutritionViewHolder -> {
-                holder.itemView.setOnLongClickListener(onLongClickListenerNu)
-                holder.bind(viewModel)
+        } else if (!addOrRemove){
+            holder.itemView.setOnClickListener {
+                viewModel.dragOutListNu(nutrition)
             }
         }
+                holder.bind(nutrition ,viewModel)
+
     }
 
-    override fun getItemViewType(position: Int): Int =
-        when (getItem(position)) {
-            is DataItemNu.NutritionList -> NUTRITIONLIST
-            is DataItemNu.EditNutrition -> EDIT_NUTRITION
 
-            else -> throw IllegalArgumentException()
-        }
-
-
-
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewAttachedToWindow(holder: NutritionViewHolder) {
         super.onViewAttachedToWindow(holder)
-        when (holder){
-            is NutritionViewHolder -> holder.markAttach()
-            is EditNutritionViewHolder -> holder.markAttach()
-        }
+        holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
+    override fun onViewDetachedFromWindow(holder: NutritionViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        when (holder){
-            is NutritionViewHolder -> holder.markDetach()
-            is EditNutritionViewHolder -> holder.markDetach()
-        }
+        holder.markDetach()
     }
-}
-
-sealed class DataItemNu {
-    data class NutritionList(val string: String, val viewModel: FoodieViewModel): DataItemNu(){
-        override val id = string
-    }
-    data class EditNutrition(val viewModel: FoodieViewModel) : DataItemNu(){
-        override val id = (Long.MIN_VALUE).toString()
-    }
-
-    abstract val id: String
-
-
 }

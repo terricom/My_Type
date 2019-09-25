@@ -569,7 +569,7 @@
 
                 <TextView
                         android:id="@+id/profile_hint_add_goal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
@@ -581,7 +581,7 @@
                         android:text="@string/profile_hint_add_goal_postit"
                         android:textAlignment="viewStart"
                         android:textSize="@dimen/text_content"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu" />
@@ -594,7 +594,7 @@
                         android:elevation="@dimen/elevation_all"
                         android:rotation="340.0"
                         android:scaleType="fitStart"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="@+id/profile_hint_add_goal"
                         app:layout_constraintStart_toStartOf="@+id/profile_hint_add_goal"
                         app:srcCompat="@drawable/icon_my_type_border" />

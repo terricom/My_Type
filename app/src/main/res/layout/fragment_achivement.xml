@@ -561,7 +561,7 @@
 
         <TextView
                 android:id="@+id/shaperecord_hint"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -570,10 +570,10 @@
                 android:paddingTop="80dp"
                 android:text="@string/achievement_add_record_hint"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/goal_body_fat" />
+                app:layout_constraintTop_toBottomOf="@+id/goal_body_fat" />
 
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/lineChart_guide"

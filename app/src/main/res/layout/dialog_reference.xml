@@ -19,7 +19,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{() -> dialog.dismiss()}">
 
             <TextView
                     android:id="@+id/text_message_content"
