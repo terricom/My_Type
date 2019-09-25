@@ -38,8 +38,6 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
-import com.terricom.mytype.tools.DateMask
-import com.terricom.mytype.tools.FoodieMask
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
@@ -121,17 +119,17 @@ class FoodieFragment: Fragment() {
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
                     viewModel.dragOutList(it)
                 })
-                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitList(foodie.foods)
+                if (binding.foodsTransportedRecycler.childCount != 0){
+                    binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
+                }
+                binding.dragFoodHint.visibility = View.GONE
+                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(foodie.foods)
                 binding.foodsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
                         resources.getDimension(R.dimen.recyclerview_between).toInt(),
                         true
                     )
                 )
-                val owner = binding.foodsTransportedRecycler.parent as ViewGroup
-                owner.removeView(binding.foodsTransportedRecycler)
-                binding.chosedFood.addView(binding.foodsTransportedRecycler)
-                binding.foodsTransportedRecycler.setOnLongClickListener(FoodAdapter.LongClickListener())
             }else {
                 editableFoods = mutableListOf("")
             }
@@ -145,18 +143,17 @@ class FoodieFragment: Fragment() {
                 binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
 
                 })
-
-                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitList(foodie.nutritions)
+                binding.dragNutritionHint.visibility = View.GONE
+                if (binding.nutritionsTransportedRecycler.childCount != 0){
+                    binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
+                }
+                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(foodie.nutritions)
                 binding.nutritionsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
                         resources.getDimension(R.dimen.recyclerview_between).toInt(),
                         true
                     )
                 )
-                val owner = binding.nutritionsTransportedRecycler.parent as ViewGroup
-                owner.removeView(binding.nutritionsTransportedRecycler)
-                binding.chosedNutrition.addView(binding.nutritionsTransportedRecycler)
-                binding.nutritionsTransportedRecycler.setOnLongClickListener(NutritionAdapter.LongClickListenerNu())
             }else{
                 editableNutritions = mutableListOf("")
             }
@@ -170,32 +167,40 @@ class FoodieFragment: Fragment() {
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
 
+        binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
+            viewModel.dragToList(it)
+        })
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
-            binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-                viewModel.dragToList(it)
-            })
-            (binding.foodsRecycler.adapter as FoodAdapter).submitList(it)
-            binding.foodsRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                    true
-                )
-            )
+            if (it.isNullOrEmpty()){
+                (binding.foodsRecycler.adapter as FoodAdapter).submitFoods(listOf("新增食物"))
+            }else {
+                (binding.foodsRecycler.adapter as FoodAdapter).submitFoods(it)
+            }
+
         })
+        binding.foodsRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
 
-
+        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
+            viewModel.dragToListNu(it)
+        })
         viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
-            binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-                viewModel.dragToListNu(it)
-            })
-            (binding.nutritionRecycler.adapter as NutritionAdapter).submitList(it)
-            binding.nutritionRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                    true
-                )
-            )
+            if (it.isNullOrEmpty()){
+                (binding.nutritionRecycler.adapter as NutritionAdapter).submitNutritions(listOf("新增營養"))
+            }else {
+                (binding.nutritionRecycler.adapter as NutritionAdapter).submitNutritions(it)
+            }
         })
+        binding.nutritionRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
 
         binding.foodiePhoto.setOnClickListener{
             //Requesting storage permission
@@ -241,9 +246,15 @@ class FoodieFragment: Fragment() {
         )
         viewModel.selectedFoodList.observe(this, Observer {
             Logger.i("selectedFoodList =$it")
-            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitList(it.distinct())
-
+            binding.dragFoodHint.visibility = View.GONE
+            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(it.distinct())
+            if (it.isNotEmpty()){
+                binding.foodsTransportedRecycler.smoothScrollToPosition(it.lastIndex)
+            }
         })
+        if (binding.foodsTransportedRecycler.childCount != 0){
+            binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
+        }
 
         binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
             viewModel.dragOutListNu(it)
@@ -251,8 +262,16 @@ class FoodieFragment: Fragment() {
         (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).addOrRemove = false
         viewModel.selectedNutritionList.observe(this, Observer {
 //            binding.dragNutritionHint.visibility = View.GONE
-            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitList(it)
+            binding.dragNutritionHint.visibility = View.GONE
+            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(it)
+            if (it.isNotEmpty()){
+                binding.nutritionsTransportedRecycler.smoothScrollToPosition(it.lastIndex)
+            }
         })
+        if (binding.nutritionsTransportedRecycler.childCount != 0){
+            binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
+        }
+
         binding.nutritionsTransportedRecycler.addItemDecoration(
             SpaceItemDecoration(
                 resources.getDimension(R.dimen.recyclerview_between).toInt(),
@@ -260,12 +279,12 @@ class FoodieFragment: Fragment() {
             )
         )
         //判斷 EditText
-        binding.numberWater.addTextChangedListener(FoodieMask())
-        binding.numberFruit.addTextChangedListener(FoodieMask())
-        binding.numberCarbon.addTextChangedListener(FoodieMask())
-        binding.numberCoconut.addTextChangedListener(FoodieMask())
-        binding.numberProtein.addTextChangedListener(FoodieMask())
-        binding.numberVegetable.addTextChangedListener(FoodieMask())
+//        binding.numberWater.addTextChangedListener(FoodieMask())
+//        binding.numberFruit.addTextChangedListener(FoodieMask())
+//        binding.numberCarbon.addTextChangedListener(FoodieMask())
+//        binding.numberCoconut.addTextChangedListener(FoodieMask())
+//        binding.numberProtein.addTextChangedListener(FoodieMask())
+//        binding.numberVegetable.addTextChangedListener(FoodieMask())
 
         //讀取手機解析度
         mPhone = DisplayMetrics()

@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.*
+import com.terricom.mytype.tools.Logger
 import java.sql.Time
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -57,14 +57,19 @@ class FoodieViewModel: ViewModel() {
         get() = _userNuList
 
     fun getFoodlist(foodlist: List<String>){
-        _userFoodList.value = foodlist
+        val newFooList = foodlist.toMutableList()
+        newFooList.add("新增食物")
+        Logger.i("getFoodlist newFooList = $newFooList")
+        _userFoodList.value = newFooList
         for (food in foodlist){
             newFuList.add(food)
         }
     }
 
     fun getNulist(nulist: List<String>){
-        _userNuList.value = nulist
+        val newNutritionList = nulist.toMutableList()
+        newNutritionList.add("新增營養")
+        _userNuList.value = newNutritionList
         for (nutrition in nulist){
             newNuList.add(nutrition)
         }
@@ -75,6 +80,9 @@ class FoodieViewModel: ViewModel() {
         selectedFood.add(food)
         addSelectedFoodList(selectedFood.distinct())
         newFuList.add(food)
+        if (newFuList.contains("新增食物")){
+            newFuList.remove("新增食物")
+        }
     }
 
     fun dragOutList(food: String) {
@@ -91,6 +99,9 @@ class FoodieViewModel: ViewModel() {
         selectedNutrition.add(nutrition)
         addSelectedNutritionList(selectedNutrition.distinct())
         newNuList.add(nutrition)
+        if (newNuList.contains("新增營養")){
+            newNuList.remove("新增營養")
+        }
     }
 
     fun dragOutListNu (nutrition: String) {

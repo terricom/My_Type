@@ -435,6 +435,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/number_vegetable" />
 
 
+
+
                 <LinearLayout
                         android:id="@+id/chosed_food"
                         android:layout_width="0dp"
@@ -449,25 +451,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/foodiePhoto">
 
-                    <EditText
-                            android:id="@+id/editFood"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/elevation_all"
-                            android:background="@drawable/calendar_date"
-                            android:fontFamily="@font/noto_sans"
-                            android:foregroundGravity="center_vertical"
-                            android:hint="@string/foodie_add_food"
-                            android:maxLength="10"
-                            android:paddingHorizontal="5dp"
-                            android:paddingVertical="1dp"
-                            android:singleLine="true"
-                            android:text="@={viewModel.editFood}"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorMyType"
-                            android:textColorHint="@color/colorMyType"
-                            android:textSize="@dimen/text_content" />
+<!--                    <EditText-->
+<!--                            android:id="@+id/editFood"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:layout_marginStart="@dimen/elevation_all"-->
+<!--                            android:background="@drawable/calendar_date"-->
+<!--                            android:fontFamily="@font/noto_sans"-->
+<!--                            android:foregroundGravity="center_vertical"-->
+<!--                            android:hint="@string/foodie_add_food"-->
+<!--                            android:maxLength="10"-->
+<!--                            android:paddingHorizontal="5dp"-->
+<!--                            android:paddingVertical="1dp"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="@={viewModel.editFood}"-->
+<!--                            android:textAlignment="center"-->
+<!--                            android:textColor="@color/colorMyType"-->
+<!--                            android:textColorHint="@color/colorMyType"-->
+<!--                            android:textSize="@dimen/text_content" />-->
 
                     <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/foods_transported_recycler"
@@ -480,6 +482,19 @@
                             tools:listitem="@layout/item_foodie_food" />
 
                 </LinearLayout>
+
+                <TextView
+                        android:id="@+id/drag_food_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/foodie_drag_food_hint"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"
+                        app:layout_constraintStart_toStartOf="@+id/chosed_food"
+                        app:layout_constraintTop_toTopOf="@+id/chosed_food" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/foods_recycler"
@@ -545,26 +560,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/button_coconut">
 
-                    <EditText
-                            android:id="@+id/editNutrition"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/elevation_all"
-                            android:background="@drawable/calendar_date"
-                            android:fontFamily="@font/noto_sans"
-                            android:foregroundGravity="center_vertical"
-                            android:hint="@string/diary_add_nutrition"
-                            android:maxLength="10"
-                            android:paddingHorizontal="5dp"
-                            android:paddingVertical="1dp"
-                            android:singleLine="true"
-                            android:text="@={viewModel.editNutrition}"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorMyType"
-                            android:textColorHint="@color/colorMyType"
-                            android:textSize="@dimen/text_content" />
-
                     <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/nutritions_transported_recycler"
                             android:layout_width="wrap_content"
@@ -577,6 +572,19 @@
                     </androidx.recyclerview.widget.RecyclerView>
 
                 </LinearLayout>
+
+
+                <TextView
+                        android:id="@+id/drag_nutrition_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/foodie_drag_nutrition_hint"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
+                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
+                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
 
                 <!--                <EditText-->
                 <!--                        android:id="@+id/add_nutrition"-->
