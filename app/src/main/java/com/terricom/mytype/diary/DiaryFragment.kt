@@ -14,12 +14,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentDiaryBinding
+import com.terricom.mytype.tools.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,8 +41,9 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
-            binding.diaryCalendar.updateCalendar()
-
+            if (!it.isNullOrEmpty()){
+                binding.diaryCalendar.updateCalendar()
+            }
         })
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->

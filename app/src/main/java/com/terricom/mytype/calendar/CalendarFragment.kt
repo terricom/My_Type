@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.diary.DiaryViewModel
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,7 +91,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                 resources.getDimension(R.dimen._1sdp).toInt(),
                 true
             ))
-
+            getThisMonth()
         }
 
     }
@@ -204,9 +204,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                         }
                     }
                     if (items.size != 0) {
+                        fireFoodieBackM(items)
+                        setRecordedDate(dates)
+                    } else if (items.size == 0){
+                        setRecordedDate(listOf(sdf.format(Date())))
                     }
-                    fireFoodieBackM(items)
-                    setRecordedDate(dates)
                 }
         }
     }

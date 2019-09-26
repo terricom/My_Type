@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.databinding.DialogMessageBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MessageDialog : AppCompatDialogFragment() {
 
@@ -28,6 +30,7 @@ class MessageDialog : AppCompatDialogFragment() {
         binding.lifecycleOwner = this
         binding.dialog = this
         this.isCancelable = true
+        com.terricom.mytype.tools.Logger.i("messageType = $messageType")
 
 
         return binding.root
@@ -36,7 +39,6 @@ class MessageDialog : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        Handler().postDelayed({ this.dismiss() }, 4000)
     }
 
     private fun init() {
@@ -76,5 +78,19 @@ class MessageDialog : AppCompatDialogFragment() {
         override var message: String
             get() = _message
             set(value) { _message = value }
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        if (messageType == MessageType.ADDED_SUCCESS){
+            this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                    (activity as MainActivity).fab.visibility = View.VISIBLE
+                    (activity as MainActivity).fabShadow.visibility = View.GONE
+                    (activity as MainActivity).closeFABMenu()
+        }else {
+
+        }
     }
 }

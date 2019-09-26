@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,10 +45,13 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             viewModel.bodyAge.value = shape.bodyAge
             viewModel.bodyWater.value = shape.bodyWater
             viewModel.tdee.value = shape.tdee
+            viewModel.docId.value = shape.docId
             binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
             binding.smartCustomCalendar.getThisMonth()
-
             binding.smartCustomCalendar.selectDateOut = shape.timestamp
+            binding.buttonShaperecordSave.setOnClickListener {
+                viewModel.updateShape2Firebase()
+            }
 
         }
 
@@ -122,23 +124,10 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         viewModel.addShapeResult.observe(this, androidx.lifecycle.Observer {
             if (it == true){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
-                },4005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_shape_record_failure)}
                 ))
-                Handler().postDelayed({findNavController().navigate(NavigationDirections.navigateToAchivementFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_achievment
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()},4005)
-
             }
         })
 

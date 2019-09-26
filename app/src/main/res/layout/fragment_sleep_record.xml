@@ -258,7 +258,6 @@
             android:layout_height="@dimen/height_all_bottom_layout"
             android:background="@color/colorMyType"
             android:fontFamily="@font/noto_sans"
-            android:onClick="@{() -> viewModel.addSleepHr()}"
             android:paddingLeft="@dimen/elevation_all"
             android:paddingTop="@dimen/elevation_all"
             android:paddingRight="@dimen/elevation_all"

@@ -350,6 +350,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             }
             is SleepViewHolder -> {
                 val sleep = getItem(position) as DataItem.SleepItem
+                holder.itemView.setOnClickListener {
+                    findNavController(holder.itemView).navigate(NavigationDirections.navigateToSleepFragment(viewModel.fireSleep.value!!))
+                }
                 holder.bind( sleep.viewModel)
             }
             is PlaceViewHolder ->{

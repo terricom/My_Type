@@ -224,6 +224,9 @@ class FoodieViewModel: ViewModel() {
 
     fun adjustFoodie(){
 
+        if (selectedFood.contains("新增食物")) {selectedFood.remove("新增食物")}
+        if (selectedNutrition.contains("新增營養")) {selectedNutrition.remove("新增營養")}
+
         //發文功能
         val foodieContent = hashMapOf(
             "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),

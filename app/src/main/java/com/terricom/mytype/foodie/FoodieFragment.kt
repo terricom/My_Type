@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -115,14 +116,16 @@ class FoodieFragment: Fragment() {
                 for (food in foodie.foods!!){
                     viewModel.dragToList(food)
                 }
-//                binding.dagFoodHint.visibility = View.GONE
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
                     viewModel.dragOutList(it)
                 })
                 if (binding.foodsTransportedRecycler.childCount != 0){
+                    binding.dragFoodHint.visibility = View.GONE
                     binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
+                } else {
+                    binding.dragFoodHint.visibility = View.VISIBLE
                 }
-                binding.dragFoodHint.visibility = View.GONE
+
                 (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(foodie.foods)
                 binding.foodsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
@@ -137,15 +140,17 @@ class FoodieFragment: Fragment() {
             if (foodie.nutritions!!.isNotEmpty()){
                 editableNutritions = foodie.nutritions!!.toMutableList()
                 for (nutrition in foodie.nutritions!!){
-                    viewModel.dragOutListNu(nutrition)
+                    viewModel.dragToListNu(nutrition)
                 }
-//                binding.dragNutritionHint.visibility = View.GONE
                 binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-
+                    viewModel.dragOutListNu(it)
                 })
-                binding.dragNutritionHint.visibility = View.GONE
+
                 if (binding.nutritionsTransportedRecycler.childCount != 0){
+                    binding.dragNutritionHint.visibility = View.GONE
                     binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
+                }else {
+                    binding.dragNutritionHint.visibility = View.VISIBLE
                 }
                 (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(foodie.nutritions)
                 binding.nutritionsTransportedRecycler.addItemDecoration(
@@ -157,6 +162,10 @@ class FoodieFragment: Fragment() {
             }else{
                 editableNutritions = mutableListOf("")
             }
+            if (!foodie.memo.isNullOrEmpty()){
+                viewModel.memo.value = foodie.memo
+            }
+
             binding.textFoodieSave.text = "確認修改"
 
         }else {
@@ -325,13 +334,13 @@ class FoodieFragment: Fragment() {
                         viewModel.clearData()
                     }
                     findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-//                    Handler().postDelayed({
+                    Handler().postDelayed({
                         findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                         (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                         (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                         (activity as MainActivity).fab.visibility = View.VISIBLE
                         (activity as MainActivity).closeFABMenu()
-//                    },4005)
+                    },2005)
 
 
                     if (isConnected()) {
