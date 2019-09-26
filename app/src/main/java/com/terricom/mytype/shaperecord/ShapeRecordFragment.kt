@@ -47,24 +47,23 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             viewModel.tdee.value = shape.tdee
             viewModel.docId.value = shape.docId
             binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
+            binding.smartCustomCalendar.setEventHandler(this)
+            binding.smartCustomCalendar.filterdate(shape.timestamp)
             binding.smartCustomCalendar.getThisMonth()
-            binding.smartCustomCalendar.selectDateOut = shape.timestamp
+            binding.smartCustomCalendar.selectedDayOut = shape.timestamp
+
+            binding.smartCustomCalendar.isSelected = true
+            binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+                binding.smartCustomCalendar.updateCalendar()
+            })
             binding.buttonShaperecordSave.setOnClickListener {
+                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 viewModel.updateShape2Firebase()
+                viewModel.clearData()
             }
 
-        }
+        } else {
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-                (activity as MainActivity).closeFABMenu()
-
-            }
-        }
 
         val calendar: Calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -77,22 +76,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
             binding.smartCustomCalendar.updateCalendar()
         })
-
-
-        viewModel.date.observe(this, androidx.lifecycle.Observer {
-            viewModel.getThisMonth()
-        })
-
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
-        binding.buttonBack2Main.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-            (activity as MainActivity).fab.visibility = View.VISIBLE
-            (activity as MainActivity).closeFABMenu()
-
-        }
 
         binding.buttonShaperecordSave.setOnClickListener {
             it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
@@ -112,7 +95,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 }
                 viewModel.addShape()
                 viewModel.clearData()
-                }else if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
+            }else if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
                     .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
                     .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
                 Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
@@ -120,6 +103,34 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             }
 
         }
+        }
+
+
+        viewModel.date.observe(this, androidx.lifecycle.Observer {
+            viewModel.getThisMonth()
+        })
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
+                (activity as MainActivity).closeFABMenu()
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+        binding.buttonBack2Main.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
+
+        }
+
 
         viewModel.addShapeResult.observe(this, androidx.lifecycle.Observer {
             if (it == true){

@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -120,7 +120,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@ShapeCalendarFragment
-            this.recordedDates = recordedDate.value!!
+            this.recordedDates = recordedDate.value ?: listOf()
             this.selectedDateBefore = selectedDayOut
         }
 

@@ -346,6 +346,9 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             }
             is ShapeViewHolder -> {
                 val shape = getItem(position) as DataItem.ShapeItem
+                holder.itemView.setOnClickListener {
+                    findNavController(holder.itemView).navigate(NavigationDirections.navigateToShapeRecordFragment(viewModel.fireShape.value!!))
+                }
                 holder.bind( shape.viewModel)
             }
             is SleepViewHolder -> {

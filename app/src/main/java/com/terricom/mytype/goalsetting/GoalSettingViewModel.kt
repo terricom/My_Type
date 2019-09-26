@@ -9,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,6 +55,7 @@ class GoalSettingViewModel: ViewModel() {
     var weight = MutableLiveData<Float>()
     var bodyFat = MutableLiveData<Float>()
     var muscle = MutableLiveData<Float>()
+    val goalDocId = MutableLiveData<String>()
 
     fun setDate(date: Date){
         _date.value = date
@@ -102,30 +102,63 @@ class GoalSettingViewModel: ViewModel() {
             val goal = user
                 .document(userUid).collection("Goal")
                 .orderBy("deadline", Query.Direction.DESCENDING)
-//                .whereLessThanOrEqualTo("deadline", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-//                .whereGreaterThanOrEqualTo("deadline", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
 
             goal.get()
                 .addOnSuccessListener { result->
-                    if (result.isEmpty){
-                        user.document(userUid).collection("Goal").document().set(goalContent)
-                        addGoal2FirebaseSuccess()
-                    }else{
-                        val items = mutableListOf<Goal>()
+                    val items = mutableListOf<Goal>()
                     for (doc in result){
                         val goal = doc.toObject(Goal::class.java)
                         items.add(goal)
                     }
-                        Logger.i("items = $items")
-                    if (items[0].deadline!!.time < Date().time && sdf.format(items[0].deadline)!= sdf.format(date.value)
-                        && sdf.format(items[0].deadline)!= sdf.format(Date())){
+                    if (items.isEmpty()){
                         user.document(userUid).collection("Goal").document().set(goalContent)
                         addGoal2FirebaseSuccess()
-                    } else {
-                        addGoal2FirebaseFail()
-                    }
+                    }else {
+                        if (items[0].deadline!!.time > Date().time //現在日期早於最近一筆目標日期
+//                            && sdf.format(items[0].deadline)!= sdf.format(date.value)
+//                            && sdf.format(items[0].deadline)!= sdf.format(Date())
+                        ){
+                            addGoal2FirebaseFail()
+                        } else {
+                            user.document(userUid).collection("Goal").document().set(goalContent)
+                            addGoal2FirebaseSuccess()
+                        }
                     }
 
+                }
+        }
+
+
+    }
+
+    fun adjustGoal(){
+
+        //發文功能
+        val goalContent = hashMapOf(
+            "timestamp" to FieldValue.serverTimestamp(),
+            "deadline" to Timestamp.valueOf("${sdf.format(date.value)} 12:00:00.000000000"),
+            "water" to water.value,
+            "oil" to oil.value,
+            "vegetable" to vegetable.value,
+            "protein" to protein.value,
+            "fruit" to fruit.value,
+            "carbon" to carbon.value,
+            "weight" to weight.value,
+            "bodyFat" to bodyFat.value,
+            "muscle" to muscle.value,
+            "cheerUp" to cheerUp.value
+        )
+
+        if (userUid!!.isNotEmpty()){
+
+            val goal = user
+                .document(userUid).collection("Goal")
+                .orderBy("deadline", Query.Direction.DESCENDING)
+
+            goal.get()
+                .addOnSuccessListener { result->
+                    user.document(userUid).collection("Goal").document(goalDocId.value!!).set(goalContent)
+                    addGoal2FirebaseSuccess()
                 }
         }
 

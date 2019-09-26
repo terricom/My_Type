@@ -99,10 +99,12 @@
     <string name="foodie_cancel">取消</string>
     <string name="foodie_add_photo_title">新增照片</string>
     <string name="profile_hint_add_goal">目前尚未新增目標\n點選下方按鈕去設定\n每日的飲食目標喔！</string>
-    <string name="profile_hint_add_goal_postit">目前尚未新增目標\n點選下方按鈕可以設定每日的飲食目標喔！</string>
+    <string name="profile_hint_add_goal_postit">目前尚未新增目標\n點選下方按鈕可以\n設定每日的飲食目標喔！</string>
     <string name="shaperecord_input_hint">無法新增空白的成果，請再確認喔！</string>
     <string name="foodie_input_hint">這一餐攝取了多少營養呢？別忘了記錄下來</string>
     <string name="diary_title_sleep_today">今日睡眠</string>
     <string name="diary_dialog_sleep">睡眠圖示</string>
+    <string name="goal_title_adjust_goal">修改目標</string>
+    <string name="goalsetting_input_hint">無法新增空白的目標，請再確認喔！</string>
 
 </resources>

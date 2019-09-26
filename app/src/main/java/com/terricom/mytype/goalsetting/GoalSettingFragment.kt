@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,7 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
         if (goal.deadline != null){
             viewModel.updateGoal(goal)
-            binding.shapeRecordTitle.text = "修改目標"
+            binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.goal_title_adjust_goal)
 
             viewModel.setDate(goal.deadline)
             viewModel.water.value = goal.water
@@ -56,38 +55,63 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             viewModel.bodyFat.value = goal.bodyFat
             viewModel.muscle.value = goal.muscle
             viewModel.cheerUp.value = goal.cheerUp
+            viewModel.goalDocId.value = goal.docId
 
-            binding.textGoalSave.text = "確認修改"
+            binding.smartCustomCalendar.setEventHandler(this)
+            binding.smartCustomCalendar.filterdate(goal.deadline)
+            binding.smartCustomCalendar.getThisMonth()
+            binding.smartCustomCalendar.selectedDayOut = goal.deadline
+
+            binding.smartCustomCalendar.isSelected = true
+            binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+                binding.smartCustomCalendar.updateCalendar()
+            })
+            binding.textGoalSave.text = App.applicationContext().getString(R.string.add_new_confirm)
+            binding.buttonGoalSettingSave.setOnClickListener {
+                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+                viewModel.adjustGoal()
+            }
 
         }else {
 
+            binding.smartCustomCalendar.setEventHandler(this)
+            binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
+            binding.smartCustomCalendar.getThisMonth()
+            binding.smartCustomCalendar.recordedDate.observe(this, Observer {
+                binding.smartCustomCalendar.updateCalendar()
+            })
+
+
+            binding.buttonGoalSettingSave.setOnClickListener{
+
+                binding.smartCustomCalendar.selectDateOut?.let {
+                    Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
+                    viewModel.setDate(it)
+                }
+                if (isConnected()) {
+                    if ((viewModel.water.value ?: 0f).plus(viewModel.fruit.value ?: 0f).plus(viewModel.vegetable.value ?: 0f)
+                            .plus(viewModel.oil.value ?: 0f).plus(viewModel.protein.value ?: 0f).plus(viewModel.carbon.value ?: 0f)
+                            .plus(viewModel.weight.value ?: 0f).plus(viewModel.muscle.value ?: 0f).plus(viewModel.bodyFat.value ?: 0f) != 0f){
+                    viewModel.addGoal()
+                    }
+                    else {
+                        Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goalsetting_input_hint), Toast.LENGTH_SHORT).show()
+                    }
+                    Logger.i("NetworkConnection Network Connected.")
+                    //執行下載任務
+                }else{
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                    //告訴使用者網路無法使用
+                }
+            }
         }
 
-        binding.buttonGoalSettingSave.setOnClickListener{
-            binding.smartCustomCalendar.selectDateOut?.let {
-                Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
-                viewModel.setDate(it)
-            }
-            if (isConnected()) {
-                viewModel.addGoal()
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
-            }
-        }
+
 
         viewModel.addGoal.observe(this, Observer {
             if (it == true){
+                binding.buttonGoalSettingSave.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
-                },4005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_goal_setting_failure) }
@@ -108,9 +132,9 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         binding.buttonBack2Main.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+            findNavController().navigate(NavigationDirections.navigateToProfileFragment())
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigate_to_profile_fragment
             (activity as MainActivity).fab.visibility = View.VISIBLE
             (activity as MainActivity).closeFABMenu()
 
@@ -120,12 +144,6 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
         }
 
-        binding.smartCustomCalendar.setEventHandler(this)
-        binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
-        binding.smartCustomCalendar.getThisMonth()
-        binding.smartCustomCalendar.recordedDate.observe(this, Observer {
-            binding.smartCustomCalendar.updateCalendar()
-        })
 
 
         return binding.root

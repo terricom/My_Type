@@ -46,6 +46,7 @@
                 android:inputType="number"
                 android:digits="1234567890."
                 android:maxLength="5"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_water"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/shaperecord_title_weight"
@@ -83,6 +84,7 @@
                 android:inputType="number"
                 android:digits="1234567890."
                 android:maxLength="4"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_water"
                 app:layout_constraintEnd_toStartOf="@+id/shaperecord_title_body_fat"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -122,6 +124,7 @@
                 android:inputType="number"
                 android:digits="1234567890."
                 android:maxLength="4"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_fat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -162,6 +165,7 @@
                 android:inputType="number"
                 android:digits="1234567890"
                 android:maxLength="6"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintEnd_toEndOf="@+id/number_weight"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/shaperecord_title_tdee"
@@ -197,6 +201,7 @@
                 android:inputType="number"
                 android:digits="1234567890."
                 android:maxLength="4"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_muscle"
                 app:layout_constraintEnd_toEndOf="@+id/number_body_water"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -235,6 +240,7 @@
                 android:inputType="number"
                 android:digits="1234567890"
                 android:maxLength="4"
+                android:theme="@style/EditTextTheme"
                 app:layout_constraintBottom_toBottomOf="@+id/shaperecord_title_body_age"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -249,7 +255,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></com.terricom.mytype.shaperecord.ShapeCalendarFragment>
+                app:layout_constraintTop_toTopOf="parent">
+        </com.terricom.mytype.shaperecord.ShapeCalendarFragment>
 
         <ImageView
                 android:id="@+id/button_shaperecord_save"
@@ -295,17 +302,17 @@
                 app:srcCompat="@drawable/icon_back" />
 
         <TextView
-            android:id="@+id/foodie_title_nutrition"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/title_shape_record_info"
-            android:textAlignment="viewStart"
-            android:textColor="@color/colorMyType"
-            android:textSize="@dimen/text_content_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/smartCustomCalendar" />
+                android:id="@+id/foodie_title_nutrition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_shape_record_info"
+                android:textAlignment="viewStart"
+                android:textColor="@color/colorMyType"
+                android:textSize="@dimen/text_content_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/smartCustomCalendar" />
 
         <ImageView
                 android:id="@+id/button_shape_show_info"

@@ -15,7 +15,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -39,6 +38,7 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.tools.DateMask
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
@@ -173,6 +173,8 @@ class FoodieFragment: Fragment() {
             editableFoods = mutableListOf("")
         }
 
+//        binding.editDate.addTextChangedListener(DateMask())
+
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
 
@@ -246,6 +248,7 @@ class FoodieFragment: Fragment() {
         binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
             viewModel.dragOutList(it)
         })
+
         (binding.foodsTransportedRecycler.adapter as FoodAdapter).addOrRemove = false
         binding.foodsTransportedRecycler.addItemDecoration(
             SpaceItemDecoration(
@@ -334,14 +337,6 @@ class FoodieFragment: Fragment() {
                         viewModel.clearData()
                     }
                     findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                    Handler().postDelayed({
-                        findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                        (activity as MainActivity).fab.visibility = View.VISIBLE
-                        (activity as MainActivity).closeFABMenu()
-                    },2005)
-
 
                     if (isConnected()) {
                         Logger.i("NetworkConnection Network Connected.")
