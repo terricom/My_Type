@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -78,6 +78,7 @@ class ShapeRecordViewModel: ViewModel() {
         _updateShape.value = shape
     }
 
+    val docId = MutableLiveData<String>()
 
     init {
         setDate(Date())
@@ -91,7 +92,7 @@ class ShapeRecordViewModel: ViewModel() {
 
     fun addShape(){
 
-        com.terricom.mytype.Logger.i("date.value = ${date.value}")
+        Logger.i("date.value = ${date.value}")
         //發文功能
         val shapeContent = hashMapOf(
             "timestamp" to Timestamp(date.value!!.time),
@@ -114,6 +115,31 @@ class ShapeRecordViewModel: ViewModel() {
                             addShapeSuccess()
                         }
 //                    }
+
+                }
+        }
+
+    }
+
+    fun updateShape2Firebase(){
+
+        Logger.i("date.value = ${date.value}")
+        //發文功能
+        val shapeContent = hashMapOf(
+            "timestamp" to Timestamp(date.value!!.time),
+            "weight" to weight.value,
+            "bodyWater" to bodyWater.value,
+            "bodyFat" to bodyFat.value,
+            "muscle" to muscle.value,
+            "tdee" to tdee.value,
+            "bodyAge" to bodyAge.value
+        )
+
+        if (userUid!!.isNotEmpty()) {
+            user.get()
+                .addOnSuccessListener { result ->
+                    user.document(userUid).collection("Shape").document(docId.value!!).set(shapeContent)
+                    addShapeSuccess()
 
                 }
         }

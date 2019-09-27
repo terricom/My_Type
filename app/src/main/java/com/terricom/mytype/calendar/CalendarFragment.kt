@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.diary.DiaryViewModel
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,12 +39,15 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     private lateinit var buttonBack: ImageView
     private lateinit var buttonNext: ImageView
+    private lateinit var buttonBackLarge: ImageView
+    private lateinit var buttonNextLarge: ImageView
     private lateinit var txtDate: TextView
     private lateinit var gridRecycler: RecyclerView
     private lateinit var currentDateCalendar: Calendar
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
+    var calendar = Date()
 
 
     constructor(context: Context?) : super(context) {
@@ -67,18 +70,28 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
+            buttonBackLarge = findViewById(R.id.buttonBack)
+            buttonNextLarge = findViewById(R.id.buttonNext)
             txtDate = findViewById(R.id.itemDate)
             gridRecycler = findViewById(R.id.gridCalendar)
 
             buttonNext.setOnClickListener {
                 currentDateCalendar.add(Calendar.MONTH, 1)
-
                 eventHandler?.onCalendarNextPressed()
-
+                checkStateNextButton()
+            }
+            buttonNextLarge.setOnClickListener {
+                currentDateCalendar.add(Calendar.MONTH, 1)
+                eventHandler?.onCalendarNextPressed()
                 checkStateNextButton()
             }
 
             buttonBack.setOnClickListener{
+                currentDateCalendar.add(Calendar.MONTH, -1)
+                eventHandler?.onCalendarPreviousPressed()
+                checkStateNextButton()
+            }
+            buttonBackLarge.setOnClickListener {
                 currentDateCalendar.add(Calendar.MONTH, -1)
                 eventHandler?.onCalendarPreviousPressed()
                 checkStateNextButton()
@@ -91,7 +104,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                 resources.getDimension(R.dimen._1sdp).toInt(),
                 true
             ))
-
+            getThisMonth()
         }
 
     }
@@ -120,7 +133,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             this.listener = this@CalendarFragment
             this.recordedDates = recordedDate.value!!
         }
-
         gridRecycler.adapter = calendarAdapter
         setHeader(currentDateCalendar)
 
@@ -128,7 +140,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     val viewModel = DiaryViewModel()
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    var selectedDayOut: Date = Date()
+    var selectedDayOut = Date()
     val thisMonth: List<String> ?= null
 
 
@@ -204,9 +216,11 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
                         }
                     }
                     if (items.size != 0) {
+                        fireFoodieBackM(items)
+                        setRecordedDate(dates)
+                    } else if (items.size == 0){
+                        setRecordedDate(listOf(sdf.format(Date())))
                     }
-                    fireFoodieBackM(items)
-                    setRecordedDate(dates)
                 }
         }
     }

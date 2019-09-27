@@ -15,12 +15,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import android.provider.MediaStore
 import android.util.DisplayMetrics
-import android.view.*
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -37,6 +38,8 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.tools.DateMask
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
@@ -113,19 +116,23 @@ class FoodieFragment: Fragment() {
                 for (food in foodie.foods!!){
                     viewModel.dragToList(food)
                 }
-                binding.dagFoodHint.visibility = View.GONE
-                binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
-                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(foodie.foods)
+                binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
+                    viewModel.dragOutList(it)
+                })
+                if (binding.foodsTransportedRecycler.childCount != 0){
+                    binding.dragFoodHint.visibility = View.GONE
+                    binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
+                } else {
+                    binding.dragFoodHint.visibility = View.VISIBLE
+                }
+
+                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(foodie.foods)
                 binding.foodsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
                         resources.getDimension(R.dimen.recyclerview_between).toInt(),
                         true
                     )
                 )
-                val owner = binding.foodsTransportedRecycler.parent as ViewGroup
-                owner.removeView(binding.foodsTransportedRecycler)
-                binding.chosedFood.addView(binding.foodsTransportedRecycler)
-                binding.foodsTransportedRecycler.setOnLongClickListener(FoodAdapter.LongClickListener())
             }else {
                 editableFoods = mutableListOf("")
             }
@@ -133,24 +140,32 @@ class FoodieFragment: Fragment() {
             if (foodie.nutritions!!.isNotEmpty()){
                 editableNutritions = foodie.nutritions!!.toMutableList()
                 for (nutrition in foodie.nutritions!!){
-                    viewModel.dragOutListNu(nutrition)
+                    viewModel.dragToListNu(nutrition)
                 }
-                binding.dragNutritionHint.visibility = View.GONE
-                binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
-                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(foodie.nutritions)
+                binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
+                    viewModel.dragOutListNu(it)
+                })
+
+                if (binding.nutritionsTransportedRecycler.childCount != 0){
+                    binding.dragNutritionHint.visibility = View.GONE
+                    binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
+                }else {
+                    binding.dragNutritionHint.visibility = View.VISIBLE
+                }
+                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(foodie.nutritions)
                 binding.nutritionsTransportedRecycler.addItemDecoration(
                     SpaceItemDecoration(
                         resources.getDimension(R.dimen.recyclerview_between).toInt(),
                         true
                     )
                 )
-                val owner = binding.nutritionsTransportedRecycler.parent as ViewGroup
-                owner.removeView(binding.nutritionsTransportedRecycler)
-                binding.chosedNutrition.addView(binding.nutritionsTransportedRecycler)
-                binding.nutritionsTransportedRecycler.setOnLongClickListener(NutritionAdapter.LongClickListenerNu())
             }else{
                 editableNutritions = mutableListOf("")
             }
+            if (!foodie.memo.isNullOrEmpty()){
+                viewModel.memo.value = foodie.memo
+            }
+
             binding.textFoodieSave.text = "確認修改"
 
         }else {
@@ -158,38 +173,57 @@ class FoodieFragment: Fragment() {
             editableFoods = mutableListOf("")
         }
 
+        binding.editDate.addTextChangedListener(DateMask())
+
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
 
-        binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
+        binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
+            viewModel.dragToList(it)
+        })
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
-            (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(it)
-            binding.foodsRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                    true
-                )
-            )
-        })
+            if (it.isNullOrEmpty()){
+                (binding.foodsRecycler.adapter as FoodAdapter).submitFoods(listOf("新增食物"))
+            }else {
+                (binding.foodsRecycler.adapter as FoodAdapter).submitFoods(it)
+            }
 
-        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
-        viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
-            (binding.nutritionRecycler.adapter as NutritionAdapter).addHeaderAndSubmitListNu(it)
-            binding.nutritionRecycler.addItemDecoration(
-                SpaceItemDecoration(
-                    resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                    true
-                )
-            )
-            (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
         })
+        binding.foodsRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
+
+        binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
+            viewModel.dragToListNu(it)
+        })
+        viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
+            if (it.isNullOrEmpty()){
+                (binding.nutritionRecycler.adapter as NutritionAdapter).submitNutritions(listOf("新增營養"))
+            }else {
+                (binding.nutritionRecycler.adapter as NutritionAdapter).submitNutritions(it)
+            }
+        })
+        binding.nutritionRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
 
         binding.foodiePhoto.setOnClickListener{
             //Requesting storage permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getPermissions()
             }
-            selectImage()
+            if (mLocationPermissionsGranted){
+                selectImage()
+            } else if (!mLocationPermissionsGranted){
+                Toast.makeText(App.applicationContext(), "記得到系統設定相機和相簿權限才能上傳喔",Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.buttonShapeShowInfo.setOnClickListener {
@@ -215,182 +249,111 @@ class FoodieFragment: Fragment() {
             (activity as MainActivity).closeFABMenu()
         }
 
-        class MyDragListener : View.OnDragListener {
 
-            override fun onDrag(v: View, event: DragEvent): Boolean {
-                val action = event.action
-                when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> {
-                    }
-                    DragEvent.ACTION_DROP -> {
-                        // Dropped, reassign View to ViewGroup
-                        val view = event.localState as View
-                        val owner = view.parent as ViewGroup
-                        owner.removeView(view)
-                        val container = v as LinearLayout
-                        container.addView(view)
-                        view.visibility = View.VISIBLE
-                        view.setOnTouchListener(FoodAdapter.MyTouchListener())
-                        binding.dagFoodHint.visibility = View.INVISIBLE
-                        viewModel.dragToList("${view.findViewById<TextView>(R.id.food).text}")
-//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-                        (binding.foodsRecycler.adapter as FoodAdapter).addHeaderAndSubmitList(viewModel.userFoodList.value)
-                       editableFoods.add("${view.findViewById<TextView>(R.id.food).text}")
-                    }
+        binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
+            viewModel.dragOutList(it)
+        })
 
-                    else -> {
-                    }
-                }// do nothing
-                return true
+        (binding.foodsTransportedRecycler.adapter as FoodAdapter).addOrRemove = false
+        binding.foodsTransportedRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
+        viewModel.selectedFoodList.observe(this, Observer {
+            Logger.i("selectedFoodList =$it")
+            binding.dragFoodHint.visibility = View.GONE
+            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(it.distinct())
+            if (it.isNotEmpty()){
+                binding.foodsTransportedRecycler.smoothScrollToPosition(it.lastIndex)
             }
+        })
+        if (binding.foodsTransportedRecycler.childCount != 0){
+            binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
         }
 
-        class MyDragListenerNu : View.OnDragListener {
-
-            override fun onDrag(v: View, event: DragEvent): Boolean {
-                val action = event.action
-                when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> {
-                    }
-                    DragEvent.ACTION_DROP -> {
-                        // Dropped, reassign View to ViewGroup
-                        val view = event.localState as View
-                        val owner = view.parent as ViewGroup
-                        owner.removeView(view)
-                        val container = v as LinearLayout
-                        container.addView(view)
-                        view.visibility = View.VISIBLE
-                        view.setOnTouchListener(NutritionAdapter.MyTouchListener())
-                        binding.dragNutritionHint.visibility = View.INVISIBLE
-                        viewModel.dragToListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
-                        editableNutritions.add("${view.findViewById<TextView>(R.id.nutrition).text}")}
-                    else -> {
-                    }
-                }// do nothing
-                return true
+        binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
+            viewModel.dragOutListNu(it)
+        })
+        (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).addOrRemove = false
+        viewModel.selectedNutritionList.observe(this, Observer {
+//            binding.dragNutritionHint.visibility = View.GONE
+            binding.dragNutritionHint.visibility = View.GONE
+            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(it)
+            if (it.isNotEmpty()){
+                binding.nutritionsTransportedRecycler.smoothScrollToPosition(it.lastIndex)
             }
+        })
+        if (binding.nutritionsTransportedRecycler.childCount != 0){
+            binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
         }
 
-        class CleanDragListener : View.OnDragListener {
-
-            override fun onDrag(v: View, event: DragEvent): Boolean {
-                val action = event.action
-                when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> {
-                    }
-                    DragEvent.ACTION_DROP -> {
-                        // Dropped, reassign View to ViewGroup
-                        val view = event.localState as View
-                        val owner = view.parent as ViewGroup
-                        owner.removeView(view)
-                        val container = v as LinearLayout
-                        container.addView(view)
-                        view.visibility = View.GONE
-                        viewModel.dragOutList("${view.findViewById<TextView>(R.id.food).text}")
-//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-                        (binding.foodsRecycler.adapter as FoodAdapter).notifyDataSetChanged()
-                        if ((foodie.foods ?: listOf<String>("")).isNotEmpty()){
-                            editableFoods.remove("${view.findViewById<TextView>(R.id.food).text}")
-                        }
-                        foodie.foods?.let {
-                            editableFoods.remove("")
-                            binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.LongClickListener())
-                            (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoods(editableFoods)
-                        }
-
-                    }
-                    else -> {
-                    }
-                }// do nothing
-                return true
-            }
-        }
-
-        class CleanDragListenerNu : View.OnDragListener {
-
-            override fun onDrag(v: View, event: DragEvent): Boolean {
-                val action = event.action
-                when (event.action) {
-                    DragEvent.ACTION_DRAG_STARTED -> {
-                    }
-                    DragEvent.ACTION_DROP -> {
-                        // Dropped, reassign View to ViewGroup
-                        val view = event.localState as View
-                        val owner = view.parent as ViewGroup
-                        owner.removeView(view)
-                        val container = v as LinearLayout
-                        container.addView(view)
-                        view.visibility = View.GONE
-                        viewModel.dragOutListNu("${view.findViewById<TextView>(R.id.nutrition).text}")
-//                        viewModel.dragToList("${view.findViewById<EditText>(R.id.food).text}")
-                        (binding.nutritionRecycler.adapter as NutritionAdapter).notifyDataSetChanged()
-                        if ((foodie.nutritions ?: listOf("")).isNotEmpty()){
-                        editableNutritions.remove("${view.findViewById<TextView>(R.id.nutrition).text}")
-                        }
-                        foodie.nutritions?.let {
-                            editableNutritions.remove("")
-                            Logger.i("editableNutritions =${editableNutritions}")
-                            binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.LongClickListenerNu())
-                            (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritions(editableNutritions)
-                        }
-                    }
-                    else -> {
-                    }
-                }// do nothing
-                return true
-            }
-        }
-
-        Logger.i("viewModel.selectedFood = ${viewModel.selectedFood}")
-        binding.foodsMoveOut.setOnDragListener(CleanDragListener())
-        binding.chosedFood.setOnDragListener(MyDragListener())
-        binding.chosedNutrition.setOnDragListener(MyDragListenerNu())
-        binding.nutritionsMoveOut.setOnDragListener(CleanDragListenerNu())
+        binding.nutritionsTransportedRecycler.addItemDecoration(
+            SpaceItemDecoration(
+                resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                true
+            )
+        )
+        //判斷 EditText
+//        binding.numberWater.addTextChangedListener(FoodieMask())
+//        binding.numberFruit.addTextChangedListener(FoodieMask())
+//        binding.numberCarbon.addTextChangedListener(FoodieMask())
+//        binding.numberCoconut.addTextChangedListener(FoodieMask())
+//        binding.numberProtein.addTextChangedListener(FoodieMask())
+//        binding.numberVegetable.addTextChangedListener(FoodieMask())
 
         //讀取手機解析度
         mPhone = DisplayMetrics()
         getWindowManager(App.applicationContext()).defaultDisplay.getMetrics(mPhone)
 
-        binding.editDate.addTextChangedListener(DateMask())
-
         binding.buttonFoodieSave.setOnClickListener {
-            Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
-            if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
-                viewModel.setDate(java.util.Date())
-            }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
-            }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
-            }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+
+            if ((viewModel.water.value ?: 0.0f).plus(viewModel.fruit.value ?: 0.0f)
+                    .plus(viewModel.vegetable.value ?: 0.0f).plus(viewModel.oil.value ?: 0.0f)
+                    .plus(viewModel.protein.value ?: 0.0f).plus(viewModel.carbon.value ?: 0.0f) != 0.0f){
+
+                if (!viewModel.editFood.value.isNullOrEmpty()){
+                    viewModel.dragToList(viewModel.editFood.value!!)
+                }
+                if (!viewModel.editNutrition.value.isNullOrEmpty()){
+                    viewModel.dragToListNu(viewModel.editNutrition.value!!)
+                }
+
+                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+                    Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
+                    if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
+                        viewModel.setDate(java.util.Date())
+                    }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
+                    }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
+                    }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+                    }
+
+                    if (foodie.docId != ""){
+                        viewModel.adjustFoodie()
+                        viewModel.updateFoodAndNuList()
+                        viewModel.clearData()
+                    } else {
+                        viewModel.addFoodie()
+                        viewModel.updateFoodAndNuList()
+                        viewModel.clearData()
+                    }
+                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
+
+                    if (isConnected()) {
+                        Logger.i("NetworkConnection Network Connected.")
+                        //執行下載任務
+                    }else{
+                        Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                        //告訴使用者網路無法使用
+                    }
+            }else {
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.foodie_input_hint), Toast.LENGTH_SHORT).show()
             }
 
-            if (foodie.docId != ""){
-                viewModel.adjustFoodie()
-                viewModel.updateFoodAndNuList()
-                viewModel.clearData()
-            } else {
-                viewModel.addFoodie()
-                viewModel.updateFoodAndNuList()
-                viewModel.clearData()
-            }
-            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-            Handler().postDelayed({
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-                (activity as MainActivity).closeFABMenu()
-            },4005)
-
-            
-            if (isConnected()) {
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
-            }
 
         }
 
@@ -457,6 +420,9 @@ class FoodieFragment: Fragment() {
             filePath = data.data
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             try {
+                Logger.i("before uploadFile")
+                uploadFile()
+                Logger.i("after uploadFile")
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -470,16 +436,20 @@ class FoodieFragment: Fragment() {
                 else ScalePic(outBitmap, mPhone!!.widthPixels)
                 bitmap!!.recycle()
 
-                uploadFile()
-
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
         }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
+
             val contentUri: Uri = getUriForFile(this.context!!
                 , App.applicationContext().packageName+ ".provider", pictureFile!!)
             filePath = contentUri
+
+            Logger.i("before uploadFile")
+            uploadFile()
+            Logger.i("after uploadFile")
+
             bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
             val degree = getImageRotation(App.applicationContext(),filePath!!)
             Logger.i("degree = $degree")
@@ -491,7 +461,6 @@ class FoodieFragment: Fragment() {
             if(outBitmap!!.width > outBitmap.height)ScalePic(outBitmap, mPhone!!.widthPixels)
             else ScalePic(outBitmap, mPhone!!.widthPixels)
 
-            uploadFile()
         }
     }
 
@@ -607,7 +576,7 @@ class FoodieFragment: Fragment() {
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
                         viewModel.setPhoto(it.result!!)
-                        Logger.i("FoodieFragment uploadFile =${it.result}")
+                        Logger.i("FoodieFragment uploadFile=${it.result}")
                     }
                         .addOnFailureListener {
                             Logger.i("FoodieFragment uploadFile failed =$it")
@@ -664,7 +633,6 @@ class FoodieFragment: Fragment() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
-
         if (ContextCompat.checkSelfPermission(App.applicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(App.applicationContext(),
@@ -717,9 +685,10 @@ class FoodieFragment: Fragment() {
                     } catch ( e: IOException) {
                         e.printStackTrace()
                     }
-                }}
-
+                }
         }
+
+    }
 
 
 

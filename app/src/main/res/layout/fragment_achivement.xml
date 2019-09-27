@@ -14,13 +14,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbarCurrentDate"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:paddingLeft="@dimen/default_screen_padding"
+                android:background="@color/colorMyType"
                 android:paddingTop="@dimen/_12sdp"
-                android:paddingRight="@dimen/default_screen_padding"
                 android:paddingBottom="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -32,11 +31,30 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:backgroundTint="@color/colorWhite"
                     android:src="@mipmap/ic_arrow_left"
-                    android:tint="@color/colorMyType" />
+                    android:tint="@color/colorWhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <!-- date title -->
+
+            <ImageView
+                    android:id="@+id/buttonBack"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorAllTransparent"
+                    android:backgroundTint="@color/colorAllTransparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                     android:id="@+id/itemDate"
                     style="@style/TextAppearance.AppCompat.Medium"
@@ -46,11 +64,14 @@
                     android:layout_toLeftOf="@+id/toNext"
                     android:layout_toRightOf="@+id/toBack"
                     android:gravity="center"
-                    android:hint="2018.12"
                     android:letterSpacing="0.15"
-                    android:text='@{viewModel.dateM}'
-                    android:textColor="@color/colorMyType"
-                    android:textSize="@dimen/text_content" />
+                    android:text="@{viewModel.dateM}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <!-- next button -->
             <ImageView
@@ -60,16 +81,31 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@mipmap/ic_forward"
-                    android:tint="@color/colorMyType" />
-        </RelativeLayout>
+                    android:tint="@color/colorWhite"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                    android:id="@+id/buttonNext"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="@color/colorAllTransparent"
+                    android:backgroundTint="@color/colorAllTransparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.terricom.mytype.linechart.LineChart
                 android:id="@+id/lineChart"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 app:chart_bg_color="@color/colorWhite"
                 app:chart_line_color="@color/colorButton"
@@ -101,13 +137,14 @@
                 android:id="@+id/diff_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffWeight)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffWeightNum >= 0 ?Color.parseColor("#"+"E4B6C7") : Color.parseColor("#"+"DC4C32")}'
+                android:textColor='@{viewModel.diffWeightNum >= 0 ?Color.parseColor("#"+"DC4C32") : Color.parseColor("#"+"E4B6C7")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_body_fat_goal"
@@ -131,7 +168,7 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_weight"
                 app:layout_constraintStart_toEndOf="@+id/icon_weight_goal"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+                app:layout_constraintTop_toTopOf="@+id/diff_weight" />
 
         <ImageView
                 android:id="@+id/icon_muscle_goal"
@@ -159,7 +196,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffMuscle)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffMuscleNum >= 0 ?Color.parseColor("#"+"3B5998") : Color.parseColor("#"+"DC4C32")}'
+                android:textColor='@{viewModel.diffMuscleNum >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"3B5998") }'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -176,7 +213,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffBodyFat)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffBodyFatNum >= 0 ?Color.parseColor("#"+"D5D5D5") : Color.parseColor("#"+"DC4C32")}'
+                android:textColor='@{viewModel.diffBodyFatNum >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"D5D5D5")  }'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_muscle_goal"
@@ -200,7 +237,7 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_body_fat"
                 app:layout_constraintStart_toStartOf="@+id/diff_body_fat"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+                app:layout_constraintTop_toTopOf="@+id/diff_body_fat" />
 
         <ImageView
                 android:id="@+id/icon_body_fat_goal"
@@ -235,7 +272,7 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_muscle"
                 app:layout_constraintStart_toStartOf="@+id/diff_muscle"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+                app:layout_constraintTop_toTopOf="@+id/diff_muscle" />
 
         <TextView
                 android:id="@+id/time"
@@ -547,33 +584,177 @@
         <ImageView
                 android:id="@+id/icon_my_type"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_marginBottom="40dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="60dp"
                 android:elevation="@dimen/elevation_all"
+                android:paddingHorizontal="16dp"
                 android:rotation="340.0"
                 android:scaleType="fitStart"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/shaperecord_hint"
                 app:layout_constraintEnd_toEndOf="@+id/shaperecord_hint"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="@+id/shaperecord_hint"
                 app:srcCompat="@drawable/icon_my_type_border" />
 
         <TextView
                 android:id="@+id/shaperecord_hint"
                 android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/icon_postit"
+                android:lineSpacingExtra="@dimen/elevation_all"
                 android:paddingHorizontal="24dp"
-                android:paddingTop="80dp"
-                android:text="@string/achievement_add_record_hint"
+                android:paddingTop="60dp"
+                android:text="@string/achievement_blank_hint"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/goal_body_fat" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/blank_hint_achievement"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/time_show">
+
+            <TextView
+                    android:id="@+id/blank_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingHorizontal="@dimen/elevation_all"
+                    android:text="@string/blank_hint_record"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/calendar_date"
+                    android:orientation="vertical"
+                    android:paddingVertical="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/blank_hint">
+
+                <TextView
+                        android:id="@+id/time_ex"
+                        android:layout_width="84dp"
+                        android:layout_height="22dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:text='@{viewModel.dateM.replace("-",".")+".01"}'
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                        android:id="@+id/number_weight_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="50.0"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toStartOf="@+id/number_body_water_ex"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/time_ex"
+                        app:layout_constraintTop_toTopOf="@+id/time_ex" />
+
+                <TextView
+                        android:id="@+id/number_body_water_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="50.0"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toStartOf="@+id/number_body_fat_ex"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_weight_ex"
+                        app:layout_constraintTop_toTopOf="@+id/time_ex" />
+
+                <TextView
+                        android:id="@+id/number_body_fat_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="18.0"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toStartOf="@+id/number_tdeet_ex"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_body_water_ex"
+                        app:layout_constraintTop_toTopOf="@+id/number_body_water_ex" />
+
+                <TextView
+                        android:id="@+id/number_tdeet_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="1200"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toStartOf="@+id/number_muscle_ex"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_body_fat_ex"
+                        app:layout_constraintTop_toTopOf="@+id/time_ex" />
+
+                <TextView
+                        android:id="@+id/number_muscle_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="30.0"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toStartOf="@+id/number_body_age_ex"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_tdeet_ex"
+                        app:layout_constraintTop_toTopOf="@+id/time_ex" />
+
+                <TextView
+                        android:id="@+id/number_body_age_ex"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="20"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_ex"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/time_ex" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/lineChart_guide"

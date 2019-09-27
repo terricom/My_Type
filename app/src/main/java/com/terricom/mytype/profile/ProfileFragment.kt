@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
@@ -91,15 +91,15 @@ class ProfileFragment: Fragment() {
             }
         })
 
-        viewModel.getPazzleOrNot.observe(this, Observer {
-            if (it){
-                binding.iconMyType.visibility = View.INVISIBLE
-                binding.profileHintAddGoal.visibility = View.INVISIBLE
-            } else if (!it){
-                binding.iconMyType.visibility = View.VISIBLE
-                binding.profileHintAddGoal.visibility = View.VISIBLE
-            }
-        })
+//        viewModel.getPazzleOrNot.observe(this, Observer {
+//            if (it){
+//                binding.iconMyType.visibility = View.INVISIBLE
+//                binding.profileHintAddGoal.visibility = View.INVISIBLE
+//            } else if (!it){
+//                binding.iconMyType.visibility = View.VISIBLE
+//                binding.profileHintAddGoal.visibility = View.VISIBLE
+//            }
+//        })
 
         viewModel.getGoalOrNot.observe(this, Observer {
             if (it){

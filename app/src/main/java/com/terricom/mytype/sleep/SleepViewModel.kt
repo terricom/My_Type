@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -22,6 +22,7 @@ class SleepViewModel: ViewModel() {
     val wakeUp = MutableLiveData<Timestamp>()
     val goToSleep = MutableLiveData<Timestamp>()
     val sleepHr = MutableLiveData<Float>()
+    val sleepDocId = MutableLiveData<String>()
 
     val db = FirebaseFirestore.getInstance()
     val sleep = db.collection("Users")
@@ -42,9 +43,9 @@ class SleepViewModel: ViewModel() {
         goToSleep.value = time
     }
 
-    fun setSleepHr(hours: Long, minitues: Long): Float{
-        sleepHr.value = hours.plus(minitues/60).toFloat()
-        return hours.plus(minitues/60).toFloat()
+    fun setSleepHr(sleep: Date, wakeUp: Date): Float{
+        sleepHr.value = wakeUp.time.minus(sleep.time)/(1000 * 60 * 60).toFloat()
+        return wakeUp.time.minus(sleep.time)/(1000 * 60 * 60).toFloat()
     }
 
     val _addSleepResult = MutableLiveData<Boolean>()
@@ -59,6 +60,10 @@ class SleepViewModel: ViewModel() {
         _addSleepResult.value = false
     }
 
+    init {
+        getToday()
+    }
+
     fun addSleepHr(){
         if (userUid != null){
         //發文功能
@@ -68,18 +73,44 @@ class SleepViewModel: ViewModel() {
             "sleepHr" to sleepHr.value,
             "timestamp" to Timestamp(Date().time)
         )
-        getToday()
         sleep.get()
             .addOnSuccessListener { result->
-                for (doc in result){
+//                for (doc in result){
                     if (sleepToday.value.isNullOrEmpty()){
-                        sleep.document(doc.id).collection("Sleep").document().set(sleepContent)
+                        sleep.document(userUid).collection("Sleep").document().set(sleepContent)
                         addSleepSuccess()
+
                     } else {
                         addSleepFail()
                     }
                 }
-            }
+//            }
+        }
+
+
+    }
+
+    fun updateSleepHr(){
+        if (userUid != null){
+            //發文功能
+            val sleepContent = hashMapOf(
+                "wakeUp" to wakeUp.value,
+                "goToBed" to goToSleep.value,
+                "sleepHr" to sleepHr.value,
+                "timestamp" to Timestamp(Date().time)
+            )
+//            getToday()
+            sleep.get()
+                .addOnSuccessListener { result->
+//                    for (doc in result){
+//                        if (sleepToday.value.isNullOrEmpty()){
+//                            addSleepFail()
+//                        } else {
+                            sleep.document(userUid).collection("Sleep").document(sleepDocId.value!!).set(sleepContent)
+                            addSleepSuccess()
+//                        }
+//                    }
+                }
         }
 
 
@@ -100,7 +131,7 @@ class SleepViewModel: ViewModel() {
                 .document(userUid)
                 .collection("Sleep")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereGreaterThan("timestamp", Timestamp.valueOf("${sdf.format(Date())} 00:00:00.000000000"))
+                .whereGreaterThan("timestamp", Timestamp(Timestamp.valueOf("${localDateStart} 00:00:00.000000000").time))
 
             sleepRecord
                 .get()
@@ -116,7 +147,7 @@ class SleepViewModel: ViewModel() {
             Logger.i("getToday() items = $items")
         }
         Logger.i("items.size =${items.size}")
-        return items.size == 0
+        return items.size != 0
     }
 
 }

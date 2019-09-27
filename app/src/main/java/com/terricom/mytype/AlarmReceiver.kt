@@ -19,6 +19,7 @@ import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,14 +53,22 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
+        Logger.i("AlarmReceiver onReceive time = ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}")
         val bData = intent.extras
-        if (bData!!.get("title") == "activity_app") {
+        if (bData!!.get("title") == "activity_app" && SimpleDateFormat("HH").format(Date()) == "12") {
             setMessage()
 
             Handler().postDelayed({
                 createNotificationChannel()
-            },5000)
+            },3000)
+            Logger.i("AlarmReceiver onReceive time = ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}")
         }
+
+//        setMessage()
+//
+//        Handler().postDelayed({
+//            createNotificationChannel()
+//        },5000)
 
         //建立通知發布鬧鐘
 //        val calendar: Calendar = Calendar.getInstance().apply {
@@ -68,7 +77,7 @@ class AlarmReceiver : BroadcastReceiver() {
 //            add(Calendar.MINUTE, 35)
 //        }
 //        add_alarm(context, calendar)
-
+//
 //        val cal = GregorianCalendar(TimeZone.getTimeZone("GMT+8:00")) //取得時間
 //
 //        cal.add(Calendar.MINUTE, 1)    //加一分鐘

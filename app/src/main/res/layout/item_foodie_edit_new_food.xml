@@ -18,10 +18,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_date"
+                android:defaultFocusHighlightEnabled="false"
+                android:focusedByDefault="false"
                 android:fontFamily="@font/noto_sans"
                 android:hint="@string/foodie_add_food"
+                android:maxLength="10"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="1dp"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="@color/colorMyType"
                 android:textColorHint="@color/colorMyType"
@@ -31,19 +35,19 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-                android:id="@+id/addFood"
-                android:layout_width="20dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@{ viewModel.addNewFoodChecked.booleanValue()==true ?@drawable/icon_checked :@drawable/icon_check}"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/food"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--        <ImageView-->
+<!--                android:id="@+id/addFood"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:layout_marginBottom="2dp"-->
+<!--                android:background="@{ viewModel.addNewFoodChecked.booleanValue()==true ?@drawable/icon_checked :@drawable/icon_check}"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/food"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

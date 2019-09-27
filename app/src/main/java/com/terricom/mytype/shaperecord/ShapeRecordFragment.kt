@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -45,23 +45,25 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             viewModel.bodyAge.value = shape.bodyAge
             viewModel.bodyWater.value = shape.bodyWater
             viewModel.tdee.value = shape.tdee
+            viewModel.docId.value = shape.docId
             binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
+            binding.smartCustomCalendar.setEventHandler(this)
+            binding.smartCustomCalendar.filterdate(shape.timestamp)
             binding.smartCustomCalendar.getThisMonth()
+            binding.smartCustomCalendar.selectedDayOut = shape.timestamp
 
-            binding.smartCustomCalendar.selectDateOut = shape.timestamp
-
-        }
-
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-                (activity as MainActivity).closeFABMenu()
-
+            binding.smartCustomCalendar.isSelected = true
+            binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+                binding.smartCustomCalendar.updateCalendar()
+            })
+            binding.buttonShaperecordSave.setOnClickListener {
+                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+                viewModel.updateShape2Firebase()
+                viewModel.clearData()
             }
-        }
+
+        } else {
+
 
         val calendar: Calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -75,11 +77,49 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             binding.smartCustomCalendar.updateCalendar()
         })
 
+        binding.buttonShaperecordSave.setOnClickListener {
+            it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+            if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
+                    .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
+                    .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
+                if (isConnected()) {
+                    Logger.i("NetworkConnection Network Connected.")
+                    //執行下載任務
+                }else{
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                    //告訴使用者網路無法使用
+                }
+                binding.smartCustomCalendar.selectDateOut?.let {
+                    Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
+                    viewModel.setDate(it)
+                }
+                viewModel.addShape()
+                viewModel.clearData()
+            }else if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
+                    .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
+                    .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
+                it.background = App.applicationContext().getDrawable(R.color.colorMyType)
+            }
+
+        }
+        }
+
 
         viewModel.date.observe(this, androidx.lifecycle.Observer {
             viewModel.getThisMonth()
         })
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+                (activity as MainActivity).fab.visibility = View.VISIBLE
+                (activity as MainActivity).closeFABMenu()
+
+            }
+        }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         binding.buttonBack2Main.setOnClickListener {
@@ -91,42 +131,14 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
         }
 
-        binding.buttonShaperecordSave.setOnClickListener {
-            if (isConnected()) {
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
-            }
-            binding.smartCustomCalendar.selectDateOut?.let {
-                Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
-                viewModel.setDate(it)
-            }
-            viewModel.addShape()
-            viewModel.clearData()
-        }
 
         viewModel.addShapeResult.observe(this, androidx.lifecycle.Observer {
             if (it == true){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
-                },4005)
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_shape_record_failure)}
                 ))
-                Handler().postDelayed({findNavController().navigate(NavigationDirections.navigateToAchivementFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_achievment
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()},4005)
-
             }
         })
 

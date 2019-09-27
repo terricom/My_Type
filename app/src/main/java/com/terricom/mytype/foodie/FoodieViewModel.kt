@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.Logger
 import com.terricom.mytype.data.*
+import com.terricom.mytype.tools.Logger
 import java.sql.Time
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -29,6 +29,25 @@ class FoodieViewModel: ViewModel() {
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
 
+    val editFood = MutableLiveData<String>()
+    val editNutrition = MutableLiveData<String>()
+
+    val _selectedFoodList = MutableLiveData<List<String>>()
+    val selectedFoodList: LiveData<List<String>>
+        get() = _selectedFoodList
+
+    fun addSelectedFoodList(list: List<String>){
+        _selectedFoodList.value = list
+    }
+
+    val _selectedNutritionList = MutableLiveData<List<String>>()
+    val selectedNutritionList: LiveData<List<String>>
+        get() = _selectedNutritionList
+
+    fun addSelectedNutritionList(list: List<String>){
+        _selectedNutritionList.value = list
+    }
+
     val newFuList = mutableListOf<String>()
     val newNuList = mutableListOf<String>()
 
@@ -38,40 +57,56 @@ class FoodieViewModel: ViewModel() {
         get() = _userNuList
 
     fun getFoodlist(foodlist: List<String>){
-        _userFoodList.value = foodlist
+        val newFooList = foodlist.toMutableList()
+        newFooList.add("新增食物")
+        Logger.i("getFoodlist newFooList = $newFooList")
+        _userFoodList.value = newFooList
         for (food in foodlist){
             newFuList.add(food)
         }
     }
 
     fun getNulist(nulist: List<String>){
-        _userNuList.value = nulist
+        val newNutritionList = nulist.toMutableList()
+        newNutritionList.add("新增營養")
+        _userNuList.value = newNutritionList
         for (nutrition in nulist){
             newNuList.add(nutrition)
         }
     }
 
-
     fun dragToList(food: String) {
         Logger.i("dragToList food =$food")
         selectedFood.add(food)
+        addSelectedFoodList(selectedFood.distinct())
         newFuList.add(food)
+        if (newFuList.contains("新增食物")){
+            newFuList.remove("新增食物")
+        }
     }
 
     fun dragOutList(food: String) {
         Logger.i("dragOutList food =$food")
+        Logger.i("selectedFood before = $selectedFood")
         selectedFood.remove(food)
+        Logger.i("selectedFood after = $selectedFood")
+        addSelectedFoodList(selectedFood)
 //        newFuList.remove(food)
     }
 
 
     fun dragToListNu(nutrition: String) {
         selectedNutrition.add(nutrition)
+        addSelectedNutritionList(selectedNutrition.distinct())
         newNuList.add(nutrition)
+        if (newNuList.contains("新增營養")){
+            newNuList.remove("新增營養")
+        }
     }
 
     fun dragOutListNu (nutrition: String) {
         selectedNutrition.remove(nutrition)
+        addSelectedNutritionList(selectedNutrition)
 //        newNuList.remove(nutrition)
     }
 
@@ -87,7 +122,7 @@ class FoodieViewModel: ViewModel() {
         return try {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
-            0.0f
+            0f
         }
     }
 
@@ -153,7 +188,12 @@ class FoodieViewModel: ViewModel() {
     val db = FirebaseFirestore.getInstance()
     val user = db.collection("Users")
 
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+
     fun addFoodie(){
+
+        if (selectedFood.contains("新增食物")) {selectedFood.remove("新增食物")}
+        if (selectedNutrition.contains("新增營養")) {selectedNutrition.remove("新增營養")}
 
         Logger.i("Timestamp Format = \"${sdf.format(date.value)} ${time.value}:00.000000000\")")
         //發文功能
@@ -188,6 +228,9 @@ class FoodieViewModel: ViewModel() {
     }
 
     fun adjustFoodie(){
+
+        if (selectedFood.contains("新增食物")) {selectedFood.remove("新增食物")}
+        if (selectedNutrition.contains("新增營養")) {selectedNutrition.remove("新增營養")}
 
         //發文功能
         val foodieContent = hashMapOf(
@@ -256,20 +299,20 @@ class FoodieViewModel: ViewModel() {
                                 Logger.i("pazzleAll.size = ${pazzleAll.size} pazzle = $pazzleAll")
 
                                 if ( pazzleAll.size != 0 ){
-                                    if (pazzleAll[pazzleAll.lastIndex].position!!.sum()!= 105 && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))){
-                                        val addNewPazzle = pazzleAll[pazzleAll.lastIndex].position!!.toMutableList()
-                                        val addOldPazzleTS = pazzleAll[pazzleAll.lastIndex].recordedDates!!.toMutableList()
-                                        addNewPazzle.add((0..14).minus(addNewPazzle).random())
+                                    if (pazzleAll[0].position!!.sum()!= 105 && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value!!))){
+                                        val addNewPazzle = pazzleAll[0].position!!.toMutableList()
+                                        val addOldPazzleTS = pazzleAll[0].recordedDates!!.toMutableList()
+                                        addNewPazzle.add((1..15).minus(addNewPazzle).random())
                                         addOldPazzleTS.add(sdf.format(date.value!!))
-                                        user.document(userUid).collection("Puzzle").document(pazzleAll[pazzleAll.lastIndex].docId!!).update(
+                                        user.document(userUid).collection("Puzzle").document(pazzleAll[0].docId!!).update(
                                             mapOf(
                                             "position" to addNewPazzle,
                                             "recordedDates" to addOldPazzleTS,
                                                 "timestamp" to FieldValue.serverTimestamp()
                                             )
                                         )
-                                    } else if (pazzleAll[pazzleAll.lastIndex].position!!.sum()== 105
-//                                        && !pazzleAll[pazzleAll.lastIndex].recordedDates!!.contains(sdf.format(date.value!!))
+                                    } else if (pazzleAll[0].position!!.sum()== 105
+//                                        && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value!!))
                                     ){
                                         val pazzleOld = hashMapOf(
                                             "position" to listOf((0..14).random()),
@@ -309,7 +352,6 @@ class FoodieViewModel: ViewModel() {
         carbon.value = 0.0f
     }
 
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
 
     init {
         if (userUid != null){

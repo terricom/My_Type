@@ -1,6 +1,7 @@
-package com.terricom.mytype
+package com.terricom.mytype.tools
 
 import android.util.Log
+import com.terricom.mytype.BuildConfig
 
 object Logger {
 

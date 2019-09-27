@@ -12,7 +12,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
+import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.UserMT
 import com.terricom.mytype.data.UserManager
 import kotlinx.coroutines.CoroutineScope

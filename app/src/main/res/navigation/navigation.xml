@@ -47,6 +47,9 @@
     <action android:id="@+id/navigate_to_shape_record_dialog" app:destination="@id/shapeRecordDialog"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_sleep_dialog" app:destination="@id/sleepDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -60,7 +63,8 @@
     <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"
               android:label="AchivementFragment"/>
     <fragment android:id="@+id/sleepFragment" android:name="com.terricom.mytype.sleep.SleepFragment"
-              android:label="SleepFragment"/>
+            android:label="SleepFragment">
+        <argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Sleep"/></fragment>
     <fragment
             android:id="@+id/goalSettingFragment"
             android:name="com.terricom.mytype.goalsetting.GoalSettingFragment"
@@ -80,4 +84,8 @@
             android:id="@+id/shapeRecordDialog"
             android:name="com.terricom.mytype.shaperecord.ShapeRecordDialog"
             android:label="ShapeRecordDialog" />
+    <dialog
+            android:id="@+id/sleepDialog"
+            android:name="com.terricom.mytype.sleep.SleepDialog"
+            android:label="SleepDialog" />
 </navigation>

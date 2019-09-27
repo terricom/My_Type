@@ -50,7 +50,6 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
             selectedDay = selectedDateTime.get(Calendar.DATE)
         }
         if (selected){
-            shape.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, Typeface.BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(
@@ -58,6 +57,7 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
                     R.drawable.input_column,
                     null
                 )
+
         }
 
         if(currentMonth != viewMonth || currentYear != viewYear){
@@ -74,6 +74,16 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
             if (recorded){
                 shape.visibility = View.VISIBLE
             }
+            if (selected){
+                monthOfDate.setTypeface(null, Typeface.BOLD)
+                cellDateLayout.background =
+                    ResourcesCompat.getDrawable(
+                        App.applicationContext().resources,
+                        R.drawable.input_column,
+                        null
+                    )
+
+            }
             monthOfDate.setTypeface(null, Typeface.BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(
@@ -88,7 +98,17 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
             }
             monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorMyType, null))
             cellDateLayout.background = ResourcesCompat.getDrawable(App.applicationContext().resources, R.drawable.calendar_date,null)
+            if (selected){
+                monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorWhite, null))
+                monthOfDate.setTypeface(null, Typeface.BOLD)
+                cellDateLayout.background =
+                    ResourcesCompat.getDrawable(
+                        App.applicationContext().resources,
+                        R.drawable.input_column,
+                        null
+                    )
 
+            }
 
             itemView.setOnClickListener{
                 listener?.let { eventHandler ->

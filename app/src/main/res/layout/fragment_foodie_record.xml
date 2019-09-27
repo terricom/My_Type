@@ -108,13 +108,15 @@
                         android:background="@drawable/calendar_date"
                         android:ems="10"
                         android:fontFamily="@font/noto_sans"
+                        android:hint="@{Converter.dateToString(viewModel.date)}"
                         android:inputType="date"
                         android:paddingLeft="@dimen/elevation_all"
                         android:paddingTop="@dimen/elevation_all"
                         android:paddingRight="@dimen/elevation_all"
                         android:paddingBottom="@dimen/elevation_all"
+                        android:maxLength="10"
+                        android:digits="1234567890-"
                         android:text="@{Converter.dateToString(viewModel.date)}"
-                        android:hint="@{Converter.dateToString(viewModel.date)}"
                         android:textAlignment="center"
                         android:textColor="@color/colorMyType"
                         android:textColorHint="@color/colorMyType"
@@ -133,13 +135,15 @@
                         android:background="@drawable/calendar_date"
                         android:ems="10"
                         android:fontFamily="@font/noto_sans"
+                        android:hint="@{Converter.hourToString(viewModel.date)}"
                         android:inputType="time"
                         android:paddingLeft="@dimen/elevation_all"
                         android:paddingTop="@dimen/elevation_all"
                         android:paddingRight="@dimen/elevation_all"
                         android:paddingBottom="@dimen/elevation_all"
+                        android:maxLength="5"
+                        android:digits="1234567890:"
                         android:text="@{Converter.hourToString(viewModel.date)}"
-                        android:hint="@{Converter.hourToString(viewModel.date)}"
                         android:textAlignment="center"
                         android:textColor="@color/colorMyType"
                         android:textColorHint="@color/colorMyType"
@@ -226,19 +230,21 @@
                 <EditText
                         android:id="@+id/number_water"
                         android:layout_width="0dp"
-
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:padding="@dimen/elevation_all"
                         android:text="@={viewModel.floatToString(viewModel.water)}"
                         android:textAlignment="center"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:theme="@style/EditTextTheme"
                         app:layout_constraintEnd_toStartOf="@+id/button_fruit"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/button_water"
@@ -263,12 +269,14 @@
                 <EditText
                         android:id="@+id/number_vegetable"
                         android:layout_width="0dp"
-
+                        android:theme="@style/EditTextTheme"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:paddingHorizontal="@dimen/elevation_all"
                         android:paddingVertical="@dimen/elevation_all"
                         android:text="@={viewModel.floatToString(viewModel.vegetable)}"
@@ -300,12 +308,14 @@
                 <EditText
                         android:id="@+id/number_fruit"
                         android:layout_width="0dp"
-
+                        android:theme="@style/EditTextTheme"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:padding="@dimen/elevation_all"
                         android:text="@={viewModel.floatToString(viewModel.fruit)}"
                         android:textAlignment="center"
@@ -337,12 +347,14 @@
                 <EditText
                         android:id="@+id/number_coconut"
                         android:layout_width="0dp"
-
+                        android:theme="@style/EditTextTheme"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:padding="@dimen/elevation_all"
                         android:text="@={viewModel.floatToString(viewModel.oil)}"
                         android:textAlignment="center"
@@ -372,12 +384,14 @@
                 <EditText
                         android:id="@+id/number_protein"
                         android:layout_width="0dp"
-
+                        android:theme="@style/EditTextTheme"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:padding="@dimen/elevation_all"
                         android:text="@={viewModel.floatToString(viewModel.protein)}"
                         android:textAlignment="center"
@@ -410,8 +424,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/tag_right_corners"
+                        android:digits="1234567890."
                         android:hint="0.3"
                         android:inputType="number"
+                        android:maxLength="4"
                         android:padding="@dimen/elevation_all"
                         android:paddingTop="@dimen/dialog_padding"
                         android:text="@={viewModel.floatToString(viewModel.carbon)}"
@@ -419,6 +435,7 @@
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:theme="@style/EditTextTheme"
                         app:layout_constraintEnd_toEndOf="@+id/number_vegetable"
                         app:layout_constraintStart_toStartOf="@+id/number_vegetable"
                         app:layout_constraintTop_toBottomOf="@+id/number_vegetable" />
@@ -431,14 +448,57 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@drawable/input_column"
+                        android:background="@drawable/foodie_selected_column"
                         android:orientation="horizontal"
-                        android:padding="@dimen/elevation_all"
+                        android:paddingVertical="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/foodiePhoto">
 
+                    <!--                    <EditText-->
+                    <!--                            android:id="@+id/editFood"-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_gravity="center_vertical"-->
+                    <!--                            android:layout_marginStart="@dimen/elevation_all"-->
+                    <!--                            android:background="@drawable/calendar_date"-->
+                    <!--                            android:fontFamily="@font/noto_sans"-->
+                    <!--                            android:foregroundGravity="center_vertical"-->
+                    <!--                            android:hint="@string/foodie_add_food"-->
+                    <!--                            android:maxLength="10"-->
+                    <!--                            android:paddingHorizontal="5dp"-->
+                    <!--                            android:paddingVertical="1dp"-->
+                    <!--                            android:singleLine="true"-->
+                    <!--                            android:text="@={viewModel.editFood}"-->
+                    <!--                            android:textAlignment="center"-->
+                    <!--                            android:textColor="@color/colorMyType"-->
+                    <!--                            android:textColorHint="@color/colorMyType"-->
+                    <!--                            android:textSize="@dimen/text_content" />-->
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/foods_transported_recycler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginEnd="@dimen/dialog_padding"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_foodie_food" />
+
                 </LinearLayout>
+
+                <TextView
+                        android:id="@+id/drag_food_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/foodie_drag_food_hint"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"
+                        app:layout_constraintStart_toStartOf="@+id/chosed_food"
+                        app:layout_constraintTop_toTopOf="@+id/chosed_food" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/foods_recycler"
@@ -453,28 +513,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/chosed_food"
-                        tools:listitem="@layout/item_foodie_food" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/foods_transported_recycler"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"
-                        app:layout_constraintStart_toStartOf="@+id/chosed_food"
-                        app:layout_constraintTop_toTopOf="@+id/chosed_food"
-                        tools:listitem="@layout/item_foodie_food" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/nutritions_transported_recycler"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
-                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
-                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition"
                         tools:listitem="@layout/item_foodie_food" />
 
                 <!--                <EditText-->
@@ -519,12 +557,39 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
-                        android:background="@drawable/input_column"
+                        android:background="@drawable/foodie_selected_column"
                         android:orientation="horizontal"
-                        android:padding="@dimen/elevation_all"
+                        android:paddingVertical="3dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button_coconut"></LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/button_coconut">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/nutritions_transported_recycler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginEnd="@dimen/dialog_padding"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_foodie_food">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+
+
+                <TextView
+                        android:id="@+id/drag_nutrition_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:text="@string/foodie_drag_nutrition_hint"
+                        android:textColor="@color/colorWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
+                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
+                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
 
                 <!--                <EditText-->
                 <!--                        android:id="@+id/add_nutrition"-->
@@ -544,17 +609,17 @@
                 <!--                        app:layout_constraintEnd_toEndOf="parent"-->
                 <!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition" />-->
 
-                <TextView
-                        android:id="@+id/dag_food_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/noto_sans"
-                        android:text="@string/foodie_drag_food_hint"
-                        android:textColor="@color/colorWhite"
-                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"
-                        app:layout_constraintStart_toStartOf="@+id/chosed_food"
-                        app:layout_constraintTop_toTopOf="@+id/chosed_food" />
+<!--                <TextView-->
+<!--                        android:id="@+id/dag_food_hint"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="8dp"-->
+<!--                        android:fontFamily="@font/noto_sans"-->
+<!--                        android:text="@string/foodie_drag_food_hint"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"-->
+<!--                        app:layout_constraintStart_toStartOf="@+id/chosed_food"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/chosed_food" />-->
 
                 <LinearLayout
                         android:id="@+id/foodsMoveOut"
@@ -584,18 +649,6 @@
 
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/drag_nutrition_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/noto_sans"
-                        android:text="@string/foodie_drag_nutrition_hint"
-                        android:textColor="@color/colorWhite"
-                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
-                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
-                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
-
                 <EditText
                         android:id="@+id/foodie_input_mood"
                         android:layout_width="0dp"
@@ -603,20 +656,35 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/input_column"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/foodie_selected_column"
                         android:hint="@string/foodie_mood_hint"
                         android:inputType="textPersonName"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="6dp"
+                        android:singleLine="true"
                         android:text="@={viewModel.memo}"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="@dimen/text_content"
+                        android:theme="@style/EditTextTheme"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.48"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/foodie_title_memo" />
+
+                <!--                <TextView-->
+<!--                        android:id="@+id/drag_nutrition_hint"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="8dp"-->
+<!--                        android:fontFamily="@font/noto_sans"-->
+<!--                        android:text="@string/foodie_drag_nutrition_hint"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"-->
+<!--                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"-->
+<!--                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -651,6 +719,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/button_foodie_save"
                 app:layout_constraintTop_toTopOf="@+id/button_foodie_save" />
+
+        <ImageView
+                android:id="@+id/white_border"
+                android:layout_width="0dp"
+                android:layout_height="0.1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/button_foodie_save"
+                app:layout_constraintTop_toTopOf="@+id/button_foodie_save"
+                app:srcCompat="@color/colorWhite" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

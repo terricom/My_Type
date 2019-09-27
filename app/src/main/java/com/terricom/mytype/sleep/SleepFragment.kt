@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
+import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -33,15 +35,58 @@ class SleepFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //        AndroidThreeTen.init(this)
 
-        binding = FragmentSleepRecordBinding.inflate(inflater)
-        binding.timePicker.setTime(org.threeten.bp.LocalTime.of(23, 0), org.threeten.bp.LocalTime.of(7, 0))
-        binding.viewModel = viewModel
 
-        binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
-            Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
-            handleUpdate(bedTime, wakeTime)
+        binding = FragmentSleepRecordBinding.inflate(inflater)
+        binding.viewModel = viewModel
+        val sleep = SleepFragmentArgs.fromBundle(arguments!!).selectedProperty
+        if (sleep.timestamp != null){
+//            if (sleep.wakeUp!= null){
+//                viewModel.setWakeTime(Timestamp(sleep.wakeUp.time))
+//            }
+//            if (sleep.goToBed!= null){
+//                viewModel.setSleepTime(Timestamp(sleep.goToBed.time))
+//            }
+//            if (sleep.sleepHr!= null){
+//                viewModel.setSleepHr(sleep.goToBed!!, sleep.wakeUp!!)
+//            }
+            binding.timePicker.setTime(org.threeten.bp.LocalTime.of(SimpleDateFormat("HH").format(sleep.goToBed).toInt()
+                , SimpleDateFormat("mm").format(sleep.goToBed).toInt())
+                , org.threeten.bp.LocalTime.of(SimpleDateFormat("HH").format(sleep.wakeUp).toInt()
+                    , SimpleDateFormat("mm").format(sleep.wakeUp).toInt()))
+            binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
+                Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
+                handleUpdate(bedTime, wakeTime)
+            }
+            handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
+
+            binding.shapeRecordTitle.setText("修改睡眠")
+            viewModel.sleepDocId.value = sleep.docId
+
+            binding.buttonSleepSave.setOnClickListener {
+                viewModel.updateSleepHr()
+            }
+
+        } else {
+            binding.timePicker.setTime(org.threeten.bp.LocalTime.of(23, 0), org.threeten.bp.LocalTime.of(7, 0))
+
+            binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
+                Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
+                handleUpdate(bedTime, wakeTime)
+            }
+            handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
+
+            binding.buttonSleepSave.setOnClickListener {
+                if (isConnected()) {
+                    Logger.i("NetworkConnection Network Connected.")
+                    //執行下載任務
+                    viewModel.addSleepHr()
+                }else{
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+                    //告訴使用者網路無法使用
+                }
+            }
+
         }
-        handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -64,41 +109,18 @@ class SleepFragment: Fragment() {
 
         }
 
-        binding.buttonSleepSave.setOnClickListener {
-            if (isConnected()) {
-                Logger.i("NetworkConnection Network Connected.")
-                //執行下載任務
-            }else{
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
-                //告訴使用者網路無法使用
-            }
-        }
 
         viewModel.addSleepResult.observe(this, androidx.lifecycle.Observer {
             if (it == true){
-                Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
-                },4005)
-
+                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
             } else if (it == false){
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_sleep_record_failure) }
                 ))
-                Handler().postDelayed({
-                    findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
-                },4005)
-
             }
         })
+
+
 
         return binding.root
     }
@@ -117,7 +139,7 @@ class SleepFragment: Fragment() {
         val minutes = duration.toMinutes() % 60
         binding.tvHours.text = hours.toString()
         binding.tvMins.text = minutes.toString()
-        viewModel.setSleepHr(hours,minutes)
+//        viewModel.setSleepHr(hours,minutes)
         if (minutes > 0) binding.llMins.visibility = View.VISIBLE else binding.llMins.visibility = View.GONE
 
         if (bedDate < wakeDate){
@@ -135,6 +157,7 @@ class SleepFragment: Fragment() {
                         ":${wakeDate.minute}:${wakeDate.second}.000000000"
                 var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
                 viewModel.setWakeTime(timeStampWake)
+                viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
                 Logger.i("bedDate == wakeDate newBedDate = $newBedDate newWakeDate =$newWakeDate")
             }else if (bedDate.dayOfMonth < wakeDate.dayOfMonth){
                 wakeDate.minusDays(1)
@@ -151,6 +174,7 @@ class SleepFragment: Fragment() {
                         ":${wakeDate.minusDays(1).minute}:${wakeDate.minusDays(1).second}.000000000"
                 var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
                 viewModel.setWakeTime(timeStampWake)
+                viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
                 Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
             }
 
@@ -170,6 +194,7 @@ class SleepFragment: Fragment() {
                     ":${wakeDate.minute}:${wakeDate.second}.000000000"
             var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
             viewModel.setWakeTime(timeStampWake)
+            viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
             Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
         }
 

@@ -4,11 +4,15 @@
 
     <data>
         <import type="android.view.View"/>
+        <variable
+                name="dialog"
+                type="com.terricom.mytype.goalsetting.GoalSettingDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_message"
@@ -18,7 +22,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{() -> dialog.dismiss()}">
 
             <TextView
                     android:id="@+id/text_message_content"

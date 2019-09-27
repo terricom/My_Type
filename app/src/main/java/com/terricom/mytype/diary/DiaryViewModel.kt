@@ -7,12 +7,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.terricom.mytype.Logger
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.profile.CardAvatarOutlineProvider
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -92,6 +92,18 @@ class DiaryViewModel: ViewModel() {
         _recordedDate.value = recordedDate
     }
 
+    val _getPuzzle = MutableLiveData<Boolean>()
+    val getPuzzle : LiveData<Boolean>
+        get() = _getPuzzle
+
+    fun getPuzzle(){
+        _getPuzzle.value = true
+    }
+
+    fun getPuzzleNewUser(){
+        _getPuzzle.value = false
+    }
+
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val sdfhms = SimpleDateFormat("yyyy-MM-dd-hhmmss")
@@ -117,7 +129,8 @@ class DiaryViewModel: ViewModel() {
 
     init {
         calendarClickedAgain()
-        _callDeleteAction.value = false
+        finishCallDeleteAction()
+        updatePuzzle()
     }
 
     fun getDiary() {
@@ -148,6 +161,8 @@ class DiaryViewModel: ViewModel() {
                     val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Shape::class.java))
+                        val index = items.size -1
+                        items[index].docId = document.id
                     }
                 }
                 if (items.size != 0){
@@ -165,6 +180,8 @@ class DiaryViewModel: ViewModel() {
                     val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Sleep::class.java))
+                        val index = items.size -1
+                        items[index].docId = document.id
                     }
 
                 }
@@ -241,7 +258,7 @@ class DiaryViewModel: ViewModel() {
         get() = _totalCarbon
 
     fun getTime(timestamp: Date):String{
-        val sdf = SimpleDateFormat("a HH:mm")
+        val sdf = SimpleDateFormat("HH:mm")
             return sdf.format(java.sql.Date(timestamp.time).time)
     }
 
@@ -292,7 +309,9 @@ class DiaryViewModel: ViewModel() {
                     for (diary in it){
                         if (diary.id == foodie.docId){
                             users.document(userUid).collection("Foodie").document(foodie.docId!!).delete()
-                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!") }
+                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!")
+                                callDeleteAction()
+                                }
                                 .addOnFailureListener { e -> Logger.i("Error deleting document exception = $e") }
                         }
                     }
@@ -301,6 +320,34 @@ class DiaryViewModel: ViewModel() {
 
 
         }
+    }
+
+    fun updatePuzzle() {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = users
+                .document(userUid).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+                    val dates = mutableListOf<String>()
+                    for (document in it) {
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                    }
+                    Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
+                    if (dates.distinct().size%7 == 0){
+                        if (dates.size == 0){
+                            getPuzzleNewUser()
+                        }else if (dates.size != 0){
+                            getPuzzle()
+                        }
+                    }
+                }
+        }
+
+
     }
 
 

@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
-import com.terricom.mytype.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.linechart.ChartEntity
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -161,6 +161,7 @@ class AchievementViewModel: ViewModel() {
                             "${sdf.format(convertDate).split("-")[1]}" ==
                             "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
                             items.add(document.toObject(Shape::class.java))
+                            items[items.size-1].docId = document.id
                             datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
                         }
                     }
