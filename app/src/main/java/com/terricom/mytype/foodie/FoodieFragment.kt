@@ -38,7 +38,6 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
-import com.terricom.mytype.tools.DateMask
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
@@ -415,6 +414,9 @@ class FoodieFragment: Fragment() {
             filePath = data.data
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             try {
+                Logger.i("before uploadFile")
+                uploadFile()
+                Logger.i("after uploadFile")
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -428,16 +430,20 @@ class FoodieFragment: Fragment() {
                 else ScalePic(outBitmap, mPhone!!.widthPixels)
                 bitmap!!.recycle()
 
-                uploadFile()
-
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
         }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
+
             val contentUri: Uri = getUriForFile(this.context!!
                 , App.applicationContext().packageName+ ".provider", pictureFile!!)
             filePath = contentUri
+
+            Logger.i("before uploadFile")
+            uploadFile()
+            Logger.i("after uploadFile")
+
             bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
             val degree = getImageRotation(App.applicationContext(),filePath!!)
             Logger.i("degree = $degree")
@@ -449,7 +455,6 @@ class FoodieFragment: Fragment() {
             if(outBitmap!!.width > outBitmap.height)ScalePic(outBitmap, mPhone!!.widthPixels)
             else ScalePic(outBitmap, mPhone!!.widthPixels)
 
-            uploadFile()
         }
     }
 
@@ -565,7 +570,7 @@ class FoodieFragment: Fragment() {
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
                         viewModel.setPhoto(it.result!!)
-                        Logger.i("FoodieFragment uploadFile =${it.result}")
+                        Logger.i("FoodieFragment uploadFile=${it.result}")
                     }
                         .addOnFailureListener {
                             Logger.i("FoodieFragment uploadFile failed =$it")

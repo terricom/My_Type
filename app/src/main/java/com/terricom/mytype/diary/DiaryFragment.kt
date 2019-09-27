@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,18 +37,27 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.lifecycleOwner = this
 
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
-            viewModel.callDeleteAction.observe(this, Observer {
-                if (it == false){
-                    findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
-                } else {
-                    view!!.findViewById<ImageView>(R.id.add2Garbage).setOnClickListener {
-                        viewModel.delete(foodie)
-                        viewModel.getDiary()
-                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-                    }
-                }
-            })
+//            if((binding.recyclerView.adapter as FoodieAdapter).deleteOrNot){
+//                viewModel.delete(foodie)
+//
+//            }else if (!(binding.recyclerView.adapter as FoodieAdapter).deleteOrNot){
+                findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
+//            }
 
+
+        })
+
+        viewModel.callDeleteAction.observe(this, Observer {
+            if (it==true){
+                viewModel.getDiary()
+            }
+        })
+
+        viewModel.fireFoodie.observe(this, Observer {
+            if (it != null){
+                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
+                (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+            }
         })
 
         viewModel.date.observe(this, Observer {

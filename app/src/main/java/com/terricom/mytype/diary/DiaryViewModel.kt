@@ -7,12 +7,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.profile.CardAvatarOutlineProvider
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -117,7 +117,7 @@ class DiaryViewModel: ViewModel() {
 
     init {
         calendarClickedAgain()
-        _callDeleteAction.value = false
+        finishCallDeleteAction()
     }
 
     fun getDiary() {
@@ -296,7 +296,9 @@ class DiaryViewModel: ViewModel() {
                     for (diary in it){
                         if (diary.id == foodie.docId){
                             users.document(userUid).collection("Foodie").document(foodie.docId!!).delete()
-                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!") }
+                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!")
+                                callDeleteAction()
+                                }
                                 .addOnFailureListener { e -> Logger.i("Error deleting document exception = $e") }
                         }
                     }

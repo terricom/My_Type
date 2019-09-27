@@ -17,7 +17,8 @@ import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.*
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.databinding.*
 import com.terricom.mytype.tools.Logger
@@ -35,6 +36,8 @@ private val PLACEHOLDER = 4
 class FoodieAdapter(val viewModel: DiaryViewModel
                     , private val onClickListener: OnClickListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback) {
+
+    var deleteOrNot = false
 
     class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
         fun onClick(foodie: Foodie) = clickListener(foodie)
@@ -333,16 +336,21 @@ class FoodieAdapter(val viewModel: DiaryViewModel
                 val header = getItem(position) as DataItem.FoodieList
                 holder.bind(header.foodie, header.viewModel)
 
-                holder.itemView.setOnClickListener {
-                    onClickListener.onClick(header.foodie)
-                }
-                holder.itemView.setOnLongClickListener {
-                    viewModel.callDeleteAction()
-                    it.findViewById<ImageView>(R.id.add2Garbage).visibility = View.VISIBLE
-                    it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.VISIBLE
+                    holder.itemView.setOnLongClickListener {
+                        deleteOrNot = true
+                        it.findViewById<ImageView>(R.id.add2Garbage).visibility = View.VISIBLE
+                        it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.VISIBLE
+                        it.findViewById<ImageView>(R.id.add2Garbage).setOnClickListener {garbage ->
+                            viewModel.delete(header.foodie)
+                            garbage.findViewById<ImageView>(R.id.add2Garbage).visibility = View.INVISIBLE
+                            it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.INVISIBLE
+                        }
+                        holder.itemView.isClickable
+                    }
+                    holder.itemView.setOnClickListener {
+                        onClickListener.onClick(header.foodie)
+                    }
 
-                    it.clipToOutline
-                }
             }
             is ShapeViewHolder -> {
                 val shape = getItem(position) as DataItem.ShapeItem

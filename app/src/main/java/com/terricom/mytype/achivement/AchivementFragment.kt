@@ -74,7 +74,7 @@ class AchivementFragment: Fragment() {
                     binding.shaperecordHint.visibility = View.GONE
                     binding.recyclerShape.visibility = View.VISIBLE
                     binding.blankHintAchievement.visibility = View.INVISIBLE
-
+                    binding.blankHintAchievement.visibility = View.INVISIBLE
                     binding.let {
                         //                    icon_body_water.visibility = View.VISIBLE
 //                    icon_weight.visibility = View.VISIBLE
@@ -105,28 +105,29 @@ class AchivementFragment: Fragment() {
                     binding.recyclerShape.visibility = View.GONE
                     binding.iconMyType.visibility = View.VISIBLE
                     binding.shaperecordHint.visibility = View.VISIBLE
+                    binding.blankHintAchievement.visibility = View.VISIBLE
                     binding.let {
-                        icon_body_water.setOnClickListener {
-                            binding.blankHintAchievement.visibility = View.VISIBLE
-                        }
-                    icon_weight.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
-                    icon_body_age.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
-                    icon_body_fat.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
-                    icon_muscle.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
-                    icon_tdee.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
-                    icon_calendar.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
+//                        icon_body_water.setOnClickListener {
+//                            binding.blankHintAchievement.visibility = View.VISIBLE
+//                        }
+//                    icon_weight.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
+//                    icon_body_age.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
+//                    icon_body_fat.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
+//                    icon_muscle.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
+//                    icon_tdee.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
+//                    icon_calendar.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
 //                    number_body_age_show.setOnClickListener {
 //                        binding.blankHintAchievement.visibility = View.VISIBLE
 //                    }
@@ -145,9 +146,9 @@ class AchivementFragment: Fragment() {
 //                    number_weight_show.setOnClickListener {
 //                        binding.blankHintAchievement.visibility = View.VISIBLE
 //                    }
-                    date_show.setOnClickListener {
-                        binding.blankHintAchievement.visibility = View.VISIBLE
-                    }
+//                    date_show.setOnClickListener {
+//                        binding.blankHintAchievement.visibility = View.VISIBLE
+//                    }
                         diff_body_fat.visibility = View.GONE
                         diff_muscle.visibility = View.GONE
                         diff_weight.visibility = View.GONE

@@ -76,6 +76,7 @@ class LinechartFragment: Fragment() {
                         binding.lineChart.visibility = View.VISIBLE
                         binding.iconMyType.visibility = View.GONE
                         binding.shaperecordHint.visibility = View.GONE
+                        binding.blankHintLinechart.visibility = View.GONE
                         binding.let {
                             recycler_foodie_sum.visibility = View.VISIBLE
 //                    icon_water_goal.visibility = View.VISIBLE
@@ -111,6 +112,7 @@ class LinechartFragment: Fragment() {
                         binding.lineChart.visibility = View.GONE
                         binding.iconMyType.visibility = View.VISIBLE
                         binding.shaperecordHint.visibility = View.VISIBLE
+                        binding.blankHintLinechart.visibility = View.VISIBLE
                         binding.let {
                             recycler_foodie_sum.visibility = View.GONE
 //                    icon_water_goal.visibility = View.GONE

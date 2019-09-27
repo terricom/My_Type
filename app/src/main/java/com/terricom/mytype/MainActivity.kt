@@ -190,6 +190,7 @@ class MainActivity : BaseActivity(){
 
         alarmMgr = App.applicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(App.applicationContext(), AlarmReceiver::class.java).let { intent ->
+            intent.putExtra("title","activity_app")
             PendingIntent.getBroadcast(App.applicationContext(), 0, intent, 0)
         }
 
@@ -205,7 +206,7 @@ class MainActivity : BaseActivity(){
         alarmMgr?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            1000 * 60 * 20,
+            1000 * 60 * 60 * 24,
             alarmIntent
         )
 
