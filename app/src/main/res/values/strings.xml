@@ -106,5 +106,7 @@
     <string name="diary_dialog_sleep">睡眠圖示</string>
     <string name="goal_title_adjust_goal">修改目標</string>
     <string name="goalsetting_input_hint">無法新增空白的目標，請再確認喔！</string>
+    <string name="achievement_blank_hint">努力的汗水不會白流\n今天是否又比昨天朝目標前進一點了呢？\n點選下方去新增按鈕新增成果的紀錄吧 ~</string>
+    <string name="blank_hint_record">新增完的成果會顯示於下方，也可以點擊修改</string>
 
 </resources>

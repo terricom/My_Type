@@ -37,15 +37,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.diaryCalendar.setEventHandler(this)
-        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
-        binding.diaryCalendar.getThisMonth()
-        binding.diaryCalendar.recordedDate.observe(this, Observer {
-            if (!it.isNullOrEmpty()){
-                binding.diaryCalendar.updateCalendar()
-            }
-        })
-
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
             viewModel.callDeleteAction.observe(this, Observer {
                 if (it == false){
@@ -61,27 +52,46 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         })
 
-
-        viewModel.fireSleep.observe(this, Observer {
-            Logger.i("viewModel.fireSleep.observe = $it")
+        viewModel.date.observe(this, Observer {
+            Logger.i("viewModel.date.observe === $it")
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
             if (it != null){
+                viewModel.getDiary()
+                viewModel.getThisMonth()
+                binding.diaryDate.text = sdf.format(it)
 
-                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
-                (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                binding.diaryCalendar.setEventHandler(this)
+                binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+                binding.diaryCalendar.getThisMonth()
+                binding.diaryCalendar.recordedDate.observe(this, Observer {
+                    if (!it.isNullOrEmpty()){
+                        binding.diaryCalendar.updateCalendar()
+                    }
+                })
+
+
+                viewModel.fireSleep.observe(this, Observer {
+                    Logger.i("viewModel.fireSleep.observe = $it")
+                    if (it != null){
+
+                        (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                    }
+
+                })
+                viewModel.fireShape.observe(this, Observer {
+                    Logger.i("viewModel.fireShape.observe =$it")
+                    if (it != null){
+                        (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                    }
+
+                })
+                viewModel.fireFoodie.observe(this, Observer {
+                    (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
+                    (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                })
             }
-
-        })
-        viewModel.fireShape.observe(this, Observer {
-            Logger.i("viewModel.fireShape.observe =$it")
-            if (it != null){
-                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
-                (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-            }
-
-        })
-        viewModel.fireFoodie.observe(this, Observer {
-            (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
-            (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
         })
 
         binding.recyclerView.addItemDecoration(
@@ -130,14 +140,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?: Date())
         Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
-
-        viewModel.date.observe(this, Observer {
-            Logger.i("viewModel.date.observe === $it")
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            viewModel.getDiary()
-            viewModel.getThisMonth()
-            binding.diaryDate.text = sdf.format(it)
-        })
 
 
         return binding.root

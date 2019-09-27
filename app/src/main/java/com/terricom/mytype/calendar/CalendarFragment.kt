@@ -39,6 +39,8 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     private lateinit var buttonBack: ImageView
     private lateinit var buttonNext: ImageView
+    private lateinit var buttonBackLarge: ImageView
+    private lateinit var buttonNextLarge: ImageView
     private lateinit var txtDate: TextView
     private lateinit var gridRecycler: RecyclerView
     private lateinit var currentDateCalendar: Calendar
@@ -67,18 +69,28 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             inflater.inflate(R.layout.fragment_calendar, this, true)
             buttonBack = findViewById(R.id.toBack)
             buttonNext = findViewById(R.id.toNext)
+            buttonBackLarge = findViewById(R.id.buttonBack)
+            buttonNextLarge = findViewById(R.id.buttonNext)
             txtDate = findViewById(R.id.itemDate)
             gridRecycler = findViewById(R.id.gridCalendar)
 
             buttonNext.setOnClickListener {
                 currentDateCalendar.add(Calendar.MONTH, 1)
-
                 eventHandler?.onCalendarNextPressed()
-
+                checkStateNextButton()
+            }
+            buttonNextLarge.setOnClickListener {
+                currentDateCalendar.add(Calendar.MONTH, 1)
+                eventHandler?.onCalendarNextPressed()
                 checkStateNextButton()
             }
 
             buttonBack.setOnClickListener{
+                currentDateCalendar.add(Calendar.MONTH, -1)
+                eventHandler?.onCalendarPreviousPressed()
+                checkStateNextButton()
+            }
+            buttonBackLarge.setOnClickListener {
                 currentDateCalendar.add(Calendar.MONTH, -1)
                 eventHandler?.onCalendarPreviousPressed()
                 checkStateNextButton()

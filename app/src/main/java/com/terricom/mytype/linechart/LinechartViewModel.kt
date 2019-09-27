@@ -7,12 +7,12 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.FoodieSum
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,6 +51,7 @@ class LinechartViewModel: ViewModel() {
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
         _dateM.value = "${sdfM.format(date.time.minus(518400000L))} ~ ${sdfM.format(date)}"
+        Logger.i("dateM = ${dateM.value}")
         _recordDate.value = date
         Logger.i("viewModel.date.observe = ${dateM.value}")
 
@@ -198,8 +199,8 @@ class LinechartViewModel: ViewModel() {
             val foodieDiary = users
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
+                .whereLessThanOrEqualTo("timestamp", Timestamp(Timestamp.valueOf("${sdf.format(recordDate.value)} 23:59:59.999999999").time))
+                .whereGreaterThanOrEqualTo("timestamp", Timestamp(Timestamp.valueOf("${sdf.format(recordDate.value)} 23:59:59.999999999").time.minus(604800000L)))
             val sleepDiary = users
                 .document(userUid).collection("Sleep")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
