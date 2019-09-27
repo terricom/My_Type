@@ -55,6 +55,11 @@ class MessageDialog : AppCompatDialogFragment() {
                 iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type_border)
                 message = messageType.value.message
             }
+            MessageType.GET_PUZZLE -> {
+                iconRes = App.instance!!.getDrawable(R.drawable.icon_puzzle)
+                message = messageType.value.message
+            }
+
 
             else -> {
 
@@ -64,7 +69,7 @@ class MessageDialog : AppCompatDialogFragment() {
 
     enum class MessageType(val value: Message) {
         LOGIN_SUCCESS(Message()),
-        LOGIN_FAIL(Message()),
+        GET_PUZZLE(Message()),
         ADDED_SUCCESS(Message()),
         MESSAGE(Message())
     }

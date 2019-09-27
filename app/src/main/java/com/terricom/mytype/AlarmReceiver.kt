@@ -53,8 +53,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
+        Logger.i("AlarmReceiver onReceive time = ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}")
         val bData = intent.extras
-        if (bData!!.get("title") == "activity_app") {
+        if (bData!!.get("title") == "activity_app" && SimpleDateFormat("HH").format(Date()) == "12") {
             setMessage()
 
             Handler().postDelayed({

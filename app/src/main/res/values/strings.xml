@@ -109,5 +109,6 @@
     <string name="achievement_blank_hint">努力的汗水不會白流\n今天是否又比昨天朝目標前進一點了呢？\n點選下方去新增按鈕新增成果的紀錄吧 ~</string>
     <string name="blank_hint_record">新增完的成果會顯示於下方，也可以點擊修改</string>
     <string name="blank_hint_record_foodie">新增完的每日食記總和會顯示於下方</string>
-
+    <string name="diary_puzzle_check_new">歡迎加入種天菜行列\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
+    <string name="diary_puzzle_check_old">恭喜完成七天的紀錄\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
 </resources>

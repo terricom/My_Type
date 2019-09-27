@@ -47,6 +47,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
+    var calendar = Date()
 
 
     constructor(context: Context?) : super(context) {
@@ -132,7 +133,6 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             this.listener = this@CalendarFragment
             this.recordedDates = recordedDate.value!!
         }
-
         gridRecycler.adapter = calendarAdapter
         setHeader(currentDateCalendar)
 
@@ -140,7 +140,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
 
     val viewModel = DiaryViewModel()
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    var selectedDayOut: Date = Date()
+    var selectedDayOut = Date()
     val thisMonth: List<String> ?= null
 
 

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
+import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
@@ -36,15 +37,21 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) in DIARY")
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
-//            if((binding.recyclerView.adapter as FoodieAdapter).deleteOrNot){
-//                viewModel.delete(foodie)
-//
-//            }else if (!(binding.recyclerView.adapter as FoodieAdapter).deleteOrNot){
                 findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
-//            }
+        })
 
-
+        viewModel.getPuzzle.observe(this, Observer {
+            if (it == false){
+                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
+                    value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
+                }))
+            }else if (it == true){
+                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
+                    value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
+                }))
+            }
         })
 
         viewModel.callDeleteAction.observe(this, Observer {
@@ -149,7 +156,6 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?: Date())
         Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
 
-
         return binding.root
     }
 
@@ -186,22 +192,22 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 //    }
 
 
-
     override fun onCalendarNextPressed() {
+
+
         binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
             binding.diaryCalendar.updateCalendar()
-
         })
     }
 
     override fun onCalendarPreviousPressed() {
+
         binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
             binding.diaryCalendar.updateCalendar()
-
         })
     }
 

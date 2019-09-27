@@ -92,6 +92,18 @@ class DiaryViewModel: ViewModel() {
         _recordedDate.value = recordedDate
     }
 
+    val _getPuzzle = MutableLiveData<Boolean>()
+    val getPuzzle : LiveData<Boolean>
+        get() = _getPuzzle
+
+    fun getPuzzle(){
+        _getPuzzle.value = true
+    }
+
+    fun getPuzzleNewUser(){
+        _getPuzzle.value = false
+    }
+
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val sdfhms = SimpleDateFormat("yyyy-MM-dd-hhmmss")
@@ -118,6 +130,7 @@ class DiaryViewModel: ViewModel() {
     init {
         calendarClickedAgain()
         finishCallDeleteAction()
+        updatePuzzle()
     }
 
     fun getDiary() {
@@ -307,6 +320,34 @@ class DiaryViewModel: ViewModel() {
 
 
         }
+    }
+
+    fun updatePuzzle() {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = users
+                .document(userUid).collection("Foodie")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+                    val dates = mutableListOf<String>()
+                    for (document in it) {
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                    }
+                    Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
+                    if (dates.distinct().size%7 == 0){
+                        if (dates.size == 0){
+                            getPuzzleNewUser()
+                        }else if (dates.size != 0){
+                            getPuzzle()
+                        }
+                    }
+                }
+        }
+
+
     }
 
 

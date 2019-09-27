@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.tools.DateMask
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
@@ -172,7 +173,7 @@ class FoodieFragment: Fragment() {
             editableFoods = mutableListOf("")
         }
 
-//        binding.editDate.addTextChangedListener(DateMask())
+        binding.editDate.addTextChangedListener(DateMask())
 
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -217,7 +218,12 @@ class FoodieFragment: Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getPermissions()
             }
-            selectImage()
+            if (mLocationPermissionsGranted){
+                selectImage()
+            } else if (!mLocationPermissionsGranted){
+                Toast.makeText(App.applicationContext(), "記得到系統設定相機和相簿權限才能上傳喔",Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.buttonShapeShowInfo.setOnClickListener {
@@ -627,7 +633,6 @@ class FoodieFragment: Fragment() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
-
         if (ContextCompat.checkSelfPermission(App.applicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(App.applicationContext(),
@@ -680,9 +685,10 @@ class FoodieFragment: Fragment() {
                     } catch ( e: IOException) {
                         e.printStackTrace()
                     }
-                }}
-
+                }
         }
+
+    }
 
 
 
