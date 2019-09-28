@@ -321,36 +321,35 @@ class FoodieFragment: Fragment() {
                 }
 
                 it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
-                    Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
-                    if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
-                        viewModel.setDate(java.util.Date())
-                    }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
-                    }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                        viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
-                    }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                        viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
-                    }
+                Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
+                if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
+                    viewModel.setDate(java.util.Date())
+                }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
+                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
+                }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                    viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
+                }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+                }
 
-                    if (foodie.docId != ""){
-                        viewModel.adjustFoodie()
-                        viewModel.updateFoodAndNuList()
-                        viewModel.clearData()
-                    } else {
-                        viewModel.addFoodie()
-                        viewModel.updateFoodAndNuList()
-                        viewModel.clearData()
-                    }
+                if (foodie.timestamp != null){
+                    viewModel.adjustFoodie()
+                } else {
+                    viewModel.addFoodie()
+                }
 
-                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
+                viewModel.updateFoodAndNuList()
+                viewModel.clearData()
 
-                    if (isConnected()) {
-                        Logger.i("NetworkConnection Network Connected.")
-                        //執行下載任務
-                    }else{
-                        Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-                        //告訴使用者網路無法使用
-                    }
+                findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
+
+                if (isConnected()) {
+                    Logger.i("NetworkConnection Network Connected.")
+                    //執行下載任務
+                }else{
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                    //告訴使用者網路無法使用
+                }
             }else {
                 Toast.makeText(App.applicationContext(),resources.getText(R.string.foodie_input_hint), Toast.LENGTH_SHORT).show()
             }

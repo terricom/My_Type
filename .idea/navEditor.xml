@@ -32,18 +32,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="dreamboardFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="foodieFragment">
                     <value>
                       <LayoutPositions>
@@ -126,11 +114,6 @@
                       <LayoutPositions />
                     </value>
                   </entry>
-                  <entry key="navigate_to_dream_board_fragment">
-                    <value>
-                      <LayoutPositions />
-                    </value>
-                  </entry>
                   <entry key="navigate_to_foodie_fragment">
                     <value>
                       <LayoutPositions />
@@ -162,6 +145,11 @@
                     </value>
                   </entry>
                   <entry key="navigate_to_profile_fragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="navigate_to_query_fragment">
                     <value>
                       <LayoutPositions />
                     </value>
@@ -198,6 +186,30 @@
                           <Point>
                             <option name="x" value="12" />
                             <option name="y" value="368" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="queryDialog">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-799" />
+                            <option name="y" value="-773" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="queryFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-720" />
+                            <option name="y" value="-759" />
                           </Point>
                         </option>
                       </LayoutPositions>

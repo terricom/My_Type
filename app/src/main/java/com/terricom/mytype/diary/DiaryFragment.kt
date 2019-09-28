@@ -124,6 +124,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             if (it == true){
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(0f).start()
+                    binding.diaryCalendar.animate().translationY(-resources.getDimension(R.dimen.standard_305)).start()
                     binding.diaryCalendar.visibility = View.GONE
                     viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
                     viewModel.calendarClickedAgain()
@@ -131,6 +132,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             }else if (it == false){
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(180f).start()
+                    binding.diaryCalendar.animate().translationY(resources.getDimension(R.dimen.standard_0)).start()
                     binding.diaryCalendar.visibility = View.VISIBLE
                     binding.diaryCalendar.getThisMonth()
                     viewModel.calendarClicked()
@@ -138,6 +140,12 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
             }
 
+        })
+
+        viewModel.listFoodie.observe(this, Observer {
+            if (it != null){
+                findNavController().navigate(NavigationDirections.navigateToQueryFragment(it))
+            }
         })
 
         fun isConnected(): Boolean{

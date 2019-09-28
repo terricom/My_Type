@@ -111,4 +111,6 @@
     <string name="blank_hint_record_foodie">新增完的每日食記總和會顯示於下方</string>
     <string name="diary_puzzle_check_new">歡迎加入種天菜行列\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
     <string name="diary_puzzle_check_old">恭喜完成七天的紀錄\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
+    <string name="query_title_average">平均成就</string>
+
 </resources>

@@ -88,9 +88,10 @@ class FoodieAdapter(val viewModel: DiaryViewModel
             binding.foodie = foodie
             foodieSelected = foodie
             Log.i("Terri","$this foodie.foods null? = ${foodie.foods}")
-            binding.recyclerDiaryFoodsItem.adapter = FoodlistAdapter(viewModel)
+            binding.recyclerDiaryFoodsItem.adapter = FoodlistAdapter(viewModel, FoodlistAdapter.OnClickListener{
+            })
             (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
-            binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel)
+            binding.recyclerDiaryNutritionItem.adapter = NutritionlistAdapter(viewModel, NutritionlistAdapter.OnClickListener{})
             (binding.recyclerDiaryNutritionItem.adapter as NutritionlistAdapter).submitList(foodie.nutritions)
             if (foodie.memo != "" && foodie.memo != null){
                 binding.foodieMemo.visibility = View.VISIBLE

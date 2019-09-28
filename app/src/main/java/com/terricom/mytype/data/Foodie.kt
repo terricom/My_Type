@@ -30,3 +30,9 @@ data class FoodieSum (
     val fruit: Float ?= null,
     val carbon: Float ?= null
 ): Parcelable
+
+@Parcelize
+data class FoodieList (
+    val queryList: List<Foodie> ?= null,
+    val foodie: String ?= ""
+): Parcelable

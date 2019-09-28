@@ -50,6 +50,12 @@
     <action android:id="@+id/navigate_to_sleep_dialog" app:destination="@id/sleepDialog"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_query_fragment" app:destination="@id/queryFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_query_dialog" app:destination="@id/queryDialog"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -88,4 +94,13 @@
             android:id="@+id/sleepDialog"
             android:name="com.terricom.mytype.sleep.SleepDialog"
             android:label="SleepDialog" />
+    <fragment
+            android:id="@+id/queryFragment"
+            android:name="com.terricom.mytype.query.QueryFragment"
+            android:label="QueryFragment" >
+        <argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.FoodieList"/></fragment>
+    <dialog
+            android:id="@+id/queryDialog"
+            android:name="com.terricom.mytype.query.QueryDialog"
+            android:label="QueryDialog" />
 </navigation>

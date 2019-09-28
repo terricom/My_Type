@@ -3,7 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="dialog" type="com.terricom.mytype.foodie.ReferenceDialog"/>
+        <variable name="dialog" type="com.terricom.mytype.query.QueryDialog"/>
         <import type="android.view.View"/>
     </data>
 
@@ -16,21 +16,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_date"
+                android:onClick="@{() -> dialog.dismiss()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{() -> dialog.dismiss()}">
+                app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                     android:id="@+id/text_message_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="份量參考"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_message_content2" />
+
+            <TextView
+                    android:id="@+id/text_message_content2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="份量參考"
+                    android:text="圖示說明"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -106,23 +120,23 @@
                     app:layout_constraintStart_toEndOf="@+id/textView6"
                     app:layout_constraintTop_toTopOf="@+id/textView6" />
 
-<!--            <TextView-->
-<!--                    android:id="@+id/textView8"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="16dp"-->
-<!--                    android:layout_marginBottom="16dp"-->
-<!--                    android:fontFamily="@font/noto_sans"-->
-<!--                    android:gravity="center"-->
-<!--                    android:maxLines="2"-->
-<!--                    android:paddingStart="16dp"-->
-<!--                    android:paddingEnd="16dp"-->
-<!--                    android:text="點選營養圖示也可以增加 0.1 單位喔！"-->
-<!--                    android:textSize="@dimen/text_content"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
+            <!--            <TextView-->
+            <!--                    android:id="@+id/textView8"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="16dp"-->
+            <!--                    android:layout_marginBottom="16dp"-->
+            <!--                    android:fontFamily="@font/noto_sans"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:maxLines="2"-->
+            <!--                    android:paddingStart="16dp"-->
+            <!--                    android:paddingEnd="16dp"-->
+            <!--                    android:text="點選營養圖示也可以增加 0.1 單位喔！"-->
+            <!--                    android:textSize="@dimen/text_content"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
 
             <ImageView
                     android:id="@+id/imageView14"
@@ -194,6 +208,93 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView6"
                     app:srcCompat="@drawable/icon_fruit" />
+
+            <ImageView
+                    android:id="@+id/icon_water_goal"
+                    android:layout_width="60dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/tag_left_corners"
+                    android:padding="@dimen/elevation_all"
+                    android:paddingTop="@dimen/elevation_all"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="@+id/diff_water"
+                    app:layout_constraintStart_toStartOf="@+id/diff_water"
+                    app:layout_constraintTop_toTopOf="@+id/diff_water"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/icon_water" />
+
+            <TextView
+                    android:id="@+id/diff_water"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="0.3"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="@dimen/elevation_all"
+                    android:text="3.0"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorWater"
+                    android:textColorHint="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_message_content2" />
+
+
+            <TextView
+                    android:id="@+id/goal_water"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tag_right_corners"
+                    android:backgroundTint="@color/colorWater"
+                    android:paddingVertical="@dimen/elevation_all"
+                    android:text="8.0"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:textColorHint="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/text_message_content"
+                    app:layout_constraintEnd_toEndOf="@+id/text_message_content2"
+                    app:layout_constraintHorizontal_bias="0.52"
+                    app:layout_constraintStart_toStartOf="@+id/text_message_content2"
+                    app:layout_constraintTop_toTopOf="@+id/diff_water"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="代表營養"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@+id/text_message_content"
+                    app:layout_constraintEnd_toStartOf="@+id/goal_water"
+                    app:layout_constraintStart_toStartOf="@+id/diff_water"
+                    app:layout_constraintTop_toBottomOf="@+id/goal_water" />
+
+            <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="目標份量"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@+id/text_message_content"
+                    app:layout_constraintEnd_toEndOf="@+id/goal_water"
+                    app:layout_constraintEnd_toStartOf="@+id/textView16"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView15"
+                    app:layout_constraintStart_toStartOf="@+id/goal_water"
+                    app:layout_constraintTop_toBottomOf="@+id/goal_water" />
+
+            <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="平均貢獻"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@+id/text_message_content"
+                    app:layout_constraintEnd_toEndOf="@+id/diff_water"
+                    app:layout_constraintStart_toEndOf="@+id/goal_water"
+                    app:layout_constraintTop_toBottomOf="@+id/goal_water" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
