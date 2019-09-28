@@ -7,10 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.Sleep
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
 import com.terricom.mytype.profile.CardAvatarOutlineProvider
 import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
@@ -257,6 +254,19 @@ class DiaryViewModel: ViewModel() {
     val totalCarbon: LiveData<Float>
         get() = _totalCarbon
 
+    val _queryResult = MutableLiveData<List<Foodie>>()
+    val queryResult : LiveData<List<Foodie>>
+        get() = _queryResult
+
+    val _listFoodie = MutableLiveData<FoodieList>()
+    val listFoodie : LiveData<FoodieList>
+        get() = _listFoodie
+
+    fun setQuery(queryResult : List<Foodie>, key: String){
+        _queryResult.value = queryResult
+        _listFoodie.value = FoodieList(queryResult,key)
+    }
+
     fun getTime(timestamp: Date):String{
         val sdf = SimpleDateFormat("HH:mm")
             return sdf.format(java.sql.Date(timestamp.time).time)
@@ -352,6 +362,67 @@ class DiaryViewModel: ViewModel() {
 
 
     }
+
+    fun queryFoodie(key: String) {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = users
+                .document(userUid).collection("Foodie")
+//                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereArrayContains("foods", key)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+                    val dates = mutableListOf<String>()
+                    val items = mutableListOf<Foodie>()
+                    for (document in it) {
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                        items.add(document.toObject(Foodie::class.java))
+                        items[items.lastIndex].docId = document.id
+                    }
+                    Logger.i("dates.size with $key = ${dates.distinct().size} dates = $dates")
+                    Logger.i("$key items = ${items}")
+                    if (!items.isNullOrEmpty()){
+                        setQuery(items.asReversed(), key)
+                    }
+
+                }
+        }
+
+
+    }
+
+    fun queryFoodieNu(key: String) {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = users
+                .document(userUid).collection("Foodie")
+//                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereArrayContains("nutritions", key)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+                    val dates = mutableListOf<String>()
+                    val items = mutableListOf<Foodie>()
+                    for (document in it) {
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                        items.add(document.toObject(Foodie::class.java))
+                        items[items.lastIndex].docId = document.id
+                    }
+                    Logger.i("dates.size with $key = ${dates.distinct().size} dates = $dates")
+                    Logger.i("$key items = ${items}")
+                    if (!items.isNullOrEmpty()){
+                        setQuery(items.asReversed(), key)
+                    }
+                }
+        }
+
+
+    }
+
+
 
 
 

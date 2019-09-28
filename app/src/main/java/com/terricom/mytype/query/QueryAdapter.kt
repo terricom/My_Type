@@ -1,32 +1,34 @@
-package com.terricom.mytype.diary
+package com.terricom.mytype.query
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.databinding.ItemDiaryFoodlistBinding
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.databinding.ItemQueryFoodieBinding
 
-class FoodlistAdapter(val viewModel: DiaryViewModel
-                    , private val onClickListener: OnClickListener
-) : ListAdapter<String, FoodlistAdapter.ProductViewHolder>(DiffCallback) {
+class QueryAdapter(val viewModel: QueryViewModel
+                      , private val onClickListener: OnClickListener
+) : ListAdapter<Foodie, QueryAdapter.ProductViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (foodie: String) -> Unit) {
-        fun onClick(foodie: String) = clickListener(foodie)
+    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
+        fun onClick(foodie: Foodie) = clickListener(foodie)
     }
 
 
-    class ProductViewHolder(private var binding: ItemDiaryFoodlistBinding): RecyclerView.ViewHolder(binding.root),
+    class ProductViewHolder(private var binding: ItemQueryFoodieBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(food: String, viewModel: DiaryViewModel) {
+        fun bind(food: Foodie, viewModel: QueryViewModel) {
 
             binding.lifecycleOwner =this
-            binding.food.text = food
-
+            binding.foodie = food
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -52,19 +54,19 @@ class FoodlistAdapter(val viewModel: DiaryViewModel
     }
 
 
-    companion object DiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<Foodie>() {
+        override fun areItemsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
             return (oldItem == newItem)
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
             return oldItem == newItem
         }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemDiaryFoodlistBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ProductViewHolder(ItemQueryFoodieBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
 
@@ -74,7 +76,7 @@ class FoodlistAdapter(val viewModel: DiaryViewModel
 
         holder.bind(product, viewModel)
         holder.itemView.setOnClickListener {
-            viewModel.queryFoodie(product)
+            Navigation.findNavController(it).navigate(NavigationDirections.navigateToFoodieFragment(product))
         }
     }
     override fun onViewAttachedToWindow(holder: ProductViewHolder) {

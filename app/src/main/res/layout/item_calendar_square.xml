@@ -5,37 +5,38 @@
         <import type="android.view.View"/>
         <variable name="viewModel" type="com.terricom.mytype.shaperecord.ShapeRecordViewModel"/>
     </data>
-<com.terricom.mytype.calendar.SquareConstrainLayout
-        android:orientation="vertical"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="match_parent"
-                                                    android:id="@+id/cellDateLayout">
+    <com.terricom.mytype.calendar.SquareConstrainLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cellDateLayout">
 
-    <TextView
-            android:id="@+id/itemDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:layout_marginTop="2dp"
-            android:text="1"
-            android:textSize="12sp"
-            android:textColor="@color/colorMyType"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+                android:id="@+id/itemDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="2dp"
+                android:text="1"
+                android:textSize="12sp"
+                android:textColor="@color/colorMyType"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
-            android:id="@+id/shape"
-            android:layout_width="21dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:scaleType="fitStart"
-            android:tint="@color/colorBananna"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_shape" />
 
-</com.terricom.mytype.calendar.SquareConstrainLayout>
+        <ImageView
+                android:id="@+id/shape"
+                android:layout_width="21dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitStart"
+                android:tint="@color/colorBananna"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_shape" />
+
+    </com.terricom.mytype.calendar.SquareConstrainLayout>
 </layout>

@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemDiaryNutritionlistBinding
 
 class NutritionlistAdapter(val viewModel: DiaryViewModel
-//                    , private val onClickListener: OnClickListener
+                    , private val onClickListener: OnClickListener
 ) : ListAdapter<String, NutritionlistAdapter.ProductViewHolder>(DiffCallback) {
 
-//    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
-//        fun onClick(foodie: Foodie) = clickListener(foodie)
-//    }
+    class OnClickListener(val clickListener: (nutrition: String) -> Unit) {
+        fun onClick(nutrition: String) = clickListener(nutrition)
+    }
 
 
     class ProductViewHolder(private var binding: ItemDiaryNutritionlistBinding): RecyclerView.ViewHolder(binding.root),
@@ -26,6 +26,7 @@ class NutritionlistAdapter(val viewModel: DiaryViewModel
 
             binding.lifecycleOwner =this
             binding.nutrition.text = nutrition
+
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
@@ -71,8 +72,9 @@ class NutritionlistAdapter(val viewModel: DiaryViewModel
         //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
 
-        product.let {
-            holder.bind(product, viewModel)
+        holder.bind(product, viewModel)
+        holder.itemView.setOnClickListener {
+            viewModel.queryFoodieNu(product)
         }
     }
     override fun onViewAttachedToWindow(holder: ProductViewHolder) {

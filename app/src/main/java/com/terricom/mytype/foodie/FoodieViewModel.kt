@@ -231,6 +231,7 @@ class FoodieViewModel: ViewModel() {
 
         if (selectedFood.contains("新增食物")) {selectedFood.remove("新增食物")}
         if (selectedNutrition.contains("新增營養")) {selectedNutrition.remove("新增營養")}
+        Logger.i("SelectedFood = ${selectedFood.distinct()}")
 
         //發文功能
         val foodieContent = hashMapOf(
@@ -250,16 +251,11 @@ class FoodieViewModel: ViewModel() {
         user.get()
             .addOnSuccessListener { result->
                 if (userUid != null){
-                    user.document(userUid).collection("Foodie").document()
-                }
+                    Logger.i("FoodieViewModel userUid =$userUid updateFoodie.value.docId =${updateFoodie.value!!.docId}")
 
-                Logger.i("FoodieViewModel userUid =$userUid")
-                for (doc in result){
-                    if (doc.id == userUid){
-                        user.document(doc.id).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
-                    }
+                    user.document(userUid).collection("Foodie").document(updateFoodie.value!!.docId!!).update(foodieContent)
+                    updatePuzzle()
                 }
-                updatePuzzle()
 
             }
 

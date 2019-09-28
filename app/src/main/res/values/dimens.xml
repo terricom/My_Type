@@ -44,6 +44,7 @@
     <dimen name="standard_105">105dp</dimen>
     <dimen name="standard_155">155dp</dimen>
     <dimen name="standard_205">205dp</dimen>
+    <dimen name="standard_305">305dp</dimen>
     <dimen name="standard_0">0dp</dimen>
 
     <dimen name="default_screen_padding">16dp</dimen>
