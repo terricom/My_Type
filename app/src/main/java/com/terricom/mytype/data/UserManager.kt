@@ -62,5 +62,14 @@ object UserManager {
             Log.i("UserManager.mail", value)
         }
 
+    var createDiary : String? = null
+        get(){
+            return prefs?.getString("times", "")
+        }
+        set(value){
+            field = prefs?.edit()?.putString("times",value)?.apply().toString()
+            Log.i("UserManager.times", value!!.toString())
+        }
+
 
 }

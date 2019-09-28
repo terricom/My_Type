@@ -333,14 +333,17 @@ class DiaryViewModel: ViewModel() {
                 .get()
                 .addOnSuccessListener {
                     val dates = mutableListOf<String>()
+                    val items = mutableListOf<Foodie>()
                     for (document in it) {
                         dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                        items.add(document.toObject(Foodie::class.java))
                     }
                     Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
                     if (dates.distinct().size%7 == 0){
-                        if (dates.size == 0){
+                        UserManager.createDiary = UserManager.createDiary.toString().toInt().plus(1).toString()
+                        if (dates.size == 0 ){
                             getPuzzleNewUser()
-                        }else if (dates.size != 0){
+                        }else if (dates.size != 0 ){
                             getPuzzle()
                         }
                     }

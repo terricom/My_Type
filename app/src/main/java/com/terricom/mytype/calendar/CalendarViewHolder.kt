@@ -73,7 +73,7 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
             if (recorded){
                 recordDate.visibility = View.VISIBLE
             }
-            puzzleDate.visibility = View.VISIBLE
+//            puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(

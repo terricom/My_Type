@@ -341,6 +341,7 @@ class FoodieFragment: Fragment() {
                         viewModel.updateFoodAndNuList()
                         viewModel.clearData()
                     }
+
                     findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
 
                     if (isConnected()) {
