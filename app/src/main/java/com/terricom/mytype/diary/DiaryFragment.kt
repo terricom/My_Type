@@ -18,6 +18,7 @@ import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.CalendarFragment
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 import com.terricom.mytype.tools.Logger
 import java.text.SimpleDateFormat
@@ -37,17 +38,19 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+
         Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) in DIARY")
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
                 findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
         viewModel.getPuzzle.observe(this, Observer {
-            if (it == false){
-                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
+            if (it == false && UserManager.createDiary == "1"){
+                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
+                    MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
                 }))
-            }else if (it == true){
+            }else if (it == true && UserManager.createDiary == "1"){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                 }))
@@ -149,7 +152,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             Logger.i("NetworkConnection Network Connected.")
             //執行下載任務
         }else{
-            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
             //告訴使用者網路無法使用
         }
 
