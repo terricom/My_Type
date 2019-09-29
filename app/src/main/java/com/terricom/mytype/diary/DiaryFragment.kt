@@ -55,6 +55,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                 }))
+                UserManager.getPuzzleOld = UserManager.getPuzzleOld.toString().toInt().plus(1).toString()
             }
         })
 

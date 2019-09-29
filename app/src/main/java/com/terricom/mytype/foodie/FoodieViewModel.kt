@@ -139,6 +139,29 @@ class FoodieViewModel: ViewModel() {
         _time.value = Time(date.time)
     }
 
+    val _editDateClicked = MutableLiveData<Boolean>()
+    val editDateClicked : LiveData<Boolean>
+        get() = _editDateClicked
+
+    fun editDateClicked(){
+        _editDateClicked.value = true
+    }
+
+    fun editDateClickedAgain(){
+        _editDateClicked.value = false
+    }
+
+    val _editTimeClicked = MutableLiveData<Boolean>()
+    val editTimeClicked : LiveData<Boolean>
+        get() = _editTimeClicked
+
+    fun editTimeClicked(){
+        _editTimeClicked.value = true
+    }
+
+    fun editTimeClickedAgain(){
+        _editTimeClicked.value = false
+    }
 
     val _time = MutableLiveData<Time>()
     val time : LiveData<Time>
@@ -366,6 +389,8 @@ class FoodieViewModel: ViewModel() {
         setDate(Date())
         unCheckedAddNewFood()
         unCheckedAddNewNutrition()
+        editDateClickedAgain()
+        editTimeClickedAgain()
     }
 
     fun getFoodAndNuList(){

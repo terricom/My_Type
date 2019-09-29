@@ -38,14 +38,13 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
-import com.terricom.mytype.tools.DateMask
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
-import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class FoodieFragment: Fragment() {
@@ -173,7 +172,50 @@ class FoodieFragment: Fragment() {
             editableFoods = mutableListOf("")
         }
 
-        binding.editDate.addTextChangedListener(DateMask())
+        viewModel.editDateClicked.observe(this, Observer {
+            if (!it){
+                binding.editDate.setOnClickListener {
+                    binding.datePicker.visibility = View.INVISIBLE
+                    if (binding.datePicker.month+1 >=10){
+                        binding.editDate.text = "${binding.datePicker.year}-${binding.datePicker.month+1}-${binding.datePicker.dayOfMonth}"
+                    }else if(binding.datePicker.month+1 <10){
+                        binding.editDate.text = "${binding.datePicker.year}-0${binding.datePicker.month+1}-${binding.datePicker.dayOfMonth}"
+                    }
+                    viewModel.editDateClicked()
+                }
+            }else if (it){
+                binding.editDate.setOnClickListener {
+                    binding.datePicker.visibility = View.VISIBLE
+                    if (binding.datePicker.month+1 >=10){
+                        binding.editDate.text = "${binding.datePicker.year}-${binding.datePicker.month+1}-${binding.datePicker.dayOfMonth}"
+                    }else if(binding.datePicker.month+1 <10){
+                        binding.editDate.text = "${binding.datePicker.year}-0${binding.datePicker.month+1}-${binding.datePicker.dayOfMonth}"
+                    }
+                    viewModel.editDateClickedAgain()
+                }
+            }
+        })
+
+        viewModel.editTimeClicked.observe(this, Observer {
+            if (!it){
+                binding.editTime.setOnClickListener {
+                    binding.timePicker2.visibility = View.INVISIBLE
+                    binding.editTime.text = "${binding.timePicker2.hour}:${binding.timePicker2.minute}"
+                    viewModel.editTimeClicked()
+                }
+            }else if (it){
+                binding.editTime.setOnClickListener {
+                    binding.timePicker2.visibility = View.VISIBLE
+                    binding.editTime.text = "${binding.timePicker2.hour}:${binding.timePicker2.minute}"
+                    viewModel.editTimeClickedAgain()
+                }
+            }
+        })
+
+
+
+
+//        binding.editDate.addTextChangedListener(DateMask())
 
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
@@ -315,15 +357,26 @@ class FoodieFragment: Fragment() {
 
                 it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
-                if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
-                    viewModel.setDate(java.util.Date())
-                }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+SimpleDateFormat("HH:mm:ss").format(java.util.Date())+".000000000").time))
-                }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                    viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
-                }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
-                }
+
+                viewModel.setDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
+
+//                if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
+//                    viewModel.setDate(java.util.Date())
+//                }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
+//                    viewModel.setDate(
+//                        java.sql.Date(
+//                            Timestamp.valueOf(
+//                                binding.editDate.text.toString() + " " + SimpleDateFormat(
+//                                    "HH:mm:ss"
+//                                ).format(Date()) + ".000000000"
+//                            ).time
+//                        )
+//                    )
+//                }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+//                    viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
+//                }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
+//                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
+//                }
 
                 if (foodie.timestamp != null){
                     viewModel.adjustFoodie()

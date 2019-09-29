@@ -61,7 +61,6 @@ class LoginFragment: Fragment() {
         } else {
 
         binding.buttonLoginFacebook.setOnClickListener {
-
             viewModel.loginFB()
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
         }
@@ -193,7 +192,7 @@ class LoginFragment: Fragment() {
                     viewModel.checkUser(user!!.uid)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Logger.w("signInWithCredential:failure ${task.exception}")
+                    Logger.w("signInWithCredential:failure ${task.exception} error_code =${task.exception}")
                     Snackbar.make(binding.root, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                 }
 

@@ -39,6 +39,8 @@ class MessageDialog : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
     }
 
     private fun init() {
@@ -86,13 +88,21 @@ class MessageDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        super.dismiss()
+
         if (messageType == MessageType.ADDED_SUCCESS || messageType == MessageType.LOGIN_SUCCESS){
             this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).closeFABMenu()
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
+        } else if ( messageType == MessageType.MESSAGE ){
+            this.findNavController().navigate(NavigationDirections.navigateToProfileFragment())
+            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_profile
+            (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
         }
+
+        super.dismiss()
     }
 }

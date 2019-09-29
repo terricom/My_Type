@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
@@ -18,6 +17,7 @@ import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.data.PuzzleImg
 import com.terricom.mytype.databinding.FragmentProfileBinding
+import com.terricom.mytype.tools.Logger
 
 
 
@@ -33,16 +33,6 @@ class ProfileFragment: Fragment() {
         binding = FragmentProfileBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner= this
-        val pazzleMock = Puzzle(
-            listOf(0,4,6,8),
-            PuzzleImg.DRINKWATER.value
-        )
-        val pazzleMock2 = Puzzle(
-            listOf(10,14,3),
-            PuzzleImg.GOODOIL.value
-        )
-
-//        viewModel.setPazzle(listOf(pazzleMock, pazzleMock2))
 
         val linearSnapHelper = LinearSnapHelper().apply {
             attachToRecyclerView(binding.recyclerPuzzle)
@@ -59,15 +49,20 @@ class ProfileFragment: Fragment() {
         (binding.recyclerGoal.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
         binding.recyclerGoal.setHasFixedSize(true)
 
-        binding.profileGoalSettingReference.setOnClickListener {
-            if (viewModel.getGoalOrNot.value == true){
-                findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
-            }else if (viewModel.getGoalOrNot.value == false || viewModel.getGoalOrNot.value == null){
-                findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
-                    value.message = getString(R.string.profile_hint_add_goal)
-                }))
+        viewModel.getPazzleOrNot.observe(this, Observer {
+            if (it){
+                binding.profileGoalSettingReference.setOnClickListener {
+                    findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
+                }
+
+            } else {
+                binding.profileGoalSettingReference.setOnClickListener {
+                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
+                        value.message = getString(R.string.profile_hint_add_goal)
+                    }))
+                }
             }
-        }
+        })
 
         binding.profilePuzzleReference.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
