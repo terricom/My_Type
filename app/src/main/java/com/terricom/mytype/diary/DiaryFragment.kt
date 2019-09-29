@@ -45,12 +45,13 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         })
 
         viewModel.getPuzzle.observe(this, Observer {
-            if (it == false && UserManager.createDiary == "1"){
+            Logger.i("viewModel.getPuzzle.observe= $it UserManager.createDiary = ${UserManager.createDiary}")
+            if (it == false && UserManager.createDiary == "2"){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
                 }))
-            }else if (it == true && UserManager.createDiary == "1"){
+            }else if (it == true && UserManager.getPuzzleOld == "1"){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                 }))

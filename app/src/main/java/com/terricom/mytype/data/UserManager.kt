@@ -71,5 +71,14 @@ object UserManager {
             Log.i("UserManager.times", value!!.toString())
         }
 
+    var getPuzzleOld : String? = null
+        get(){
+            return prefs?.getString("puzzle", "")
+        }
+        set(value){
+            field = prefs?.edit()?.putString("puzzle",value)?.apply().toString()
+            Log.i("UserManager.puzzle", value!!.toString())
+        }
+
 
 }

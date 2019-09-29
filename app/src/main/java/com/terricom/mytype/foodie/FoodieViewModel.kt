@@ -277,7 +277,6 @@ class FoodieViewModel: ViewModel() {
                     }
                     Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
                     if (dates.distinct().size%7 == 0){
-
                         val puzzle = user
                             .document(userUid).collection("Puzzle")
                             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -295,7 +294,8 @@ class FoodieViewModel: ViewModel() {
                                 Logger.i("pazzleAll.size = ${pazzleAll.size} pazzle = $pazzleAll")
 
                                 if ( pazzleAll.size != 0 ){
-                                    if (pazzleAll[0].position!!.sum()!= 105 && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value!!))){
+                                    UserManager.getPuzzleOld = UserManager.getPuzzleOld.toString().toInt().plus(1).toString()
+                                    if (pazzleAll[0].position!!.sum()!= 105 && UserManager.getPuzzleOld == "1"){
                                         val addNewPazzle = pazzleAll[0].position!!.toMutableList()
                                         val addOldPazzleTS = pazzleAll[0].recordedDates!!.toMutableList()
                                         addNewPazzle.add((1..15).minus(addNewPazzle).random())
@@ -307,9 +307,8 @@ class FoodieViewModel: ViewModel() {
                                                 "timestamp" to FieldValue.serverTimestamp()
                                             )
                                         )
-                                    } else if (pazzleAll[0].position!!.sum()== 105
-//                                        && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value!!))
-                                    ){
+
+                                    } else if (pazzleAll[0].position!!.sum()== 105 && UserManager.getPuzzleOld == "1"){
                                         val pazzleOld = hashMapOf(
                                             "position" to listOf((0..14).random()),
                                             "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
@@ -319,7 +318,9 @@ class FoodieViewModel: ViewModel() {
                                         )
                                         user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                     }
-                                } else if ( pazzleAll.size == 0 ){
+                                }
+                                //全新用戶的拼圖在 Diary 去 Update
+                                else if ( pazzleAll.size == 0 ){
                                     val pazzleOld = hashMapOf(
                                         "position" to listOf((0..14).random()),
                                         "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
@@ -327,7 +328,7 @@ class FoodieViewModel: ViewModel() {
                                         "timestamp" to FieldValue.serverTimestamp()
 
                                     )
-                                    user.document(userUid).collection("Puzzle").document().set(pazzleOld)
+//                                    user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                 }
                             }
 
@@ -352,7 +353,7 @@ class FoodieViewModel: ViewModel() {
     init {
         if (userUid != null){
             getFoodAndNuList()
-//            updatePuzzle()
+            updatePuzzle()
         }
         setDate(Date())
         unCheckedAddNewFood()

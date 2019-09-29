@@ -99,6 +99,7 @@ class MainActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
 
         UserManager.createDiary = "0"
+        UserManager.getPuzzleOld = "0"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this

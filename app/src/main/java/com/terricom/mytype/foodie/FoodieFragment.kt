@@ -434,7 +434,7 @@ class FoodieFragment: Fragment() {
                 outBitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos)
                 if(outBitmap!!.width > outBitmap.height)ScalePic(outBitmap, mPhone!!.widthPixels)
                 else ScalePic(outBitmap, mPhone!!.widthPixels)
-                bitmap!!.recycle()
+//                bitmap!!.recycle()
 
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -641,7 +641,7 @@ class FoodieFragment: Fragment() {
                         COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     mLocationPermissionsGranted = true
                     try {
-//                        fromcamera()
+//                        selectImage()
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
