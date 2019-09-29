@@ -22,10 +22,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.terricom.mytype.App
-import com.terricom.mytype.MainActivity
-import com.terricom.mytype.NavigationDirections
-import com.terricom.mytype.R
+import com.terricom.mytype.*
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentLoginBinding
 import com.terricom.mytype.tools.Logger
@@ -60,10 +57,10 @@ class LoginFragment: Fragment() {
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).fab.visibility = View.VISIBLE
+            (activity as MainActivity).closeFABMenu()
         } else {
 
         binding.buttonLoginFacebook.setOnClickListener {
-
             viewModel.loginFB()
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
         }
@@ -75,16 +72,16 @@ class LoginFragment: Fragment() {
 
         viewModel.loginFacebook.observe(this, Observer {
             if (it){
-//                    LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
-                    handleFacebookAccessToken(viewModel.accessToken as AccessToken)
-//                LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
-//                if (it){
-                    Logger.i("UserManager.userToken = ${UserManager.userToken}")
-
-
+                handleFacebookAccessToken(viewModel.accessToken as AccessToken)
                 viewModel.onLoginFacebookCompleted()
             }
         })
+
+            viewModel.user.observe(this, Observer {
+                if (it != null){
+                    findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.LOGIN_SUCCESS))
+                }
+            })
 
 
         }
@@ -104,15 +101,15 @@ class LoginFragment: Fragment() {
                     var user = auth.currentUser
                     viewModel.checkUser(user!!.uid)
                     Logger.i("UserManager.userToken onActivityResult=${UserManager.userToken}")
-                    if (UserManager.userToken!!.isNotEmpty()){
-                        this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                        (activity as MainActivity).fab.visibility = View.VISIBLE
-                        (activity as MainActivity).fabShadow.visibility = View.GONE
-                        (activity as MainActivity).closeFABMenu()
-                        Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with FB")
-                    }
+//                    if (UserManager.userToken!!.isNotEmpty()){
+//                        this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+//                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+//                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+//                        (activity as MainActivity).fab.visibility = View.VISIBLE
+//                        (activity as MainActivity).fabShadow.visibility = View.GONE
+//                        (activity as MainActivity).closeFABMenu()
+//                        Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with FB")
+//                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Logger.w("signInWithCredential:failure ${task.exception}")
@@ -161,16 +158,16 @@ class LoginFragment: Fragment() {
 
                 firebaseAuthWithGoogle(account)
                 Logger.i("ServerAuthCode =${account.serverAuthCode} account.id =${account.id}")
-                if (UserManager.userToken!!.isNotEmpty()){
-
-                    this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                    (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).fabShadow.visibility = View.GONE
-                    (activity as MainActivity).closeFABMenu()
-                    Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with GOOGLE")
-                }
+//                if (UserManager.userToken!!.isNotEmpty()){
+//
+//                    this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
+//                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
+//                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
+//                    (activity as MainActivity).fab.visibility = View.VISIBLE
+//                    (activity as MainActivity).fabShadow.visibility = View.GONE
+//                    (activity as MainActivity).closeFABMenu()
+//                    Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with GOOGLE")
+//                }
 
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -195,7 +192,7 @@ class LoginFragment: Fragment() {
                     viewModel.checkUser(user!!.uid)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Logger.w("signInWithCredential:failure ${task.exception}")
+                    Logger.w("signInWithCredential:failure ${task.exception} error_code =${task.exception}")
                     Snackbar.make(binding.root, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                 }
 

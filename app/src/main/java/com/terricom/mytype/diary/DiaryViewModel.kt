@@ -3,6 +3,7 @@ package com.terricom.mytype.diary
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -351,9 +352,20 @@ class DiaryViewModel: ViewModel() {
                     Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
                     if (dates.distinct().size%7 == 0){
                         UserManager.createDiary = UserManager.createDiary.toString().toInt().plus(1).toString()
-                        if (dates.size == 0 ){
+                        //全新使用者
+                        if (dates.size == 0 && UserManager.createDiary == "2"){
+                            val pazzleOld = hashMapOf(
+                                "position" to listOf((0..14).random()),
+                                "imgURL" to PuzzleImg.values()[0].value,
+                                "recordedDates" to listOf(sdf.format(Date())),
+                                "timestamp" to FieldValue.serverTimestamp()
+
+                            )
+                            users.document(userUid).collection("Puzzle").document().set(pazzleOld)
                             getPuzzleNewUser()
-                        }else if (dates.size != 0 ){
+                        }
+                        //老用戶
+                        else if (dates.size != 0 ){
                             getPuzzle()
                         }
                     }

@@ -24,9 +24,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.*
+import com.terricom.mytype.data.UserManager.name
+import com.terricom.mytype.data.UserManager.uid
 import com.terricom.mytype.databinding.ActivityMainBinding
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
@@ -71,6 +74,7 @@ class MainActivity : BaseActivity(){
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
 
+    private var firebaseAnalytics: FirebaseAnalytics ?= null
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -99,9 +103,19 @@ class MainActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
 
         UserManager.createDiary = "0"
+        UserManager.getPuzzleOld = "0"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        val bundle: Bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "userUid = $uid");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "userName = $name");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        firebaseAnalytics!!.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton
@@ -173,6 +187,8 @@ class MainActivity : BaseActivity(){
         setupNavController()
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+
 
 //        FirebaseInstanceId.getInstance().instanceId
 //            .addOnCompleteListener(OnCompleteListener { task ->
