@@ -185,6 +185,14 @@ class FoodieViewModel: ViewModel() {
         _updateFoodie.value = foodie
     }
 
+    val _uploadFile = MutableLiveData<Boolean>()
+    val uploadFile: LiveData<Boolean>
+        get() = _uploadFile
+
+    fun uploadFile(){
+        _uploadFile.value = true
+    }
+
     val db = FirebaseFirestore.getInstance()
     val user = db.collection("Users")
 
@@ -236,7 +244,6 @@ class FoodieViewModel: ViewModel() {
         //發文功能
         val foodieContent = hashMapOf(
             "timestamp" to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
-            "photo" to photoUri.value.toString(),
             "water" to water.value,
             "oil" to oil.value,
             "vegetable" to vegetable.value,
@@ -245,7 +252,8 @@ class FoodieViewModel: ViewModel() {
             "carbon" to carbon.value,
             "foods" to selectedFood.distinct(),
             "nutritions" to selectedNutrition.distinct(),
-            "memo" to memo.value
+            "memo" to memo.value,
+            if (uploadFile.value == true) "photo" to photoUri.value.toString() else "photo" to updateFoodie.value!!.photo
         )
 
         user.get()
@@ -366,7 +374,7 @@ class FoodieViewModel: ViewModel() {
             .addOnSuccessListener { result ->
                 for (doc in result){
                     if (doc.id == userUid){
-                        val user = doc.toObject(UserMT::class.java)
+                        val user = doc.toObject(User::class.java)
                         if (user.foodlist != null){
                             var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
                             getFoodlist(firebaseFoodlist)
@@ -387,7 +395,7 @@ class FoodieViewModel: ViewModel() {
             .addOnSuccessListener { result ->
                 for (doc in result){
                     if (doc.id == userUid){
-                        val user = doc.toObject(UserMT::class.java)
+                        val user = doc.toObject(User::class.java)
 //                        if (user.foodlist == null){
                             db.collection("Users").document(doc.id).update("foodlist", newFuList.distinct()).addOnCompleteListener{}
 //                        }

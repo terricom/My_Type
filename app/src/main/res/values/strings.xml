@@ -112,5 +112,6 @@
     <string name="diary_puzzle_check_new">歡迎加入種天菜行列\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
     <string name="diary_puzzle_check_old">恭喜完成七天的紀錄\n你剛剛獲得一塊拼圖\n到個人頁面去看看吧</string>
     <string name="query_title_average">平均成就</string>
+    <string name="login_success">登入成功\n歡迎回來</string>
 
 </resources>

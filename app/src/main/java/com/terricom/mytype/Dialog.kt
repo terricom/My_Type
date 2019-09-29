@@ -43,10 +43,10 @@ class MessageDialog : AppCompatDialogFragment() {
 
     private fun init() {
         when (messageType) {
-//            MessageType.LOGIN_SUCCESS -> {
-//                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type)
-//                message = getString(R.string.login_success)
-//            }
+            MessageType.LOGIN_SUCCESS -> {
+                iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type)
+                message = getString(R.string.login_success)
+            }
             MessageType.ADDED_SUCCESS -> {
                 iconRes = App.instance!!.getDrawable(R.drawable.icon_my_type_border)
                 message = getString(R.string.dialog_message_add_new_success)
@@ -87,15 +87,12 @@ class MessageDialog : AppCompatDialogFragment() {
 
     override fun dismiss() {
         super.dismiss()
-        if (messageType == MessageType.ADDED_SUCCESS){
+        if (messageType == MessageType.ADDED_SUCCESS || messageType == MessageType.LOGIN_SUCCESS){
             this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
                     (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
                     (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
                     (activity as MainActivity).fab.visibility = View.VISIBLE
-                    (activity as MainActivity).fabShadow.visibility = View.GONE
                     (activity as MainActivity).closeFABMenu()
-        }else {
-
         }
     }
 }

@@ -295,13 +295,6 @@ class FoodieFragment: Fragment() {
                 true
             )
         )
-        //判斷 EditText
-//        binding.numberWater.addTextChangedListener(FoodieMask())
-//        binding.numberFruit.addTextChangedListener(FoodieMask())
-//        binding.numberCarbon.addTextChangedListener(FoodieMask())
-//        binding.numberCoconut.addTextChangedListener(FoodieMask())
-//        binding.numberProtein.addTextChangedListener(FoodieMask())
-//        binding.numberVegetable.addTextChangedListener(FoodieMask())
 
         //讀取手機解析度
         mPhone = DisplayMetrics()
@@ -567,6 +560,7 @@ class FoodieFragment: Fragment() {
 
     private fun uploadFile(){
         if (filePath != null){
+            viewModel.uploadFile()
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
             val data = compress(filePath!!)

@@ -204,7 +204,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
 
-        if (userUid != null){
+        if (!userUid.isNullOrEmpty()){
             val foodieDiary = users
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -248,10 +248,6 @@ class AlarmReceiver : BroadcastReceiver() {
             foodieDiary
                 .get()
                 .addOnSuccessListener {
-                    if (it.size() == 0){
-                        textTitle = "Hi 今天吃得好嗎？"
-                        textContent = "快來新增食記 記下營養滿滿的一天吧！"
-                    }else {
                         val items = mutableListOf<Foodie>()
                         for (fooDiary in it){
                             items.add(fooDiary.toObject(Foodie::class.java))
@@ -287,16 +283,16 @@ class AlarmReceiver : BroadcastReceiver() {
 
                             textTitle = "好的開始是成功的一半"
                             textContent =
-                                "距離今日目標\n\uD83D\uDCA7飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
-                                        "\uD83E\uDD51油脂還差 ${if (diffOil!! <= 0.0f) 0.0f else diffOil} 份\n " +
-                                        "\uD83E\uDD66蔬菜還差 ${if (diffVegetable!! <= 0.0f) 0.0f else diffVegetable} 份  " +
-                                        "\uD83C\uDF73蛋白質還差 ${if (diffProtein!! <= 0.0f) 0.0f else diffProtein} 份\n" +
-                                        "\uD83C\uDF4E水果還差 ${if (diffFruit!! <= 0.0f) 0.0f else diffFruit} 份  " +
-                                        "\uD83E\uDD54碳水還差 ${if (diffCarbon!! <= 0.0f) 0.0f else diffCarbon} 份"
+                                "距離今日目標\n\uD83D\uDCA7 飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
+                                        "\uD83E\uDD51 油脂還差 ${if (diffOil!! <= 0.0f) 0.0f else diffOil} 份\n " +
+                                        "\uD83E\uDD66 蔬菜還差 ${if (diffVegetable!! <= 0.0f) 0.0f else diffVegetable} 份  " +
+                                        "\uD83C\uDF73 蛋白質還差 ${if (diffProtein!! <= 0.0f) 0.0f else diffProtein} 份\n" +
+                                        "\uD83C\uDF4E 水果還差 ${if (diffFruit!! <= 0.0f) 0.0f else diffFruit} 份  " +
+                                        "\uD83E\uDD54 碳水還差 ${if (diffCarbon!! <= 0.0f) 0.0f else diffCarbon} 份\n" +
+                                        "辛苦了！下午繼續加油\uD83D\uDCAA"
 
                         },2000)
 
-                    }
                 }
 
 

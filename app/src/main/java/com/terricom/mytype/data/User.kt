@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class UserMT (
+data class User (
     val user_email: String ?= null,
     val user_name: String ?= null,
     val user_picture: String ?= null,

@@ -12,9 +12,9 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
-import com.terricom.mytype.tools.Logger
-import com.terricom.mytype.data.UserMT
+import com.terricom.mytype.data.User
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,6 +46,11 @@ class LoginViewModel: ViewModel() {
     val error: LiveData<String>
         get() = _error
 
+    private val _user = MutableLiveData<User>()
+
+    val user: LiveData<User>
+        get() = _user
+
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
@@ -61,6 +66,11 @@ class LoginViewModel: ViewModel() {
     var user_picture = ""
 
     private var mProfileTracker: ProfileTracker ?= null
+
+    private val _navigateToLoginSuccess = MutableLiveData<User>()
+
+    val navigateToLoginSuccess: LiveData<User>
+        get() = _navigateToLoginSuccess
 
 
     fun loginFB() {
@@ -137,7 +147,7 @@ class LoginViewModel: ViewModel() {
     }
 
     val db = FirebaseFirestore.getInstance()
-    val user = db.collection("Users")
+    val users = db.collection("Users")
 
     fun checkUser(uid: String){
 
@@ -152,9 +162,9 @@ class LoginViewModel: ViewModel() {
 
         var newOne = ""
 
-        user.get()
+        users.get()
             .addOnSuccessListener { result->
-                val items = mutableListOf<UserMT>()
+                val items = mutableListOf<User>()
                 for (doc in result){
                     //老用戶登入
                     if (doc.id == uid ){
@@ -162,7 +172,8 @@ class LoginViewModel: ViewModel() {
                         pref = App.instance?.getSharedPreferences("uid", 0)
                         pref!!.edit().putString(uid, "")
                         UserManager.uid = uid
-                        items.add(doc.toObject(UserMT::class.java))
+                        items.add(doc.toObject(User::class.java))
+                        _user.value = doc.toObject(User::class.java)
 
                     //其他老用戶
                     }else{
@@ -176,10 +187,11 @@ class LoginViewModel: ViewModel() {
 
                 }
                 //全新用戶
-                Logger.i("items UserMT = $items")
+                Logger.i("items User = $items")
                 if (items.size == 1){
                 }else if (items.isEmpty()){
-                    user.document(newOne).set(userData)
+                    users.document(newOne).set(userData)
+                    _user.value = userData as User
                 }
 
 
