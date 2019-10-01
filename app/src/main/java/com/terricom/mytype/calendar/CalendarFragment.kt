@@ -131,7 +131,7 @@ class CalendarFragment : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@CalendarFragment
-            this.recordedDates = recordedDate.value!!
+            this.recordedDates = recordedDate.value ?: listOf(sdf.format(Date()))
         }
         gridRecycler.adapter = calendarAdapter
         setHeader(currentDateCalendar)

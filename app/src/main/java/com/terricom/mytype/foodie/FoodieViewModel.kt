@@ -326,7 +326,7 @@ class FoodieViewModel: ViewModel() {
 
                                 if ( pazzleAll.size != 0 ){
                                     UserManager.getPuzzleOld = UserManager.getPuzzleOld.toString().toInt().plus(1).toString()
-                                    if (pazzleAll[0].position!!.sum()!= 105 && UserManager.getPuzzleOld == "1"){
+                                    if (pazzleAll[0].position!!.sum()!= 105 && UserManager.getPuzzleOld == "1" && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value))){
                                         val addNewPazzle = pazzleAll[0].position!!.toMutableList()
                                         val addOldPazzleTS = pazzleAll[0].recordedDates!!.toMutableList()
                                         addNewPazzle.add((1..15).minus(addNewPazzle).random())
@@ -339,7 +339,7 @@ class FoodieViewModel: ViewModel() {
                                             )
                                         )
 
-                                    } else if (pazzleAll[0].position!!.sum()== 105 && UserManager.getPuzzleOld == "1"){
+                                    } else if (pazzleAll[0].position!!.sum()== 105 && UserManager.getPuzzleOld == "1" && !pazzleAll[0].recordedDates!!.contains(sdf.format(date.value))){
                                         val pazzleOld = hashMapOf(
                                             "position" to listOf((0..14).random()),
                                             "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
