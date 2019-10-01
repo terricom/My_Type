@@ -156,14 +156,9 @@ class AchievementViewModel: ViewModel() {
                     val shapeList = mutableListOf<Shape>()
 
                     for (document in it){
-                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-                            "${sdf.format(convertDate).split("-")[1]}" ==
-                            "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
-                            items.add(document.toObject(Shape::class.java))
-                            items[items.size-1].docId = document.id
-                            datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
-                        }
+                        items.add(document.toObject(Shape::class.java))
+                        items[items.size-1].docId = document.id
+                        datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
                     }
                     Logger.i("datelist = $datelist items = $$items")
                     val cleanList = datelist.distinct()

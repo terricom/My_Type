@@ -231,13 +231,9 @@ class LinechartViewModel: ViewModel() {
                     val fruitD= mutableListOf<Float>()
                     val carbonD= mutableListOf<Float>()
                     for (document in querySnapshot) {
-                        val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
-                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-                            "${sdf.format(convertDate).split("-")[1]}" ==
-                            "${date.value!!.split("-")[0]}-${date.value!!.split("-")[1]}"){
-                            items.add(document.toObject(Foodie::class.java))
-                            datelist.add(sdfM.format(document.toObject(Foodie::class.java).timestamp))
-                        }
+                        items.add(document.toObject(Foodie::class.java))
+                        items[items.lastIndex].docId = document.id
+                        datelist.add(sdfM.format(document.toObject(Foodie::class.java).timestamp))
                     }
                     val cleanList = datelist.distinct().dropLastWhile { datelist.size == 8 }
                     val sleepList = mutableListOf<Float>()
