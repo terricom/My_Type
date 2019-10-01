@@ -201,11 +201,6 @@ class LinechartViewModel: ViewModel() {
                 .orderBy("timestamp", Query.Direction.ASCENDING)
                 .whereLessThanOrEqualTo("timestamp", Timestamp(Timestamp.valueOf("${sdf.format(recordDate.value)} 23:59:59.999999999").time))
                 .whereGreaterThanOrEqualTo("timestamp", Timestamp(Timestamp.valueOf("${sdf.format(recordDate.value)} 23:59:59.999999999").time.minus(604800000L)))
-            val sleepDiary = users
-                .document(userUid).collection("Sleep")
-                .orderBy("timestamp", Query.Direction.ASCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(518400000L)))
 
             val chartList = mutableListOf<ChartEntity>()
 
@@ -342,15 +337,12 @@ class LinechartViewModel: ViewModel() {
                     chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), carbonList.toFloatArray()))
 
                     setListDates(chartList.toCollection(ArrayList()))
-                    Logger.i("chartList.size =${chartList.size}")
                     _listDates.value = null
-                    Logger.i("LinechartViewModel fireDate = ${fireDate.value} cleanList = $cleanList")
                 }
         }
     }
 
     fun getGoal() {
-        Logger.i("userUID = $userUid")
         val db = FirebaseFirestore.getInstance()
         val users = db.collection("Users")
 
@@ -367,13 +359,11 @@ class LinechartViewModel: ViewModel() {
                 .addOnSuccessListener {
                     val items = mutableListOf<Goal>()
                     if (it.isEmpty){
-                        Logger.i("Goal Document is empty")
                     }else {
                         for (document in it) {
                             items.add(document.toObject(Goal::class.java))
                             items[items.size-1].docId = document.id
                         }
-                        Logger.i("items in LinechartViewModel = $items")
                         if (items.size > 0 ){
                         goalWater.value = "%.1f".format(items[0].water)
                         goalCarbon.value = "%.1f".format(items[0].carbon)

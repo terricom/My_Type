@@ -32,6 +32,43 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
+        <com.terricom.mytype.calendar.CalendarFragment
+                android:id="@+id/diary_calendar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_date">
+
+        </com.terricom.mytype.calendar.CalendarFragment>
+
+        <ImageView
+                android:id="@+id/button_water"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/number_water"
+                app:layout_constraintEnd_toStartOf="@+id/number_water"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/number_water"
+                app:srcCompat="@drawable/icon_water" />
+
+        <ImageView
+                android:id="@+id/imageView26"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/diary_date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/colorWhite" />
+
         <TextView
                 android:id="@+id/diary_date"
                 android:layout_width="0dp"
@@ -68,33 +105,6 @@
                 app:layout_constraintStart_toStartOf="@+id/button_save_calendar"
                 app:layout_constraintTop_toTopOf="@+id/button_save_calendar"
                 app:srcCompat="@drawable/toolbar_back" />
-
-        <com.terricom.mytype.calendar.CalendarFragment
-                android:id="@+id/diary_calendar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/diary_date">
-
-        </com.terricom.mytype.calendar.CalendarFragment>
-
-        <ImageView
-                android:id="@+id/button_water"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/tag_left_corners"
-                android:padding="@dimen/elevation_all"
-                android:paddingTop="@dimen/elevation_all"
-                android:scaleType="fitCenter"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/number_water"
-                app:layout_constraintEnd_toStartOf="@+id/number_water"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/number_water"
-                app:srcCompat="@drawable/icon_water" />
 
         <TextView
                 android:id="@+id/number_water"

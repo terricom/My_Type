@@ -352,14 +352,6 @@ class FoodieViewModel: ViewModel() {
                                 }
                                 //全新用戶的拼圖在 Diary 去 Update
                                 else if ( pazzleAll.size == 0 ){
-                                    val pazzleOld = hashMapOf(
-                                        "position" to listOf((0..14).random()),
-                                        "imgURL" to PuzzleImg.values()[ pazzleAll.size ].value,
-                                        "recordedDates" to listOf(sdf.format(date.value)),
-                                        "timestamp" to FieldValue.serverTimestamp()
-
-                                    )
-//                                    user.document(userUid).collection("Puzzle").document().set(pazzleOld)
                                 }
                             }
 

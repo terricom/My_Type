@@ -340,6 +340,10 @@ class DiaryViewModel: ViewModel() {
                 .document(userUid).collection("Foodie")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
 
+            val puzzle = users
+                .document(userUid).collection("Puzzle")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+
             diary
                 .get()
                 .addOnSuccessListener {
@@ -353,21 +357,33 @@ class DiaryViewModel: ViewModel() {
                     if (dates.distinct().size%7 == 0){
                         UserManager.createDiary = UserManager.createDiary.toString().toInt().plus(1).toString()
                         //全新使用者
-                        if (dates.size == 0 && UserManager.createDiary == "2"){
-                            val pazzleOld = hashMapOf(
-                                "position" to listOf((0..14).random()),
-                                "imgURL" to PuzzleImg.values()[0].value,
-                                "recordedDates" to listOf(sdf.format(Date())),
-                                "timestamp" to FieldValue.serverTimestamp()
 
-                            )
-                            users.document(userUid).collection("Puzzle").document().set(pazzleOld)
-                            getPuzzleNewUser()
-                        }
-                        //老用戶
-                        else if (dates.size != 0 ){
-                            getPuzzle()
-                        }
+                        puzzle
+                            .get()
+                            .addOnSuccessListener {
+                                val pazzleAll = mutableListOf<Puzzle>()
+                                for (document in it) {
+                                    pazzleAll.add(document.toObject(Puzzle::class.java))
+                                    pazzleAll[pazzleAll.size - 1].docId = document.id
+                                }
+                                Logger.i("pazzleAll.size = ${pazzleAll.size} pazzleAll = $pazzleAll")
+
+                                if (dates.size == 0 && UserManager.createDiary == "2" && pazzleAll.size == 0){
+                                    val pazzleOld = hashMapOf(
+                                        "position" to listOf((0..14).random()),
+                                        "imgURL" to PuzzleImg.values()[0].value,
+                                        "recordedDates" to listOf(sdf.format(Date())),
+                                        "timestamp" to FieldValue.serverTimestamp()
+
+                                    )
+                                    users.document(userUid).collection("Puzzle").document().set(pazzleOld)
+                                    getPuzzleNewUser()
+                                }
+                                //老用戶
+                                else if (dates.size != 0 ){
+                                    getPuzzle()
+                                }
+                            }
                     }
                 }
         }

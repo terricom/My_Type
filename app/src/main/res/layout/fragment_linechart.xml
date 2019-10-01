@@ -131,7 +131,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/diff_water"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/diff_water"
-                app:srcCompat="@drawable/icon_water" />
+                app:srcCompat="@drawable/icon_water"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_water"
@@ -150,7 +151,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_fruit"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_water"
@@ -168,7 +170,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_water"
                 app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
-                app:layout_constraintTop_toTopOf="@+id/diff_water" />
+                app:layout_constraintTop_toTopOf="@+id/diff_water"
+                tools:visibility="invisible" />
 
         <ImageView
                 android:id="@+id/icon_vegetable_goal"
@@ -185,7 +188,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_fruit"
                 app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                app:srcCompat="@drawable/icon_vegetable" />
+                app:srcCompat="@drawable/icon_vegetable"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_vegetable"
@@ -202,7 +206,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_vegetable_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_fruit"
@@ -220,7 +225,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_vegetable_goal"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_fruit"
-                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_fruit"
@@ -238,7 +244,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_fruit"
                 app:layout_constraintStart_toEndOf="@+id/icon_fruit"
-                app:layout_constraintTop_toTopOf="@+id/diff_fruit" />
+                app:layout_constraintTop_toTopOf="@+id/diff_fruit"
+                tools:visibility="invisible" />
 
         <ImageView
                 android:id="@+id/icon_fruit"
@@ -255,7 +262,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_water"
                 app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                app:srcCompat="@drawable/icon_fruit" />
+                app:srcCompat="@drawable/icon_fruit"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_vegetable"
@@ -273,7 +281,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_vegetable"
                 app:layout_constraintStart_toStartOf="@+id/diff_vegetable"
-                app:layout_constraintTop_toTopOf="@+id/diff_vegetable" />
+                app:layout_constraintTop_toTopOf="@+id/diff_vegetable"
+                tools:visibility="invisible" />
 
         <ImageView
                 android:id="@+id/icon_oil_goal"
@@ -288,7 +297,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/diff_oil"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/goal_oil"
-                app:srcCompat="@drawable/icon_coconut" />
+                app:srcCompat="@drawable/icon_coconut"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_oil"
@@ -307,7 +317,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_protein_goal"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_oil"
@@ -326,7 +337,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/diff_oil"
                 app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
-                app:layout_constraintTop_toBottomOf="@+id/goal_water" />
+                app:layout_constraintTop_toBottomOf="@+id/goal_water"
+                tools:visibility="invisible" />
 
         <ImageView
                 android:id="@+id/icon_carbon"
@@ -343,7 +355,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_protein"
                 app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                app:srcCompat="@drawable/icon_carbon" />
+                app:srcCompat="@drawable/icon_carbon"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_carbon"
@@ -360,7 +373,8 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_carbon"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/diff_protein"
@@ -378,7 +392,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_carbon"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_protein_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_protein"
@@ -397,7 +412,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
                 app:layout_constraintEnd_toEndOf="@+id/diff_protein"
                 app:layout_constraintStart_toStartOf="@+id/diff_protein"
-                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
+                app:layout_constraintTop_toTopOf="@+id/goal_oil"
+                tools:visibility="invisible" />
 
         <ImageView
                 android:id="@+id/icon_protein_goal"
@@ -414,7 +430,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_oil"
                 app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                app:srcCompat="@drawable/icon_protein" />
+                app:srcCompat="@drawable/icon_protein"
+                tools:visibility="invisible" />
 
         <TextView
                 android:id="@+id/goal_carbon"
@@ -433,7 +450,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
                 app:layout_constraintEnd_toEndOf="@+id/diff_carbon"
                 app:layout_constraintStart_toStartOf="@+id/diff_carbon"
-                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
+                app:layout_constraintTop_toTopOf="@+id/goal_oil"
+                tools:visibility="invisible" />
 
 
         <!--        <androidx.viewpager2.widget.ViewPager2-->
