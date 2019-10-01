@@ -2,7 +2,6 @@ package com.terricom.mytype.login
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -94,7 +93,6 @@ class LoginViewModel: ViewModel() {
                                 Logger.d( "Facebook name:$name")
                                 Logger.d( "Facebook email:$email")
 
-                                Handler().postDelayed({
                                     // 此時如果登入成功，就可以順便取得用戶大頭照
                                 val profile = Profile.getCurrentProfile()
 
@@ -106,8 +104,6 @@ class LoginViewModel: ViewModel() {
                                     user_name = name
                                     user_email = email
                                     user_picture = userPhoto.toString()
-                                },500)
-
 
                             }
                         } catch (e: IOException) {
@@ -117,22 +113,19 @@ class LoginViewModel: ViewModel() {
                         }
                     }
 
-                    Handler().postDelayed({
                         val parameters = Bundle()
                         parameters.putString("fields", "id,name,email")
                         graphRequest.parameters = parameters
                         graphRequest.executeAsync()
                         loginFacebook()
-                    },600)
 
                 }
 
                 override fun onCancel() {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     Log.d("FB", "FB cancel")
                 }
-
                 override fun onError(error: FacebookException?) {
+                    Logger.i("loginFB error = $error")
                 }
 
             })
@@ -191,7 +184,18 @@ class LoginViewModel: ViewModel() {
                 if (items.size == 1){
                 }else if (items.isEmpty()){
                     users.document(newOne).set(userData)
-                    _user.value = userData as User
+                    _user.value = User(
+                        UserManager.mail,
+                        UserManager.name,
+                        UserManager.picture,
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf()
+                    )
                 }
 
 

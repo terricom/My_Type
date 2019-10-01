@@ -188,22 +188,6 @@ class MainActivity : BaseActivity(){
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-
-
-//        FirebaseInstanceId.getInstance().instanceId
-//            .addOnCompleteListener(OnCompleteListener { task ->
-//                if (!task.isSuccessful) {
-//                    Logger.w( "Firebase getInstanceId failed ${task.exception}")
-//                    return@OnCompleteListener
-//                }
-//
-//                // Get new Instance ID token
-//                val token = task.result?.token
-//
-//                // Log and toast
-//                Logger.d("Firebase token from firebase =$token")
-//            })
-
         alarmMgr = App.applicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(App.applicationContext(), AlarmReceiver::class.java).let { intent ->
             intent.putExtra("title","activity_app")
@@ -218,27 +202,13 @@ class MainActivity : BaseActivity(){
         }
 
         // setRepeating() lets you specify a precise custom interval--in this case,
-        // 20 minutes.
+        // 1 day
         alarmMgr?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             1000 * 60 * 60 * 24,
             alarmIntent
         )
-
-//        //開機執行
-//        val receiver = ComponentName(App.applicationContext(), BootUpReceiver::class.java)
-//        val pm = App.applicationContext().packageManager
-//        pm.setComponentEnabledSetting(
-//            receiver,
-//            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//            PackageManager.DONT_KILL_APP
-//        )
-
-//        setMessage()
-//        Handler().postDelayed({
-//            createNotificationChannel()
-//        }, 5000)
 
     }
 

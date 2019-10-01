@@ -254,9 +254,11 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         val currentMonth = currentDateCalendar.get(Calendar.MONTH)
         val currentYear = currentDateCalendar.get(Calendar.YEAR)
         if (currentMonth == todayMonth && currentYear == todayYear) {
-            buttonNext.visibility = View.INVISIBLE
+            buttonNext.visibility = View.GONE
+            buttonNextLarge.visibility = View.GONE
         } else {
             buttonNext.visibility = View.VISIBLE
+            buttonNextLarge.visibility = View.VISIBLE
         }
     }
 

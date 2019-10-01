@@ -20,34 +20,6 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:minHeight="?attr/actionBarSize"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:background="@color/colorWhite"-->
-<!--                android:layout_gravity="center" app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                android:elevation="@dimen/elevation_all"/>-->
-
-<!--        <TextView-->
-<!--                android:id="@+id/text_toolbar_title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/noto_sans"-->
-<!--                android:textColor="@color/colorMyType"-->
-<!--                android:letterSpacing="0.15"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center"-->
-<!--                tools:text="My Type"-->
-<!--                app:layout_constraintEnd_toEndOf="@+id/toolbar"-->
-<!--                app:layout_constraintStart_toStartOf="@+id/toolbar"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/toolbar"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/myNavHostFragment"-->
-<!--                android:elevation="5dp"/>-->
-
         <fragment
                 android:id="@+id/myNavHostFragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
@@ -207,6 +179,7 @@
                 android:id="@+id/fabLayout4"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginStart="2dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/fab"
                 app:layout_constraintStart_toStartOf="@+id/fab"

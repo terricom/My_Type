@@ -18,6 +18,7 @@ import com.terricom.mytype.databinding.FragmentGoalSettingBinding
 import com.terricom.mytype.shaperecord.ShapeCalendarFragment
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_shape_record_calendar.view.*
 
 class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
@@ -43,7 +44,7 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         if (goal.deadline != null){
             viewModel.updateGoal(goal)
             binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.goal_title_adjust_goal)
-
+            binding.smartCustomCalendar.toNext.visibility = View.VISIBLE
             viewModel.setDate(goal.deadline)
             viewModel.water.value = goal.water
             viewModel.fruit.value = goal.fruit
@@ -75,6 +76,7 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         }else {
 
             binding.smartCustomCalendar.setEventHandler(this)
+            binding.smartCustomCalendar.toNext.visibility = View.VISIBLE
             binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectedDayOut)
             binding.smartCustomCalendar.getThisMonth()
             binding.smartCustomCalendar.recordedDate.observe(this, Observer {
