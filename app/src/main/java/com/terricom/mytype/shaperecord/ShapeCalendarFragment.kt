@@ -173,7 +173,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         get() = _date
 
     fun filterdate(dato: Date){
-        Logger.i("CalendarViewHolder filterdate = ${dato}")
+        Logger.i("CalendarViewHolder setCurrentDate = ${dato}")
         _date.value = dato
     }
 

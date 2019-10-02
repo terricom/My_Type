@@ -139,28 +139,28 @@ class FoodieViewModel: ViewModel() {
         _time.value = Time(date.time)
     }
 
-    val _editDateClicked = MutableLiveData<Boolean>()
-    val editDateClicked : LiveData<Boolean>
-        get() = _editDateClicked
+    val _isEditDateClicked = MutableLiveData<Boolean>()
+    val isEditDateClicked : LiveData<Boolean>
+        get() = _isEditDateClicked
 
     fun editDateClicked(){
-        _editDateClicked.value = true
+        _isEditDateClicked.value = true
     }
 
     fun editDateClickedAgain(){
-        _editDateClicked.value = false
+        _isEditDateClicked.value = false
     }
 
-    val _editTimeClicked = MutableLiveData<Boolean>()
-    val editTimeClicked : LiveData<Boolean>
-        get() = _editTimeClicked
+    val _isEditTimeClicked = MutableLiveData<Boolean>()
+    val isEditTimeClicked : LiveData<Boolean>
+        get() = _isEditTimeClicked
 
     fun editTimeClicked(){
-        _editTimeClicked.value = true
+        _isEditTimeClicked.value = true
     }
 
     fun editTimeClickedAgain(){
-        _editTimeClicked.value = false
+        _isEditTimeClicked.value = false
     }
 
     val _time = MutableLiveData<Time>()
@@ -176,31 +176,7 @@ class FoodieViewModel: ViewModel() {
         Logger.i("photouri get = $photo")
     }
 
-    val _addNewFoodChecked = MutableLiveData<Boolean>()
-    val addNewFoodChecked : LiveData<Boolean>
-        get() = _addNewFoodChecked
-
-    fun checkedAddNewFood(){
-        _addNewFoodChecked.value = true
-    }
-
-    fun unCheckedAddNewFood(){
-        _addNewFoodChecked.value = false
-    }
-
-    val _addNewNutritionChecked = MutableLiveData<Boolean>()
-    val addNewNutritionChecked : LiveData<Boolean>
-        get() = _addNewNutritionChecked
-
-    fun checkedAddNewNutrition(){
-        _addNewNutritionChecked.value = true
-    }
-
-    fun unCheckedAddNewNutrition(){
-        _addNewNutritionChecked.value = false
-    }
-
-    val _updateFoodie = MutableLiveData<Foodie>()
+    private val _updateFoodie = MutableLiveData<Foodie>()
     val updateFoodie : LiveData<Foodie>
         get() = _updateFoodie
 
@@ -379,8 +355,6 @@ class FoodieViewModel: ViewModel() {
             updatePuzzle()
         }
         setDate(Date())
-        unCheckedAddNewFood()
-        unCheckedAddNewNutrition()
         editDateClickedAgain()
         editTimeClickedAgain()
     }

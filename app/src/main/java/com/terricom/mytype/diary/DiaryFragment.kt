@@ -1,5 +1,6 @@
 package com.terricom.mytype.diary
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -32,25 +33,28 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
     }
     private lateinit var binding :FragmentDiaryBinding
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         binding = FragmentDiaryBinding.inflate(inflater)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
-        Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) in DIARY")
         binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
                 findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
-        viewModel.getPuzzle.observe(this, Observer {
-            Logger.i("viewModel.getPuzzle.observe= $it UserManager.createDiary = ${UserManager.createDiary}")
+        viewModel.isGetPuzzle.observe(this, Observer {
+
             if (it == false && UserManager.createDiary == "2"){
+
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
                 }))
             }else if (it == true && UserManager.getPuzzleOld == "1"){
+
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                 }))
@@ -58,21 +62,20 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             }
         })
 
-        viewModel.callDeleteAction.observe(this, Observer {
-            if (it==true){
+        viewModel.isCallDeleteAction.observe(this, Observer {
+            if (it == true){
                 viewModel.getDiary()
             }
         })
 
         viewModel.fireFoodie.observe(this, Observer {
             if (it != null){
-                (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
+                (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(it)
                 (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
             }
         })
 
         viewModel.date.observe(this, Observer {
-            Logger.i("viewModel.date.observe === $it")
             val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
             if (it != null){
                 viewModel.getDiary()
@@ -93,7 +96,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
                     Logger.i("viewModel.fireSleep.observe = $it")
                     if (it != null){
 
-                        (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.fireFoodie.value)
                         (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
                     }
 
@@ -101,13 +104,13 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
                 viewModel.fireShape.observe(this, Observer {
                     Logger.i("viewModel.fireShape.observe =$it")
                     if (it != null){
-                        (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(viewModel.fireFoodie.value)
+                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.fireFoodie.value)
                         (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
                     }
 
                 })
                 viewModel.fireFoodie.observe(this, Observer {
-                    (binding.recyclerView.adapter as FoodieAdapter).addHeaderAndSubmitList(it)
+                    (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(it)
                     (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
                 })
             }
@@ -120,7 +123,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             )
         )
 
-        viewModel.calendarClicked.observe(this, Observer {
+        viewModel.isCalendarClicked.observe(this, Observer {
 
             if (it == true){
 
@@ -128,7 +131,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
                     binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.animate().translationY(-resources.getDimension(R.dimen.standard_305)).start()
                     binding.diaryCalendar.visibility = View.GONE
-                    viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
+                    viewModel.setCurrentDate(binding.diaryCalendar.selectedDayOut)
                     viewModel.calendarClickedAgain()
                 }
 
@@ -144,9 +147,9 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             }
         })
 
-        viewModel.listFoodie.observe(this, Observer {
-            if (it != null){
+        viewModel.listQueryFoodieResult.observe(this, Observer {
 
+            it?.let {
                 findNavController().navigate(NavigationDirections.navigateToQueryFragment(it))
             }
         })
@@ -167,7 +170,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             //告訴使用者網路無法使用
         }
 
-        viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
+        viewModel.setCurrentDate(binding.diaryCalendar.selectedDayOut)
         Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
 
         return binding.root

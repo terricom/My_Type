@@ -121,8 +121,10 @@
     <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
     <string name="simpledateformat_MM_dd">MM-dd</string>
     <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
+    <string name="simpledateformat_HH_mm">HH:mm</string>
 
     <string name="float_round_one">%.1f</string>
+    <string name="float_round_zero">%.0f</string>
 
     <string name="shape_example_weight">50.0</string>
     <string name="shape_example_bodyAge">19</string>
@@ -146,4 +148,11 @@
     <string name="user_manager_times">times</string>
     <string name="user_manager_puzzle">puzzle</string>
 
+    <string name="puzzle_position">position</string>
+    <string name="puzzle_timestamp">timestamp</string>
+    <string name="puzzle_recordedDates">recordedDates</string>
+    <string name="puzzle_imgURL">imgURL</string>
+
+    <string name="foodie_foods">foods</string>
+    <string name="foodie_nutritions">nutritions</string>
 </resources>

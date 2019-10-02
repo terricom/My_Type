@@ -172,7 +172,7 @@ class FoodieFragment: Fragment() {
             editableFoods = mutableListOf("")
         }
 
-        viewModel.editDateClicked.observe(this, Observer {
+        viewModel.isEditDateClicked.observe(this, Observer {
             if (!it){
                 binding.editDate.setOnClickListener {
                     binding.datePicker.visibility = View.INVISIBLE
@@ -196,7 +196,7 @@ class FoodieFragment: Fragment() {
             }
         })
 
-        viewModel.editTimeClicked.observe(this, Observer {
+        viewModel.isEditTimeClicked.observe(this, Observer {
             if (!it){
                 binding.editTime.setOnClickListener {
                     binding.timePicker2.visibility = View.INVISIBLE
