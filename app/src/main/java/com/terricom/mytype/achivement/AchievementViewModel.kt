@@ -37,10 +37,6 @@ class AchievementViewModel: ViewModel() {
     val diffBodyFatNum = MutableLiveData<Float>()
     val diffMuscleNum = MutableLiveData<Float>()
 
-    private val _date = MutableLiveData<String>()
-    val date: LiveData<String>
-        get() = _date
-
     private val _dateM = MutableLiveData<String>()
     val dateM: LiveData<String>
         get() = _dateM
@@ -58,10 +54,7 @@ class AchievementViewModel: ViewModel() {
         get() = _recordDate
 
     @SuppressLint("SimpleDateFormat")
-    fun setDate(date: Date){
-
-        _date.value = SimpleDateFormat(App.applicationContext()
-            .getString(R.string.simpledateformat_yyyy_MM_dd)).format(date)
+    fun setCurrentDate(date: Date){
 
         _dateM.value = SimpleDateFormat(App.applicationContext()
             .getString(R.string.simpledateformat_yyyy_MM)).format(date)
@@ -91,13 +84,13 @@ class AchievementViewModel: ViewModel() {
     }
 
     init {
-        setDate(Date())
+        setCurrentDate(Date())
     }
 
     @SuppressLint("StringFormatMatches")
     fun getThisMonth() {
 
-        if (userUid!!.isNotEmpty()){
+        if (!userUid.isNullOrEmpty()){
 
             getGoal()
 
@@ -128,7 +121,7 @@ class AchievementViewModel: ViewModel() {
 
             shapeDiary
                 .get()
-                .addOnSuccessListener {
+                .addOnSuccessListener { it ->
 
                     val items = mutableListOf<Shape>()
                     val datelist = mutableListOf<String>()
@@ -183,35 +176,41 @@ class AchievementViewModel: ViewModel() {
 
                     if (weightList.size >0) {
 
-                        diffWeight.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(weightList[weightList.lastIndex].minus(
-                            (if (goalWeight.value == "null" || goalWeight.value.isNullOrEmpty())"0"
-                            else goalWeight.value)!!.toFloat()))
+                        diffWeight.value = App.applicationContext().getString(R.string.float_round_one).format(weightList[weightList.lastIndex].minus(
+
+                            (if (goalWeight.value.isNullOrEmpty())"0"
+                            else goalWeight.value)!!.toFloat())
+                            )
 
                         diffWeightNum.value = weightList[weightList.lastIndex].minus(
-                            (if (goalWeight.value == "null" || goalWeight.value.isNullOrEmpty())"0"
+
+                            (if (goalWeight.value.isNullOrEmpty())"0"
                             else goalWeight.value)!!.toFloat())
                     }
                     if (bodyFatList.size >0) {
 
                         diffBodyFat.value = App.applicationContext().getString(R.string.float_round_one)
                             .format(bodyFatList[bodyFatList.lastIndex].minus(
-                            (if (goalBodyFat.value == "null" || goalBodyFat.value.isNullOrEmpty())"0"
+
+                            (if (goalBodyFat.value.isNullOrEmpty())"0"
                             else goalBodyFat.value)!!.toFloat()))
 
                         diffBodyFatNum.value = bodyFatList[bodyFatList.lastIndex].minus(
-                            (if (goalBodyFat.value == "null" || goalBodyFat.value.isNullOrEmpty())"0"
+
+                            (if (goalBodyFat.value.isNullOrEmpty())"0"
                             else goalBodyFat.value)!!.toFloat())
                     }
                     if (muscleList.size >0) {
 
                         diffMuscle.value = App.applicationContext().getString(R.string.float_round_one)
                             .format(muscleList[muscleList.lastIndex].minus(
-                            (if (goalMuscle.value == "null" || goalMuscle.value.isNullOrEmpty())"0"
+
+                            (if (goalMuscle.value.isNullOrEmpty())"0"
                             else goalMuscle.value)!!.toFloat()))
 
                         diffMuscleNum.value = muscleList[muscleList.lastIndex].minus(
-                            (if (goalMuscle.value == "null" || goalMuscle.value.isNullOrEmpty())"0"
+
+                            (if (goalMuscle.value.isNullOrEmpty())"0"
                             else goalMuscle.value)!!.toFloat())
                     }
 
@@ -243,7 +242,7 @@ class AchievementViewModel: ViewModel() {
         val db = FirebaseFirestore.getInstance()
         val users = db.collection(collectionUsers)
 
-        if (userUid!!.isNotEmpty()){
+        if (!userUid.isNullOrEmpty()){
 
             val goal = users
                 .document(userUid)

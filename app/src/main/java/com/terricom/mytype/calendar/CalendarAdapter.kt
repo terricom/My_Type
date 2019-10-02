@@ -1,5 +1,6 @@
 package com.terricom.mytype.calendar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     var selectedDate: Date ?= null
     var listener: ListenerCellSelect? = null
     lateinit var recordedDates: List<String>
+    @SuppressLint("SimpleDateFormat")
     val sdf = SimpleDateFormat("yyyy-MM-dd")
 
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {

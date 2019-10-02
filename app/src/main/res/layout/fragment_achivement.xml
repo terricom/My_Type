@@ -118,159 +118,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"></com.terricom.mytype.linechart.LineChart>
 
-        <TextView
-                android:id="@+id/diff_muscle_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:hint="0.3"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="textEnd"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/icon_muscle_goal_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal_placeholder" />
-
-        <ImageView
-                android:id="@+id/icon_weight_goal_placeholder"
-                android:layout_width="32dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/tag_left_corners"
-                android:backgroundTint="@color/colorButton"
-                android:padding="@dimen/elevation_all"
-                android:paddingTop="@dimen/elevation_all"
-                android:scaleType="fitCenter"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/diff_weight_placeholder"
-                app:layout_constraintEnd_toStartOf="@+id/diff_weight_placeholder"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/diff_weight_placeholder" />
-
-        <TextView
-                android:id="@+id/diff_weight_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="0.3"
-                android:paddingHorizontal="2dp"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="textEnd"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@+id/icon_body_fat_goal_placeholder"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/icon_weight_goal_placeholder"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
-
-        <TextView
-                android:id="@+id/diff_body_fat_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:hint="0.3"
-                android:paddingHorizontal="2dp"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="textEnd"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toStartOf="@+id/icon_muscle_goal_placeholder"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/icon_body_fat_goal_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal_placeholder" />
-
-        <ImageView
-                android:id="@+id/icon_muscle_goal_placeholder"
-                android:layout_width="32dp"
-                android:layout_height="0dp"
-                android:background="@drawable/tag_left_corners"
-                android:backgroundTint="@color/colorButton"
-                android:paddingLeft="@dimen/elevation_all"
-                android:paddingTop="@dimen/elevation_all"
-                android:paddingRight="@dimen/elevation_all"
-                android:paddingBottom="@dimen/elevation_all"
-                android:scaleType="fitCenter"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/diff_muscle_placeholder"
-                app:layout_constraintEnd_toStartOf="@+id/diff_muscle_placeholder"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/diff_body_fat_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal_placeholder" />
-
-        <TextView
-                android:id="@+id/goal_body_fat_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
-                android:background="@drawable/tag_right_corners"
-                android:backgroundTint="@color/colorButton"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/diff_body_fat_placeholder"
-                app:layout_constraintStart_toStartOf="@+id/diff_body_fat_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/diff_body_fat_placeholder" />
-
-        <TextView
-                android:id="@+id/goal_weight_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
-                android:background="@drawable/tag_right_corners"
-                android:backgroundTint="@color/colorButton"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/diff_weight_placeholder"
-                app:layout_constraintStart_toEndOf="@+id/icon_weight_goal_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/diff_weight_placeholder" />
-
-        <ImageView
-                android:id="@+id/icon_body_fat_goal_placeholder"
-                android:layout_width="32dp"
-                android:layout_height="0dp"
-                android:background="@drawable/tag_left_corners"
-                android:backgroundTint="@color/colorButton"
-                android:paddingLeft="@dimen/elevation_all"
-                android:paddingTop="@dimen/elevation_all"
-                android:paddingRight="@dimen/elevation_all"
-                android:paddingBottom="@dimen/elevation_all"
-                android:scaleType="fitCenter"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/diff_body_fat_placeholder"
-                app:layout_constraintEnd_toStartOf="@+id/diff_body_fat_placeholder"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/diff_weight_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/icon_weight_goal_placeholder" />
-
-        <TextView
-                android:id="@+id/goal_muscle_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
-                android:background="@drawable/tag_right_corners"
-                android:backgroundTint="@color/colorButton"
-                android:paddingVertical="@dimen/elevation_all"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite"
-                android:textSize="12sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="@+id/diff_muscle_placeholder"
-                app:layout_constraintStart_toStartOf="@+id/diff_muscle_placeholder"
-                app:layout_constraintTop_toTopOf="@+id/diff_muscle_placeholder" />
-
         <ImageView
                 android:id="@+id/icon_weight_goal"
                 android:layout_width="32dp"
@@ -314,9 +161,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorPinky"
-                android:hint="0.3"
+                android:hint="-"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalWeight)}"
+                android:text='@{String.valueOf(viewModel.goalWeight) == "null" ? "-" : viewModel.goalWeight}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -387,9 +234,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorButton"
-                android:hint="0.3"
+                android:hint="-"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalBodyFat)}"
+                android:text='@{String.valueOf(viewModel.goalBodyFat) == "null" ?"-" :viewModel.goalBodyFat}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -424,9 +271,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/blue_facebook"
-                android:hint="0.3"
+                android:hint="-"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalMuscle)}"
+                android:text='@{String.valueOf(viewModel.goalMuscle) == "null" ?"-" :viewModel.goalMuscle}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -661,50 +508,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/time_show"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/time_show" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/recycler_shape_placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_show">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginEnd="1dp"
-                    android:background="@drawable/calendar_date"
-                    android:backgroundTint="@color/colorButton"
-                    android:paddingVertical="@dimen/_2sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                        android:id="@+id/time_example_0"
-                        android:layout_width="84dp"
-                        android:layout_height="22dp"
-                        android:fontFamily="@font/noto_sans"
-                        android:paddingLeft="@dimen/elevation_all"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorMyType"
-                        android:textSize="@dimen/text_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_shape"

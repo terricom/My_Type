@@ -16,16 +16,15 @@ import com.terricom.mytype.App
 import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
-import com.terricom.mytype.calendar.CalendarFragment
+import com.terricom.mytype.calendar.CalendarComponentLayout
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 import com.terricom.mytype.tools.Logger
 import java.text.SimpleDateFormat
-import java.util.*
 
 
-class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragment
+class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAndFragment
 {
 
     private val viewModel: DiaryViewModel by lazy {
@@ -74,7 +73,7 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
 
         viewModel.date.observe(this, Observer {
             Logger.i("viewModel.date.observe === $it")
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
             if (it != null){
                 viewModel.getDiary()
                 viewModel.getThisMonth()
@@ -122,8 +121,9 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
         )
 
         viewModel.calendarClicked.observe(this, Observer {
-            Logger.i("viewModel.calendarClicked.observe =$it")
+
             if (it == true){
+
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(0f).start()
                     binding.diaryCalendar.animate().translationY(-resources.getDimension(R.dimen.standard_305)).start()
@@ -131,7 +131,9 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
                     viewModel.calendarClickedAgain()
                 }
+
             }else if (it == false){
+
                 binding.diaryDate.setOnClickListener {
                     binding.buttonExpandArrow.animate().rotation(180f).start()
                     binding.diaryCalendar.animate().translationY(resources.getDimension(R.dimen.standard_0)).start()
@@ -139,13 +141,12 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
                     binding.diaryCalendar.getThisMonth()
                     viewModel.calendarClicked()
                 }
-
             }
-
         })
 
         viewModel.listFoodie.observe(this, Observer {
             if (it != null){
+
                 findNavController().navigate(NavigationDirections.navigateToQueryFragment(it))
             }
         })
@@ -166,44 +167,11 @@ class DiaryFragment: Fragment(), CalendarFragment.EventBetweenCalendarAndFragmen
             //告訴使用者網路無法使用
         }
 
-        viewModel.filterdate(binding.diaryCalendar.selectedDayOut ?: Date())
+        viewModel.filterdate(binding.diaryCalendar.selectedDayOut)
         Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
 
         return binding.root
     }
-
-    companion object {
-        private val list = ArrayList<String>(100)
-
-        init {
-            for (i in 0..99) {
-                list.add("#$i")
-            }
-        }
-    }
-
-
-//    private fun setupItemTouchHelper() {
-//        val helper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-//            override fun onMove(recyclerView: RecyclerView, selected: RecyclerView.ViewHolder,
-//                                target: RecyclerView.ViewHolder): Boolean {
-//                val from = selected.adapterPosition
-//                val to = target.adapterPosition
-//                Collections.swap(list, from, to)
-//                binding.recyclerView.adapter?.notifyItemMoved(from, to)
-//
-//                return true
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                list.removeAt(viewHolder.adapterPosition)
-//                binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
-//            }
-//        })
-//        helper.attachToRecyclerView(recyclerView)
-//    }
-
 
     override fun onCalendarNextPressed() {
 

@@ -43,7 +43,7 @@ class AchivementFragment: Fragment() {
             currentCalendar.time = viewModel.recordDate.value
             currentCalendar.add(Calendar.MONTH, -1)
 
-            viewModel.setDate(currentCalendar.time)
+            viewModel.setCurrentDate(currentCalendar.time)
             viewModel.getThisMonth()
         }
 
@@ -52,7 +52,7 @@ class AchivementFragment: Fragment() {
             currentCalendar.time = viewModel.recordDate.value
             currentCalendar.add(Calendar.MONTH, 1)
 
-            viewModel.setDate(currentCalendar.time)
+            viewModel.setCurrentDate(currentCalendar.time)
             viewModel.getThisMonth()
         }
 
@@ -62,74 +62,59 @@ class AchivementFragment: Fragment() {
 
             viewModel.fireShape.observe(this, Observer {
 
-                if (it.isNotEmpty()){
-
+                if (!it.isNullOrEmpty()){
                     (binding.recyclerShape.adapter as ShapeAdapter).submitList(it)
                 }
             })
 
             viewModel.listDates.observe(this, Observer {
 
-                if (it != null && it.isNotEmpty() && it[0].values.isNotEmpty()){
+                it?.let {
+                    if (it.isNotEmpty() && it[0].values.isNotEmpty()){
 
-                    binding.lineChart.setList(it)
+                        binding.lineChart.setList(it)
 
-                    binding.let {
-                        lineChart.legendArray = viewModel.fireDate.value
-                        lineChart.visibility = View.VISIBLE
-                        icon_my_type.visibility = View.GONE
-                        recycler_shape_placeholder.visibility = View.VISIBLE
-                        recycler_shape.visibility = View.VISIBLE
-                        shaperecord_hint.visibility = View.GONE
-                        blank_hint_achievement.visibility = View.INVISIBLE
-                        diff_body_fat.visibility = View.VISIBLE
-                        diff_muscle.visibility = View.VISIBLE
-                        diff_weight.visibility = View.VISIBLE
-                        icon_weight_goal_placeholder.visibility = View.VISIBLE
-                        icon_body_fat_goal_placeholder.visibility = View.VISIBLE
-                        icon_muscle_goal_placeholder.visibility = View.VISIBLE
-                        goal_weight_placeholder.visibility = View.VISIBLE
-                        goal_body_fat_placeholder.visibility = View.VISIBLE
-                        goal_muscle_placeholder.visibility = View.VISIBLE
-                        icon_weight_goal.visibility = View.VISIBLE
-                        icon_body_fat_goal.visibility = View.VISIBLE
-                        icon_muscle_goal.visibility = View.VISIBLE
-                        goal_body_fat.visibility = View.VISIBLE
-                        goal_muscle.visibility = View.VISIBLE
-                        goal_weight.visibility = View.VISIBLE
-                    }
+                        binding.let {
+                            lineChart.legendArray = viewModel.fireDate.value
+                            lineChart.visibility = View.VISIBLE
+                            icon_my_type.visibility = View.GONE
+                            recycler_shape.visibility = View.VISIBLE
+                            shaperecord_hint.visibility = View.GONE
+                            blank_hint_achievement.visibility = View.INVISIBLE
+                            diff_body_fat.visibility = View.VISIBLE
+                            diff_muscle.visibility = View.VISIBLE
+                            diff_weight.visibility = View.VISIBLE
+                            icon_weight_goal.visibility = View.VISIBLE
+                            icon_body_fat_goal.visibility = View.VISIBLE
+                            icon_muscle_goal.visibility = View.VISIBLE
+                            goal_body_fat.visibility = View.VISIBLE
+                            goal_muscle.visibility = View.VISIBLE
+                            goal_weight.visibility = View.VISIBLE
+                        }
 
-                } else if (it != null && it[0].values.isEmpty()){
+                    } else if (it[0].values.isEmpty()){
 
-                    binding.let {
-                        lineChart.visibility = View.GONE
-                        recycler_shape.visibility = View.GONE
-                        icon_my_type.visibility = View.VISIBLE
-                        shaperecord_hint.visibility = View.VISIBLE
-                        blank_hint_achievement.visibility = View.VISIBLE
-                        diff_body_fat.visibility = View.GONE
-                        diff_muscle.visibility = View.GONE
-                        diff_weight.visibility = View.GONE
-                        icon_weight_goal.visibility = View.GONE
-                        icon_body_fat_goal.visibility = View.GONE
-                        icon_muscle_goal.visibility = View.GONE
-                        goal_body_fat.visibility = View.GONE
-                        goal_muscle.visibility = View.GONE
-                        goal_weight.visibility = View.GONE
-                        icon_weight_goal_placeholder.visibility = View.INVISIBLE
-                        icon_body_fat_goal_placeholder.visibility = View.INVISIBLE
-                        icon_muscle_goal_placeholder.visibility = View.INVISIBLE
-                        goal_weight_placeholder.visibility = View.INVISIBLE
-                        goal_body_fat_placeholder.visibility = View.INVISIBLE
-                        goal_muscle_placeholder.visibility = View.INVISIBLE
-                        recycler_shape_placeholder.visibility = View.INVISIBLE
+                        binding.let {
+                            lineChart.visibility = View.GONE
+                            recycler_shape.visibility = View.GONE
+                            icon_my_type.visibility = View.VISIBLE
+                            shaperecord_hint.visibility = View.VISIBLE
+                            blank_hint_achievement.visibility = View.VISIBLE
+                            diff_body_fat.visibility = View.GONE
+                            diff_muscle.visibility = View.GONE
+                            diff_weight.visibility = View.GONE
+                            icon_weight_goal.visibility = View.GONE
+                            icon_body_fat_goal.visibility = View.GONE
+                            icon_muscle_goal.visibility = View.GONE
+                            goal_body_fat.visibility = View.GONE
+                            goal_muscle.visibility = View.GONE
+                            goal_weight.visibility = View.GONE
+                        }
                     }
                 }
+
             })
-
-
         })
-
 
         return binding.root
     }

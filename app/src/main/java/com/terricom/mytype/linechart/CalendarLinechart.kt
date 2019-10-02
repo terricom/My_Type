@@ -12,7 +12,7 @@ import java.util.*
 
 
 class CalendarLinechart : Fragment()
-//    , CalendarFragment.EventBetweenCalendarAndFragment
+//    , CalendarComponentLayout.EventBetweenCalendarAndFragment
 {
 
     private val viewModel: CalendarLinechartViewModel by lazy {

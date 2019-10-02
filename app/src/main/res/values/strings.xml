@@ -138,4 +138,12 @@
     <string name="foodie_example_protein">2.0</string>
     <string name="foodie_example_carbon">0.5</string>
 
+    <string name="user_manager_token">token</string>
+    <string name="user_manager_name">name</string>
+    <string name="user_manager_uid">uid</string>
+    <string name="user_manager_pic">pic</string>
+    <string name="user_manager_mail">mail</string>
+    <string name="user_manager_times">times</string>
+    <string name="user_manager_puzzle">puzzle</string>
+
 </resources>

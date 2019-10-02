@@ -97,11 +97,9 @@ class ProfileFragment: Fragment() {
         viewModel.getGoalOrNot.observe(this, Observer {
             Logger.i("viewModel.getGoalOrNot.observe = $it")
             if (it){
-                binding.recyclerGoalPlaceholder.visibility = View.VISIBLE
                 binding.iconMyType.visibility = View.INVISIBLE
                 binding.profileHintAddGoal.visibility = View.INVISIBLE
             } else if (!it){
-                binding.recyclerGoalPlaceholder.visibility = View.INVISIBLE
                 binding.iconMyType.visibility = View.VISIBLE
                 binding.profileHintAddGoal.visibility = View.VISIBLE
             }

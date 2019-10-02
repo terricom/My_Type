@@ -3,80 +3,97 @@ package com.terricom.mytype.data
 import android.content.SharedPreferences
 import android.util.Log
 import com.terricom.mytype.App
+import com.terricom.mytype.R
 
-private inline fun SharedPreferences.edit(operation:
-                                              (SharedPreferences.Editor) -> Unit) {
+private inline fun SharedPreferences.edit(
+    operation: (SharedPreferences.Editor
+    ) -> Unit) {
+
     val editor = edit()
     operation(editor)
     editor.apply()
 }
 
-
 object UserManager {
 
-    var prefs : SharedPreferences? = App.instance?.getSharedPreferences("token", 0)
+    var prefs : SharedPreferences? = App.instance?.getSharedPreferences(
+        App.applicationContext().getString(R.string.user_manager_token), 0)
 
 
     var userToken: String? = null
         get() {
-            return prefs?.getString("token", "" )
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_token), "" )
         }
         set(value) {
-            field = prefs?.edit()?.putString("token", value)?.apply().toString()
-            Log.i("Call api", value)
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_token), value)?.apply().toString()
+            Log.i("UserManager.token", value)
         }
 
     var name : String? = null
         get(){
-            return  prefs?.getString("name", "")
+            return  prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_name), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("name",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_name),value)?.apply().toString()
             Log.i("UserManager.Name", value)
         }
 
     var picture : String? = null
         get(){
-            return prefs?.getString("pic", "")
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_pic), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("pic",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_pic),value)?.apply().toString()
             Log.i("UserManager.Picture", value)
         }
 
     var uid : String? = null
         get(){
-            return prefs?.getString("uid", "")
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_uid), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("uid",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_uid),value)?.apply().toString()
             Log.i("UserManager.Uid", value)
         }
 
     var mail : String? = null
         get(){
-            return prefs?.getString("mail", "")
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_mail), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("mail",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_mail),value)?.apply().toString()
             Log.i("UserManager.mail", value)
         }
 
     var createDiary : String? = null
         get(){
-            return prefs?.getString("times", "")
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_times), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("times",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_times),value)?.apply().toString()
             Log.i("UserManager.times", value!!.toString())
         }
 
     var getPuzzleOld : String? = null
         get(){
-            return prefs?.getString("puzzle", "")
+            return prefs?.getString(
+                App.applicationContext().getString(R.string.user_manager_puzzle), "")
         }
         set(value){
-            field = prefs?.edit()?.putString("puzzle",value)?.apply().toString()
+            field = prefs?.edit()?.putString(
+                App.applicationContext().getString(R.string.user_manager_puzzle),value)?.apply().toString()
             Log.i("UserManager.puzzle", value!!.toString())
         }
 

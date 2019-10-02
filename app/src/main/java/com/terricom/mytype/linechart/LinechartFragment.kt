@@ -67,19 +67,6 @@ class LinechartFragment: Fragment() {
                         binding.shaperecordHint.visibility = View.GONE
                         binding.blankHintLinechart.visibility = View.GONE
                         binding.let {
-                            icon_water_goal_placeholder.visibility = View.VISIBLE
-                            icon_fruit_placeholder.visibility = View.VISIBLE
-                            icon_vegetable_goal_placeholder.visibility = View.VISIBLE
-                            icon_oil_goal_placeholder.visibility = View.VISIBLE
-                            icon_protein_goal_placeholder.visibility = View.VISIBLE
-                            icon_carbon_placeholder.visibility = View.VISIBLE
-                            goal_water_placeholder.visibility = View.VISIBLE
-                            goal_fruit_placeholder.visibility = View.VISIBLE
-                            goal_vegetable_placeholder.visibility = View.VISIBLE
-                            goal_oil_placeholder.visibility = View.VISIBLE
-                            goal_protein_placeholder.visibility = View.VISIBLE
-                            goal_carbon_placeholder.visibility = View.VISIBLE
-                            recycler_foodie_sum_placeholder.visibility = View.VISIBLE
                             recycler_foodie_sum.visibility = View.VISIBLE
                             diff_carbon.visibility = View.VISIBLE
                             diff_fruit.visibility = View.VISIBLE
@@ -106,19 +93,6 @@ class LinechartFragment: Fragment() {
                         binding.shaperecordHint.visibility = View.VISIBLE
                         binding.blankHintLinechart.visibility = View.VISIBLE
                         binding.let {
-                            icon_water_goal_placeholder.visibility = View.GONE
-                            icon_fruit_placeholder.visibility = View.GONE
-                            icon_vegetable_goal_placeholder.visibility = View.GONE
-                            icon_oil_goal_placeholder.visibility = View.GONE
-                            icon_protein_goal_placeholder.visibility = View.GONE
-                            icon_carbon_placeholder.visibility = View.GONE
-                            goal_water_placeholder.visibility = View.GONE
-                            goal_fruit_placeholder.visibility = View.GONE
-                            goal_vegetable_placeholder.visibility = View.GONE
-                            goal_oil_placeholder.visibility = View.GONE
-                            goal_protein_placeholder.visibility = View.GONE
-                            goal_carbon_placeholder.visibility = View.GONE
-                            recycler_foodie_sum_placeholder.visibility = View.INVISIBLE
                             recycler_foodie_sum.visibility = View.GONE
                             diff_carbon.visibility = View.GONE
                             diff_fruit.visibility = View.GONE
