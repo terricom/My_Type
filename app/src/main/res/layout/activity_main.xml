@@ -9,11 +9,7 @@
                 type="com.terricom.mytype.MainActivity" />
         <variable name="viewModel" type="com.terricom.mytype.MainViewModel"/>
     </data>
-    <!--<androidx.drawerlayout.widget.DrawerLayout-->
-            <!--android:id="@+id/drawerLayout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/colorWhite">-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -266,8 +262,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--</androidx.drawerlayout.widget.DrawerLayout>-->
 
 </layout>

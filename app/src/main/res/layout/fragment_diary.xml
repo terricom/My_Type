@@ -196,6 +196,259 @@
                 app:layout_constraintStart_toEndOf="@+id/button_fruit"
                 app:layout_constraintTop_toTopOf="@+id/button_water" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recycler_diary_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:paddingBottom="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diary_calendar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageView
+                        android:id="@+id/diary_item_sum_show_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:scaleType="fitStart"
+                        android:tint="@color/colorButton"
+                        app:layout_constraintBottom_toBottomOf="@+id/diary_title_total_nutrition_sum"
+                        app:layout_constraintStart_toEndOf="@+id/diary_title_total_nutrition_sum"
+                        app:layout_constraintTop_toTopOf="@+id/diary_title_total_nutrition_sum"
+                        app:srcCompat="@drawable/icon_info" />
+
+                <TextView
+                        android:id="@+id/diary_title_total_nutrition_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorButton"
+                        android:text="@string/diary_title_today_compliment"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/colorButton"
+                        android:textSize="@dimen/text_content_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/button_water_sum"
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/number_water_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_water_sum"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/number_water_sum" />
+
+                <TextView
+                        android:id="@+id/number_water_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintEnd_toStartOf="@+id/button_fruit_sum"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/button_water_sum"
+                        app:layout_constraintTop_toBottomOf="@+id/diary_title_total_nutrition_sum" />
+
+                <ImageButton
+                        android:id="@+id/button_vegetable_sum"
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/number_vegetable_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_vegetable_sum"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_fruit_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_water_sum" />
+
+                <TextView
+                        android:id="@+id/number_vegetable_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/button_vegetable_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_water_sum" />
+
+                <ImageButton
+                        android:id="@+id/button_fruit_sum"
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/number_fruit_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_fruit_sum"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/number_water_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_water_sum" />
+
+                <TextView
+                        android:id="@+id/number_fruit_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintEnd_toStartOf="@+id/button_vegetable_sum"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/button_fruit_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_water_sum" />
+
+                <ImageButton
+                        android:id="@+id/button_coconut_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/number_coconut_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_water_sum"
+                        app:layout_constraintStart_toStartOf="@+id/button_water_sum"
+                        app:layout_constraintTop_toBottomOf="@+id/button_water_sum" />
+
+                <TextView
+                        android:id="@+id/number_coconut_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/number_water_sum"
+                        app:layout_constraintStart_toStartOf="@+id/number_water_sum"
+                        app:layout_constraintTop_toBottomOf="@+id/button_water_sum" />
+
+                <ImageButton
+                        android:id="@+id/button_protein_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/button_coconut_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_fruit_sum"
+                        app:layout_constraintStart_toStartOf="@+id/button_fruit_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_coconut_sum" />
+
+                <TextView
+                        android:id="@+id/number_protein_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/button_protein_sum"
+                        app:layout_constraintEnd_toEndOf="@+id/number_fruit_sum"
+                        app:layout_constraintStart_toStartOf="@+id/number_fruit_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_protein_sum" />
+
+                <ImageButton
+                        android:id="@+id/button_carbon_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/tag_left_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:paddingTop="@dimen/elevation_all"
+                        android:paddingRight="@dimen/elevation_all"
+                        android:paddingBottom="@dimen/elevation_all"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="@+id/button_protein_sum"
+                        app:layout_constraintEnd_toStartOf="@+id/number_vegetable_sum"
+                        app:layout_constraintStart_toStartOf="@+id/button_vegetable_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_coconut_sum" />
+
+                <TextView
+                        android:id="@+id/number_carbon_sum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tag_right_corners"
+                        android:backgroundTint="@color/colorButton"
+                        android:padding="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/button_carbon_sum"
+                        app:layout_constraintEnd_toEndOf="@+id/number_vegetable_sum"
+                        app:layout_constraintStart_toStartOf="@+id/number_vegetable_sum"
+                        app:layout_constraintTop_toTopOf="@+id/button_carbon_sum"
+                        app:layout_constraintVertical_bias="0.538" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
@@ -203,6 +456,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:overScrollMode="never"
                 android:paddingBottom="@dimen/_16sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -210,12 +464,11 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/diary_calendar"
-                tools:listitem="@layout/item_diary_record"
-                android:overScrollMode="never">
+                tools:listitem="@layout/item_diary_record">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-<!--        <TextView-->
+        <!--        <TextView-->
 <!--                android:id="@+id/diary_hint_add_foodie"-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->

@@ -118,6 +118,315 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"></com.terricom.mytype.linechart.LineChart>
 
+        <TextView
+                android:id="@+id/diff_carbon_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:hint="0.3"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/icon_carbon_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_fruit_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_fruit_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_fruit_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_water_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_vegetable_goal_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_vegetable_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_vegetable_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_fruit_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/diff_oil_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_oil_goal_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/icon_protein_goal_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_oil_goal_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/diff_fruit_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/icon_vegetable_goal_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_fruit_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/goal_oil_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/diff_oil_placeholder"
+                app:layout_constraintStart_toEndOf="@+id/icon_oil_goal_placeholder"
+                app:layout_constraintTop_toBottomOf="@+id/goal_water_placeholder" />
+
+        <TextView
+                android:id="@+id/diff_water_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="0.3"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/icon_fruit_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_water_goal_placeholder"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
+
+        <TextView
+                android:id="@+id/goal_protein_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil_placeholder"
+                app:layout_constraintEnd_toEndOf="@+id/diff_protein_placeholder"
+                app:layout_constraintStart_toStartOf="@+id/diff_protein_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_protein_goal_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_protein_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_protein_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_oil_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/diff_protein_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toStartOf="@+id/icon_carbon_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/icon_protein_goal_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/goal_water_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/diff_water_placeholder"
+                app:layout_constraintStart_toEndOf="@+id/icon_water_goal_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/diff_water_placeholder" />
+
+        <TextView
+                android:id="@+id/goal_fruit_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/diff_fruit_placeholder"
+                app:layout_constraintStart_toEndOf="@+id/icon_fruit_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/diff_fruit_placeholder" />
+
+        <TextView
+                android:id="@+id/diff_vegetable_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="textEnd"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/icon_vegetable_goal_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/goal_vegetable_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/diff_vegetable_placeholder"
+                app:layout_constraintStart_toStartOf="@+id/diff_vegetable_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/diff_vegetable_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_water_goal_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_water_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_water_placeholder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/diff_water_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_oil_goal_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:padding="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_oil_placeholder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil_placeholder" />
+
+        <ImageView
+                android:id="@+id/icon_carbon_placeholder"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:background="@drawable/tag_left_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingLeft="@dimen/elevation_all"
+                android:paddingTop="@dimen/elevation_all"
+                android:paddingRight="@dimen/elevation_all"
+                android:paddingBottom="@dimen/elevation_all"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/diff_carbon_placeholder"
+                app:layout_constraintEnd_toStartOf="@+id/diff_carbon_placeholder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/diff_protein_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal_placeholder" />
+
+        <TextView
+                android:id="@+id/goal_carbon_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/tag_right_corners"
+                android:backgroundTint="@color/colorButton"
+                android:paddingVertical="@dimen/elevation_all"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/goal_oil_placeholder"
+                app:layout_constraintEnd_toEndOf="@+id/diff_carbon_placeholder"
+                app:layout_constraintStart_toStartOf="@+id/diff_carbon_placeholder"
+                app:layout_constraintTop_toTopOf="@+id/goal_oil_placeholder" />
+
         <ImageView
                 android:id="@+id/icon_water_goal"
                 android:layout_width="32dp"
@@ -140,7 +449,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffWater)}"
@@ -161,9 +469,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorWater"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalWater)}"
+                android:hint="-"
+                android:text='@{viewModel.goalWater== "null" ?"-" : viewModel.goalWater}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -196,7 +504,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffVegetable)}"
@@ -214,7 +521,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffFruit)}"
@@ -235,9 +541,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorFruit"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalFruit)}"
+                android:hint="-"
+                android:text='@{viewModel.goalFruit == "null" ?"-" :viewModel.goalFruit}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -272,9 +578,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorVegetable"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalVegetable)}"
+                android:hint="-"
+                android:text='@{viewModel.goalVegetable=="null" ?"-" :viewModel.goalVegetable}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -305,7 +611,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffOil)}"
@@ -328,9 +633,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorOil"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalOil)}"
+                android:hint="-"
+                android:text='@{viewModel.goalOil == "null" ?"-" :viewModel.goalOil}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -363,7 +668,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffCarbon)}"
@@ -381,7 +685,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:hint="0.3"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffProtein)}"
@@ -402,9 +705,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorProtein"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalProtein)}"
+                android:hint="-"
+                android:text='@{viewModel.goalProtein == "null" ?"-" :viewModel.goalProtein}'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -440,9 +743,9 @@
                 android:layout_marginEnd="28dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorCarbon"
-                android:hint="0.3"
                 android:paddingVertical="@dimen/elevation_all"
-                android:text="@{String.valueOf(viewModel.goalCarbon)}"
+                android:hint="-"
+                android:text='@{viewModel.goalCarbon == "null" ?"-" :viewModel.goalCarbon }'
                 android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
@@ -452,17 +755,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/diff_carbon"
                 app:layout_constraintStart_toStartOf="@+id/diff_carbon"
                 app:layout_constraintTop_toTopOf="@+id/goal_oil" />
-
-
-        <!--        <androidx.viewpager2.widget.ViewPager2-->
-        <!--            android:id="@+id/view_pager_2"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/number_vegetable1">-->
-        <!--        </androidx.viewpager2.widget.ViewPager2>-->
 
         <ImageView
                 android:id="@+id/icon_my_type"
@@ -720,6 +1012,49 @@
                 app:layout_constraintBottom_toBottomOf="@+id/time_show"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/time_show" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recycler_foodie_sum_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_show">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:background="@drawable/calendar_date"
+                    android:backgroundTint="@color/colorButton"
+                    android:paddingVertical="@dimen/_2sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                        android:id="@+id/time_example_0"
+                        android:layout_width="84dp"
+                        android:layout_height="22dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:paddingLeft="@dimen/elevation_all"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorMyType"
+                        android:textSize="@dimen/text_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_foodie_sum"
@@ -732,8 +1067,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_show"
-                tools:listitem="@layout/item_achivement_shape" />
+                app:layout_constraintTop_toBottomOf="@+id/date_show" />
 
         <ImageView
                 android:id="@+id/icon_weight"

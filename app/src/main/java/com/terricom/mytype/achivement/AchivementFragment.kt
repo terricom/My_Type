@@ -78,12 +78,19 @@ class AchivementFragment: Fragment() {
                         lineChart.legendArray = viewModel.fireDate.value
                         lineChart.visibility = View.VISIBLE
                         icon_my_type.visibility = View.GONE
-                        shaperecord_hint.visibility = View.GONE
+                        recycler_shape_placeholder.visibility = View.VISIBLE
                         recycler_shape.visibility = View.VISIBLE
+                        shaperecord_hint.visibility = View.GONE
                         blank_hint_achievement.visibility = View.INVISIBLE
                         diff_body_fat.visibility = View.VISIBLE
                         diff_muscle.visibility = View.VISIBLE
                         diff_weight.visibility = View.VISIBLE
+                        icon_weight_goal_placeholder.visibility = View.VISIBLE
+                        icon_body_fat_goal_placeholder.visibility = View.VISIBLE
+                        icon_muscle_goal_placeholder.visibility = View.VISIBLE
+                        goal_weight_placeholder.visibility = View.VISIBLE
+                        goal_body_fat_placeholder.visibility = View.VISIBLE
+                        goal_muscle_placeholder.visibility = View.VISIBLE
                         icon_weight_goal.visibility = View.VISIBLE
                         icon_body_fat_goal.visibility = View.VISIBLE
                         icon_muscle_goal.visibility = View.VISIBLE
@@ -109,6 +116,13 @@ class AchivementFragment: Fragment() {
                         goal_body_fat.visibility = View.GONE
                         goal_muscle.visibility = View.GONE
                         goal_weight.visibility = View.GONE
+                        icon_weight_goal_placeholder.visibility = View.INVISIBLE
+                        icon_body_fat_goal_placeholder.visibility = View.INVISIBLE
+                        icon_muscle_goal_placeholder.visibility = View.INVISIBLE
+                        goal_weight_placeholder.visibility = View.INVISIBLE
+                        goal_body_fat_placeholder.visibility = View.INVISIBLE
+                        goal_muscle_placeholder.visibility = View.INVISIBLE
+                        recycler_shape_placeholder.visibility = View.INVISIBLE
                     }
                 }
             })

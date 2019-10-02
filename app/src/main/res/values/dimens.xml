@@ -61,6 +61,8 @@
     <dimen name="profile_goal_animation">42dp</dimen>
     <dimen name="profile_goal_expand">138dp</dimen>
 
+    <dimen name="profile_recycler_goal_min">140dp</dimen>
+    <dimen name="profile_recycler_goal_max">280dp</dimen>
 
 
 </resources>

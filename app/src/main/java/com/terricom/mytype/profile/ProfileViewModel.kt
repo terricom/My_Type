@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.Logger
 import java.text.SimpleDateFormat
 
 class ProfileViewModel: ViewModel() {
@@ -168,20 +168,17 @@ class ProfileViewModel: ViewModel() {
                 .get()
                 .addOnSuccessListener {
                     val items = mutableListOf<Goal>()
-                    if (it.isEmpty){
+                    for (document in it) {
+                        items.add(document.toObject(Goal::class.java))
+                        items[items.size-1].docId = document.id
+                    }
 
-                    }else {
-                        for (document in it) {
-                            items.add(document.toObject(Goal::class.java))
-                            items[items.size-1].docId = document.id
-                        }
+                    if (items.size > 0){
                         cheerUp.value = items[0].cheerUp
-                        if (items.size > 0){
-                            fireGoalBack(items)
-                            getGoal()
-                        }else if (it.isEmpty){
-                            getGoalNOt()
-                        }
+                        fireGoalBack(items)
+                        getGoal()
+                    }else if (it.isEmpty){
+                        getGoalNOt()
                     }
                 }
         }

@@ -124,4 +124,18 @@
 
     <string name="float_round_one">%.1f</string>
 
+    <string name="shape_example_weight">50.0</string>
+    <string name="shape_example_bodyAge">19</string>
+    <string name="shape_example_bodyWater">50.5</string>
+    <string name="shape_example_bodyFat">23.5</string>
+    <string name="shape_example_tdee">1215</string>
+    <string name="shape_example_muscle">23.5</string>
+
+    <string name="foodie_example_water">8.0</string>
+    <string name="foodie_example_oil">0.5</string>
+    <string name="foodie_example_fruit">2.0</string>
+    <string name="foodie_example_vegetable">5.0</string>
+    <string name="foodie_example_protein">2.0</string>
+    <string name="foodie_example_carbon">0.5</string>
+
 </resources>
