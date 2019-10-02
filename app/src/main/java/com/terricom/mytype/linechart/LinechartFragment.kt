@@ -80,6 +80,12 @@ class LinechartFragment: Fragment() {
                             goal_oil.visibility = View.VISIBLE
                             goal_protein.visibility = View.VISIBLE
                             goal_water.visibility = View.VISIBLE
+                            icon_water_goal.visibility = View.VISIBLE
+                            icon_vegetable_goal.visibility = View.VISIBLE
+                            icon_fruit.visibility = View.VISIBLE
+                            icon_oil_goal.visibility = View.VISIBLE
+                            icon_protein_goal.visibility = View.VISIBLE
+                            icon_carbon.visibility = View.VISIBLE
 
                         }
                     } else if (it != null && it[0].values.isEmpty()){
@@ -101,6 +107,12 @@ class LinechartFragment: Fragment() {
                             goal_oil.visibility = View.GONE
                             goal_protein.visibility = View.GONE
                             goal_water.visibility = View.GONE
+                            icon_water_goal.visibility = View.GONE
+                            icon_vegetable_goal.visibility = View.GONE
+                            icon_fruit.visibility = View.GONE
+                            icon_oil_goal.visibility = View.GONE
+                            icon_protein_goal.visibility = View.GONE
+                            icon_carbon.visibility = View.GONE
                         }
                     }
                 })

@@ -360,24 +360,6 @@ class FoodieFragment: Fragment() {
 
                 viewModel.setDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
 
-//                if (binding.editDate.text.isNullOrEmpty() && binding.editDate.text.isNullOrEmpty()){
-//                    viewModel.setDate(java.util.Date())
-//                }else if (!binding.editDate.text.isNullOrEmpty() && binding.editTime.text.isNullOrEmpty()){
-//                    viewModel.setDate(
-//                        java.sql.Date(
-//                            Timestamp.valueOf(
-//                                binding.editDate.text.toString() + " " + SimpleDateFormat(
-//                                    "HH:mm:ss"
-//                                ).format(Date()) + ".000000000"
-//                            ).time
-//                        )
-//                    )
-//                }else if (binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-//                    viewModel.setDate(Date(Timestamp.valueOf(SimpleDateFormat("yyyy-MM-dd").format(java.util.Date())+" "+binding.editTime.text.toString()+":00.000000000").time))
-//                }else if (!binding.editDate.text.isNullOrEmpty() && !binding.editTime.text.isNullOrEmpty()){
-//                    viewModel.setDate(Date(Timestamp.valueOf(binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000").time))
-//                }
-
                 if (foodie.timestamp != null){
                     viewModel.adjustFoodie()
                 } else {

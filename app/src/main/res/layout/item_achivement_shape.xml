@@ -67,13 +67,13 @@
                 android:textColor="@color/colorMyType"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintBottom_toBottomOf="@+id/time"
-                app:layout_constraintEnd_toStartOf="@+id/number_tdeet"
+                app:layout_constraintEnd_toStartOf="@+id/number_tdee"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/number_body_water"
                 app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:id="@+id/number_tdeet"
+                android:id="@+id/number_tdee"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
@@ -99,7 +99,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/time"
                 app:layout_constraintEnd_toStartOf="@+id/number_body_age"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/number_tdeet"
+                app:layout_constraintStart_toEndOf="@+id/number_tdee"
                 app:layout_constraintTop_toTopOf="@+id/time" />
 
         <TextView

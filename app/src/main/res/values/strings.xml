@@ -114,4 +114,14 @@
     <string name="query_title_average">平均成就</string>
     <string name="login_success">登入成功\n歡迎回來</string>
 
+    <string name="timestamp">timestamp</string>
+    <string name="timestamp_dayend">%s 23:59:59.999999999</string>
+    <string name="timestamp_daybegin">%s 00:00:00.000000000</string>
+
+    <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
+    <string name="simpledateformat_MM_dd">MM-dd</string>
+    <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
+
+    <string name="float_round_one">%.1f</string>
+
 </resources>

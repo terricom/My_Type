@@ -127,12 +127,12 @@
                 android:padding="@dimen/elevation_all"
                 android:paddingTop="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/diff_water"
                 app:layout_constraintEnd_toStartOf="@+id/diff_water"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/diff_water"
-                app:srcCompat="@drawable/icon_water"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_water" />
 
         <TextView
                 android:id="@+id/diff_water"
@@ -148,11 +148,11 @@
                 android:textColor='@{viewModel.diffWaterNum >= 0 ?Color.parseColor("#"+"05A5DB") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toStartOf="@+id/icon_fruit"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
-                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate" />
 
         <TextView
                 android:id="@+id/goal_water"
@@ -168,10 +168,10 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/diff_water"
                 app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
-                app:layout_constraintTop_toTopOf="@+id/diff_water"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/diff_water" />
 
         <ImageView
                 android:id="@+id/icon_vegetable_goal"
@@ -183,13 +183,13 @@
                 android:paddingRight="@dimen/elevation_all"
                 android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/diff_vegetable"
                 app:layout_constraintEnd_toStartOf="@+id/diff_vegetable"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_fruit"
                 app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                app:srcCompat="@drawable/icon_vegetable"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_vegetable" />
 
         <TextView
                 android:id="@+id/diff_vegetable"
@@ -204,10 +204,10 @@
                 android:textColor='@{viewModel.diffVegetableNum >= 0 ? Color.parseColor("#"+"368047") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_vegetable_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
 
         <TextView
                 android:id="@+id/diff_fruit"
@@ -222,11 +222,11 @@
                 android:textColor='@{viewModel.diffFruitNum >= 0 ?Color.parseColor("#"+"DC4C32") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toStartOf="@+id/icon_vegetable_goal"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_fruit"
-                app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
 
         <TextView
                 android:id="@+id/goal_fruit"
@@ -242,10 +242,10 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/diff_fruit"
                 app:layout_constraintStart_toEndOf="@+id/icon_fruit"
-                app:layout_constraintTop_toTopOf="@+id/diff_fruit"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/diff_fruit" />
 
         <ImageView
                 android:id="@+id/icon_fruit"
@@ -257,13 +257,13 @@
                 android:paddingRight="@dimen/elevation_all"
                 android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/diff_fruit"
                 app:layout_constraintEnd_toStartOf="@+id/diff_fruit"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_water"
                 app:layout_constraintTop_toTopOf="@+id/icon_water_goal"
-                app:srcCompat="@drawable/icon_fruit"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_fruit" />
 
         <TextView
                 android:id="@+id/goal_vegetable"
@@ -279,10 +279,10 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/diff_vegetable"
                 app:layout_constraintStart_toStartOf="@+id/diff_vegetable"
-                app:layout_constraintTop_toTopOf="@+id/diff_vegetable"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/diff_vegetable" />
 
         <ImageView
                 android:id="@+id/icon_oil_goal"
@@ -293,12 +293,12 @@
                 android:padding="@dimen/elevation_all"
                 android:paddingTop="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
                 app:layout_constraintEnd_toStartOf="@+id/diff_oil"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/goal_oil"
-                app:srcCompat="@drawable/icon_coconut"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_coconut" />
 
         <TextView
                 android:id="@+id/diff_oil"
@@ -313,12 +313,12 @@
                 android:textColor='@{viewModel.diffOilNum >= 0 ? Color.parseColor("#"+"A0B880") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/icon_oil_goal"
                 app:layout_constraintEnd_toStartOf="@+id/icon_protein_goal"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
 
         <TextView
                 android:id="@+id/goal_oil"
@@ -335,10 +335,10 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/diff_oil"
                 app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
-                app:layout_constraintTop_toBottomOf="@+id/goal_water"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toBottomOf="@+id/goal_water" />
 
         <ImageView
                 android:id="@+id/icon_carbon"
@@ -350,13 +350,13 @@
                 android:paddingRight="@dimen/elevation_all"
                 android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/diff_carbon"
                 app:layout_constraintEnd_toStartOf="@+id/diff_carbon"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_protein"
                 app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                app:srcCompat="@drawable/icon_carbon"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_carbon" />
 
         <TextView
                 android:id="@+id/diff_carbon"
@@ -371,10 +371,10 @@
                 android:textColor='@{viewModel.diffCarbonNum >= 0 ? Color.parseColor("#"+"F59C4D") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_carbon"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
 
         <TextView
                 android:id="@+id/diff_protein"
@@ -389,11 +389,11 @@
                 android:textColor='@{viewModel.diffProteinNum >= 0 ? Color.parseColor("#"+"F9D936") : Color.parseColor("#"+"DC4C32")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toStartOf="@+id/icon_carbon"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/icon_protein_goal"
-                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
 
         <TextView
                 android:id="@+id/goal_protein"
@@ -409,11 +409,11 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
                 app:layout_constraintEnd_toEndOf="@+id/diff_protein"
                 app:layout_constraintStart_toStartOf="@+id/diff_protein"
-                app:layout_constraintTop_toTopOf="@+id/goal_oil"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
 
         <ImageView
                 android:id="@+id/icon_protein_goal"
@@ -425,13 +425,13 @@
                 android:paddingRight="@dimen/elevation_all"
                 android:paddingBottom="@dimen/elevation_all"
                 android:scaleType="fitCenter"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/diff_protein"
                 app:layout_constraintEnd_toStartOf="@+id/diff_protein"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/diff_oil"
                 app:layout_constraintTop_toTopOf="@+id/icon_oil_goal"
-                app:srcCompat="@drawable/icon_protein"
-                tools:visibility="invisible" />
+                app:srcCompat="@drawable/icon_protein" />
 
         <TextView
                 android:id="@+id/goal_carbon"
@@ -447,11 +447,11 @@
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
                 app:layout_constraintEnd_toEndOf="@+id/diff_carbon"
                 app:layout_constraintStart_toStartOf="@+id/diff_carbon"
-                app:layout_constraintTop_toTopOf="@+id/goal_oil"
-                tools:visibility="invisible" />
+                app:layout_constraintTop_toTopOf="@+id/goal_oil" />
 
 
         <!--        <androidx.viewpager2.widget.ViewPager2-->
