@@ -14,8 +14,6 @@ import com.terricom.mytype.MessageDialog
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.data.PuzzleImg
 import com.terricom.mytype.databinding.FragmentProfileBinding
 import com.terricom.mytype.tools.Logger
 
@@ -97,6 +95,7 @@ class ProfileFragment: Fragment() {
 //        })
 
         viewModel.getGoalOrNot.observe(this, Observer {
+            Logger.i("viewModel.getGoalOrNot.observe = $it")
             if (it){
                 binding.iconMyType.visibility = View.INVISIBLE
                 binding.profileHintAddGoal.visibility = View.INVISIBLE

@@ -28,14 +28,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:background="@drawable/icon_my_type_round"
                 android:outlineProvider="@{viewModel.outlineProvider}"
-                app:imageUrl="@{viewModel.userPic}"
-                android:background="@drawable/icon_profile"
                 android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.userPic}"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_profile_name"
@@ -72,6 +72,7 @@
                 android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -322,13 +323,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="false"
-                        android:maxHeight="280dp"
+                        android:maxHeight="@dimen/profile_recycler_goal_max"
+                        android:minHeight="@dimen/profile_recycler_goal_min"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu"
-                        tools:listitem="@layout/item_profile_goal" />
+                        app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu" />
 
                 <ImageView
                         android:id="@+id/profile_goal_setting_reference"
@@ -344,185 +345,39 @@
                         app:layout_constraintVertical_bias="0.0"
                         app:srcCompat="@drawable/icon_info" />
 
-                <!--                <ImageButton-->
-                <!--                    android:id="@+id/button_carbon"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="0dp"-->
-                <!--                    android:background="@drawable/tag_left_corners"-->
-                <!--                    android:paddingLeft="@dimen/elevation_all"-->
-                <!--                    android:paddingTop="@dimen/elevation_all"-->
-                <!--                    android:paddingRight="@dimen/elevation_all"-->
-                <!--                    android:paddingBottom="@dimen/elevation_all"-->
-                <!--                    android:scaleType="fitCenter"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@+id/button_protein"-->
-                <!--                    app:layout_constraintEnd_toStartOf="@+id/number_vegetable"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/button_vegetable"-->
-                <!--                    app:layout_constraintTop_toTopOf="@+id/button_coconut"-->
-                <!--                    app:srcCompat="@drawable/icon_carbon" />-->
+                <TextView
+                        android:id="@+id/profile_hint_add_goal"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/icon_postit"
+                        android:lineSpacingExtra="4sp"
+                        android:paddingLeft="120dp"
+                        android:paddingTop="20dp"
+                        android:text="@string/profile_hint_add_goal_postit"
+                        android:textAlignment="viewStart"
+                        android:textSize="@dimen/text_content"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toTopOf="@+id/profile_title_dream_board"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu" />
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/number_carbon"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:background="@drawable/tag_right_corners"-->
-                <!--                    android:hint="0.3"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:text="@={viewModel.floatToString(viewModel.carbon)}"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorWhite"-->
-                <!--                    android:textColorHint="@color/colorWhite"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@+id/button_carbon"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/number_vegetable"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/number_vegetable"-->
-                <!--                    app:layout_constraintTop_toTopOf="@+id/button_carbon"-->
-                <!--                    app:layout_constraintVertical_bias="0.538" />-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/shaperecord_title_weight"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="0dp"-->
-                <!--                    android:layout_marginStart="16dp"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_left_corners"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:text="@string/shape_weight"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorMyType"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@+id/number_weight"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/button_coconut"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/button_coconut"-->
-                <!--                    app:srcCompat="@drawable/icon_weight" />-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/number_weight"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_right_corners"-->
-                <!--                    android:hint="0.0"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:text="@={viewModel.floatToString(viewModel.weight)}"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorWhite"-->
-                <!--                    android:textColorHint="@color/colorWhite"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/number_coconut"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/number_coconut"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/number_coconut" />-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/shaperecord_title_body_water"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="0dp"-->
-                <!--                    android:background="@drawable/tag_left_corners"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorMyType"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@+id/number_muscle"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/button_protein"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/button_protein"-->
-                <!--                    app:layout_constraintTop_toTopOf="@+id/shaperecord_title_weight"-->
-                <!--                    app:srcCompat="@drawable/icon_muscle" />-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/number_muscle"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_right_corners"-->
-                <!--                    android:hint="0.0"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:text="@={viewModel.floatToString(viewModel.muscle)}"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorWhite"-->
-                <!--                    android:textColorHint="@color/colorWhite"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/number_protein"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/number_protein"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/number_protein" />-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/shaperecord_title_body_fat"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="0dp"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_left_corners"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorMyType"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/button_carbon"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/button_carbon"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/button_carbon"-->
-                <!--                    app:srcCompat="@drawable/icon_body_fat" />-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/number_body_fat"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_right_corners"-->
-                <!--                    android:hint="0.0"-->
-                <!--                    android:padding="@dimen/elevation_all"-->
-                <!--                    android:text="@={viewModel.floatToString(viewModel.bodyFat)}"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorWhite"-->
-                <!--                    android:textColorHint="@color/colorWhite"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/number_carbon"-->
-                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                    app:layout_constraintStart_toStartOf="@+id/number_carbon"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@+id/number_carbon" />-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/profile_title_my_goal_date"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="27dp"-->
-                <!--                    android:layout_marginStart="16dp"-->
-                <!--                    android:layout_marginTop="8dp"-->
-                <!--                    android:background="@drawable/tag_left_corners"-->
-                <!--                    android:ems="10"-->
-                <!--                    android:inputType="date"-->
-                <!--                    android:paddingLeft="@dimen/elevation_all"-->
-                <!--                    android:paddingTop="@dimen/elevation_all"-->
-                <!--                    android:paddingRight="@dimen/elevation_all"-->
-                <!--                    android:paddingBottom="@dimen/elevation_all"-->
-                <!--                    android:text="2019.08.24"-->
-                <!--                    android:textAlignment="center"-->
-                <!--                    android:textColor="@color/colorMyType"-->
-                <!--                    android:textColorHint="@color/colorButton"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintEnd_toEndOf="@+id/number_water"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/profile_my_goal"-->
-                <!--                    android:layout_width="0dp"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginEnd="16dp"-->
-                <!--                    android:background="@drawable/tag_right_corners"-->
-                <!--                    android:text="別人看到都會問我怎麼瘦的"-->
-                <!--                    android:paddingLeft="@dimen/elevation_all"-->
-                <!--                    android:paddingTop="@dimen/elevation_all"-->
-                <!--                    android:paddingRight="@dimen/elevation_all"-->
-                <!--                    android:paddingBottom="@dimen/elevation_all"-->
-                <!--                    android:textAlignment="viewStart"-->
-                <!--                    android:textColor="@color/colorWhite"-->
-                <!--                    android:textColorHint="@color/colorButton"-->
-                <!--                    android:textSize="@dimen/text_content"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toEndOf="@+id/profile_title_my_goal_date"-->
-                <!--                    app:layout_constraintTop_toTopOf="@+id/profile_title_my_goal_date" />-->
+                <ImageView
+                        android:id="@+id/icon_my_type"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_marginBottom="16dp"
+                        android:elevation="@dimen/elevation_all"
+                        android:rotation="340.0"
+                        android:scaleType="fitStart"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_hint_add_goal"
+                        app:layout_constraintStart_toStartOf="@+id/profile_hint_add_goal"
+                        app:srcCompat="@drawable/icon_my_type_border" />
 
                 <ImageView
                         android:id="@+id/profile_puzzle_reference"
@@ -543,7 +398,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/title_dream_puzzle"
                         android:textAlignment="center"
                         android:textColor="@color/colorMyType"
@@ -558,6 +413,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
+                        android:background="@color/colorWhite"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -567,53 +423,21 @@
                         app:puzzles="@{viewModel.puzzle}"
                         tools:listitem="@layout/item_profile_dream_board" />
 
-                <TextView
-                        android:id="@+id/profile_hint_add_goal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/icon_postit"
-                        android:lineSpacingExtra="4sp"
-                        android:paddingLeft="120dp"
-                        android:paddingTop="20dp"
-                        android:text="@string/profile_hint_add_goal_postit"
-                        android:textAlignment="viewStart"
-                        android:textSize="@dimen/text_content"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@+id/recyclerGoal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_title_my_menu" />
-
-                <ImageView
-                        android:id="@+id/icon_my_type"
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:elevation="@dimen/elevation_all"
-                        android:rotation="340.0"
-                        android:scaleType="fitStart"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@+id/profile_hint_add_goal"
-                        app:layout_constraintStart_toStartOf="@+id/profile_hint_add_goal"
-                        app:srcCompat="@drawable/icon_my_type_border" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
         <TextView
-            android:id="@+id/profile_goal_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/noto_sans"
-            android:padding="@dimen/elevation_all"
-            android:text="@{viewModel.cheerUp}"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_content"
-            app:layout_constraintStart_toEndOf="@+id/image_profile_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/text_profile_name" />
+                android:id="@+id/profile_goal_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:padding="@dimen/elevation_all"
+                android:text="@string/login_greet"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_content"
+                app:layout_constraintStart_toEndOf="@+id/image_profile_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

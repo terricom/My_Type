@@ -1,5 +1,6 @@
 package com.terricom.mytype.diary
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.*
 import com.terricom.mytype.profile.CardAvatarOutlineProvider
 import com.terricom.mytype.tools.Logger
@@ -21,24 +24,16 @@ class DiaryViewModel: ViewModel() {
 
     val outlineProvider = CardAvatarOutlineProvider()
 
-    val _date = MutableLiveData<Date>()
+    private val _date = MutableLiveData<Date>()
     val date : LiveData<Date>
         get() = _date
 
-    val _fireFoodie = MutableLiveData<List<Foodie>>()
+    private val _fireFoodie = MutableLiveData<List<Foodie>>()
     val fireFoodie : LiveData<List<Foodie>>
         get() = _fireFoodie
 
-    fun fireFoodieBack (foo: List<Foodie>){
+    private fun fireFoodieBack (foo: List<Foodie>){
         _fireFoodie.value = foo
-    }
-
-    val _fireFoodieM = MutableLiveData<List<Foodie>>()
-    val fireFoodieM : LiveData<List<Foodie>>
-        get() = _fireFoodieM
-
-    fun fireFoodieBackM (foo: List<Foodie>){
-        _fireFoodieM.value = foo
     }
 
     val _fireShape = MutableLiveData<Shape>()
@@ -49,79 +44,70 @@ class DiaryViewModel: ViewModel() {
         _fireShape.value = shape
     }
 
-    val _fireSleep = MutableLiveData<Sleep>()
+    private val _fireSleep = MutableLiveData<Sleep>()
     val fireSleep : LiveData<Sleep>
         get() = _fireSleep
 
-    fun fireSleepBack (sleep: Sleep){
+    private fun fireSleepBack (sleep: Sleep){
         _fireSleep.value = sleep
     }
 
-    fun filterdate(dato: Date){
-        Logger.i("DiaryViewModel filterdate = ${dato}")
-        _date.value = dato
+    fun setCurrentDate(date: Date){
+        _date.value = date
     }
 
-    fun clearFireShape(){
+    private fun clearFireShape(){
         _fireShape.value = null
     }
 
-    fun clearFireSleep(){
+    private fun clearFireSleep(){
         _fireSleep.value = null
     }
 
-    val _calendarClicked = MutableLiveData<Boolean>()
-    val calendarClicked : LiveData<Boolean>
-        get() = _calendarClicked
+    private val _isCalendarClicked = MutableLiveData<Boolean>()
+    val isCalendarClicked : LiveData<Boolean>
+        get() = _isCalendarClicked
 
     fun calendarClicked(){
-        _calendarClicked.value = true
+        _isCalendarClicked.value = true
     }
 
     fun calendarClickedAgain(){
-        _calendarClicked.value = false
+        _isCalendarClicked.value = false
     }
 
-    val _recordedDate = MutableLiveData<List<String>>()
-    val recordedDate : LiveData<List<String>>
-        get() = _recordedDate
+    private val _isGetPuzzle = MutableLiveData<Boolean>()
+    val isGetPuzzle : LiveData<Boolean>
+        get() = _isGetPuzzle
 
-    fun setRecordedDate(recordedDate: List<String>){
-        _recordedDate.value = recordedDate
+    private fun getPuzzle(){
+        _isGetPuzzle.value = true
     }
 
-    val _getPuzzle = MutableLiveData<Boolean>()
-    val getPuzzle : LiveData<Boolean>
-        get() = _getPuzzle
-
-    fun getPuzzle(){
-        _getPuzzle.value = true
+    private fun getPuzzleNewUser(){
+        _isGetPuzzle.value = false
     }
 
-    fun getPuzzleNewUser(){
-        _getPuzzle.value = false
-    }
-
-
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val sdfhms = SimpleDateFormat("yyyy-MM-dd-hhmmss")
-    val currentDate = sdf.format(Date())
+    @SuppressLint("SimpleDateFormat")
+    val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
+    val sdf_hm = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_HH_mm))
+    val sdf_ym = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM))
 
     val db = FirebaseFirestore.getInstance()
-    val users = db.collection("Users")
+    val users = db.collection(collectionUsers)
 
     private var storageRef : StorageReference?= null
 
-    val _callDeleteAction = MutableLiveData<Boolean>()
-    val callDeleteAction : LiveData<Boolean>
-        get() = _callDeleteAction
+    private val _isCallDeleteAction = MutableLiveData<Boolean>()
+    val isCallDeleteAction : LiveData<Boolean>
+        get() = _isCallDeleteAction
 
-    fun callDeleteAction(){
-        _callDeleteAction.value = true
+    private fun callDeleteAction(){
+        _isCallDeleteAction.value = true
     }
 
-    fun finishCallDeleteAction(){
-        _callDeleteAction.value = false
+    private fun finishCallDeleteAction(){
+        _isCallDeleteAction.value = false
     }
 
 
@@ -135,59 +121,94 @@ class DiaryViewModel: ViewModel() {
 
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .document(userUid).collection(collectionFoodie)
+                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_dayend,
+                            "${sdf.format(date.value)}")
+                    )
+                )
+                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_daybegin,
+                            "${sdf.format(date.value)}")
+                    )
+                )
             val shapeDiary = users
-                .document(userUid).collection("Shape")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .document(userUid).collection(collectionShape)
+                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_dayend,
+                            "${sdf.format(date.value)}")
+                    )
+                )
+                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_daybegin,
+                            "${sdf.format(date.value)}")
+                    )
+                )
             val sleepDiary = users
-                .document(userUid).collection("Sleep")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .document(userUid).collection(collectionSleep)
+                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_dayend,
+                            "${sdf.format(date.value)}")
+                    )
+                )
+                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_daybegin,
+                            "${sdf.format(date.value)}")
+                    )
+                )
 
         shapeDiary
             .get()
             .addOnSuccessListener {
+
                 val items = mutableListOf<Shape>()
-                items.clear()
                 for (document in it) {
+
                     val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
+
                         items.add(document.toObject(Shape::class.java))
-                        val index = items.size -1
-                        items[index].docId = document.id
+                        items[items.lastIndex].docId = document.id
                     }
                 }
                 if (items.size != 0){
-                Logger.i("DiaryViewModel items fireShapeBack (items[0]) = ${items[0]}")
-                fireShapeBack(items[0])
-                } else {clearFireShape()}
+
+                    fireShapeBack(items[0])
+                } else {
+                    clearFireShape()
+                }
             }
 
         sleepDiary
             .get()
             .addOnSuccessListener {
+
                 val items = mutableListOf<Sleep>()
-                items.clear()
                 for (document in it) {
+
                     val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
+
                         items.add(document.toObject(Sleep::class.java))
-                        val index = items.size -1
-                        items[index].docId = document.id
+                        items[items.lastIndex].docId = document.id
                     }
 
                 }
                 if (items.size != 0){
-                    Logger.i("DiaryViewModel items fireSleepBack (items[0]) = ${items[0]}")
-                    fireSleepBack(items[0])
-                } else {clearFireSleep()}
 
+                    fireSleepBack(items[0])
+                } else {
+                    clearFireSleep()
+                }
             }
 
         foodieDiary
@@ -196,23 +217,24 @@ class DiaryViewModel: ViewModel() {
                 storageRef = FirebaseStorage.getInstance().reference
 
                 val items = mutableListOf<Foodie>()
-//                items.clear()
                 for (document in it) {
+
                     val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                     if (convertDate.toString() == sdf.format(date.value)){
                         items.add(document.toObject(Foodie::class.java))
-                        val index = items.size -1
-                        items[index].docId = document.id
+                        items[items.lastIndex].docId = document.id
                     }
                 }
-                Logger.i("items.size == 0 or ${items.size}")
+
                 _totalWater.value = 0f
                 _totalOil.value = 0f
                 _totalVegetable.value = 0f
                 _totalProtein.value = 0f
                 _totalFruit.value = 0f
                 _totalCarbon.value = 0f
+
                 for (foo in items){
+
                     _totalWater.value = _totalWater.value!!.plus(foo.water ?: 0f)
                     _totalOil.value = _totalOil.value!!.plus(foo.oil ?: 0f)
                     _totalVegetable.value = _totalVegetable.value!!.plus(foo.vegetable ?: 0f)
@@ -221,9 +243,6 @@ class DiaryViewModel: ViewModel() {
                     _totalFruit.value = _totalFruit.value!!.plus(foo.fruit ?:0f)
                 }
                 fireFoodieBack(items)
-                Logger.i("fireFoodie =${fireFoodie.value}")
-
-
             }
         }
 
@@ -255,52 +274,47 @@ class DiaryViewModel: ViewModel() {
     val totalCarbon: LiveData<Float>
         get() = _totalCarbon
 
-    val _queryResult = MutableLiveData<List<Foodie>>()
-    val queryResult : LiveData<List<Foodie>>
-        get() = _queryResult
+    val _listQueryFoodieResult = MutableLiveData<FoodieList>()
+    val listQueryFoodieResult : LiveData<FoodieList>
+        get() = _listQueryFoodieResult
 
-    val _listFoodie = MutableLiveData<FoodieList>()
-    val listFoodie : LiveData<FoodieList>
-        get() = _listFoodie
-
-    fun setQuery(queryResult : List<Foodie>, key: String){
-        _queryResult.value = queryResult
-        _listFoodie.value = FoodieList(queryResult,key)
+    fun setQueryResult(queryResult : List<Foodie>, key: String){
+        _listQueryFoodieResult.value = FoodieList(queryResult,key)
     }
 
     fun getTime(timestamp: Date):String{
-        val sdf = SimpleDateFormat("HH:mm")
-            return sdf.format(java.sql.Date(timestamp.time).time)
-    }
-
-    fun getTimeWithoutZone(timestamp: Date):String{
-        val sdf = SimpleDateFormat("HH:mm")
-        return sdf.format(java.sql.Date(timestamp.time).time)
+            return sdf_hm.format(java.sql.Date(timestamp.time).time)
     }
 
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .document(userUid).collection(collectionFoodie)
+                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(
+                    App.applicationContext().getString(R.string.timestamp),
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        "${sdf_ym.format(date.value)}-31"
+                    )
+                )
+                .whereGreaterThanOrEqualTo(
+                    App.applicationContext().getString(R.string.timestamp),
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        "${sdf_ym.format(date.value)}-01"
+                    )
+                )
+
+
         foodieDiary
             .get()
             .addOnSuccessListener {
+
                 val items = mutableListOf<Foodie>()
                 for (document in it) {
-                    val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
-                    if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-                        "${sdf.format(convertDate).split("-")[1]}" ==
-                        "${sdf.format(date.value)!!.split("-")[0]}-" +
-                        "${sdf.format(date.value)!!.split("-")[1]}"){
-                        items.add(document.toObject(Foodie::class.java))
-                        items[items.size-1].docId = document.id
-                    }
+
+                    items.add(document.toObject(Foodie::class.java))
+                    items[items.lastIndex].docId = document.id
                 }
-                if (items.size != 0) {
-                }
-                fireFoodieBackM(items)
-                Logger.i("fireFoodieM =${fireFoodieM.value}")
             }
         }
     }
@@ -309,40 +323,60 @@ class DiaryViewModel: ViewModel() {
     fun delete(foodie: Foodie){
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
+                .document(userUid).collection(collectionFoodie)
+                .orderBy(
+                    App.applicationContext().getString(R.string.timestamp),
+                    Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(
+                    App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_dayend,
+                            sdf.format(date.value)
+                        )
+                    )
+                )
+                .whereGreaterThanOrEqualTo(
+                    App.applicationContext().getString(R.string.timestamp),
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(R.string.timestamp_daybegin,
+                            sdf.format(date.value)
+                        )
+                    )
+                )
 
             foodieDiary
                 .get()
                 .addOnSuccessListener {
                     for (diary in it){
                         if (diary.id == foodie.docId){
-                            users.document(userUid).collection("Foodie").document(foodie.docId!!).delete()
-                                .addOnSuccessListener { Logger.i("${foodie.docId} DocumentSnapshot successfully deleted!")
-                                callDeleteAction()
+
+                            users.document(userUid).collection(collectionFoodie).document(foodie.docId!!).delete()
+                                .addOnSuccessListener {
+                                    callDeleteAction()
                                 }
-                                .addOnFailureListener { e -> Logger.i("Error deleting document exception = $e") }
+                                .addOnFailureListener {
+                                        e -> Logger.i("Error deleting document exception = $e")
+                                }
                         }
                     }
                 }
-
-
-
         }
     }
 
-    fun updatePuzzle() {
+    private fun updatePuzzle() {
 
-        if (userUid!!.isNotEmpty()){
+        if (!userUid.isNullOrEmpty()){
             val diary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .document(userUid).collection(collectionFoodie)
+                .orderBy(App.applicationContext().getString(R.string.timestamp),
+                    Query.Direction.DESCENDING
+                )
 
             val puzzle = users
-                .document(userUid).collection("Puzzle")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .document(userUid).collection(collectionPuzzle)
+                .orderBy(App.applicationContext().getString(R.string.timestamp),
+                    Query.Direction.DESCENDING
+                )
 
             diary
                 .get()
@@ -350,33 +384,34 @@ class DiaryViewModel: ViewModel() {
                     val dates = mutableListOf<String>()
                     val items = mutableListOf<Foodie>()
                     for (document in it) {
+
                         dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
                         items.add(document.toObject(Foodie::class.java))
                     }
-                    Logger.i("dates.size = ${dates.distinct().size} dates = $dates")
                     if (dates.distinct().size%7 == 0){
+
                         UserManager.createDiary = UserManager.createDiary.toString().toInt().plus(1).toString()
                         //全新使用者
 
                         puzzle
                             .get()
                             .addOnSuccessListener {
-                                val pazzleAll = mutableListOf<Puzzle>()
+                                val puzzleAll = mutableListOf<Puzzle>()
                                 for (document in it) {
-                                    pazzleAll.add(document.toObject(Puzzle::class.java))
-                                    pazzleAll[pazzleAll.size - 1].docId = document.id
-                                }
-                                Logger.i("pazzleAll.size = ${pazzleAll.size} pazzleAll = $pazzleAll")
 
-                                if (dates.size == 0 && UserManager.createDiary == "2" && pazzleAll.size == 0){
-                                    val pazzleOld = hashMapOf(
-                                        "position" to listOf((0..14).random()),
-                                        "imgURL" to PuzzleImg.values()[0].value,
-                                        "recordedDates" to listOf(sdf.format(Date())),
-                                        "timestamp" to FieldValue.serverTimestamp()
+                                    puzzleAll.add(document.toObject(Puzzle::class.java))
+                                    puzzleAll[puzzleAll.lastIndex].docId = document.id
+                                }
+
+                                if (dates.size == 0 && UserManager.createDiary == "2" && puzzleAll.size == 0){
+                                    val puzzle = hashMapOf(
+                                        App.applicationContext().getString(R.string.puzzle_position) to listOf((0..14).random()),
+                                        App.applicationContext().getString(R.string.puzzle_imgURL) to PuzzleImg.values()[0].value,
+                                        App.applicationContext().getString(R.string.puzzle_recordedDates) to listOf(sdf.format(Date())),
+                                        App.applicationContext().getString(R.string.puzzle_timestamp) to FieldValue.serverTimestamp()
 
                                     )
-                                    users.document(userUid).collection("Puzzle").document().set(pazzleOld)
+                                    users.document(userUid).collection(collectionPuzzle).document().set(puzzle)
                                     getPuzzleNewUser()
                                 }
                                 //老用戶
@@ -391,58 +426,28 @@ class DiaryViewModel: ViewModel() {
 
     }
 
-    fun queryFoodie(key: String) {
+    fun queryFoodieFoods(key: String) {
 
-        if (userUid!!.isNotEmpty()){
+        if (!userUid.isNullOrEmpty()){
             val diary = users
-                .document(userUid).collection("Foodie")
-//                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereArrayContains("foods", key)
+                .document(userUid).collection(collectionFoodie)
+                .whereArrayContains(App.applicationContext().getString(R.string.foodie_foods), key)
 
             diary
                 .get()
                 .addOnSuccessListener {
+
                     val dates = mutableListOf<String>()
                     val items = mutableListOf<Foodie>()
                     for (document in it) {
+
                         dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
                         items.add(document.toObject(Foodie::class.java))
                         items[items.lastIndex].docId = document.id
                     }
-                    Logger.i("dates.size with $key = ${dates.distinct().size} dates = $dates")
-                    Logger.i("$key items = ${items}")
                     if (!items.isNullOrEmpty()){
-                        setQuery(items.asReversed(), key)
-                    }
 
-                }
-        }
-
-
-    }
-
-    fun queryFoodieNu(key: String) {
-
-        if (userUid!!.isNotEmpty()){
-            val diary = users
-                .document(userUid).collection("Foodie")
-//                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereArrayContains("nutritions", key)
-
-            diary
-                .get()
-                .addOnSuccessListener {
-                    val dates = mutableListOf<String>()
-                    val items = mutableListOf<Foodie>()
-                    for (document in it) {
-                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
-                        items.add(document.toObject(Foodie::class.java))
-                        items[items.lastIndex].docId = document.id
-                    }
-                    Logger.i("dates.size with $key = ${dates.distinct().size} dates = $dates")
-                    Logger.i("$key items = ${items}")
-                    if (!items.isNullOrEmpty()){
-                        setQuery(items.asReversed(), key)
+                        setQueryResult(items.asReversed(), key)
                     }
                 }
         }
@@ -450,11 +455,45 @@ class DiaryViewModel: ViewModel() {
 
     }
 
+    fun queryFoodieNutritions(key: String) {
+
+        if (userUid!!.isNotEmpty()){
+            val diary = users
+                .document(userUid).collection(collectionFoodie)
+                .whereArrayContains(App.applicationContext().getString(R.string.foodie_nutritions), key)
+
+            diary
+                .get()
+                .addOnSuccessListener {
+
+                    val dates = mutableListOf<String>()
+                    val items = mutableListOf<Foodie>()
+                    for (document in it) {
+
+                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
+                        items.add(document.toObject(Foodie::class.java))
+                        items[items.lastIndex].docId = document.id
+                    }
+
+                    if (!items.isNullOrEmpty()){
+
+                        setQueryResult(items.asReversed(), key)
+                    }
+                }
+        }
 
 
+    }
 
+    companion object {
 
-
+        const val collectionUsers: String = "Users"
+        const val collectionShape: String = "Shape"
+        const val collectionGoal: String = "Goal"
+        const val collectionSleep: String = "Sleep"
+        const val collectionFoodie: String = "Foodie"
+        const val collectionPuzzle: String = "Puzzle"
+    }
 
 
 }

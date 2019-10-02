@@ -10,25 +10,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemDiaryFoodlistBinding
 
-class FoodlistAdapter(val viewModel: DiaryViewModel
-                    , private val onClickListener: OnClickListener
-) : ListAdapter<String, FoodlistAdapter.ProductViewHolder>(DiffCallback) {
+class FoodlistAdapter(
+    val viewModel: DiaryViewModel,
+    private val onClickListener: OnClickListener
+) : ListAdapter<String, FoodlistAdapter.FoodsViewHolder>(DiffCallback) {
 
     class OnClickListener(val clickListener: (foodie: String) -> Unit) {
         fun onClick(foodie: String) = clickListener(foodie)
     }
 
-
-    class ProductViewHolder(private var binding: ItemDiaryFoodlistBinding): RecyclerView.ViewHolder(binding.root),
-        LifecycleOwner {
+    class FoodsViewHolder(
+        private var binding: ItemDiaryFoodlistBinding
+    ): RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
         fun bind(food: String, viewModel: DiaryViewModel) {
 
             binding.lifecycleOwner =this
             binding.food.text = food
 
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings()
         }
 
@@ -63,26 +62,27 @@ class FoodlistAdapter(val viewModel: DiaryViewModel
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemDiaryFoodlistBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodsViewHolder {
+
+        return FoodsViewHolder(ItemDiaryFoodlistBinding.inflate(LayoutInflater
+            .from(parent.context), parent, false))
     }
 
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
+    override fun onBindViewHolder(holder: FoodsViewHolder, position: Int) {
         val product = getItem(position)
 
         holder.bind(product, viewModel)
         holder.itemView.setOnClickListener {
-            viewModel.queryFoodie(product)
+            viewModel.queryFoodieFoods(product)
         }
     }
-    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
+    override fun onViewAttachedToWindow(holder: FoodsViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: ProductViewHolder) {
+    override fun onViewDetachedFromWindow(holder: FoodsViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.markDetach()
     }

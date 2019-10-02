@@ -69,6 +69,10 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             })
             binding.textGoalSave.text = App.applicationContext().getString(R.string.add_new_confirm)
             binding.buttonGoalSettingSave.setOnClickListener {
+                binding.smartCustomCalendar.selectDateOut?.let {
+                    Logger.i("binding.smartCustomCalendar.selectDateOut = $it")
+                    viewModel.setDate(it)
+                }
                 it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 viewModel.adjustGoal()
             }

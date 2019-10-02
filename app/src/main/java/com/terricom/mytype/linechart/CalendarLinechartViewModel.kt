@@ -45,11 +45,7 @@ class CalendarLinechartViewModel: ViewModel() {
         .document(userUid as String).collection("Foodie")
         .orderBy("timestamp", Query.Direction.DESCENDING)
 
-//    init {
-//        setDate(currentDate)
-//        getThisMonth()
-//    }
-
+//    
     fun getThisMonth() {
         foodieDiary
             .get()

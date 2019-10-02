@@ -12,11 +12,11 @@ import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
 import com.terricom.mytype.diary.DiaryViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
-class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
-    RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+class CalendarViewHolder(
+    private var binding: ItemCalendarDayBinding
+) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
     private val monthOfDate = binding.itemDate
     private val recordDate = binding.dateRecord
@@ -46,11 +46,6 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
         val currentYear = currentDateTime.get(Calendar.YEAR)
 
         var selectedDay = -1
-        var selectedMonth = -1
-        var selectedYear = -1
-
-        val sdf = SimpleDateFormat("d")
-
 
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
@@ -59,9 +54,12 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
 
 
         if(currentMonth != viewMonth || currentYear != viewYear){
+
             recordDate.visibility = View.INVISIBLE
             puzzleDate.visibility = View.INVISIBLE
-            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorAllTransparent, null))
+            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources
+                , R.color.colorAllTransparent, null))
+
             cellDateLayout.setBackgroundColor(
                 ResourcesCompat.getColor(
                     App.applicationContext().resources,
@@ -73,7 +71,6 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
             if (recorded){
                 recordDate.visibility = View.VISIBLE
             }
-//            puzzleDate.visibility = View.VISIBLE
             monthOfDate.setTypeface(null, BOLD)
             cellDateLayout.background =
                 ResourcesCompat.getDrawable(
@@ -86,9 +83,10 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
             if (recorded){
                 recordDate.visibility = View.VISIBLE
             }
-            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorMyType, null))
-            cellDateLayout.background = ResourcesCompat.getDrawable(App.applicationContext().resources, R.drawable.calendar_date,null)
-
+            monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources
+                , R.color.colorMyType, null))
+            cellDateLayout.background = ResourcesCompat.getDrawable(App.applicationContext().resources
+                , R.drawable.calendar_date,null)
 
             itemView.setOnClickListener{
                 listener?.let { eventHandler ->
@@ -104,7 +102,8 @@ class CalendarViewHolder(private var binding: ItemCalendarDayBinding) :
     private fun resetViewDefault() {
         itemView.setOnClickListener(null)
         monthOfDate.setTypeface(null, Typeface.NORMAL)
-        monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources, R.color.colorWhite, null))
+        monthOfDate.setTextColor(ResourcesCompat.getColor(App.applicationContext().resources
+            , R.color.colorWhite, null))
     }
 
 

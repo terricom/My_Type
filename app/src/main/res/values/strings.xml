@@ -114,4 +114,45 @@
     <string name="query_title_average">平均成就</string>
     <string name="login_success">登入成功\n歡迎回來</string>
 
+    <string name="timestamp">timestamp</string>
+    <string name="timestamp_dayend">%s 23:59:59.999999999</string>
+    <string name="timestamp_daybegin">%s 00:00:00.000000000</string>
+
+    <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
+    <string name="simpledateformat_MM_dd">MM-dd</string>
+    <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
+    <string name="simpledateformat_HH_mm">HH:mm</string>
+
+    <string name="float_round_one">%.1f</string>
+    <string name="float_round_zero">%.0f</string>
+
+    <string name="shape_example_weight">50.0</string>
+    <string name="shape_example_bodyAge">19</string>
+    <string name="shape_example_bodyWater">50.5</string>
+    <string name="shape_example_bodyFat">23.5</string>
+    <string name="shape_example_tdee">1215</string>
+    <string name="shape_example_muscle">23.5</string>
+
+    <string name="foodie_example_water">8.0</string>
+    <string name="foodie_example_oil">0.5</string>
+    <string name="foodie_example_fruit">2.0</string>
+    <string name="foodie_example_vegetable">5.0</string>
+    <string name="foodie_example_protein">2.0</string>
+    <string name="foodie_example_carbon">0.5</string>
+
+    <string name="user_manager_token">token</string>
+    <string name="user_manager_name">name</string>
+    <string name="user_manager_uid">uid</string>
+    <string name="user_manager_pic">pic</string>
+    <string name="user_manager_mail">mail</string>
+    <string name="user_manager_times">times</string>
+    <string name="user_manager_puzzle">puzzle</string>
+
+    <string name="puzzle_position">position</string>
+    <string name="puzzle_timestamp">timestamp</string>
+    <string name="puzzle_recordedDates">recordedDates</string>
+    <string name="puzzle_imgURL">imgURL</string>
+
+    <string name="foodie_foods">foods</string>
+    <string name="foodie_nutritions">nutritions</string>
 </resources>

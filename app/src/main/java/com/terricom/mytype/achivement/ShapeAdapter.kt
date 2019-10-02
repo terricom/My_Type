@@ -1,5 +1,6 @@
 package com.terricom.mytype.achivement
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
@@ -8,42 +9,86 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.databinding.ItemAchivementShapeBinding
 import java.text.SimpleDateFormat
 
-class ShapeAdapter(val viewModel: AchievementViewModel
-                    , private val onClickListener: OnClickListener
+class ShapeAdapter(
+    val viewModel: AchievementViewModel,
+    private val onClickListener: OnClickListener
+
 ) : ListAdapter<Shape, ShapeAdapter.ProductViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (shape: Shape) -> Unit) {
+    class OnClickListener( val clickListener: (shape: Shape) -> Unit ) {
+
         fun onClick(shape: Shape) = clickListener(shape)
     }
 
+    class ProductViewHolder(
+        private var binding: ItemAchivementShapeBinding
+    ) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-    class ProductViewHolder(private var binding: com.terricom.mytype.databinding.ItemAchivementShapeBinding): RecyclerView.ViewHolder(binding.root),
-        LifecycleOwner {
-
+        @SuppressLint("SimpleDateFormat")
         fun bind(shape: Shape, viewModel: AchievementViewModel) {
 
-            binding.lifecycleOwner =this
+            binding.lifecycleOwner = this
             binding.shape = shape
             binding.viewModel = viewModel
-            val sdf = SimpleDateFormat("yyyy.MM.dd")
+            val sdf = SimpleDateFormat(App.applicationContext()
+                .getString(R.string.simpledateformat_yyyy_MM_dd).replace("-","."))
             binding.time.text = sdf.format(shape.timestamp!!.time)
-            binding.numberBodyAge.text = if (shape.bodyAge.toString().split(".")[0] == null ||
-                shape.bodyAge.toString().split(".")[0] == "null" ||
-                shape.bodyAge.toString().split(".")[0] == "0.0" ) " - "
-            else shape.bodyAge.toString().split(".")[0]
-            binding.numberBodyFat.text = if (shape.bodyFat.toString() == null || shape.bodyFat.toString() == "null"
-                || shape.bodyFat.toString() == "0.0") " - " else "%.1f".format(shape.bodyFat)
-            binding.numberBodyWater.text = if (shape.bodyWater.toString() == null || shape.bodyWater.toString() == "null" || shape.bodyWater.toString() == "0.0")" - " else "%.1f".format(shape.bodyWater)
-            binding.numberMuscle.text = if (shape.muscle.toString() == null || shape.muscle.toString() == "null" || shape.muscle.toString() == "0.0")" - " else "%.1f".format(shape.muscle)
-            binding.numberTdeet.text = if (shape.tdee.toString().split(".")[0]==null || shape.tdee.toString().split(".")[0]=="null" || shape.tdee.toString().split(".")[0]=="0") " - " else shape.tdee.toString().split(".")[0]
-            binding.numberWeight.text = if (shape.weight.toString() == null || shape.weight.toString() == "null" || shape.weight.toString() == "0.0") " - " else "%.1f".format(shape.weight)
 
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+            binding.numberBodyAge.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.bodyAge)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one)
+                        .format(shape.bodyAge).split(".")[0]
+                }
+            binding.numberBodyFat.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.bodyFat)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one)
+                        .format(shape.bodyFat)
+                }
+            binding.numberBodyWater.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.bodyWater)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one).
+                        format(shape.bodyWater)
+                }
+            binding.numberMuscle.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.muscle)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one)
+                        .format(shape.muscle)
+                }
+            binding.numberTdee.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.tdee)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one)
+                        .format(shape.tdee).split(".")[0]
+                }
+            binding.numberWeight.text =
+                when (App.applicationContext().getString(R.string.float_round_one)
+                    .format(shape.weight)){
+                    "null" -> "-"
+                    "0.0" -> "-"
+                    else -> App.applicationContext().getString(R.string.float_round_one)
+                        .format(shape.weight)
+                }
+
             binding.executePendingBindings()
         }
 
@@ -84,7 +129,6 @@ class ShapeAdapter(val viewModel: AchievementViewModel
 
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
 
         product.let {
@@ -104,3 +148,4 @@ class ShapeAdapter(val viewModel: AchievementViewModel
         holder.markDetach()
     }
 }
+

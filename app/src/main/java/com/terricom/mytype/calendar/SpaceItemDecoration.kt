@@ -3,6 +3,8 @@ package com.terricom.mytype.calendar
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 
 class SpaceItemDecoration(
     private var spacing: Int,
@@ -14,7 +16,8 @@ class SpaceItemDecoration(
         if (isBound) {
             outRect.set(spacing, spacing, spacing, spacing)
         } else {
-            outRect.set(spacing, 0, spacing, 0)
+            outRect.set(spacing, App.applicationContext().resources.getDimension(R.dimen.standard_0).toInt()
+                , spacing, App.applicationContext().resources.getDimension(R.dimen.standard_0).toInt())
 
         }
     }
