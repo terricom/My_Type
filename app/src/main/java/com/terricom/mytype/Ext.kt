@@ -28,7 +28,7 @@ fun String?.toFloatFormat(): Float {
 
 fun Float?.toDemicalPoint(point: Int):String {
 
-    return "%.${point}f".format(this)
+    return "%.${point}f".format(this ?: 0f)
 }
 
 const val FORMAT_MM_DD: Int = 0x01

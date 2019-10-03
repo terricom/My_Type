@@ -1,4 +1,4 @@
-package com.terricom.mytype.achivement
+package com.terricom.mytype.achievement
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import kotlinx.android.synthetic.main.fragment_achivement.*
+import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 
-class AchivementFragment: Fragment() {
+class AchievementFragment: Fragment() {
 
     val viewModel: AchievementViewModel by lazy {
         ViewModelProviders.of(this).get(AchievementViewModel::class.java)
@@ -22,7 +22,7 @@ class AchivementFragment: Fragment() {
     private val currentCalendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = com.terricom.mytype.databinding.FragmentAchivementBinding.inflate(inflater)
+        val binding = com.terricom.mytype.databinding.FragmentAchievementBinding.inflate(inflater)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

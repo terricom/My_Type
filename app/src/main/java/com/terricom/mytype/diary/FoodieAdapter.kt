@@ -45,10 +45,10 @@ class FoodieAdapter(
             val newList = mutableListOf<DataItem>()
             if (list != null) {
                 newList.add(DataItem.Header( viewModel))
-                if (viewModel.fireShape.value != null){
+                if (viewModel.dataShapeFromFirebase.value != null){
                     newList.add(DataItem.ShapeItem(viewModel))
                 }
-                if (viewModel.fireSleep.value != null){
+                if (viewModel.dataSleepFromFirebase.value != null){
                     newList.add(DataItem.SleepItem(viewModel))
                 }
                 if (list.isEmpty()){
@@ -192,7 +192,7 @@ class FoodieAdapter(
         fun bind( viewModel: DiaryViewModel){
 
             binding.lifecycleOwner = this
-            viewModel.fireShape.value?.let {
+            viewModel.dataShapeFromFirebase.value?.let {
 
                 if ((it.weight ?: 0.0f).equals(0.0f) || it.weight == null){
                     binding.numberWeight.text = "-"
@@ -268,7 +268,7 @@ class FoodieAdapter(
 
             binding.lifecycleOwner = this
 
-            viewModel.fireSleep.value?.let {
+            viewModel.dataSleepFromFirebase.value?.let {
                 it.goToBed?.let {
                     binding.tvBedTime.text = viewModel.getTime(it)
                 }
@@ -372,7 +372,7 @@ class FoodieAdapter(
                 val shape = getItem(position) as DataItem.ShapeItem
                 holder.itemView.setOnClickListener {
                     findNavController(holder.itemView).navigate(NavigationDirections
-                        .navigateToShapeRecordFragment(viewModel.fireShape.value!!))
+                        .navigateToShapeRecordFragment(viewModel.dataShapeFromFirebase.value!!))
                 }
                 holder.bind( shape.viewModel)
             }
@@ -380,7 +380,7 @@ class FoodieAdapter(
                 val sleep = getItem(position) as DataItem.SleepItem
                 holder.itemView.setOnClickListener {
                     findNavController(holder.itemView).navigate(NavigationDirections
-                        .navigateToSleepFragment(viewModel.fireSleep.value!!))
+                        .navigateToSleepFragment(viewModel.dataSleepFromFirebase.value!!))
                 }
                 holder.bind( sleep.viewModel)
             }

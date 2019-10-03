@@ -2,21 +2,13 @@ package com.terricom.mytype
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -25,16 +17,11 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.UserManager.name
 import com.terricom.mytype.data.UserManager.uid
 import com.terricom.mytype.databinding.ActivityMainBinding
-import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -46,30 +33,6 @@ class MainActivity : BaseActivity(){
 
     private lateinit var binding: ActivityMainBinding
     var isFABOpen: Boolean = false
-    val time = Calendar.getInstance().time
-    private var textTitle: String ?= ""
-    private var textContent: String ?= ""
-    val CHANNEL_ID = "MyType"
-
-    val _fireFoodie = MutableLiveData<List<Foodie>>()
-    val fireFoodie: LiveData<List<Foodie>>
-        get() = _fireFoodie
-
-    fun fireFoodieBack (foo: List<Foodie>){
-        _fireFoodie.value = foo
-    }
-
-    val totalWater = MutableLiveData<Float>()
-
-    val totalOil = MutableLiveData<Float>()
-
-    val totalVegetable = MutableLiveData<Float>()
-
-    val totalProtein = MutableLiveData<Float>()
-
-    val totalFruit = MutableLiveData<Float>()
-
-    val totalCarbon = MutableLiveData<Float>()
 
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
@@ -194,7 +157,7 @@ class MainActivity : BaseActivity(){
             PendingIntent.getBroadcast(App.applicationContext(), 0, intent, 0)
         }
 
-        // Set the alarm to start at 8:30 a.m.
+        // Set the alarm to start at 12:30 p.m.
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 12)
@@ -230,21 +193,9 @@ class MainActivity : BaseActivity(){
         }
         viewModel.currentFragmentType.observe(this, Observer {
             Log.i("Terri", "viewModel.currentFragmentType.observe = ${it.value}")
-//            binding.textToolbarTitle.text = it.value
             if (it.value == ""){
                 hideBottomNavView()
-                hideToolbar()
                 hideFABView()
-//                Handler().postDelayed({
-//                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
-//                    binding.fabShadow.visibility = View.GONE
-//                    fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
-//                    fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
-//                    fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
-//                    fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
-//                    binding.fab.visibility = View.VISIBLE
-//                    binding.bottomNavView.visibility = View.VISIBLE
-//                },2000)
             }
             if (it.value == App.instance?.getString(R.string.title_foodie) ||
                 it.value == App.instance?.getString(R.string.title_shape_record) ||
@@ -257,10 +208,6 @@ class MainActivity : BaseActivity(){
         })
     }
 
-    fun hideToolbar(){
-//        binding.toolbar.visibility = View.GONE
-    }
-
     fun hideBottomNavView(){
         binding.bottomNavView.visibility = View.GONE
     }
@@ -269,18 +216,34 @@ class MainActivity : BaseActivity(){
         binding.fab.visibility = View.GONE
         binding.fabLayout1.visibility = View.GONE
         binding.fabLayout2.visibility = View.GONE
-        binding.fabLayout3.visibility - View.GONE
-        binding.fabLayout4.visibility - View.GONE
+        binding.fabLayout3.visibility = View.GONE
+        binding.fabLayout4.visibility = View.GONE
 
-        binding.fab1.visibility = View.GONE
-        binding.fab2.visibility = View.GONE
-        binding.fab3.visibility = View.GONE
-        binding.fab4.visibility = View.GONE
+        binding.fab1.visibility = View.INVISIBLE
+        binding.fab2.visibility = View.INVISIBLE
+        binding.fab3.visibility = View.INVISIBLE
+        binding.fab4.visibility = View.INVISIBLE
 
     }
 
 
     fun showFABMenu() {
+        when (fabLayout1.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
+            else -> fabLayout1.visibility = View.VISIBLE
+        }
+        when (fabLayout2.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout2.visibility = View.INVISIBLE
+            else -> fabLayout2.visibility = View.VISIBLE
+        }
+        when (fabLayout3.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout3.visibility = View.INVISIBLE
+            else -> fabLayout3.visibility = View.VISIBLE
+        }
+        when (fabLayout4.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
+            else -> fabLayout4.visibility = View.VISIBLE
+        }
         isFABOpen = true
         fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
         fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
@@ -290,17 +253,32 @@ class MainActivity : BaseActivity(){
         fab_custom_pic.animate().rotation(45.0f)
         binding.fabShadow.visibility = View.VISIBLE
         binding.fab.visibility = View.VISIBLE
-        binding.fab1.visibility = View.VISIBLE
-        binding.fab2.visibility = View.VISIBLE
-        binding.fab3.visibility = View.VISIBLE
-        binding.fab4.visibility = View.VISIBLE
-        binding.fabLayout1.visibility = View.VISIBLE
-        binding.fabLayout2.visibility = View.VISIBLE
-        binding.fabLayout3.visibility = View.VISIBLE
-        binding.fabLayout4.visibility = View.VISIBLE
     }
 
     fun closeFABMenu() {
+
+        fab1.visibility = View.VISIBLE
+        fab2.visibility = View.VISIBLE
+        fab3.visibility = View.VISIBLE
+        fab4.visibility = View.VISIBLE
+
+        when (fabLayout1.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
+            else -> fabLayout1.visibility = View.VISIBLE
+        }
+        when (fabLayout2.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout2.visibility = View.INVISIBLE
+            else -> fabLayout2.visibility = View.VISIBLE
+        }
+        when (fabLayout3.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout3.visibility = View.INVISIBLE
+            else -> fabLayout3.visibility = View.VISIBLE
+        }
+        when (fabLayout4.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
+            else -> fabLayout4.visibility = View.VISIBLE
+        }
+
         isFABOpen = false
         binding.fabShadow.visibility = View.GONE
         fab.animate().rotation(90.0f)
@@ -310,168 +288,9 @@ class MainActivity : BaseActivity(){
         fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
         fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
 
-
-        Handler().postDelayed({
-            binding.fabLayout1.visibility = View.INVISIBLE
-            binding.fabLayout2.visibility = View.INVISIBLE
-            binding.fabLayout3.visibility = View.INVISIBLE
-            binding.fabLayout4.visibility = View.INVISIBLE}, 300)
     }
 
-    private fun createNotificationChannel() {
 
-
-        val intent: Intent? = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        var notificationId = 0
-
-
-        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.icon_my_type)
-            .setContentTitle(textTitle)
-            .setContentText(textContent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            // Set the intent that will fire when the user taps the notification
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(textContent))
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .setColor(App.applicationContext().resources.getColor(R.color.colorMyType))
-
-
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "notify"
-            val descriptionText = "countdown"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.createNotificationChannel(channel)
-        }
-        with(NotificationManagerCompat.from(this)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(notificationId, builder.build())
-        }
-    }
-
-    private fun setMessage(){
-        val db = FirebaseFirestore.getInstance()
-        val users = db.collection("Users")
-        val userUid = UserManager.uid
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
-
-
-        if (userUid!!.isNotEmpty()){
-            val foodieDiary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(Date())} 00:00:00.000000000"))
-
-            val goal = users
-                .document(userUid).collection("Goal")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-
-            val goalWater = MutableLiveData<Float>()
-            val goalOil = MutableLiveData<Float>()
-            val goalVegetable = MutableLiveData<Float>()
-            val goalFruit = MutableLiveData<Float>()
-            val goalProtein = MutableLiveData<Float>()
-            val goalCarbon = MutableLiveData<Float>()
-
-            goal
-                .get()
-                .addOnSuccessListener {
-                    if (it.size() != 0){
-                        val latestGoal = it.documents[0].toObject(Goal::class.java)
-                        latestGoal?.let {
-                            goalWater.value = it.water
-                            goalVegetable.value = it.vegetable
-                            goalFruit.value = it.fruit
-                            goalCarbon.value = it.carbon
-                            goalOil.value = it.oil
-                            goalProtein.value = it.protein
-                        }
-                    }else{
-                        goalWater.value = 0.0f
-                        goalOil.value = 0.0f
-                        goalVegetable.value = 0.0f
-                        goalProtein.value = 0.0f
-                        goalFruit.value = 0.0f
-                        goalCarbon.value = 0.0f
-                    }
-                }
-
-
-            foodieDiary
-                .get()
-                .addOnSuccessListener {
-                    if (it.size() == 0){
-                        textTitle = "Hi 今天吃得好嗎？"
-                        textContent = "快來新增食記 記下營養滿滿的一天吧！"
-                    }else {
-                        val items = mutableListOf<Foodie>()
-                        for (fooDiary in it){
-                            items.add(fooDiary.toObject(Foodie::class.java))
-                        }
-                        fireFoodieBack(items)
-                        Logger.i("FireFoodie.value = ${fireFoodie.value}")
-                        totalWater.value = 0f
-                        totalOil.value = 0f
-                        totalVegetable.value = 0f
-                        totalProtein.value = 0f
-                        totalFruit.value = 0f
-                        totalCarbon.value = 0f
-                        for (today in fireFoodie.value!!){
-                            totalWater.value = totalWater.value!!.plus(today.water ?: 0f)
-                            totalOil.value = totalOil.value!!.plus(today.oil ?: 0f)
-                            totalVegetable.value = totalVegetable.value!!.plus(today.vegetable ?: 0f)
-                            totalProtein.value = totalProtein.value!!.plus(today.protein ?: 0f)
-                            totalFruit.value = totalFruit.value!!.plus(today.fruit ?: 0f)
-                            totalCarbon.value = totalCarbon.value!!.plus(today.carbon ?: 0f)
-                        }
-
-                        Handler().postDelayed({
-                            Logger.i("goalWater =${goalWater.value} totalWater = ${totalWater.value}")
-
-                            val diffWater = goalWater.value?.minus(totalWater.value!!.toFloat())
-                            val diffOil = goalOil.value?.minus(totalOil.value!!.toFloat())
-                            val diffVegetable =
-                                goalVegetable.value?.minus(totalVegetable.value!!.toFloat())
-                            val diffProtein =
-                                goalProtein.value?.minus(totalProtein.value!!.toFloat())
-                            val diffFruit = goalFruit.value?.minus(totalFruit.value!!.toFloat())
-                            val diffCarbon = goalCarbon.value?.minus(totalCarbon.value!!.toFloat())
-
-                            textTitle = "好的開始是成功的一半 距離今日目標"
-                            textContent =
-                                "\uD83D\uDCA7飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
-                                        "\uD83E\uDD51油脂還差 ${if (diffOil!! <= 0.0f) 0.0f else diffOil} 份\n " +
-                                        "\uD83E\uDD66蔬菜還差 ${if (diffVegetable!! <= 0.0f) 0.0f else diffVegetable} 份  " +
-                                        "\uD83C\uDF73蛋白質還差 ${if (diffProtein!! <= 0.0f) 0.0f else diffProtein} 份\n" +
-                                        "\uD83C\uDF4E水果還差 ${if (diffFruit!! <= 0.0f) 0.0f else diffFruit} 份  " +
-                                        "\uD83E\uDD54碳水還差 ${if (diffCarbon!! <= 0.0f) 0.0f else diffCarbon} 份"
-
-                        },2000)
-
-                    }
-                }
-
-
-        }
-
-
-    }
 
 
 }

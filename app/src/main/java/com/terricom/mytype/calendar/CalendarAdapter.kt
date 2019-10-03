@@ -1,13 +1,13 @@
 package com.terricom.mytype.calendar
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
 import com.terricom.mytype.diary.DiaryViewModel
-import java.text.SimpleDateFormat
+import com.terricom.mytype.toDateFormat
 import java.util.*
 
 class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
@@ -18,8 +18,6 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
     var selectedDate: Date ?= null
     var listener: ListenerCellSelect? = null
     lateinit var recordedDates: List<String>
-    @SuppressLint("SimpleDateFormat")
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
 
     override fun onCreateViewHolder(parent: ViewGroup, size: Int): CalendarViewHolder {
         context = parent.context
@@ -32,7 +30,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: CalendarViewHolder, position: Int) {
 
-        if (recordedDates.contains(sdf.format(listDates[position]))){
+        if (recordedDates.contains(listDates[position].toDateFormat(FORMAT_YYYY_MM_DD))){
             viewHolder.recorded = true
         }
         viewHolder.myBindView(

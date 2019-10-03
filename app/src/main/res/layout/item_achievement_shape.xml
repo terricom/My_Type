@@ -3,7 +3,7 @@
     <data>
         <import type="android.view.View"/>
         <variable name="shape" type="com.terricom.mytype.data.Shape"/>
-        <variable name="viewModel" type="com.terricom.mytype.achivement.AchievementViewModel"/>
+        <variable name="viewModel" type="com.terricom.mytype.achievement.AchievementViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

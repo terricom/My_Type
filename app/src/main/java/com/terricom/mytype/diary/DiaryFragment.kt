@@ -1,6 +1,5 @@
 package com.terricom.mytype.diary
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -13,16 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.terricom.mytype.App
-import com.terricom.mytype.MessageDialog
-import com.terricom.mytype.NavigationDirections
-import com.terricom.mytype.R
+import com.terricom.mytype.*
 import com.terricom.mytype.calendar.CalendarComponentLayout
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
 import com.terricom.mytype.tools.Logger
-import java.text.SimpleDateFormat
 
 
 class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAndFragment
@@ -33,7 +28,6 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
     }
     private lateinit var binding :FragmentDiaryBinding
 
-    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = FragmentDiaryBinding.inflate(inflater)
@@ -41,77 +35,96 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.recyclerView.adapter = FoodieAdapter(viewModel, FoodieAdapter.OnClickListener{foodie ->
-                findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
+        binding.recyclerView.adapter = FoodieAdapter(
+            viewModel, FoodieAdapter.OnClickListener{foodie ->
+
+            findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
         viewModel.isGetPuzzle.observe(this, Observer {
 
-            if (it == false && UserManager.getPuzzleNewUser == "2"){
+            Logger.i("viewModel.isGetPuzzle.observe = $it")
+            when (it){
 
-                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
-                    MessageDialog.MessageType.GET_PUZZLE.apply {
-                    value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
-                }))
-            }else if (it == true && UserManager.getPuzzleOldUser == "1"){
+                false ->
+                    if (UserManager.getPuzzleNewUser == "1"){ //首次加入才會跳通知（新用戶）
+                        this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
+                            MessageDialog.MessageType.GET_PUZZLE.apply {
+                                value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
+                            })
+                        )
+                        UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
+                    }
 
-                this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
-                    value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
-                }))
-                UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
+                true -> {
+                    if (UserManager.getPuzzleOldUser == "2"){ //當天的首篇食記才會跳通知（老用戶）
+                        this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
+                            MessageDialog.MessageType.GET_PUZZLE.apply {
+                                value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
+                            }))
+                        UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
+                    }
+
+                }
             }
         })
 
         viewModel.isCallDeleteAction.observe(this, Observer {
             if (it == true){
-                viewModel.getDiary()
+                viewModel.getAndSetFoodieShapeSleepToday()
             }
         })
 
-        viewModel.fireFoodie.observe(this, Observer {
-            if (it != null){
+        viewModel.dataFoodieFromFirebase.observe(this, Observer {
+
+            it?.let {
                 (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(it)
                 (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
             }
         })
 
-        viewModel.date.observe(this, Observer {
-            val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
+        viewModel.date.observe(this, Observer { it ->
+
             if (it != null){
-                viewModel.getDiary()
-                viewModel.getThisMonth()
-                binding.diaryDate.text = sdf.format(it)
+                viewModel.clearDataShapeFromFirebase()
+                viewModel.clearDataSleepFromFirebase()
+                viewModel.getAndSetFoodieShapeSleepToday()
+                binding.diaryDate.text = it.toDateFormat(FORMAT_YYYY_MM_DD)
 
                 binding.diaryCalendar.setEventHandler(this)
-                binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+                binding.diaryCalendar.setCurrentDate(binding.diaryCalendar.selectedDayOut)
                 binding.diaryCalendar.getThisMonth()
                 binding.diaryCalendar.recordedDate.observe(this, Observer {
-                    if (!it.isNullOrEmpty()){
-                        binding.diaryCalendar.updateCalendar()
+
+                    it?.let {
+                        if (it != listOf("")){
+                            binding.diaryCalendar.updateCalendar()
+                        }
                     }
                 })
 
+                viewModel.dataSleepFromFirebase.observe(this, Observer {
 
-                viewModel.fireSleep.observe(this, Observer {
-                    Logger.i("viewModel.fireSleep.observe = $it")
-                    if (it != null){
-
-                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.fireFoodie.value)
+                    it?.let {
+                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.dataFoodieFromFirebase.value)
                         (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
                     }
 
                 })
-                viewModel.fireShape.observe(this, Observer {
-                    Logger.i("viewModel.dataShapeFromFirebase.observe =$it")
-                    if (it != null){
-                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.fireFoodie.value)
+                viewModel.dataShapeFromFirebase.observe(this, Observer {
+
+                    it?.let {
+                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.dataFoodieFromFirebase.value)
                         (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
                     }
 
                 })
-                viewModel.fireFoodie.observe(this, Observer {
-                    (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(it)
-                    (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                viewModel.dataFoodieFromFirebase.observe(this, Observer {
+
+                    it?.let {
+                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(it)
+                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
+                    }
                 })
             }
         })
@@ -125,25 +138,24 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
         viewModel.isCalendarClicked.observe(this, Observer {
 
-            if (it == true){
+            when (it){
 
-                binding.diaryDate.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(0f).start()
-                    binding.diaryCalendar.animate().translationY(-resources.getDimension(R.dimen.standard_305)).start()
-                    binding.diaryCalendar.visibility = View.GONE
-                    viewModel.setCurrentDate(binding.diaryCalendar.selectedDayOut)
-                    viewModel.calendarClickedAgain()
-                }
-
-            }else if (it == false){
-
-                binding.diaryDate.setOnClickListener {
-                    binding.buttonExpandArrow.animate().rotation(180f).start()
-                    binding.diaryCalendar.animate().translationY(resources.getDimension(R.dimen.standard_0)).start()
-                    binding.diaryCalendar.visibility = View.VISIBLE
-                    binding.diaryCalendar.getThisMonth()
-                    viewModel.calendarClicked()
-                }
+                true ->
+                    binding.diaryDate.setOnClickListener {
+                        binding.buttonExpandArrow.animate().rotation(0f).start()
+                        binding.diaryCalendar.animate().translationY(-resources.getDimension(R.dimen.standard_305)).start()
+                        binding.diaryCalendar.visibility = View.GONE
+                        viewModel.setCurrentDate(binding.diaryCalendar.selectedDayOut)
+                        viewModel.calendarClickedAgain()
+                    }
+                false ->
+                    binding.diaryDate.setOnClickListener {
+                        binding.buttonExpandArrow.animate().rotation(180f).start()
+                        binding.diaryCalendar.animate().translationY(resources.getDimension(R.dimen.standard_0)).start()
+                        binding.diaryCalendar.visibility = View.VISIBLE
+                        binding.diaryCalendar.getThisMonth()
+                        viewModel.calendarClicked()
+                    }
             }
         })
 
@@ -164,7 +176,6 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
         if (isConnected()) {
             Logger.i("NetworkConnection Network Connected.")
-            //執行下載任務
         }else{
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
             //告訴使用者網路無法使用
@@ -178,8 +189,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
     override fun onCalendarNextPressed() {
 
-
-        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+        binding.diaryCalendar.setCurrentDate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
             binding.diaryCalendar.updateCalendar()
@@ -188,7 +198,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
     override fun onCalendarPreviousPressed() {
 
-        binding.diaryCalendar.filterdate(binding.diaryCalendar.selectedDayOut)
+        binding.diaryCalendar.setCurrentDate(binding.diaryCalendar.selectedDayOut)
         binding.diaryCalendar.getThisMonth()
         binding.diaryCalendar.recordedDate.observe(this, Observer {
             binding.diaryCalendar.updateCalendar()

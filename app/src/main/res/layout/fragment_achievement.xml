@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.terricom.mytype.achivement.AchievementViewModel" />
+            type="com.terricom.mytype.achievement.AchievementViewModel" />
         <import type="android.graphics.Color"/>
     </data>
 
@@ -145,7 +145,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffWeight)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffWeightNum >= 0 ?Color.parseColor("#"+"DC4C32") : Color.parseColor("#"+"E4B6C7")}'
+                android:textColor='@{viewModel.diffWeightNumber >= 0 ?Color.parseColor("#"+"DC4C32") : Color.parseColor("#"+"E4B6C7")}'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 android:visibility="invisible"
@@ -200,7 +200,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffMuscle)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffMuscleNum >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"3B5998") }'
+                android:textColor='@{viewModel.diffMuscleNumber >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"3B5998") }'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 android:visibility="invisible"
@@ -218,7 +218,7 @@
                 android:paddingVertical="@dimen/elevation_all"
                 android:text="@{String.valueOf(viewModel.diffBodyFat)}"
                 android:textAlignment="textEnd"
-                android:textColor='@{viewModel.diffBodyFatNum >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"D5D5D5")  }'
+                android:textColor='@{viewModel.diffBodyFatNumber >= 0 ?Color.parseColor("#"+"DC4C32") :Color.parseColor("#"+"D5D5D5")  }'
                 android:textColorHint="@color/colorWhite"
                 android:textSize="12sp"
                 android:visibility="invisible"
@@ -522,7 +522,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_show"
-                tools:listitem="@layout/item_achivement_shape" />
+                tools:listitem="@layout/item_achievement_shape" />
 
         <ImageView
                 android:id="@+id/icon_weight"

@@ -1,4 +1,4 @@
-package com.terricom.mytype.achivement
+package com.terricom.mytype.achievement
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
@@ -32,9 +32,9 @@ class AchievementViewModel: ViewModel() {
     val diffBodyFat = MutableLiveData<String>()
     val diffMuscle = MutableLiveData<String>()
 
-    val diffWeightNum = MutableLiveData<Float>()
-    val diffBodyFatNum = MutableLiveData<Float>()
-    val diffMuscleNum = MutableLiveData<Float>()
+    val diffWeightNumber = MutableLiveData<Float>()
+    val diffBodyFatNumber = MutableLiveData<Float>()
+    val diffMuscleNumber = MutableLiveData<Float>()
 
     private val _dateFormatMonth = MutableLiveData<String>()
     val dateFormatMonth: LiveData<String>
@@ -44,7 +44,7 @@ class AchievementViewModel: ViewModel() {
     val dataShapeFromFirebase : LiveData<List<Shape>>
         get() = _dataShapeFromFirebase
 
-    private fun fireShapeBack (shape: List<Shape>){
+    private fun setDataShapeFromFirebase (shape: List<Shape>){
         _dataShapeFromFirebase.value = shape
     }
 
@@ -101,7 +101,8 @@ class AchievementViewModel: ViewModel() {
                                 App.applicationContext().getString(R.string.year_month_date,
                                     "${currentCalendar.get(Calendar.YEAR)}",
                                     "${currentCalendar.get(Calendar.MONTH) + 1}",
-                                    "${getThisMonthLastDate()}")
+                                    "${getThisMonthLastDate()}"
+                                )
                             )
                         )
                     )
@@ -183,7 +184,7 @@ class AchievementViewModel: ViewModel() {
                                     .minus(goalWeight.value.toFloatFormat()).toDemicalPoint(1)
 
 
-                            diffWeightNum.value =
+                            diffWeightNumber.value =
                                 weightList[weightList.lastIndex]
                                     .minus(goalWeight.value.toFloatFormat())
                         }
@@ -195,7 +196,7 @@ class AchievementViewModel: ViewModel() {
                                     .minus(goalBodyFat.value.toFloatFormat()).toDemicalPoint(1)
 
 
-                            diffBodyFatNum.value =
+                            diffBodyFatNumber.value =
                                 bodyFatList[bodyFatList.lastIndex]
                                     .minus(goalBodyFat.value.toFloatFormat())
 
@@ -207,7 +208,7 @@ class AchievementViewModel: ViewModel() {
                                     .minus(goalMuscle.value.toFloatFormat()).toDemicalPoint(1)
 
 
-                            diffMuscleNum.value =
+                            diffMuscleNumber.value =
                                 muscleList[muscleList.lastIndex]
                                 .minus(goalMuscle.value.toFloatFormat())
                         }
@@ -227,7 +228,7 @@ class AchievementViewModel: ViewModel() {
 
                         if (shapeListTemp.size != 0){
 
-                            fireShapeBack(shapeListTemp)
+                            setDataShapeFromFirebase(shapeListTemp)
                         }
 
                         // 更新完 ChartEntities 後清除 LiveData 資料
