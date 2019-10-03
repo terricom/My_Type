@@ -1,11 +1,5 @@
 package com.terricom.mytype.foodie
 
-import android.content.ClipData
-import android.content.ClipDescription
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.view.*
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -126,7 +120,7 @@ class NutritionAdapter(val viewModel: FoodieViewModel
                     if (event.action === KeyEvent.ACTION_DOWN) {
                         when (keyCode) {
                             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                                viewModel.dragToListNu(binding.nutrition.text.toString())
+                                viewModel.addToNutritionList(binding.nutrition.text.toString())
                                 binding.nutrition.setText("")
                                 v.nextFocusDownId = R.id.nutrition
                                 return true
@@ -197,11 +191,11 @@ companion object DiffCallback : DiffUtil.ItemCallback<DataItemNu>() {
 
                 if (addOrRemove) {
                     holder.itemView.setOnClickListener {
-                        viewModel.dragToListNu(nutrition.id)
+                        viewModel.addToNutritionList(nutrition.id)
                     }
                 } else if (!addOrRemove) {
                     holder.itemView.setOnClickListener {
-                        viewModel.dragOutListNu(nutrition.id)
+                        viewModel.dropOutNutritionList(nutrition.id)
                     }
                 }
                 holder.bind(nutrition.id, viewModel)

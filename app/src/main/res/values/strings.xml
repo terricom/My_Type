@@ -114,9 +114,9 @@
     <string name="query_title_average">平均成就</string>
     <string name="login_success">登入成功\n歡迎回來</string>
 
-    <string name="timestamp">timestamp</string>
     <string name="timestamp_dayend">%s 23:59:59.999999999</string>
     <string name="timestamp_daybegin">%s 00:00:00.000000000</string>
+    <string name="year_month_date">%s-%s-%s</string>
 
     <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
     <string name="simpledateformat_MM_dd">MM-dd</string>
@@ -148,11 +148,7 @@
     <string name="user_manager_times">times</string>
     <string name="user_manager_puzzle">puzzle</string>
 
-    <string name="puzzle_position">position</string>
-    <string name="puzzle_timestamp">timestamp</string>
-    <string name="puzzle_recordedDates">recordedDates</string>
-    <string name="puzzle_imgURL">imgURL</string>
+    <string name="firebase_docid">docId</string>
 
-    <string name="foodie_foods">foods</string>
-    <string name="foodie_nutritions">nutritions</string>
+
 </resources>

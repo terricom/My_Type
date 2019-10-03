@@ -47,18 +47,18 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
         viewModel.isGetPuzzle.observe(this, Observer {
 
-            if (it == false && UserManager.createDiary == "2"){
+            if (it == false && UserManager.getPuzzleNewUser == "2"){
 
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
                 }))
-            }else if (it == true && UserManager.getPuzzleOld == "1"){
+            }else if (it == true && UserManager.getPuzzleOldUser == "1"){
 
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.GET_PUZZLE.apply {
                     value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                 }))
-                UserManager.getPuzzleOld = UserManager.getPuzzleOld.toString().toInt().plus(1).toString()
+                UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
             }
         })
 
@@ -102,7 +102,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
 
                 })
                 viewModel.fireShape.observe(this, Observer {
-                    Logger.i("viewModel.fireShape.observe =$it")
+                    Logger.i("viewModel.dataShapeFromFirebase.observe =$it")
                     if (it != null){
                         (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.fireFoodie.value)
                         (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()

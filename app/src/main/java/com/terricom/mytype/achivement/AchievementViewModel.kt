@@ -6,22 +6,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.App
-import com.terricom.mytype.R
+import com.terricom.mytype.*
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.linechart.ChartEntity
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class AchievementViewModel: ViewModel() {
 
     val userUid = UserManager.uid
-    @SuppressLint("SimpleDateFormat")
-    val sdfM = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_MM_dd))
 
     private val currentCalendar = Calendar.getInstance()
 
@@ -37,50 +36,44 @@ class AchievementViewModel: ViewModel() {
     val diffBodyFatNum = MutableLiveData<Float>()
     val diffMuscleNum = MutableLiveData<Float>()
 
-    private val _dateM = MutableLiveData<String>()
-    val dateM: LiveData<String>
-        get() = _dateM
+    private val _dateFormatMonth = MutableLiveData<String>()
+    val dateFormatMonth: LiveData<String>
+        get() = _dateFormatMonth
 
-    private val _fireShape = MutableLiveData<List<Shape>>()
-    val fireShape : LiveData<List<Shape>>
-        get() = _fireShape
+    private val _dataShapeFromFirebase = MutableLiveData<List<Shape>>()
+    val dataShapeFromFirebase : LiveData<List<Shape>>
+        get() = _dataShapeFromFirebase
 
     private fun fireShapeBack (shape: List<Shape>){
-        _fireShape.value = shape
+        _dataShapeFromFirebase.value = shape
     }
 
-    private val _recordDate = MutableLiveData<Date>()
-    val recordDate: LiveData<Date>
-        get() = _recordDate
+    private val _currentDate = MutableLiveData<Date>()
+    val currentDate: LiveData<Date>
+        get() = _currentDate
 
-    @SuppressLint("SimpleDateFormat")
     fun setCurrentDate(date: Date){
 
-        _dateM.value = SimpleDateFormat(App.applicationContext()
-            .getString(R.string.simpledateformat_yyyy_MM)).format(date)
-
-        _recordDate.value = date
+        _dateFormatMonth.value = date.toDateFormat(FORMAT_YYYY_MM)
+        _currentDate.value = date
     }
 
-    private val _fireDate = MutableLiveData<ArrayList<String>>()
-    val fireDate : LiveData<ArrayList<String>>
-        get() = _fireDate
+    private val _recordedDatesOfThisMonth = MutableLiveData<ArrayList<String>>()
+    val recordedDatesOfThisMonth : LiveData<ArrayList<String>>
+        get() = _recordedDatesOfThisMonth
 
-    private fun fireDateBack (foo: ArrayList<String>){
+    private fun setRecordedDatesOfThisMonth (recordedDateList: ArrayList<String>){
 
-        _fireDate.value = foo
+        _recordedDatesOfThisMonth.value = recordedDateList
     }
 
-    val db = FirebaseFirestore.getInstance()
-    val user = db.collection(collectionUsers)
+    private val _listOfChartEntities = MutableLiveData<ArrayList<ChartEntity>>()
+    val listOfChartEntities : LiveData<ArrayList<ChartEntity>>
+        get() = _listOfChartEntities
 
-    private val _listDates = MutableLiveData<ArrayList<ChartEntity>>()
-    val listDates : LiveData<ArrayList<ChartEntity>>
-        get() = _listDates
+    private fun setListDates(chartEntitiesList: ArrayList<ChartEntity>){
 
-    private fun setListDates(listDates: ArrayList<ChartEntity>){
-
-        _listDates.value = listDates
+        _listOfChartEntities.value = chartEntitiesList
     }
 
     init {
@@ -88,191 +81,179 @@ class AchievementViewModel: ViewModel() {
     }
 
     @SuppressLint("StringFormatMatches")
-    fun getThisMonth() {
+    fun getAndSetDataShapeOfThisMonth() {
 
-        if (!userUid.isNullOrEmpty()){
+        if (UserManager.isLogin()){
 
             getGoal()
 
-            val shapeDiary = user
-                .document(userUid).collection(collectionShape)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.ASCENDING)
-                .whereLessThanOrEqualTo(
+            UserManager.uid?.let { it ->
 
-                    App.applicationContext().getString(R.string.timestamp),
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                    "${currentCalendar.get(Calendar.YEAR)}" +
-                            "-${currentCalendar.get(Calendar.MONTH) + 1}" +
-                            "-${getLastMonthLastDate()}")
+                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
+                    .document(it).collection(COLLECTION_SHAPE)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.ASCENDING)
+                    .whereLessThanOrEqualTo(
+
+                        FirebaseKey.TIMESTAMP,
+                        Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_dayend,
+
+                                App.applicationContext().getString(R.string.year_month_date,
+                                    "${currentCalendar.get(Calendar.YEAR)}",
+                                    "${currentCalendar.get(Calendar.MONTH) + 1}",
+                                    "${getThisMonthLastDate()}")
+                            )
+                        )
                     )
-                )
-                .whereGreaterThanOrEqualTo(
+                    .whereGreaterThanOrEqualTo(
 
-                    App.applicationContext().getString(R.string.timestamp),
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_daybegin,
-                        "${currentCalendar.get(Calendar.YEAR)}" +
-                                "-${currentCalendar.get(Calendar.MONTH) + 1}-01")
+                        FirebaseKey.TIMESTAMP,
+                        Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_daybegin,
+                                App.applicationContext().getString(R.string.year_month_date,
+                                    "${currentCalendar.get(Calendar.YEAR)}",
+                                    "${currentCalendar.get(Calendar.MONTH) + 1}",
+                                    "01")
+                            )
+                        )
                     )
-                )
+                    .get()
+                    .addOnSuccessListener { it ->
 
-            val chartList = mutableListOf<ChartEntity>()
+                        val items = mutableListOf<Shape>()
+                        val dateList = mutableListOf<String>()
+                        val weightList = mutableListOf<Float>()
+                        val bodyFatList = mutableListOf<Float>()
+                        val muscleList = mutableListOf<Float>()
 
-            shapeDiary
-                .get()
-                .addOnSuccessListener { it ->
+                        for (document in it){
 
-                    val items = mutableListOf<Shape>()
-                    val datelist = mutableListOf<String>()
-                    val weightList = mutableListOf<Float>()
-                    val bodyFatList = mutableListOf<Float>()
-                    val muscleList = mutableListOf<Float>()
-                    val weightListD = mutableListOf<Float>()
-                    val bodyFatListD = mutableListOf<Float>()
-                    val muscleListD = mutableListOf<Float>()
-                    val shapeListD = mutableListOf<Shape>()
+                            items.add(document.toObject(Shape::class.java))
+                            items[items.lastIndex].docId = document.id
+                            dateList.add(document.toObject(Shape::class.java).timestamp.toDateFormat(
+                                FORMAT_MM_DD))
+                        }
 
-                    for (document in it){
+                        setRecordedDatesOfThisMonth(ArrayList(dateList.distinct()))
 
-                        items.add(document.toObject(Shape::class.java))
-                        items[items.size-1].docId = document.id
-                        datelist.add(sdfM.format(document.toObject(Shape::class.java).timestamp))
-                    }
+                        // 字尾帶 Temp 的工具人是用來接住依照日期篩選後的數值
+                        val weightListTemp = mutableListOf<Float>()
+                        val bodyFatListTemp = mutableListOf<Float>()
+                        val muscleListTemp = mutableListOf<Float>()
+                        val shapeListTemp = mutableListOf<Shape>()
 
-                    val cleanList = datelist.distinct()
-                    chartList.clear()
+                        for (eachDay in dateList.distinct()){
 
-                    for (eachDay in cleanList){
+                            weightListTemp.clear()
+                            bodyFatListTemp.clear()
+                            muscleListTemp.clear()
 
-                        weightListD.clear()
-                        bodyFatListD.clear()
-                        muscleListD.clear()
+                            for (i in 0 until items.size){
 
-                        for (i in 0 until items.size){
+                                if (items[i].timestamp?.toDateFormat(FORMAT_MM_DD) == eachDay){
 
-                            if (sdfM.format(items[i].timestamp?.time) == eachDay){
+                                    items[i].let {shape ->
 
-                                items[i].let {
-                                    shapeListD.add(items[i])
-                                    it.weight?.let {
-                                        weightListD.add(it)
-                                    }
-                                    it.bodyFat?.let {
-                                        bodyFatListD.add(it)
-                                    }
-                                    it.muscle?.let {
-                                        muscleListD.add(it)
+                                        shapeListTemp.add(items[i])
+
+                                        shape.weight?.let {
+                                            weightListTemp.add(it)
+                                        }
+                                        shape.bodyFat?.let {
+                                            bodyFatListTemp.add(it)
+                                        }
+                                        shape.muscle?.let {
+                                            muscleListTemp.add(it)
+                                        }
                                     }
                                 }
                             }
+
+                            // 篩選當天最新一筆紀錄加入日期清單
+                            weightList.add(weightListTemp[0])
+                            bodyFatList.add(bodyFatListTemp[0])
+                            muscleList.add(muscleListTemp[0])
+
                         }
 
-                        weightList.add(weightListD[0])
-                        bodyFatList.add(bodyFatListD[0])
-                        muscleList.add(muscleListD[0])
+                        if (weightList.size > 0) {
+
+                            diffWeight.value =
+                                weightList[weightList.lastIndex]
+                                    .minus(goalWeight.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                            diffWeightNum.value =
+                                weightList[weightList.lastIndex]
+                                    .minus(goalWeight.value.toFloatFormat())
+                        }
+
+                        if (bodyFatList.size > 0) {
+
+                            diffBodyFat.value =
+                                bodyFatList[bodyFatList.lastIndex]
+                                    .minus(goalBodyFat.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                            diffBodyFatNum.value =
+                                bodyFatList[bodyFatList.lastIndex]
+                                    .minus(goalBodyFat.value.toFloatFormat())
+
+                        }
+                        if (muscleList.size >0) {
+
+                            diffMuscle.value =
+                                muscleList[muscleList.lastIndex]
+                                    .minus(goalMuscle.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                            diffMuscleNum.value =
+                                muscleList[muscleList.lastIndex]
+                                .minus(goalMuscle.value.toFloatFormat())
+                        }
+
+
+
+                        val chartList = mutableListOf<ChartEntity>()
+
+                        chartList.add(ChartEntity(App.applicationContext()
+                            .getColor(R.color.colorPinky), weightList.toFloatArray()))
+                        chartList.add(ChartEntity(App.applicationContext()
+                            .getColor(R.color.colorButton), bodyFatList.toFloatArray()))
+                        chartList.add(ChartEntity(App.applicationContext()
+                            .getColor(R.color.blue_facebook), muscleList.toFloatArray()))
+
+                        setListDates(chartList.toCollection(ArrayList()))
+
+                        if (shapeListTemp.size != 0){
+
+                            fireShapeBack(shapeListTemp)
+                        }
+
+                        // 更新完 ChartEntities 後清除 LiveData 資料
+                        _listOfChartEntities.value = null
 
                     }
 
-                    if (weightList.size >0) {
-
-                        diffWeight.value = App.applicationContext().getString(R.string.float_round_one).format(weightList[weightList.lastIndex].minus(
-
-                            (if (goalWeight.value.isNullOrEmpty())"0"
-                            else goalWeight.value)!!.toFloat())
-                            )
-
-                        diffWeightNum.value = weightList[weightList.lastIndex].minus(
-
-                            (if (goalWeight.value.isNullOrEmpty())"0"
-                            else goalWeight.value)!!.toFloat())
-                    }
-                    if (bodyFatList.size >0) {
-
-                        diffBodyFat.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(bodyFatList[bodyFatList.lastIndex].minus(
-
-                            (if (goalBodyFat.value.isNullOrEmpty())"0"
-                            else goalBodyFat.value)!!.toFloat()))
-
-                        diffBodyFatNum.value = bodyFatList[bodyFatList.lastIndex].minus(
-
-                            (if (goalBodyFat.value.isNullOrEmpty())"0"
-                            else goalBodyFat.value)!!.toFloat())
-                    }
-                    if (muscleList.size >0) {
-
-                        diffMuscle.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(muscleList[muscleList.lastIndex].minus(
-
-                            (if (goalMuscle.value.isNullOrEmpty())"0"
-                            else goalMuscle.value)!!.toFloat()))
-
-                        diffMuscleNum.value = muscleList[muscleList.lastIndex].minus(
-
-                            (if (goalMuscle.value.isNullOrEmpty())"0"
-                            else goalMuscle.value)!!.toFloat())
-                    }
-
-                    fireDateBack(ArrayList(cleanList))
-
-                    chartList.add(ChartEntity(App.applicationContext()
-                        .getColor(R.color.colorPinky), weightList.toFloatArray()))
-                    chartList.add(ChartEntity(App.applicationContext()
-                        .getColor(R.color.colorButton), bodyFatList.toFloatArray()))
-                    chartList.add(ChartEntity(App.applicationContext()
-                        .getColor(R.color.blue_facebook), muscleList.toFloatArray()))
-
-                    setListDates(chartList.toCollection(ArrayList()))
-
-                    if (shapeListD.size != 0){
-
-                        fireShapeBack(shapeListD)
-                    }
-
-                    _listDates.value = null
-
-                }
-
+            }
         }
     }
 
     private fun getGoal() {
 
-        val db = FirebaseFirestore.getInstance()
-        val users = db.collection(collectionUsers)
+        if (UserManager.isLogin()){
 
-        if (!userUid.isNullOrEmpty()){
+            UserManager.uid?.let {it ->
 
-            val goal = users
-                .document(userUid)
-                .collection(collectionGoal)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                            "${currentCalendar.get(Calendar.YEAR)}" +
-                                    "-${currentCalendar.get(Calendar.MONTH) + 1}" +
-                                    "-${getLastMonthLastDate()}")
-                    )
-                )
-                .whereGreaterThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_daybegin,
-                            "${currentCalendar.get(Calendar.YEAR)}" +
-                                    "-${currentCalendar.get(Calendar.MONTH) + 1}-01")
-                    )
-                )
+                FirebaseFirestore.getInstance()
+                    .collection(COLLECTION_USERS)
+                    .document(it)
+                    .collection(FirebaseKey.COLLECTION_GOAL)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener {
 
-            goal
-                .get()
-                .addOnSuccessListener {
-
-                    val items = mutableListOf<Goal>()
-
-                    if (!it.isEmpty){
+                        val items = mutableListOf<Goal>()
 
                         for (document in it) {
 
@@ -280,20 +261,21 @@ class AchievementViewModel: ViewModel() {
                             items[items.size-1].docId = document.id
                         }
 
-                        goalWeight.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(items[0].weight)
-                        goalBodyFat.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(items[0].bodyFat)
-                        goalMuscle.value = App.applicationContext().getString(R.string.float_round_one)
-                            .format(items[0].muscle)
+                        if (items.size > 0){
+                            goalWeight.value = items[0].weight.toDemicalPoint(1)
+                            goalBodyFat.value = items[0].bodyFat.toDemicalPoint(1)
+                            goalMuscle.value = items[0].muscle.toDemicalPoint(1)
+                        }
+
                     }
-                }
+            }
+
         }
     }
 
-    private fun getLastMonthLastDate(): Int {
+    private fun getThisMonthLastDate(): Int {
 
-        currentCalendar.time = recordDate.value
+        currentCalendar.time = currentDate.value
         currentCalendar.add(Calendar.MONTH, 0)
         currentCalendar.set(
             Calendar.DAY_OF_MONTH, currentCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -302,14 +284,6 @@ class AchievementViewModel: ViewModel() {
         return currentCalendar.get(Calendar.DAY_OF_MONTH)
     }
 
-    companion object {
-
-        val collectionUsers: String = "Users"
-        val collectionShape: String = "Shape"
-        val collectionGoal: String = "Goal"
-        val collectionSleep: String = "Sleep"
-        val collectionFoodie: String = "Foodie"
-        val collectionPuzzle: String = "Puzzle"
-    }
-
 }
+
+

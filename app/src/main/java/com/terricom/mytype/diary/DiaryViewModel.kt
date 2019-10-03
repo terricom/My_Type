@@ -12,6 +12,17 @@ import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.*
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
+import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SLEEP
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_FOODS
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_NUTRITIONS
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
 import com.terricom.mytype.profile.CardAvatarOutlineProvider
 import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
@@ -94,7 +105,7 @@ class DiaryViewModel: ViewModel() {
     val sdf_ym = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM))
 
     val db = FirebaseFirestore.getInstance()
-    val users = db.collection(collectionUsers)
+    val users = db.collection(COLLECTION_USERS)
 
     private var storageRef : StorageReference?= null
 
@@ -121,45 +132,45 @@ class DiaryViewModel: ViewModel() {
 
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection(collectionFoodie)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_dayend,
                             "${sdf.format(date.value)}")
                     )
                 )
-                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .whereGreaterThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_daybegin,
                             "${sdf.format(date.value)}")
                     )
                 )
             val shapeDiary = users
-                .document(userUid).collection(collectionShape)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .document(userUid).collection(COLLECTION_SHAPE)
+                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_dayend,
                             "${sdf.format(date.value)}")
                     )
                 )
-                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .whereGreaterThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_daybegin,
                             "${sdf.format(date.value)}")
                     )
                 )
             val sleepDiary = users
-                .document(userUid).collection(collectionSleep)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .document(userUid).collection(COLLECTION_SLEEP)
+                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_dayend,
                             "${sdf.format(date.value)}")
                     )
                 )
-                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp),
+                .whereGreaterThanOrEqualTo(TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_daybegin,
                             "${sdf.format(date.value)}")
@@ -289,16 +300,16 @@ class DiaryViewModel: ViewModel() {
     fun getThisMonth() {
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection(collectionFoodie)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                 .whereLessThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
+                    TIMESTAMP,
                     App.applicationContext().getString(R.string.timestamp_dayend,
                         "${sdf_ym.format(date.value)}-31"
                     )
                 )
                 .whereGreaterThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
+                    TIMESTAMP,
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                         "${sdf_ym.format(date.value)}-01"
                     )
@@ -323,12 +334,12 @@ class DiaryViewModel: ViewModel() {
     fun delete(foodie: Foodie){
         if (userUid!!.isNotEmpty()){
             val foodieDiary = users
-                .document(userUid).collection(collectionFoodie)
+                .document(userUid).collection(COLLECTION_FOODIE)
                 .orderBy(
-                    App.applicationContext().getString(R.string.timestamp),
+                    TIMESTAMP,
                     Query.Direction.DESCENDING)
                 .whereLessThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
+                    TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_dayend,
                             sdf.format(date.value)
@@ -336,7 +347,7 @@ class DiaryViewModel: ViewModel() {
                     )
                 )
                 .whereGreaterThanOrEqualTo(
-                    App.applicationContext().getString(R.string.timestamp),
+                    TIMESTAMP,
                     Timestamp.valueOf(
                         App.applicationContext().getString(R.string.timestamp_daybegin,
                             sdf.format(date.value)
@@ -350,7 +361,7 @@ class DiaryViewModel: ViewModel() {
                     for (diary in it){
                         if (diary.id == foodie.docId){
 
-                            users.document(userUid).collection(collectionFoodie).document(foodie.docId!!).delete()
+                            users.document(userUid).collection(COLLECTION_FOODIE).document(foodie.docId!!).delete()
                                 .addOnSuccessListener {
                                     callDeleteAction()
                                 }
@@ -367,14 +378,14 @@ class DiaryViewModel: ViewModel() {
 
         if (!userUid.isNullOrEmpty()){
             val diary = users
-                .document(userUid).collection(collectionFoodie)
-                .orderBy(App.applicationContext().getString(R.string.timestamp),
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .orderBy(TIMESTAMP,
                     Query.Direction.DESCENDING
                 )
 
             val puzzle = users
-                .document(userUid).collection(collectionPuzzle)
-                .orderBy(App.applicationContext().getString(R.string.timestamp),
+                .document(userUid).collection(COLLECTION_PUZZLE)
+                .orderBy(TIMESTAMP,
                     Query.Direction.DESCENDING
                 )
 
@@ -390,7 +401,7 @@ class DiaryViewModel: ViewModel() {
                     }
                     if (dates.distinct().size%7 == 0){
 
-                        UserManager.createDiary = UserManager.createDiary.toString().toInt().plus(1).toString()
+                        UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
                         //全新使用者
 
                         puzzle
@@ -403,15 +414,15 @@ class DiaryViewModel: ViewModel() {
                                     puzzleAll[puzzleAll.lastIndex].docId = document.id
                                 }
 
-                                if (dates.size == 0 && UserManager.createDiary == "2" && puzzleAll.size == 0){
+                                if (dates.size == 0 && UserManager.getPuzzleNewUser == "2" && puzzleAll.size == 0){
                                     val puzzle = hashMapOf(
-                                        App.applicationContext().getString(R.string.puzzle_position) to listOf((0..14).random()),
-                                        App.applicationContext().getString(R.string.puzzle_imgURL) to PuzzleImg.values()[0].value,
-                                        App.applicationContext().getString(R.string.puzzle_recordedDates) to listOf(sdf.format(Date())),
-                                        App.applicationContext().getString(R.string.puzzle_timestamp) to FieldValue.serverTimestamp()
+                                        COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
+                                        COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
+                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(sdf.format(Date())),
+                                        TIMESTAMP to FieldValue.serverTimestamp()
 
                                     )
-                                    users.document(userUid).collection(collectionPuzzle).document().set(puzzle)
+                                    users.document(userUid).collection(COLLECTION_PUZZLE).document().set(puzzle)
                                     getPuzzleNewUser()
                                 }
                                 //老用戶
@@ -430,8 +441,8 @@ class DiaryViewModel: ViewModel() {
 
         if (!userUid.isNullOrEmpty()){
             val diary = users
-                .document(userUid).collection(collectionFoodie)
-                .whereArrayContains(App.applicationContext().getString(R.string.foodie_foods), key)
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .whereArrayContains(COLUMN_FOODIE_FOODS, key)
 
             diary
                 .get()
@@ -459,8 +470,8 @@ class DiaryViewModel: ViewModel() {
 
         if (userUid!!.isNotEmpty()){
             val diary = users
-                .document(userUid).collection(collectionFoodie)
-                .whereArrayContains(App.applicationContext().getString(R.string.foodie_nutritions), key)
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .whereArrayContains(COLUMN_FOODIE_NUTRITIONS, key)
 
             diary
                 .get()
@@ -484,16 +495,5 @@ class DiaryViewModel: ViewModel() {
 
 
     }
-
-    companion object {
-
-        const val collectionUsers: String = "Users"
-        const val collectionShape: String = "Shape"
-        const val collectionGoal: String = "Goal"
-        const val collectionSleep: String = "Sleep"
-        const val collectionFoodie: String = "Foodie"
-        const val collectionPuzzle: String = "Puzzle"
-    }
-
 
 }

@@ -13,5 +13,5 @@ data class Shape (
     val muscle: Float ?= null,
     val bodyAge: Float ?= null,
     val tdee: Float ?= null,
-    var docId: String ?= ""
+    var docId: String = ""
 ): Parcelable

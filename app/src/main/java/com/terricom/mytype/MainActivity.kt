@@ -102,8 +102,8 @@ class MainActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        UserManager.createDiary = "0"
-        UserManager.getPuzzleOld = "0"
+        UserManager.getPuzzleNewUser = "0"
+        UserManager.getPuzzleOldUser = "0"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this

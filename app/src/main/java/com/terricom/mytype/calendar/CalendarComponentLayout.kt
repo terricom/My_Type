@@ -17,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.diary.DiaryViewModel
@@ -31,12 +34,6 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     companion object {
         const val MAX_DAY_COUNT = 35
         const val NUM_DAY_OF_WEEK = 7
-        const val collectionUsers: String = "Users"
-        const val collectionShape: String = "Shape"
-        const val collectionGoal: String = "Goal"
-        const val collectionSleep: String = "Sleep"
-        const val collectionFoodie: String = "Foodie"
-        const val collectionPuzzle: String = "Puzzle"
     }
 
     public val DEFAULT_DATE_FORMAT = "yyyy-MM"
@@ -150,7 +147,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     val userUid = UserManager.uid
 
     val db = FirebaseFirestore.getInstance()
-    val users = db.collection(collectionUsers)
+    val users = db.collection(COLLECTION_USERS)
 
     private val _recordedDate = MutableLiveData<List<String>>()
     val recordedDate : LiveData<List<String>>
@@ -173,15 +170,17 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
         if (userUid!!.isNotEmpty()){
 
             val foodieDiary = users
-                .document(userUid).collection(collectionFoodie)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp), Timestamp.valueOf(
+                .document(userUid).collection(COLLECTION_FOODIE)
+                .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                .whereLessThanOrEqualTo(
+                    FirebaseKey.TIMESTAMP, Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_dayend,
                         "${currentDateCalendar.get(Calendar.YEAR)}" +
                                 "-${currentDateCalendar.get(Calendar.MONTH)+1}" +
                                 "-${getLastMonthLastDate()}")
                 ))
-                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp), Timestamp.valueOf(
+                .whereGreaterThanOrEqualTo(
+                    FirebaseKey.TIMESTAMP, Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                         "${currentDateCalendar.get(Calendar.YEAR)}" +
                                 "-${currentDateCalendar.get(Calendar.MONTH)+1}-01")

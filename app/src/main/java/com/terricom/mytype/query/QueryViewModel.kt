@@ -136,8 +136,8 @@ class QueryViewModel: ViewModel(){
                 .document(userUid)
                 .collection("Goal")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-//                .whereLessThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time) )
-//                .whereGreaterThanOrEqualTo("timestamp", Timestamp(recordDate.value!!.time.minus(604800000L)))
+//                .whereLessThanOrEqualTo("timestamp", Timestamp(currentDate.value!!.time) )
+//                .whereGreaterThanOrEqualTo("timestamp", Timestamp(currentDate.value!!.time.minus(604800000L)))
 
             goal
                 .get()

@@ -75,7 +75,8 @@ object UserManager {
             Log.i("UserManager.mail", value)
         }
 
-    var createDiary : String? = null
+    //處理新用戶獲得拼圖的情況（ 只顯示一次通知 ）
+    var getPuzzleNewUser : String? = null
         get(){
             return prefs?.getString(
                 App.applicationContext().getString(R.string.user_manager_times), "")
@@ -86,7 +87,8 @@ object UserManager {
             Log.i("UserManager.times", value!!.toString())
         }
 
-    var getPuzzleOld : String? = null
+    //處理老用戶獲得拼圖的情況（ 只顯示一次通知 ）
+    var getPuzzleOldUser: String? = null
         get(){
             return prefs?.getString(
                 App.applicationContext().getString(R.string.user_manager_puzzle), "")
@@ -96,6 +98,10 @@ object UserManager {
                 App.applicationContext().getString(R.string.user_manager_puzzle),value)?.apply().toString()
             Log.i("UserManager.puzzle", value!!.toString())
         }
+
+    fun isLogin(): Boolean{
+        return (!userToken.isNullOrEmpty())
+    }
 
 
 }

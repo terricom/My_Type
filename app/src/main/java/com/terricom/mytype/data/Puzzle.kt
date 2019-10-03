@@ -6,9 +6,9 @@ import java.util.*
 
 @Parcelize
 data class Puzzle (
-    val position: List<Int>?= null,
-    val imgURL: String?= "",
-    var docId: String ?= "",
-    val recordedDates: List<String>?= null,
-    val timestamp: Date?= null
+    val position: List<Int>? = null,
+    val imgURL: String = "",
+    var docId: String = "",
+    val recordedDates: List<String>? = null,
+    val timestamp: Date? = null
 ): Parcelable

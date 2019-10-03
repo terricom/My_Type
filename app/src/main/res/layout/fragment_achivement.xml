@@ -65,7 +65,7 @@
                     android:layout_toRightOf="@+id/toBack"
                     android:gravity="center"
                     android:letterSpacing="0.15"
-                    android:text="@{viewModel.dateM}"
+                    android:text="@{viewModel.dateFormatMonth}"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -668,7 +668,7 @@
                         android:layout_height="22dp"
                         android:fontFamily="@font/noto_sans"
                         android:paddingLeft="@dimen/elevation_all"
-                        android:text='@{viewModel.dateM.replace("-",".")+".01"}'
+                        android:text='@{viewModel.dateFormatMonth.replace("-",".")+".01"}'
                         android:textAlignment="center"
                         android:textColor="@color/colorMyType"
                         android:textSize="@dimen/text_content"

@@ -98,10 +98,10 @@ class FoodieFragment: Fragment() {
         //處理從其他 Fragment 帶 Argument 過來的情況
         binding.foodie = foodie
         if (foodie.timestamp != null){
-            viewModel.updateFoodie(foodie)
+            viewModel.getHistoryFoodie(foodie)
             binding.foodieTitle.text = "修改食記"
 
-            viewModel.setDate(foodie.timestamp)
+            viewModel.setCurrentDate(foodie.timestamp)
             viewModel.water.value = foodie.water
             viewModel.fruit.value = foodie.fruit
             viewModel.protein.value = foodie.protein
@@ -113,10 +113,10 @@ class FoodieFragment: Fragment() {
             if (foodie.foods!!.isNotEmpty()){
                 editableFoods = foodie.foods!!.toMutableList()
                 for (food in foodie.foods!!){
-                    viewModel.dragToList(food)
+                    viewModel.addToFoodList(food)
                 }
                 binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-                    viewModel.dragOutList(it)
+                    viewModel.dropOutFoodList(it)
                 })
                 if (binding.foodsTransportedRecycler.childCount != 0){
                     binding.dragFoodHint.visibility = View.GONE
@@ -139,10 +139,10 @@ class FoodieFragment: Fragment() {
             if (foodie.nutritions!!.isNotEmpty()){
                 editableNutritions = foodie.nutritions!!.toMutableList()
                 for (nutrition in foodie.nutritions!!){
-                    viewModel.dragToListNu(nutrition)
+                    viewModel.addToNutritionList(nutrition)
                 }
                 binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-                    viewModel.dragOutListNu(it)
+                    viewModel.dropOutNutritionList(it)
                 })
 
                 if (binding.nutritionsTransportedRecycler.childCount != 0){
@@ -221,7 +221,7 @@ class FoodieFragment: Fragment() {
         storageReference = FirebaseStorage.getInstance().reference
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-            viewModel.dragToList(it)
+            viewModel.addToFoodList(it)
         })
         viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
             if (it.isNullOrEmpty()){
@@ -239,7 +239,7 @@ class FoodieFragment: Fragment() {
         )
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-            viewModel.dragToListNu(it)
+            viewModel.addToNutritionList(it)
         })
         viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
             if (it.isNullOrEmpty()){
@@ -293,7 +293,7 @@ class FoodieFragment: Fragment() {
 
 
         binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-            viewModel.dragOutList(it)
+            viewModel.dropOutFoodList(it)
         })
 
         (binding.foodsTransportedRecycler.adapter as FoodAdapter).addOrRemove = false
@@ -316,7 +316,7 @@ class FoodieFragment: Fragment() {
         }
 
         binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-            viewModel.dragOutListNu(it)
+            viewModel.dropOutNutritionList(it)
         })
         (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).addOrRemove = false
         viewModel.selectedNutritionList.observe(this, Observer {
@@ -349,21 +349,21 @@ class FoodieFragment: Fragment() {
                     .plus(viewModel.protein.value ?: 0.0f).plus(viewModel.carbon.value ?: 0.0f) != 0.0f){
 
                 if (!viewModel.editFood.value.isNullOrEmpty()){
-                    viewModel.dragToList(viewModel.editFood.value!!)
+                    viewModel.addToFoodList(viewModel.editFood.value!!)
                 }
                 if (!viewModel.editNutrition.value.isNullOrEmpty()){
-                    viewModel.dragToListNu(viewModel.editNutrition.value!!)
+                    viewModel.addToNutritionList(viewModel.editNutrition.value!!)
                 }
 
                 it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
 
-                viewModel.setDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
+                viewModel.setCurrentDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
 
                 if (foodie.timestamp != null){
-                    viewModel.adjustFoodie()
+                    viewModel.adjustOldFoodie()
                 } else {
-                    viewModel.addFoodie()
+                    viewModel.addNewFoodie()
                 }
 
                 viewModel.updateFoodAndNuList()
@@ -448,9 +448,9 @@ class FoodieFragment: Fragment() {
             filePath = data.data
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             try {
-                Logger.i("before uploadFile")
+                Logger.i("before uploadPhoto")
                 uploadFile()
-                Logger.i("after uploadFile")
+                Logger.i("after uploadPhoto")
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -474,9 +474,9 @@ class FoodieFragment: Fragment() {
                 , App.applicationContext().packageName+ ".provider", pictureFile!!)
             filePath = contentUri
 
-            Logger.i("before uploadFile")
+            Logger.i("before uploadPhoto")
             uploadFile()
-            Logger.i("after uploadFile")
+            Logger.i("after uploadPhoto")
 
             bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
             val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -595,7 +595,7 @@ class FoodieFragment: Fragment() {
 
     private fun uploadFile(){
         if (filePath != null){
-            viewModel.uploadFile()
+            viewModel.uploadPhoto()
             auth = FirebaseAuth.getInstance()
             val userId = auth!!.currentUser!!.uid
             val data = compress(filePath!!)
@@ -605,10 +605,10 @@ class FoodieFragment: Fragment() {
                 .addOnCompleteListener{
                     imgRef.downloadUrl.addOnCompleteListener {
                         viewModel.setPhoto(it.result!!)
-                        Logger.i("FoodieFragment uploadFile=${it.result}")
+                        Logger.i("FoodieFragment uploadPhoto=${it.result}")
                     }
                         .addOnFailureListener {
-                            Logger.i("FoodieFragment uploadFile failed =$it")
+                            Logger.i("FoodieFragment uploadPhoto failed =$it")
 
                         }
                     Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)

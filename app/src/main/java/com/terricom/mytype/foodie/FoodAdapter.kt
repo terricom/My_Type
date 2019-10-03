@@ -17,7 +17,6 @@ import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemFoodieEditNewFoodBinding
 import com.terricom.mytype.databinding.ItemFoodieFoodBinding
 import com.terricom.mytype.tools.Logger
-import kotlinx.android.synthetic.main.item_foodie_edit_new_food.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -213,7 +212,7 @@ class FoodAdapter (val viewModel: FoodieViewModel
                     if (event.action === KeyEvent.ACTION_DOWN) {
                         when (keyCode) {
                             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                                viewModel.dragToList(binding.food.text.toString())
+                                viewModel.addToFoodList(binding.food.text.toString())
                                 binding.food.setText("")
                                 v.nextFocusDownId = R.id.food
                                 return true
@@ -286,11 +285,11 @@ class FoodAdapter (val viewModel: FoodieViewModel
                 val addFoodList = mutableListOf<String>()
         if (addOrRemove){
             holder.itemView.setOnClickListener {
-                viewModel.dragToList(string.id)
+                viewModel.addToFoodList(string.id)
             }
         } else if (!addOrRemove){
             holder.itemView.setOnClickListener {
-                viewModel.dragOutList(string.id)
+                viewModel.dropOutFoodList(string.id)
             }
         }
 
@@ -299,7 +298,7 @@ class FoodAdapter (val viewModel: FoodieViewModel
             is EditFoodViewHolder -> {
 //                if (addOrRemove){
 //                    holder.itemView.setOnClickListener {
-//                        viewModel.dragToList(string.id)
+//                        viewModel.addToFoodList(string.id)
 //                    }
 //                }
 //                holder.itemView.setOnClickListener {

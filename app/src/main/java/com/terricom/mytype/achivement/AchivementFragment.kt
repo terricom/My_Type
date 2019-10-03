@@ -40,34 +40,34 @@ class AchivementFragment: Fragment() {
 
         binding.buttonBack.setOnClickListener {
 
-            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.time = viewModel.currentDate.value
             currentCalendar.add(Calendar.MONTH, -1)
 
             viewModel.setCurrentDate(currentCalendar.time)
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
         }
 
         binding.buttonNext.setOnClickListener {
 
-            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.time = viewModel.currentDate.value
             currentCalendar.add(Calendar.MONTH, 1)
 
             viewModel.setCurrentDate(currentCalendar.time)
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
         }
 
-        viewModel.recordDate.observe(this, Observer {
+        viewModel.currentDate.observe(this, Observer {
 
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
 
-            viewModel.fireShape.observe(this, Observer {
+            viewModel.dataShapeFromFirebase.observe(this, Observer {
 
                 if (!it.isNullOrEmpty()){
                     (binding.recyclerShape.adapter as ShapeAdapter).submitList(it)
                 }
             })
 
-            viewModel.listDates.observe(this, Observer {
+            viewModel.listOfChartEntities.observe(this, Observer {
 
                 it?.let {
                     if (it.isNotEmpty() && it[0].values.isNotEmpty()){
@@ -75,7 +75,7 @@ class AchivementFragment: Fragment() {
                         binding.lineChart.setList(it)
 
                         binding.let {
-                            lineChart.legendArray = viewModel.fireDate.value
+                            lineChart.legendArray = viewModel.recordedDatesOfThisMonth.value
                             lineChart.visibility = View.VISIBLE
                             icon_my_type.visibility = View.GONE
                             recycler_shape.visibility = View.VISIBLE
