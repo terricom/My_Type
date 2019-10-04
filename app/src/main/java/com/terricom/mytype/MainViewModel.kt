@@ -15,7 +15,7 @@ class MainViewModel: ViewModel() {
     // According to current fragment to change different drawer toggle
     val currentDrawerToggleType: LiveData<DrawerToggleType> = Transformations.map(currentFragmentType) {
         when (it) {
-            CurrentFragmentType.DREAMBOARD -> DrawerToggleType.BACK
+            CurrentFragmentType.DREAM_BOARD -> DrawerToggleType.BACK
             else -> DrawerToggleType.NORMAL
         }
     }

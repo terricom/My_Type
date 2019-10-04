@@ -7,7 +7,7 @@
 
 
         <TextView
-                android:text="#"
+                android:text="@string/hash_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/tag"
                 android:fontFamily="@font/noto_sans"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans"
             android:paddingRight="@dimen/elevation_all"
-            android:text="紅油抄手"
+            android:text="@string/foodie_carbon"
             android:textColor="@color/colorMyType" />
 
     </LinearLayout>

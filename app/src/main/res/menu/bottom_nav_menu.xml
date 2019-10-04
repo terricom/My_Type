@@ -18,7 +18,7 @@
     <item
             android:id="@+id/navigation_achievment"
             android:icon="@drawable/icon_shape"
-            android:title="@string/title_harvest"/>
+            android:title="@string/title_achievement"/>
     <item
             android:id="@+id/navigation_profile"
             android:icon="@drawable/icon_profile"

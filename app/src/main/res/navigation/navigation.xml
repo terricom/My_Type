@@ -26,8 +26,7 @@
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     <action android:id="@+id/navigate_to_reference_dialog" app:destination="@id/referenceDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <action android:id="@+id/navigate_to_achivement_fragment" app:destination="@id/achivementFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
@@ -39,23 +38,18 @@
             app:popUpToInclusive="true" />
 
     <action android:id="@+id/navigate_to_message_dialog" app:destination="@id/messageDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <action android:id="@+id/navigate_to_goal_setting_dialog" app:destination="@id/goalSettingDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <action android:id="@+id/navigate_to_shape_record_dialog" app:destination="@id/shapeRecordDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <action android:id="@+id/navigate_to_sleep_dialog" app:destination="@id/sleepDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <action android:id="@+id/navigate_to_query_fragment" app:destination="@id/queryFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     <action android:id="@+id/navigate_to_query_dialog" app:destination="@id/queryDialog"
-            app:popUpTo="@id/navigation"
-            app:popUpToInclusive="true" />
+            />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
     <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
@@ -66,7 +60,7 @@
               android:label="ShaperecordFragment"><argument android:name="selectedProperty" app:argType="com.terricom.mytype.data.Shape"/></fragment>
     <dialog android:id="@+id/referenceDialog" android:name="com.terricom.mytype.foodie.ReferenceDialog"
               android:label="ReferenceDialog"/>
-    <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achivement.AchivementFragment"
+    <fragment android:id="@+id/achivementFragment" android:name="com.terricom.mytype.achievement.AchievementFragment"
               android:label="AchivementFragment"/>
     <fragment android:id="@+id/sleepFragment" android:name="com.terricom.mytype.sleep.SleepFragment"
             android:label="SleepFragment">

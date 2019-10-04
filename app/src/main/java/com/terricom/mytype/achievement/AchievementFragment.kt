@@ -1,4 +1,4 @@
-package com.terricom.mytype.achivement
+package com.terricom.mytype.achievement
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import kotlinx.android.synthetic.main.fragment_achivement.*
+import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 
-class AchivementFragment: Fragment() {
+class AchievementFragment: Fragment() {
 
     val viewModel: AchievementViewModel by lazy {
         ViewModelProviders.of(this).get(AchievementViewModel::class.java)
@@ -22,7 +22,7 @@ class AchivementFragment: Fragment() {
     private val currentCalendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = com.terricom.mytype.databinding.FragmentAchivementBinding.inflate(inflater)
+        val binding = com.terricom.mytype.databinding.FragmentAchievementBinding.inflate(inflater)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -40,34 +40,34 @@ class AchivementFragment: Fragment() {
 
         binding.buttonBack.setOnClickListener {
 
-            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.time = viewModel.currentDate.value
             currentCalendar.add(Calendar.MONTH, -1)
 
             viewModel.setCurrentDate(currentCalendar.time)
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
         }
 
         binding.buttonNext.setOnClickListener {
 
-            currentCalendar.time = viewModel.recordDate.value
+            currentCalendar.time = viewModel.currentDate.value
             currentCalendar.add(Calendar.MONTH, 1)
 
             viewModel.setCurrentDate(currentCalendar.time)
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
         }
 
-        viewModel.recordDate.observe(this, Observer {
+        viewModel.currentDate.observe(this, Observer {
 
-            viewModel.getThisMonth()
+            viewModel.getAndSetDataShapeOfThisMonth()
 
-            viewModel.fireShape.observe(this, Observer {
+            viewModel.dataShapeFromFirebase.observe(this, Observer {
 
                 if (!it.isNullOrEmpty()){
                     (binding.recyclerShape.adapter as ShapeAdapter).submitList(it)
                 }
             })
 
-            viewModel.listDates.observe(this, Observer {
+            viewModel.listOfChartEntities.observe(this, Observer {
 
                 it?.let {
                     if (it.isNotEmpty() && it[0].values.isNotEmpty()){
@@ -75,7 +75,7 @@ class AchivementFragment: Fragment() {
                         binding.lineChart.setList(it)
 
                         binding.let {
-                            lineChart.legendArray = viewModel.fireDate.value
+                            lineChart.legendArray = viewModel.recordedDatesOfThisMonth.value
                             lineChart.visibility = View.VISIBLE
                             icon_my_type.visibility = View.GONE
                             recycler_shape.visibility = View.VISIBLE

@@ -2,6 +2,8 @@ package com.terricom.mytype.data
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 
@@ -75,7 +77,8 @@ object UserManager {
             Log.i("UserManager.mail", value)
         }
 
-    var createDiary : String? = null
+    //處理新用戶獲得拼圖的情況（ 只顯示一次通知 ）
+    var getPuzzleNewUser : String? = null
         get(){
             return prefs?.getString(
                 App.applicationContext().getString(R.string.user_manager_times), "")
@@ -86,7 +89,8 @@ object UserManager {
             Log.i("UserManager.times", value!!.toString())
         }
 
-    var getPuzzleOld : String? = null
+    //處理老用戶獲得拼圖的情況（ 只顯示一次通知 ）
+    var getPuzzleOldUser: String? = null
         get(){
             return prefs?.getString(
                 App.applicationContext().getString(R.string.user_manager_puzzle), "")
@@ -97,5 +101,16 @@ object UserManager {
             Log.i("UserManager.puzzle", value!!.toString())
         }
 
+    fun isLogin(): Boolean{
+
+        uid?.let {
+            USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS)
+                .document(it)
+        }
+
+        return (!userToken.isNullOrEmpty())
+    }
+
+    var USER_REFERENCE: DocumentReference ?= null
 
 }

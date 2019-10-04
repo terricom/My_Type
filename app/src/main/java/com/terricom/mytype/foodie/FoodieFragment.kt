@@ -37,13 +37,13 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
 import com.terricom.mytype.tools.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -52,10 +52,6 @@ class FoodieFragment: Fragment() {
     private val viewModel: FoodieViewModel by lazy {
         ViewModelProviders.of(this).get(FoodieViewModel::class.java)
     }
-
-    //Image request code
-    private val CAMERA_IMAGE = 0
-    private val PICK_IMAGE_REQUEST = 1
 
     //Bitmap to get image from gallery
     private var bitmap: Bitmap? = null
@@ -69,23 +65,15 @@ class FoodieFragment: Fragment() {
     private var mPhone: DisplayMetrics?= null
 
     private var windowManager: WindowManager? = null
-    val sdf = SimpleDateFormat("yyyy-MM-dd-HHmmss")
     var pictureFile: File ?= null
 
     private lateinit var binding: FragmentFoodieRecordBinding
     private lateinit var editableFoods: MutableList<String>
-    private lateinit var editableNutritions: MutableList<String>
+    private lateinit var editableNutrition: MutableList<String>
 
-    private var mLocationPermissionsGranted = false
-
-    private val FINE_LOCATION = Manifest.permission.CAMERA
-    private val COURSE_LOCATION = Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1234
+    private var isLocationPermissionsGranted = false
 
     private var imageFilePathFromCamera: String? = null
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -97,11 +85,12 @@ class FoodieFragment: Fragment() {
 
         //處理從其他 Fragment 帶 Argument 過來的情況
         binding.foodie = foodie
-        if (foodie.timestamp != null){
-            viewModel.updateFoodie(foodie)
-            binding.foodieTitle.text = "修改食記"
+        foodie.timestamp?.let{ it ->
 
-            viewModel.setDate(foodie.timestamp)
+            viewModel.getHistoryFoodie(foodie)
+            binding.foodieTitle.text = App.applicationContext().getString(R.string.foodie_edit_foodie)
+
+            viewModel.setCurrentDate(it)
             viewModel.water.value = foodie.water
             viewModel.fruit.value = foodie.fruit
             viewModel.protein.value = foodie.protein
@@ -109,73 +98,93 @@ class FoodieFragment: Fragment() {
             viewModel.oil.value = foodie.oil
             viewModel.carbon.value = foodie.carbon
 
+            foodie.foods?.let {foods ->
 
-            if (foodie.foods!!.isNotEmpty()){
-                editableFoods = foodie.foods!!.toMutableList()
-                for (food in foodie.foods!!){
-                    viewModel.dragToList(food)
-                }
-                binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-                    viewModel.dragOutList(it)
-                })
-                if (binding.foodsTransportedRecycler.childCount != 0){
-                    binding.dragFoodHint.visibility = View.GONE
-                    binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
-                } else {
-                    binding.dragFoodHint.visibility = View.VISIBLE
-                }
+                if (foods.isNotEmpty()){
 
-                (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(foodie.foods)
-                binding.foodsTransportedRecycler.addItemDecoration(
-                    SpaceItemDecoration(
-                        resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                        true
+                    for (food in foods){
+
+                        viewModel.addToFoodList(food)
+                    }
+
+                    binding.foodsTransportedRecycler.adapter = FoodAdapter(
+                        viewModel, FoodAdapter.OnClickListener{
+                        viewModel.dropOutFoodList(it)
+                    })
+
+                    when (binding.foodsTransportedRecycler.childCount){
+
+                        0 -> binding.dragFoodHint.visibility = View.VISIBLE
+                        else -> {
+                            binding.dragFoodHint.visibility = View.GONE
+                            binding.foodsTransportedRecycler.smoothScrollToPosition(binding.foodsTransportedRecycler.childCount-1)
+                        }
+                    }
+
+                    (binding.foodsTransportedRecycler.adapter as FoodAdapter).submitFoodsWithEdit(foodie.foods)
+
+                    binding.foodsTransportedRecycler.addItemDecoration(
+                        SpaceItemDecoration(
+                            resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                            true
+                        )
                     )
-                )
-            }else {
-                editableFoods = mutableListOf("")
+                }
+
             }
 
-            if (foodie.nutritions!!.isNotEmpty()){
-                editableNutritions = foodie.nutritions!!.toMutableList()
-                for (nutrition in foodie.nutritions!!){
-                    viewModel.dragToListNu(nutrition)
-                }
-                binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-                    viewModel.dragOutListNu(it)
-                })
+            foodie.nutritions?.let {nutritions ->
 
-                if (binding.nutritionsTransportedRecycler.childCount != 0){
-                    binding.dragNutritionHint.visibility = View.GONE
-                    binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
-                }else {
-                    binding.dragNutritionHint.visibility = View.VISIBLE
-                }
-                (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(foodie.nutritions)
-                binding.nutritionsTransportedRecycler.addItemDecoration(
-                    SpaceItemDecoration(
-                        resources.getDimension(R.dimen.recyclerview_between).toInt(),
-                        true
+                if (nutritions.isNotEmpty()){
+
+                    for (nutrition in nutritions){
+
+                        viewModel.addToNutritionList(nutrition)
+                    }
+
+                    binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
+
+                        viewModel.dropOutNutritionList(it)
+                    })
+
+                    when (binding.nutritionsTransportedRecycler.childCount){
+
+                        0 -> binding.dragNutritionHint.visibility = View.VISIBLE
+                        else -> {
+                            binding.dragNutritionHint.visibility = View.GONE
+                            binding.nutritionsTransportedRecycler.smoothScrollToPosition(binding.nutritionsTransportedRecycler.childCount-1)
+                        }
+                    }
+                    (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).submitNutritionsWithEdit(foodie.nutritions)
+                    binding.nutritionsTransportedRecycler.addItemDecoration(
+                        SpaceItemDecoration(
+                            resources.getDimension(R.dimen.recyclerview_between).toInt(),
+                            true
+                        )
                     )
-                )
-            }else{
-                editableNutritions = mutableListOf("")
+                }
             }
-            if (!foodie.memo.isNullOrEmpty()){
+
+            if (foodie.memo.isNotEmpty()){
                 viewModel.memo.value = foodie.memo
             }
 
-            binding.textFoodieSave.text = "確認修改"
+            binding.textFoodieSave.text = App.applicationContext().getString(R.string.add_new_confirm)
 
-        }else {
-            editableNutritions = mutableListOf("")
-            editableFoods = mutableListOf("")
         }
 
+        //控制 DatePicker 顯示與否
         viewModel.isEditDateClicked.observe(this, Observer {
+
             if (!it){
                 binding.editDate.setOnClickListener {
                     binding.datePicker.visibility = View.INVISIBLE
+
+                    if (binding.datePicker.month+1 < 10){
+
+                        binding.datePicker.month
+                    }
+
                     if (binding.datePicker.month+1 >=10){
                         binding.editDate.text = "${binding.datePicker.year}-${binding.datePicker.month+1}-${binding.datePicker.dayOfMonth}"
                     }else if(binding.datePicker.month+1 <10){
@@ -213,17 +222,13 @@ class FoodieFragment: Fragment() {
         })
 
 
-
-
-//        binding.editDate.addTextChangedListener(DateMask())
-
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
 
         binding.foodsRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-            viewModel.dragToList(it)
+            viewModel.addToFoodList(it)
         })
-        viewModel.userFoodList.observe(this, androidx.lifecycle.Observer {
+        viewModel.userFoodList.observe(this, Observer {
             if (it.isNullOrEmpty()){
                 (binding.foodsRecycler.adapter as FoodAdapter).submitFoods(listOf("新增食物"))
             }else {
@@ -239,9 +244,9 @@ class FoodieFragment: Fragment() {
         )
 
         binding.nutritionRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-            viewModel.dragToListNu(it)
+            viewModel.addToNutritionList(it)
         })
-        viewModel.userNuList.observe(this, androidx.lifecycle.Observer {
+        viewModel.userNutritionList.observe(this, Observer {
             if (it.isNullOrEmpty()){
                 (binding.nutritionRecycler.adapter as NutritionAdapter).submitNutritions(listOf("新增營養"))
             }else {
@@ -260,9 +265,9 @@ class FoodieFragment: Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getPermissions()
             }
-            if (mLocationPermissionsGranted){
+            if (isLocationPermissionsGranted){
                 selectImage()
-            } else if (!mLocationPermissionsGranted){
+            } else if (!isLocationPermissionsGranted){
                 Toast.makeText(App.applicationContext(), "記得到系統設定相機和相簿權限才能上傳喔",Toast.LENGTH_SHORT).show()
             }
 
@@ -293,7 +298,7 @@ class FoodieFragment: Fragment() {
 
 
         binding.foodsTransportedRecycler.adapter = FoodAdapter(viewModel, FoodAdapter.OnClickListener{
-            viewModel.dragOutList(it)
+            viewModel.dropOutFoodList(it)
         })
 
         (binding.foodsTransportedRecycler.adapter as FoodAdapter).addOrRemove = false
@@ -316,7 +321,7 @@ class FoodieFragment: Fragment() {
         }
 
         binding.nutritionsTransportedRecycler.adapter = NutritionAdapter(viewModel, NutritionAdapter.OnClickListener{
-            viewModel.dragOutListNu(it)
+            viewModel.dropOutNutritionList(it)
         })
         (binding.nutritionsTransportedRecycler.adapter as NutritionAdapter).addOrRemove = false
         viewModel.selectedNutritionList.observe(this, Observer {
@@ -348,22 +353,15 @@ class FoodieFragment: Fragment() {
                     .plus(viewModel.vegetable.value ?: 0.0f).plus(viewModel.oil.value ?: 0.0f)
                     .plus(viewModel.protein.value ?: 0.0f).plus(viewModel.carbon.value ?: 0.0f) != 0.0f){
 
-                if (!viewModel.editFood.value.isNullOrEmpty()){
-                    viewModel.dragToList(viewModel.editFood.value!!)
-                }
-                if (!viewModel.editNutrition.value.isNullOrEmpty()){
-                    viewModel.dragToListNu(viewModel.editNutrition.value!!)
-                }
-
                 it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
                 Logger.i("timestamp from foodie${binding.editDate.text.toString()+" "+binding.editTime.text.toString()+":00.000000000"}")
 
-                viewModel.setDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
+                viewModel.setCurrentDate(Date(Timestamp.valueOf("${binding.editDate.text} ${binding.editTime.text}:00.000000000").time))
 
                 if (foodie.timestamp != null){
-                    viewModel.adjustFoodie()
+                    viewModel.adjustOldFoodie()
                 } else {
-                    viewModel.addFoodie()
+                    viewModel.addNewFoodie()
                 }
 
                 viewModel.updateFoodAndNuList()
@@ -401,7 +399,9 @@ class FoodieFragment: Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+            Companion.PICK_IMAGE_REQUEST
+        )
         Logger.i("Inside showFileChooser()")
     }
 
@@ -418,7 +418,7 @@ class FoodieFragment: Fragment() {
             val photoURI = FileProvider.getUriForFile(this.context!!
                 , App.applicationContext().packageName+ ".provider", pictureFile!!)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            startActivityForResult(intent, CAMERA_IMAGE)
+            startActivityForResult(intent, Companion.CAMERA_IMAGE)
         }}}
 
     // Create an image file name
@@ -429,7 +429,7 @@ class FoodieFragment: Fragment() {
             Environment.DIRECTORY_DCIM), "Camera")
         Logger.i("storageDir = $storageDir")
         val image = File.createTempFile(
-            sdf.format(viewModel.date.value),  /* prefix */
+            viewModel.date.value.toDateFormat(FORMAT_YYYY_MM_DDHHMMSS),  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         )
@@ -448,9 +448,9 @@ class FoodieFragment: Fragment() {
             filePath = data.data
             Logger.i("@FoodieFragment onActivityResult filePath =$filePath")
             try {
-                Logger.i("before uploadFile")
+                Logger.i("before uploadPhoto")
                 uploadFile()
-                Logger.i("after uploadFile")
+                Logger.i("after uploadPhoto")
 
                 bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
                 val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -468,15 +468,13 @@ class FoodieFragment: Fragment() {
                 e.printStackTrace()
             }
 
-        }else if (requestCode == CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
+        }else if (requestCode == Companion.CAMERA_IMAGE && resultCode == Activity.RESULT_OK){
 
             val contentUri: Uri = getUriForFile(this.context!!
                 , App.applicationContext().packageName+ ".provider", pictureFile!!)
             filePath = contentUri
 
-            Logger.i("before uploadFile")
             uploadFile()
-            Logger.i("after uploadFile")
 
             bitmap = MediaStore.Images.Media.getBitmap((activity as MainActivity).contentResolver, filePath)
             val degree = getImageRotation(App.applicationContext(),filePath!!)
@@ -551,14 +549,13 @@ class FoodieFragment: Fragment() {
         }
 
 
-    private var userChoosenTask: String? = null
-
-    fun selectImage() {
+    private fun selectImage() {
 
         val items = arrayOf<CharSequence>(
             App.applicationContext().resources.getText(R.string.foodie_add_photo)
             , App.applicationContext().resources.getText(R.string.foodie_choose_from_gallery)
-            , App.applicationContext().resources.getText(R.string.foodie_cancel))
+            , App.applicationContext().resources.getText(R.string.foodie_cancel)
+        )
 
         val context = this.context
 
@@ -566,84 +563,96 @@ class FoodieFragment: Fragment() {
         builder.setTitle(App.applicationContext().resources.getText(R.string.foodie_add_photo_title))
         builder.setItems(items) { dialog, item ->
             if (items[item] == App.applicationContext().resources.getText(R.string.foodie_cancel)) {
+
                 dialog.dismiss()
             } else {
+
                 userChoosenTask = items[item].toString()
                 callCameraOrGallery()
             }
         }
+
         builder.show()
     }
 
     private fun callCameraOrGallery() {
 
-        if (userChoosenTask!!.equals(App.applicationContext().resources.getText(R.string.foodie_add_photo))) {
-            userChoosenTask = App.applicationContext().resources.getString(R.string.foodie_add_photo)
+        userChoosenTask?.let {
 
-            fromcamera()
+            when(it){
 
-        } else if (userChoosenTask!!.equals(App.applicationContext().resources.getText(R.string.foodie_choose_from_gallery))) {
-            userChoosenTask = App.applicationContext().resources.getString(R.string.foodie_choose_from_gallery)
+                App.applicationContext().resources.getString(R.string.foodie_add_photo) -> {
 
-            showFileChooser()
+                    fromcamera()
+                }
+                App.applicationContext().resources.getString(R.string.foodie_choose_from_gallery) -> {
 
-        } else {
+                    showFileChooser()
+                }
+
+            }
         }
 
     }
 
 
     private fun uploadFile(){
-        if (filePath != null){
-            viewModel.uploadFile()
-            auth = FirebaseAuth.getInstance()
-            val userId = auth!!.currentUser!!.uid
-            val data = compress(filePath!!)
-            val imgRef = storageReference!!.child("images/users/"+ userId+"/"
-                    +sdf.format(viewModel.date.value)+".jpg")
-            imgRef.putBytes(data!!)
-                .addOnCompleteListener{
-                    imgRef.downloadUrl.addOnCompleteListener {
-                        viewModel.setPhoto(it.result!!)
-                        Logger.i("FoodieFragment uploadFile=${it.result}")
+
+        filePath?.let {filePath ->
+
+            viewModel.uploadPhoto()
+
+            UserManager.uid?.let {uid ->
+
+                storageReference?.let {
+
+                    val imageReference = it.child(App.applicationContext()
+                        .getString(R.string.firebase_storage_reference, uid,
+                            viewModel.date.value.toDateFormat(FORMAT_YYYY_MM_DDHHMMSS))
+                    )
+
+                    compress(filePath)?.let { compressResult ->
+
+                        imageReference.putBytes(compressResult)
+                            .addOnCompleteListener{
+
+                                imageReference.downloadUrl.addOnCompleteListener { task ->
+
+                                    task.result?.let { taskResult ->
+
+                                        viewModel.setPhoto(taskResult)
+                                    }
+
+                                }
+                            }
                     }
-                        .addOnFailureListener {
-                            Logger.i("FoodieFragment uploadFile failed =$it")
+                }
+            }
 
-                        }
-                    Toast.makeText(App.applicationContext(),"Upload success", Toast.LENGTH_SHORT)
-                }
-                .addOnFailureListener {
-                    Toast.makeText(App.applicationContext(),"Upload failed", Toast.LENGTH_SHORT)
-
-                }
-                .addOnProgressListener { taskSnapshot ->
-                    val progress = 100.0 * taskSnapshot.bytesTransferred/ taskSnapshot.totalByteCount
-                    Toast.makeText(App.applicationContext(),"$progress uploaded...", Toast.LENGTH_SHORT)
-                }
         }
     }
 
     private fun compress(image: Uri): ByteArray? {
 
         var imageStream: InputStream? = null
+
         try {
-            imageStream = App.applicationContext().contentResolver.openInputStream(
-                image
-            )
+            imageStream = App.applicationContext().contentResolver.openInputStream(image)
         } catch (e: FileNotFoundException) {
+
             e.printStackTrace()
         }
 
-        val bmp = BitmapFactory.decodeStream(imageStream)
+        val bitmapOrigin = BitmapFactory.decodeStream(imageStream)
 
-        var stream: ByteArrayOutputStream? = ByteArrayOutputStream()
-        //Qaulity was 35
-        bmp.compress(Bitmap.CompressFormat.JPEG, 15, stream)
-        val byteArray = stream!!.toByteArray()
+        val stream = ByteArrayOutputStream()
+        // 縮小至 15 %
+        bitmapOrigin.compress(Bitmap.CompressFormat.JPEG, 15, stream)
+        val byteArray = stream.toByteArray()
+
         try {
             stream.close()
-            stream = null
+
             return byteArray
         } catch (e: IOException) {
 
@@ -655,38 +664,58 @@ class FoodieFragment: Fragment() {
 
 
     private fun getPermissions() {
-        Logger.d( "getLocationPermission: getting location permissions")
+
         val permissions = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            PERMISSION_CAMERA,
+            PERMISSION_READ_EXTERNAL_STORAGE,
+            PERMISSION_WRITE_EXTERNAL_STORAGE
         )
 
-        if (ContextCompat.checkSelfPermission(App.applicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(App.applicationContext(),
-                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(App.applicationContext(),
-                        COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    mLocationPermissionsGranted = true
-                    try {
-//                        selectImage()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+        when (ContextCompat.checkSelfPermission(App.applicationContext(),
+            PERMISSION_CAMERA)){
+
+            PackageManager.PERMISSION_GRANTED -> {
+
+                when (ContextCompat.checkSelfPermission(App.applicationContext(),
+                        PERMISSION_WRITE_EXTERNAL_STORAGE)) {
+
+                    PackageManager.PERMISSION_GRANTED -> {
+
+                        when (ContextCompat.checkSelfPermission(App.applicationContext(),
+                            PERMISSION_READ_EXTERNAL_STORAGE)) {
+
+                            PackageManager.PERMISSION_GRANTED -> {
+
+                                isLocationPermissionsGranted = true
+                                try {
+
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    else -> {
+                        ActivityCompat.requestPermissions(activity as MainActivity,
+                            permissions,
+                            SELECT_PHOTO_PERMISSION_REQUEST_CODE
+                        )
                     }
                 }
 
             }
-            else {
+
+            else -> {
                 ActivityCompat.requestPermissions(activity as MainActivity,
                     permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE)
+                    SELECT_PHOTO_PERMISSION_REQUEST_CODE
+                )
             }
-        } else {
-            ActivityCompat.requestPermissions(activity as MainActivity,
-                permissions,
-                LOCATION_PERMISSION_REQUEST_CODE)
         }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -694,22 +723,24 @@ class FoodieFragment: Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        mLocationPermissionsGranted = false
+
+        isLocationPermissionsGranted = false
 
         when (requestCode) {
 
-            LOCATION_PERMISSION_REQUEST_CODE ->
+            SELECT_PHOTO_PERMISSION_REQUEST_CODE ->
 
-                if (grantResults.size > 0) {
+                if (grantResults.isNotEmpty()) {
+
                     for (i in 0 until grantResults.size) {
+
                         if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            mLocationPermissionsGranted = false
+
+                            isLocationPermissionsGranted = false
                             return
                         }
                     }
-                    Logger.d("onRequestPermissionsResult: permission granted")
-                    mLocationPermissionsGranted = true
-                    //initialize our map
+                    isLocationPermissionsGranted = true
                     try {
                     } catch ( e: IOException) {
                         e.printStackTrace()
@@ -720,17 +751,21 @@ class FoodieFragment: Fragment() {
     }
 
 
-
-
-
     override fun onStop() {
-        super.onStop()
-        (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
-        (activity as MainActivity).isFABOpen = false
 
+        super.onStop()
+        (activity as MainActivity).backFromEditPage()
+    }
+
+    companion object {
+        private const val PERMISSION_CAMERA = Manifest.permission.CAMERA
+        private const val PERMISSION_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        private const val PERMISSION_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
+        private const val SELECT_PHOTO_PERMISSION_REQUEST_CODE = 1234
+        //Image request code
+        private const val CAMERA_IMAGE = 0
+        private const val PICK_IMAGE_REQUEST = 1
+        private var userChoosenTask: String? = null
     }
 
 }

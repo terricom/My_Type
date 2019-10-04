@@ -8,25 +8,28 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.databinding.ItemDiaryNutritionlistBinding
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.databinding.ItemDiaryFoodlistBinding
 
-class NutritionlistsAdapter(
-    val viewModel: DiaryViewModel,
-    private val onClickListener: OnClickListener
-) : ListAdapter<String, NutritionlistsAdapter.ProductViewHolder>(DiffCallback) {
+class FoodListAdapter(
 
-    class OnClickListener(val clickListener: (nutrition: String) -> Unit) {
-        fun onClick(nutrition: String) = clickListener(nutrition)
+    val viewModel: DiaryViewModel
+
+) : ListAdapter<String, FoodListAdapter.FoodsViewHolder>(DiffCallback) {
+
+    class OnClickListener(val clickListener: (foodie: String) -> Unit) {
+
+        fun onClick(foodie: String) = clickListener(foodie)
     }
 
+    class FoodsViewHolder(
+        private var binding: ItemDiaryFoodlistBinding
+    ): RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-    class ProductViewHolder(private var binding: ItemDiaryNutritionlistBinding): RecyclerView.ViewHolder(binding.root),
-        LifecycleOwner {
-
-        fun bind(nutrition: String, viewModel: DiaryViewModel) {
+        fun bind(food: String) {
 
             binding.lifecycleOwner =this
-            binding.nutrition.text = nutrition
+            binding.food.text = food
 
             binding.executePendingBindings()
         }
@@ -62,25 +65,27 @@ class NutritionlistsAdapter(
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemDiaryNutritionlistBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodsViewHolder {
+
+        return FoodsViewHolder(ItemDiaryFoodlistBinding.inflate(LayoutInflater
+            .from(parent.context), parent, false))
     }
 
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FoodsViewHolder, position: Int) {
         val product = getItem(position)
 
-        holder.bind(product, viewModel)
+        holder.bind(product)
         holder.itemView.setOnClickListener {
-            viewModel.queryFoodieNutritions(product)
+            viewModel.queryFoodie(product, FirebaseKey.COLUMN_FOODIE_FOODS)
         }
     }
-    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
+    override fun onViewAttachedToWindow(holder: FoodsViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: ProductViewHolder) {
+    override fun onViewDetachedFromWindow(holder: FoodsViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.markDetach()
     }

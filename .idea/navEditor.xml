@@ -149,6 +149,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="navigate_to_query_dialog">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="navigate_to_query_fragment">
                     <value>
                       <LayoutPositions />

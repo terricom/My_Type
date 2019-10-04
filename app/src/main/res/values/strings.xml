@@ -15,7 +15,7 @@
     <string name="title_foodie">新增食記</string>
     <string name="title_diary">日記</string>
     <string name="title_linechart">累積</string>
-    <string name="title_harvest">成果</string>
+    <string name="title_achievement">成果</string>
     <string name="title_shape_record">新增成果</string>
     <string name="title_profile">個人</string>
     <string name="title_dream_puzzle">我的拼圖</string>
@@ -114,14 +114,16 @@
     <string name="query_title_average">平均成就</string>
     <string name="login_success">登入成功\n歡迎回來</string>
 
-    <string name="timestamp">timestamp</string>
     <string name="timestamp_dayend">%s 23:59:59.999999999</string>
     <string name="timestamp_daybegin">%s 00:00:00.000000000</string>
+    <string name="year_month_date">%s-%s-%s</string>
 
     <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
     <string name="simpledateformat_MM_dd">MM-dd</string>
     <string name="simpledateformat_yyyy_MM">yyyy-MM</string>
     <string name="simpledateformat_HH_mm">HH:mm</string>
+    <string name="simpledateformat_HH_mm_ss_fffffffff">HH:mm:ss.%s</string>
+    <string name="simpledateformat_yyyy_MM_dd_HHmmss">yyyy-MM-dd-HHmmss</string>
 
     <string name="float_round_one">%.1f</string>
     <string name="float_round_zero">%.0f</string>
@@ -148,11 +150,9 @@
     <string name="user_manager_times">times</string>
     <string name="user_manager_puzzle">puzzle</string>
 
-    <string name="puzzle_position">position</string>
-    <string name="puzzle_timestamp">timestamp</string>
-    <string name="puzzle_recordedDates">recordedDates</string>
-    <string name="puzzle_imgURL">imgURL</string>
+    <string name="firebase_docid">docId</string>
+    <string name="hash_tag">#</string>
+    <string name="firebase_storage_reference">images/users/%s/%s.jpg</string>
 
-    <string name="foodie_foods">foods</string>
-    <string name="foodie_nutritions">nutritions</string>
+
 </resources>

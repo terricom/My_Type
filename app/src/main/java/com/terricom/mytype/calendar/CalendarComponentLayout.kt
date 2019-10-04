@@ -16,10 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
+import com.terricom.mytype.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.R
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.diary.DiaryViewModel
+import com.terricom.mytype.toDateFormat
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,17 +36,9 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     companion object {
         const val MAX_DAY_COUNT = 35
         const val NUM_DAY_OF_WEEK = 7
-        const val collectionUsers: String = "Users"
-        const val collectionShape: String = "Shape"
-        const val collectionGoal: String = "Goal"
-        const val collectionSleep: String = "Sleep"
-        const val collectionFoodie: String = "Foodie"
-        const val collectionPuzzle: String = "Puzzle"
     }
 
-    public val DEFAULT_DATE_FORMAT = "yyyy-MM"
-
-    private var dateFormat = DEFAULT_DATE_FORMAT
+    private var dateFormat = App.applicationContext().getString(R.string.simpledateformat_yyyy_MM)
 
     private lateinit var buttonBack: ImageView
     private lateinit var buttonNext: ImageView
@@ -59,10 +56,12 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+
         initView(context, attrs)
     }
 
     private fun initView(context: Context?, attrs: AttributeSet? = null){
+
         currentDateCalendar = Calendar.getInstance().apply {
             todayMonth = this.get(Calendar.MONTH)
             todayYear = this.get(Calendar.YEAR)
@@ -133,7 +132,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
             this.context = getContext()
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@CalendarComponentLayout
-            this.recordedDates = recordedDate.value ?: listOf(sdf.format(Date()))
+            this.recordedDates = recordedDate.value ?: listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD))
         }
         gridRecycler.adapter = calendarAdapter
         setHeader(currentDateCalendar)
@@ -142,21 +141,16 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
     val viewModel = DiaryViewModel()
     @SuppressLint("SimpleDateFormat")
-    val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
     var selectedDayOut = Date()
     val thisMonth: List<String> ?= null
 
-
     val userUid = UserManager.uid
-
-    val db = FirebaseFirestore.getInstance()
-    val users = db.collection(collectionUsers)
 
     private val _recordedDate = MutableLiveData<List<String>>()
     val recordedDate : LiveData<List<String>>
         get() = _recordedDate
 
-    fun setRecordedDate(recordedDate: List<String>){
+    private fun setRecordedDate(recordedDate: List<String>){
         _recordedDate.value = recordedDate
     }
 
@@ -164,58 +158,73 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     val date : LiveData<Date>
         get() = _date
 
-    fun filterdate(dato: Date){
-        _date.value = dato
+    fun setCurrentDate(date: Date){
+        _date.value = date
     }
 
 
+    @SuppressLint("StringFormatMatches")
     fun getThisMonth() {
-        if (userUid!!.isNotEmpty()){
+        if (UserManager.isLogin()){
 
-            val foodieDiary = users
-                .document(userUid).collection(collectionFoodie)
-                .orderBy(App.applicationContext().getString(R.string.timestamp), Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(App.applicationContext().getString(R.string.timestamp), Timestamp.valueOf(
-                    App.applicationContext().getString(R.string.timestamp_dayend,
-                        "${currentDateCalendar.get(Calendar.YEAR)}" +
-                                "-${currentDateCalendar.get(Calendar.MONTH)+1}" +
-                                "-${getLastMonthLastDate()}")
-                ))
-                .whereGreaterThanOrEqualTo(App.applicationContext().getString(R.string.timestamp), Timestamp.valueOf(
-                    App.applicationContext().getString(R.string.timestamp_daybegin,
-                        "${currentDateCalendar.get(Calendar.YEAR)}" +
-                                "-${currentDateCalendar.get(Calendar.MONTH)+1}-01")
-                ))
+            UserManager.uid?.let {it ->
 
+                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
+                    .document(it).collection(COLLECTION_FOODIE)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                    .whereLessThanOrEqualTo(
+                        FirebaseKey.TIMESTAMP, Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_dayend,
+                                App.applicationContext().getString(R.string.year_month_date,
+                                "${currentDateCalendar.get(Calendar.YEAR)}",
+                                        "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                                        "${getThisMonthLastDate()}"
+                                )
+                            )
+                        )
+                    )
+                    .whereGreaterThanOrEqualTo(
+                        FirebaseKey.TIMESTAMP, Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_daybegin,
+                                App.applicationContext().getString(R.string.year_month_date,
+                                    "${currentDateCalendar.get(Calendar.YEAR)}",
+                                    "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                                    "01"
+                                    )
+                                )
+                        )
+                    )
+                    .get()
+                    .addOnSuccessListener { it ->
+                        val items = mutableListOf<Foodie>()
+                        val dates = mutableListOf<String>()
+                        items.clear()
+                        dates.clear()
 
-            foodieDiary
-                .get()
-                .addOnSuccessListener { it ->
-                    val items = mutableListOf<Foodie>()
-                    val dates = mutableListOf<String>()
-                    items.clear()
-                    dates.clear()
-                    for (document in it) {
+                        for (document in it) {
 
-                        items.add(document.toObject(Foodie::class.java))
-                        items[items.size-1].docId = document.id
-                        document.toObject(Foodie::class.java).timestamp?.let {
-                            dates.add(sdf.format(java.sql.Date(it.time)))
+                            items.add(document.toObject(Foodie::class.java))
+                            items[items.lastIndex].docId = document.id
+                            document.toObject(Foodie::class.java).timestamp?.let {
+                                dates.add(it.toDateFormat(FORMAT_YYYY_MM_DD))
+                            }
+                        }
+
+                        when (items.size){
+                            0 -> setRecordedDate(listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)))
+                            else -> setRecordedDate(dates)
                         }
                     }
-                    if (items.size != 0) {
-                        setRecordedDate(dates)
-                    } else if (items.size == 0){
-                        setRecordedDate(listOf(sdf.format(Date())))
-                    }
-                }
+            }
+
         }
     }
 
-    private fun getLastMonthLastDate(): Int {
+    private fun getThisMonthLastDate(): Int {
 
         currentDateCalendar.add(Calendar.MONTH, 0)
-        currentDateCalendar.set(Calendar.DAY_OF_MONTH, currentDateCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        currentDateCalendar.set(Calendar.DAY_OF_MONTH,
+            currentDateCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
 
         return currentDateCalendar.get(Calendar.DAY_OF_MONTH)
     }
@@ -228,7 +237,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        filterdate(selectDate)
+        setCurrentDate(selectDate)
         tempAdapter.recordedDates = recordedDate.value!!
         selectedDayOut = selectDate
         setHeader(tempCalendar)

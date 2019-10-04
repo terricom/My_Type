@@ -51,7 +51,7 @@ class LinechartViewModel: ViewModel() {
     fun setDate(date: Date){//date format should be java.util.Date
         _date.value = sdf.format(date)
         _dateM.value = "${sdfM.format(date.time.minus(518400000L))} ~ ${sdfM.format(date)}"
-        Logger.i("dateM = ${dateM.value}")
+        Logger.i("dateFormatMonth = ${dateM.value}")
         _recordDate.value = date
         Logger.i("viewModel.date.observe = ${dateM.value}")
 

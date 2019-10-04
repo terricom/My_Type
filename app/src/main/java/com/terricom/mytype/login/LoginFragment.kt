@@ -61,8 +61,8 @@ class LoginFragment: Fragment() {
         } else {
 
         binding.buttonLoginFacebook.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
             viewModel.loginFB()
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile", "user_friends"))
         }
         binding.buttonLoginGoogle.setOnClickListener {
 //            initGoogleClient(googleSignInClient)
