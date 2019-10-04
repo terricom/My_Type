@@ -22,11 +22,14 @@ class FirebaseKey {
         const val COLUMN_FOODIE_PROTEIN: String = "protein"
         const val COLUMN_FOODIE_FRUIT: String = "fruit"
         const val COLUMN_FOODIE_CARBON: String = "carbon"
-        const val COLUMN_FOODIE_MOMO: String = "memo"
+        const val COLUMN_FOODIE_MEMO: String = "memo"
 
         const val COLUMN_PUZZLE_POSITION: String = "position"
         const val COLUMN_PUZZLE_RECORDEDDATES: String = "recordedDates"
         const val COLUMN_PUZZLE_IMGURL: String = "imgURL"
+
+        const val COLUMN_USER_FOOD_LIST: String = "food_list"
+        const val COLUMN_USER_NUTRITION_LIST: String = "nutrition_list"
 
     }
 

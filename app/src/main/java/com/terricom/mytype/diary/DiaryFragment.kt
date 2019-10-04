@@ -41,30 +41,37 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
+        //觀察用戶得到拼圖後會跳 dialog
         viewModel.isGetPuzzle.observe(this, Observer {
 
-            Logger.i("viewModel.isGetPuzzle.observe = $it")
             when (it){
 
                 false ->
-                    if (UserManager.getPuzzleNewUser == "1"){ //首次加入才會跳通知（新用戶）
+                    if (UserManager.getPuzzleNewUser == "2"){ //首次加入才會跳通知（新用戶）
+
                         this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                             MessageDialog.MessageType.GET_PUZZLE.apply {
                                 value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_new)
                             })
                         )
-                        UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
+                        //只有第一次跳 dialog
+                        UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString()
+                            .toInt().plus(1).toString()
                     }
 
                 true -> {
                     if (UserManager.getPuzzleOldUser == "2"){ //當天的首篇食記才會跳通知（老用戶）
+
                         this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                             MessageDialog.MessageType.GET_PUZZLE.apply {
                                 value.message = App.applicationContext().resources.getString(R.string.diary_puzzle_check_old)
                             }))
+                        //只有第一次跳 dialog
                         UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
                     }
 
+                }
+                else -> {
                 }
             }
         })

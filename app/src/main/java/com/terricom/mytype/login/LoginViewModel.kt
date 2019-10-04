@@ -149,8 +149,8 @@ class LoginViewModel: ViewModel() {
             "user_name" to UserManager.name,
             "user_picture" to UserManager.picture,
             "user_email" to UserManager.mail,
-            "foodlist" to listOf<String>(),
-            "nutritionlist" to listOf<String>()
+            "food_list" to listOf<String>(),
+            "nutrition_list" to listOf<String>()
         )
 
         var newOne = ""

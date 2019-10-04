@@ -42,19 +42,37 @@ class MainActivity : BaseActivity(){
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_diary -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+
+                if (viewModel.currentFragmentType.value != CurrentFragmentType.DIARY){
+
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToDiaryFragment())
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_accumulation -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLinechartFragment())
+
+                if (viewModel.currentFragmentType.value != CurrentFragmentType.LINE_CHART){
+
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToLinechartFragment())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_achievment -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToAchivementFragment())
+
+                if (viewModel.currentFragmentType.value != CurrentFragmentType.ACHIEVEMENT){
+
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToAchivementFragment())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+
+                if (viewModel.currentFragmentType.value != CurrentFragmentType.PROFILE){
+                    findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+                }
+
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -95,6 +113,7 @@ class MainActivity : BaseActivity(){
                 Foodie()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
         }
 
         binding.fab2.setOnClickListener {
@@ -102,6 +121,7 @@ class MainActivity : BaseActivity(){
                 Shape()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
         binding.fab3.setOnClickListener {
@@ -109,6 +129,7 @@ class MainActivity : BaseActivity(){
                 Sleep()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
         binding.fabLayout3.setOnClickListener {
@@ -116,6 +137,7 @@ class MainActivity : BaseActivity(){
                 Sleep()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
         binding.fab4.setOnClickListener {
@@ -123,6 +145,7 @@ class MainActivity : BaseActivity(){
                 Goal()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
         binding.fabLayout4.setOnClickListener {
@@ -130,12 +153,14 @@ class MainActivity : BaseActivity(){
                 Goal()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
 
         binding.fabLayout1.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment(Foodie()))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
         binding.fabLayout2.setOnClickListener {
@@ -143,6 +168,7 @@ class MainActivity : BaseActivity(){
                 Shape()
             ))
             binding.fabShadow.visibility = View.GONE
+            closeFABMenu()
 
         }
 
@@ -181,8 +207,8 @@ class MainActivity : BaseActivity(){
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.foodieFragment -> CurrentFragmentType.FOODIE
                 R.id.diaryFragment -> CurrentFragmentType.DIARY
-                R.id.linechartFragment -> CurrentFragmentType.LINECHART
-                R.id.achivementFragment -> CurrentFragmentType.HARVEST
+                R.id.linechartFragment -> CurrentFragmentType.LINE_CHART
+                R.id.achivementFragment -> CurrentFragmentType.ACHIEVEMENT
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
@@ -290,7 +316,15 @@ class MainActivity : BaseActivity(){
 
     }
 
+    fun backFromEditPage(){
 
+        fabLayout1.visibility = View.INVISIBLE
+        fabLayout2.visibility = View.INVISIBLE
+        fabLayout3.visibility = View.INVISIBLE
+        fabLayout4.visibility = View.INVISIBLE
+        isFABOpen = false
+
+    }
 
 
 }

@@ -4,17 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.terricom.mytype.*
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
-import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_FOODS
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_NUTRITIONS
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
@@ -94,11 +88,6 @@ class DiaryViewModel: ViewModel() {
         _isGetPuzzle.value = false
     }
 
-    val db = FirebaseFirestore.getInstance()
-    val users = db.collection(COLLECTION_USERS)
-
-    private var storageRef : StorageReference?= null
-
     private val _isCallDeleteAction = MutableLiveData<Boolean>()
     val isCallDeleteAction : LiveData<Boolean>
         get() = _isCallDeleteAction
@@ -122,10 +111,9 @@ class DiaryViewModel: ViewModel() {
 
         if (UserManager.isLogin()){
 
-            UserManager.uid?.let {user ->
+            UserManager.USER_REFERENCE?.let {user ->
 
-                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                    .document(user).collection(FirebaseKey.COLLECTION_SHAPE)
+                user.collection(FirebaseKey.COLLECTION_SHAPE)
                     .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                     .whereLessThanOrEqualTo(TIMESTAMP,
                         Timestamp.valueOf(
@@ -158,8 +146,7 @@ class DiaryViewModel: ViewModel() {
                         }
                     }
 
-                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                    .document(user).collection(FirebaseKey.COLLECTION_SLEEP)
+                user.collection(FirebaseKey.COLLECTION_SLEEP)
                     .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                     .whereLessThanOrEqualTo(TIMESTAMP,
                         Timestamp.valueOf(
@@ -193,8 +180,7 @@ class DiaryViewModel: ViewModel() {
                         }
                     }
 
-                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                    .document(user).collection(COLLECTION_FOODIE)
+                user.collection(COLLECTION_FOODIE)
                     .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                     .whereLessThanOrEqualTo(TIMESTAMP,
                         Timestamp.valueOf(
@@ -210,7 +196,6 @@ class DiaryViewModel: ViewModel() {
                     )
                     .get()
                     .addOnSuccessListener {
-                        storageRef = FirebaseStorage.getInstance().reference
 
                         val items = mutableListOf<Foodie>()
                         val dates = mutableListOf<String>()
@@ -290,45 +275,47 @@ class DiaryViewModel: ViewModel() {
     }
 
     fun delete(foodie: Foodie){
-        if (userUid!!.isNotEmpty()){
-            val foodieDiary = users
-                .document(userUid).collection(COLLECTION_FOODIE)
-                .orderBy(
-                    TIMESTAMP,
-                    Query.Direction.DESCENDING)
-                .whereLessThanOrEqualTo(
-                    TIMESTAMP,
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                            date.value.toDateFormat(FORMAT_YYYY_MM_DD)
+        if (UserManager.isLogin()){
+
+            UserManager.USER_REFERENCE?.let { user ->
+
+                user.collection(COLLECTION_FOODIE)
+                    .orderBy(
+                        TIMESTAMP,
+                        Query.Direction.DESCENDING)
+                    .whereLessThanOrEqualTo(
+                        TIMESTAMP,
+                        Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_dayend,
+                                date.value.toDateFormat(FORMAT_YYYY_MM_DD)
+                            )
                         )
                     )
-                )
-                .whereGreaterThanOrEqualTo(
-                    TIMESTAMP,
-                    Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_daybegin,
-                            date.value.toDateFormat(FORMAT_YYYY_MM_DD)
+                    .whereGreaterThanOrEqualTo(
+                        TIMESTAMP,
+                        Timestamp.valueOf(
+                            App.applicationContext().getString(R.string.timestamp_daybegin,
+                                date.value.toDateFormat(FORMAT_YYYY_MM_DD)
+                            )
                         )
                     )
-                )
+                    .get()
+                    .addOnSuccessListener {
+                        for (diary in it){
+                            if (diary.id == foodie.docId){
 
-            foodieDiary
-                .get()
-                .addOnSuccessListener {
-                    for (diary in it){
-                        if (diary.id == foodie.docId){
-
-                            users.document(userUid).collection(COLLECTION_FOODIE).document(foodie.docId!!).delete()
-                                .addOnSuccessListener {
-                                    callDeleteAction()
-                                }
-                                .addOnFailureListener {
-                                        e -> Logger.i("Error deleting document exception = $e")
-                                }
+                                user.collection(COLLECTION_FOODIE).document(foodie.docId).delete()
+                                    .addOnSuccessListener {
+                                        callDeleteAction()
+                                    }
+                                    .addOnFailureListener {
+                                            e -> Logger.i("Error deleting document exception = $e")
+                                    }
+                            }
                         }
                     }
-                }
+            }
+
         }
     }
 
@@ -336,10 +323,9 @@ class DiaryViewModel: ViewModel() {
 
         if (UserManager.isLogin()){
 
-            UserManager.uid?.let {user ->
+            UserManager.USER_REFERENCE?.let {user ->
 
-                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                    .document(user).collection(COLLECTION_FOODIE)
+                user.collection(COLLECTION_FOODIE)
                     .orderBy(TIMESTAMP,
                         Query.Direction.DESCENDING
                     )
@@ -355,13 +341,13 @@ class DiaryViewModel: ViewModel() {
                         if (dates.distinct().size % 7 == 0){
 
                             //全新使用者
-                            FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                                .document(user).collection(COLLECTION_PUZZLE)
+                            user.collection(COLLECTION_PUZZLE)
                                 .orderBy(TIMESTAMP,
                                     Query.Direction.DESCENDING
                                 )
                                 .get()
                                 .addOnSuccessListener {
+
                                     val puzzleAll = mutableListOf<Puzzle>()
                                     for (document in it) {
 
@@ -375,9 +361,8 @@ class DiaryViewModel: ViewModel() {
                                             if (UserManager.getPuzzleNewUser == "0"  && puzzleAll.size == 0){
 
                                                 UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
-                                                getPuzzleNewUser()
 
-                                                users.document(user).collection(COLLECTION_PUZZLE).document().set(
+                                                user.collection(COLLECTION_PUZZLE).document().set(
                                                     hashMapOf(
                                                         COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
                                                         COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
@@ -385,28 +370,18 @@ class DiaryViewModel: ViewModel() {
                                                         TIMESTAMP to FieldValue.serverTimestamp()
                                                     )
                                                 )
+
+                                                getPuzzleNewUser()
+                                            } else if (UserManager.getPuzzleNewUser == "1"  && puzzleAll.size == 1){
+
+                                                UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
+                                                getPuzzleNewUser()
                                             }
                                         }
                                         else -> {
                                             getPuzzleOldUser()
                                         }
                                     }
-
-//                                    if (dates.size == 0 && UserManager.getPuzzleNewUser == "4" && puzzleAll.size == 0){
-//
-//                                        users.document(user).collection(COLLECTION_PUZZLE).document().set(
-//                                            hashMapOf(
-//                                            COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
-//                                            COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
-//                                            COLUMN_PUZZLE_RECORDEDDATES to listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)),
-//                                            TIMESTAMP to FieldValue.serverTimestamp()
-//                                            ))
-//                                        getPuzzleNewUser()
-//                                    }
-//                                    //老用戶
-//                                    else if (dates.size != 0 ){
-//                                        getPuzzleOldUser()
-//                                    }
                                 }
                         }
                     }
@@ -415,61 +390,34 @@ class DiaryViewModel: ViewModel() {
             }
     }
 
-    fun queryFoodieFoods(key: String) {
+    fun queryFoodie(key: String, type: String) {
 
-        if (!userUid.isNullOrEmpty()){
-            val diary = users
-                .document(userUid).collection(COLLECTION_FOODIE)
-                .whereArrayContains(COLUMN_FOODIE_FOODS, key)
+        if (UserManager.isLogin()){
 
-            diary
-                .get()
-                .addOnSuccessListener {
+            UserManager.USER_REFERENCE?.let {user ->
 
-                    val dates = mutableListOf<String>()
-                    val items = mutableListOf<Foodie>()
-                    for (document in it) {
+                user.collection(COLLECTION_FOODIE)
+                    .whereArrayContains(type, key)
+                    .get()
+                    .addOnSuccessListener {
 
-                        dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(FORMAT_YYYY_MM_DD))
-                        items.add(document.toObject(Foodie::class.java))
-                        items[items.lastIndex].docId = document.id
+                        val dates = mutableListOf<String>()
+                        val items = mutableListOf<Foodie>()
+                        for (document in it) {
+
+                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(FORMAT_YYYY_MM_DD))
+                            items.add(document.toObject(Foodie::class.java))
+                            items[items.lastIndex].docId = document.id
+                        }
+                        if (!items.isNullOrEmpty()){
+
+                            setQueryResult(items.asReversed(), key)
+                        }
                     }
-                    if (!items.isNullOrEmpty()){
+            }
 
-                        setQueryResult(items.asReversed(), key)
-                    }
-                }
         }
 
-
-    }
-
-    fun queryFoodieNutritions(key: String) {
-
-        if (userUid!!.isNotEmpty()){
-            val diary = users
-                .document(userUid).collection(COLLECTION_FOODIE)
-                .whereArrayContains(COLUMN_FOODIE_NUTRITIONS, key)
-
-            diary
-                .get()
-                .addOnSuccessListener {
-
-                    val dates = mutableListOf<String>()
-                    val items = mutableListOf<Foodie>()
-                    for (document in it) {
-
-                        dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(FORMAT_YYYY_MM_DD))
-                        items.add(document.toObject(Foodie::class.java))
-                        items[items.lastIndex].docId = document.id
-                    }
-
-                    if (!items.isNullOrEmpty()){
-
-                        setQueryResult(items.asReversed(), key)
-                    }
-                }
-        }
     }
 
 }

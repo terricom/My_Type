@@ -2,6 +2,8 @@ package com.terricom.mytype.data
 
 import android.content.SharedPreferences
 import android.util.Log
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 
@@ -100,8 +102,15 @@ object UserManager {
         }
 
     fun isLogin(): Boolean{
+
+        uid?.let {
+            USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS)
+                .document(it)
+        }
+
         return (!userToken.isNullOrEmpty())
     }
 
+    var USER_REFERENCE: DocumentReference ?= null
 
 }

@@ -21,11 +21,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private val TITLE = 0
-private val DIARY_LIST = 1
-private val SHAPE_RECORD = 2
-private val SLEEP_RECORD = 3
-private val PLACEHOLDER = 4
+private const val SUMMARY = 0
+private const val DIARY_LIST = 1
+private const val SHAPE_RECORD = 2
+private const val SLEEP_RECORD = 3
+private const val PLACEHOLDER = 4
 
 class FoodieAdapter(
     val viewModel: DiaryViewModel,
@@ -76,15 +76,13 @@ class FoodieAdapter(
             binding.foodie = foodie
 
             binding.recyclerDiaryFoodsItem.adapter =
-                FoodlistAdapter(viewModel, FoodlistAdapter.OnClickListener{
-            })
+                FoodListAdapter(viewModel)
 
-            (binding.recyclerDiaryFoodsItem.adapter as FoodlistAdapter).submitList(foodie.foods)
+            (binding.recyclerDiaryFoodsItem.adapter as FoodListAdapter).submitList(foodie.foods)
             binding.recyclerDiaryNutritionItem.adapter =
-                NutritionlistsAdapter(viewModel, NutritionlistsAdapter.OnClickListener{
-                })
+                NutritionListAdapter(viewModel)
 
-            (binding.recyclerDiaryNutritionItem.adapter as NutritionlistsAdapter).submitList(foodie.nutritions)
+            (binding.recyclerDiaryNutritionItem.adapter as NutritionListAdapter).submitList(foodie.nutritions)
 
             if (!foodie.memo.isNullOrEmpty()){
 
@@ -325,7 +323,7 @@ class FoodieAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
 
-            TITLE -> SumViewHolder(ItemDiarySumBinding
+            SUMMARY -> SumViewHolder(ItemDiarySumBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false))
             DIARY_LIST -> RecordViewHolder(ItemDiaryRecordBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false))
@@ -345,18 +343,22 @@ class FoodieAdapter(
 
         when(holder){
             is SumViewHolder -> {
+
                 val header = getItem(position) as DataItem.Header
                 holder.bind( header.viewModel)
             }
             is RecordViewHolder -> {
+
                 val header = getItem(position) as DataItem.FoodieList
                 holder.bind(header.foodie, header.viewModel)
 
                     holder.itemView.setOnLongClickListener {
+
                         deleteOrNot = true
                         it.findViewById<ImageView>(R.id.add2Garbage).visibility = View.VISIBLE
                         it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.VISIBLE
                         it.findViewById<ImageView>(R.id.add2Garbage).setOnClickListener { garbage ->
+
                             viewModel.delete(header.foodie)
                             garbage.findViewById<ImageView>(R.id.add2Garbage).visibility = View.INVISIBLE
                             it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.INVISIBLE
@@ -364,20 +366,26 @@ class FoodieAdapter(
                         holder.itemView.isClickable
                     }
                     holder.itemView.setOnClickListener {
+
                         onClickListener.onClick(header.foodie)
                     }
 
             }
             is ShapeViewHolder -> {
+
                 val shape = getItem(position) as DataItem.ShapeItem
+
                 holder.itemView.setOnClickListener {
+
                     findNavController(holder.itemView).navigate(NavigationDirections
                         .navigateToShapeRecordFragment(viewModel.dataShapeFromFirebase.value!!))
                 }
                 holder.bind( shape.viewModel)
             }
             is SleepViewHolder -> {
+
                 val sleep = getItem(position) as DataItem.SleepItem
+
                 holder.itemView.setOnClickListener {
                     findNavController(holder.itemView).navigate(NavigationDirections
                         .navigateToSleepFragment(viewModel.dataSleepFromFirebase.value!!))
@@ -385,6 +393,7 @@ class FoodieAdapter(
                 holder.bind( sleep.viewModel)
             }
             is PlaceholderViewHolder ->{
+
                 val header = getItem(position) as DataItem.PlaceHolder
                 holder.bind(header.viewModel)
             }
@@ -395,7 +404,7 @@ class FoodieAdapter(
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is DataItem.Header -> TITLE
+            is DataItem.Header -> SUMMARY
             is DataItem.FoodieList -> DIARY_LIST
             is DataItem.ShapeItem -> SHAPE_RECORD
             is DataItem.SleepItem -> SLEEP_RECORD
@@ -427,31 +436,37 @@ class FoodieAdapter(
 }
 
 sealed class DataItem {
+
     data class FoodieList(
         val foodie: Foodie, val viewModel: DiaryViewModel
     ): DataItem(){
+
         override val id = foodie.timestamp.toString()
     }
     data class ShapeItem(
         val viewModel: DiaryViewModel
     ) : DataItem(){
+
         override val id = (Long.MIN_VALUE).toString()
     }
     data class SleepItem(
         val viewModel: DiaryViewModel
     ) : DataItem(){
-        override val id = (Long.MIN_VALUE+1).toString()
 
+        override val id = (Long.MIN_VALUE+1).toString()
     }
     data class Header (
         val viewModel: DiaryViewModel
     ): DataItem() {
+
         override val id = (Long.MIN_VALUE+2).toString()
     }
     data class PlaceHolder(
         val viewModel: DiaryViewModel
     ) : DataItem(){
+
         override val id = (Long.MIN_VALUE+3).toString()
     }
     abstract val id: String
+
 }

@@ -13,6 +13,6 @@ data class User (
     val Sleep: List<Sleep> ?= null,
     val Goal: List<Goal> ?= null,
     val Puzzle : List<Puzzle> ?= null,
-    val foodlist: List<String> ?= null,
-    val nutritionlist: List<String> ?= null
+    val food_list: List<String> ?= null,
+    val nutrition_list: List<String> ?= null
 ): Parcelable

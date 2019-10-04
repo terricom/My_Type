@@ -6,18 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.App
-import com.terricom.mytype.R
-import com.terricom.mytype.data.*
+import com.terricom.mytype.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
-import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_CARBON
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_FOODS
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_FRUIT
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_MOMO
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_MEMO
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_NUTRITIONS
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_OIL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_PHOTO
@@ -27,26 +23,30 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_WATER
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
+import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.Puzzle
+import com.terricom.mytype.data.PuzzleImg
+import com.terricom.mytype.data.UserManager
 import java.sql.Time
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 class FoodieViewModel: ViewModel() {
 
-    val userUid = UserManager.uid
-
-    var selectedFood = mutableListOf<String>()
-    var selectedNutrition = mutableListOf<String>()
+    private var selectedFood = mutableListOf<String>()
+    private var selectedNutrition = mutableListOf<String>()
 
     private val _userFoodList = MutableLiveData<List<String>>()
     val userFoodList : LiveData<List<String>>
         get() = _userFoodList
 
-    val editFood = MutableLiveData<String>()
-    val editNutrition = MutableLiveData<String>()
+    private val _userNutritionList = MutableLiveData<List<String>>()
+    val userNutritionList : LiveData<List<String>>
+        get() = _userNutritionList
 
     private val _selectedFoodList = MutableLiveData<List<String>>()
     val selectedFoodList: LiveData<List<String>>
@@ -64,57 +64,57 @@ class FoodieViewModel: ViewModel() {
         _selectedNutritionList.value = list
     }
 
-    private val newFuList = mutableListOf<String>()
-    private val newNuList = mutableListOf<String>()
-
-
-    val _userNuList = MutableLiveData<List<String>>()
-    val userNuList : LiveData<List<String>>
-        get() = _userNuList
+    private val toUpdateUserFoodList2Firebase = mutableListOf<String>()
+    private val toUpdateUserNutritionList2Firebase = mutableListOf<String>()
 
     //從 Firebase 取得 User 的歷史食物清單
-    fun getFoodlist(foodlist: List<String>){
-        val newFooList = foodlist.toMutableList()
+    private fun getHistoryUserFoodList(foodList: List<String>){
+
+        val newFooList = foodList.toMutableList()
         newFooList.add(App.applicationContext().getString(R.string.foodie_add_food))
         _userFoodList.value = newFooList
-        for (food in foodlist){
-            newFuList.add(food)
+        for (food in foodList){
+            toUpdateUserFoodList2Firebase.add(food)
         }
     }
 
     //從 Firebase 取得 User 的歷營養素清單
-    fun getNutritionlist(nutritionlist: List<String>){
-        val newNutritionList = nutritionlist.toMutableList()
+    fun getHistoryUserNutritionList(nutritionList: List<String>){
+
+        val newNutritionList = nutritionList.toMutableList()
         newNutritionList.add(App.applicationContext().getString(R.string.diary_add_nutrition))
-        _userNuList.value = newNutritionList
-        for (nutrition in nutritionlist){
-            newNuList.add(nutrition)
+        _userNutritionList.value = newNutritionList
+        for (nutrition in nutritionList){
+            toUpdateUserNutritionList2Firebase.add(nutrition)
         }
     }
 
     //新增食物項目到食記
     fun addToFoodList(food: String) {
+
         selectedFood.add(food)
         addSelectedFoodList(selectedFood.distinct())
-        newFuList.add(food)
-        if (newFuList.contains(App.applicationContext().getString(R.string.foodie_add_food))){
-            newFuList.remove(App.applicationContext().getString(R.string.foodie_add_food))
+        toUpdateUserFoodList2Firebase.add(food)
+        if (toUpdateUserFoodList2Firebase.contains(App.applicationContext().getString(R.string.foodie_add_food))){
+            toUpdateUserFoodList2Firebase.remove(App.applicationContext().getString(R.string.foodie_add_food))
         }
     }
 
     //移除當前食記已新增的食物項目
     fun dropOutFoodList(food: String) {
+
         selectedFood.remove(food)
         addSelectedFoodList(selectedFood)
     }
 
     //新增營養品項目到食記
     fun addToNutritionList(nutrition: String) {
+
         selectedNutrition.add(nutrition)
         addSelectedNutritionList(selectedNutrition.distinct())
-        newNuList.add(nutrition)
-        if (newNuList.contains(App.applicationContext().getString(R.string.diary_add_nutrition))){
-            newNuList.remove(App.applicationContext().getString(R.string.diary_add_nutrition))
+        toUpdateUserNutritionList2Firebase.add(nutrition)
+        if (toUpdateUserNutritionList2Firebase.contains(App.applicationContext().getString(R.string.diary_add_nutrition))){
+            toUpdateUserNutritionList2Firebase.remove(App.applicationContext().getString(R.string.diary_add_nutrition))
         }
     }
 
@@ -210,11 +210,6 @@ class FoodieViewModel: ViewModel() {
         _isUploadPhoto.value = true
     }
 
-    val db = FirebaseFirestore.getInstance()
-    val user = db.collection(COLLECTION_USERS)
-
-    val sdf = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd))
-
     fun addNewFoodie(){
 
         if (selectedFood.contains(App.applicationContext().getString(R.string.foodie_add_food))) {
@@ -224,7 +219,10 @@ class FoodieViewModel: ViewModel() {
 
         val foodieContent = hashMapOf(
 
-            TIMESTAMP to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
+            TIMESTAMP to Timestamp.valueOf(
+                "${date.value.toDateFormat(FORMAT_YYYY_MM_DD)} ${time.value.toDateFormat(
+                FORMAT_HH_MM_SS_FFFFFFFFF)}"
+            ),
             COLUMN_FOODIE_WATER to water.value,
             COLUMN_FOODIE_OIL to oil.value,
             COLUMN_FOODIE_VEGETABLE to vegetable.value,
@@ -234,29 +232,34 @@ class FoodieViewModel: ViewModel() {
             COLUMN_FOODIE_PHOTO to photoUri.value.toString(),
             COLUMN_FOODIE_FOODS to selectedFood.distinct(),
             COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
-            COLUMN_FOODIE_MOMO to memo.value
+            COLUMN_FOODIE_MEMO to memo.value
         )
 
-        user.get()
-            .addOnSuccessListener { result->
-                for (doc in result){
-                    if (doc.id == userUid){
-                        user.document(doc.id).collection(COLLECTION_FOODIE).document().set(foodieContent)
-                    }
-                }
+        if (UserManager.isLogin()){
+
+            UserManager.USER_REFERENCE?.let {user ->
+
+                user.collection(COLLECTION_FOODIE).document().set(foodieContent)
                 updatePuzzle()
             }
+
+        }
     }
 
     fun adjustOldFoodie(){
 
         if (selectedFood.contains(App.applicationContext().getString(R.string.foodie_add_food))) {
+
             selectedFood.remove(App.applicationContext().getString(R.string.foodie_add_food))}
+
         if (selectedNutrition.contains(App.applicationContext().getString(R.string.diary_add_nutrition))) {
+
             selectedNutrition.remove(App.applicationContext().getString(R.string.diary_add_nutrition))}
 
         val foodieContent = hashMapOf(
-            TIMESTAMP to Timestamp.valueOf("${sdf.format(date.value)} ${time.value}.000000000"),
+
+            TIMESTAMP to Timestamp.valueOf("${date.value.toDateFormat(FORMAT_YYYY_MM_DD)} ${time.value.toDateFormat(
+                FORMAT_HH_MM_SS_FFFFFFFFF)}"),
             COLUMN_FOODIE_WATER to water.value,
             COLUMN_FOODIE_OIL to oil.value,
             COLUMN_FOODIE_VEGETABLE to vegetable.value,
@@ -265,7 +268,7 @@ class FoodieViewModel: ViewModel() {
             COLUMN_FOODIE_CARBON to carbon.value,
             COLUMN_FOODIE_FOODS to selectedFood.distinct(),
             COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
-            COLUMN_FOODIE_MOMO to memo.value,
+            COLUMN_FOODIE_MEMO to memo.value,
             if (isUploadPhoto.value == true) {
                 COLUMN_FOODIE_PHOTO to photoUri.value.toString()
             } else {
@@ -273,100 +276,103 @@ class FoodieViewModel: ViewModel() {
             }
         )
 
-        user.get()
-            .addOnSuccessListener { result->
-                if (userUid != null){
+        if (UserManager.isLogin()){
 
-                    user.document(userUid).collection(COLLECTION_FOODIE)
-                        .document(getHistoryFoodie.value!!.docId!!).update(foodieContent)
-                    updatePuzzle()
-                }
+            UserManager.USER_REFERENCE?.let {user ->
 
+                user.collection(COLLECTION_FOODIE).document(getHistoryFoodie.value!!.docId).update(foodieContent)
+                updatePuzzle()
             }
+
+        }
 
     }
 
     private fun updatePuzzle() {
 
-        if (!userUid.isNullOrEmpty()){
-            val diary = user
-                .document(userUid).collection(COLLECTION_FOODIE)
-                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+        if (UserManager.isLogin()){
 
-            diary
-                .get()
-                .addOnSuccessListener { it ->
+            UserManager.USER_REFERENCE?.let { user ->
 
-                    val dates = mutableListOf<String>()
-                    for (document in it) {
+                user.collection(COLLECTION_FOODIE)
+                    .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener {
 
-                        dates.add(sdf.format(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)))
-                    }
+                        val dates = mutableListOf<String>()
+                        for (document in it) {
 
-                    //紀錄 7 天的食記會獲得一塊拼圖
-                    if (dates.distinct().size%7 == 0){
+                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
+                                .toDateFormat(
+                                FORMAT_YYYY_MM_DD)
+                            )
+                        }
 
-                        val puzzle = user
-                            .document(userUid).collection(COLLECTION_PUZZLE)
-                            .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                        //紀錄 7 天的食記會獲得一塊拼圖
+                        if (dates.distinct().size % 7 == 0){
 
-                        // Firebase 上的所有拼圖集合
-                        val puzzleList = mutableListOf<Puzzle>()
+                            user.collection(COLLECTION_PUZZLE)
+                                .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+                                .get()
+                                .addOnSuccessListener {
 
-                        puzzle
-                            .get()
-                            .addOnSuccessListener {
-
-                                for (document in it){
+                                    val puzzleList = mutableListOf<Puzzle>()
+                                    for (document in it){
 
                                         puzzleList.add(document.toObject(Puzzle::class.java))
                                         puzzleList[puzzleList.lastIndex].docId = document.id
-                                }
+                                    }
 
-                                //處理老用戶的拼圖發放( 拼圖數量不為 0 )
-                                if (puzzleList.size != 0){
+                                    //處理老用戶的拼圖發放( 拼圖數量不為 0 )
+                                    if (puzzleList.size != 0){
 
-                                    //為了在日記頁面顯示一次性通知，當計算次數為一次時，則顯示通知
-                                    UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
+                                        //為了在日記頁面顯示一次性通知，當計算次數為一次時，則顯示通知
+                                        UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
 
-                                    if (
-                                        puzzleList[0].position!!.sum()!= 105 //拼到一半的拼圖
-                                        && !puzzleList[0].recordedDates!!.contains(sdf.format(date.value)) //已經發放的日期不能重複發放
-                                    ){
-                                        val positionList = puzzleList[0].position!!.toMutableList()
-                                        val recordedDatesList = puzzleList[0].recordedDates!!.toMutableList()
+                                        if (
+                                            puzzleList[0].position!!.sum()!= 105 //拼到一半的拼圖
+                                            && !puzzleList[0].recordedDates!!.contains(date.value.toDateFormat(
+                                                FORMAT_YYYY_MM_DD)) //已經發放的日期不能重複發放
+                                        ){
+                                            val positionList = puzzleList[0].position!!.toMutableList()
+                                            val recordedDatesList = puzzleList[0].recordedDates!!.toMutableList()
 
-                                        positionList.add((1..15).minus(positionList).random()) //隨機新增一塊拼圖
-                                        recordedDatesList.add(sdf.format(date.value!!)) //加上新增的日期，以免同一天重複發放
+                                            positionList.add((1..15).minus(positionList).random()) //隨機新增一塊拼圖
+                                            recordedDatesList.add(date.value.toDateFormat(
+                                                FORMAT_YYYY_MM_DD)) //加上新增的日期，以免同一天重複發放
 
-                                        user.document(userUid).collection(COLLECTION_PUZZLE).document(puzzleList[0].docId!!).update(
-                                            mapOf(
-                                            COLUMN_PUZZLE_POSITION to positionList,
-                                            COLUMN_PUZZLE_RECORDEDDATES to recordedDatesList,
-                                            TIMESTAMP to FieldValue.serverTimestamp()
+                                            user.collection(COLLECTION_PUZZLE).document(puzzleList[0].docId).update(
+
+                                                mapOf(
+                                                    COLUMN_PUZZLE_POSITION to positionList,
+                                                    COLUMN_PUZZLE_RECORDEDDATES to recordedDatesList,
+                                                    TIMESTAMP to FieldValue.serverTimestamp()
+                                                )
                                             )
-                                        )
 
-                                    } else if (
-                                        puzzleList[0].position!!.sum()== 105 //只有拼完的拼圖
-                                        && !puzzleList[0].recordedDates!!.contains(sdf.format(date.value)) //已經發放的日期不能重複發放
-                                    ){
-                                        val newPuzzle = hashMapOf(
-                                            COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
-                                            COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[ puzzleList.size ].value,
-                                            COLUMN_PUZZLE_RECORDEDDATES to listOf(sdf.format(date.value)),
-                                            TIMESTAMP to FieldValue.serverTimestamp()
+                                        } else if (
+                                            puzzleList[0].position!!.sum()== 105 //只有拼完的拼圖
+                                            && !puzzleList[0].recordedDates!!.contains(date.value.toDateFormat(
+                                                FORMAT_YYYY_MM_DD)) //已經發放的日期不能重複發放
+                                        ){
+                                            val newPuzzle = hashMapOf(
+                                                COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
+                                                COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[ puzzleList.size ].value,
+                                                COLUMN_PUZZLE_RECORDEDDATES to listOf(date.value.toDateFormat(
+                                                    FORMAT_YYYY_MM_DD)),
+                                                TIMESTAMP to FieldValue.serverTimestamp()
 
-                                        )
-                                        user.document(userUid).collection(COLLECTION_PUZZLE).document().set(newPuzzle)
+                                            )
+                                            user.collection(COLLECTION_PUZZLE).document().set(newPuzzle)
+                                        }
+                                    }
+                                    //全新用戶的拼圖在 Diary 去 Update
+                                    else if ( puzzleList.size == 0 ){
                                     }
                                 }
-                                //全新用戶的拼圖在 Diary 去 Update
-                                else if ( puzzleList.size == 0 ){
-                                }
-                            }
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -382,7 +388,7 @@ class FoodieViewModel: ViewModel() {
 
 
     init {
-        if (userUid != null){
+        if (UserManager.isLogin()){
             getFoodAndNutritionList()
             updatePuzzle()
         }
@@ -393,45 +399,33 @@ class FoodieViewModel: ViewModel() {
 
     private fun getFoodAndNutritionList(){
 
-        user.get()
-            .addOnSuccessListener { result ->
-                for (doc in result){
-                    if (doc.id == userUid){
-                        val user = doc.toObject(User::class.java)
-                        if (user.foodlist != null){
-                            var firebaseFoodlist: List<String> = doc["foodlist"] as List<String>
-                            getFoodlist(firebaseFoodlist)
-                        }
-                        if (user.nutritionlist != null){
-                            var firebaseNulist: List<String> = doc["nutritionlist"] as List<String>
-                            getNutritionlist(firebaseNulist)
-                        }
-                    }
-                }
+        if (UserManager.isLogin()){
 
+            UserManager.USER_REFERENCE?.let {user ->
+
+                user.get()
+                    .addOnSuccessListener {document ->
+
+                        getHistoryUserFoodList(document[COLUMN_USER_FOOD_LIST] as List<String>)
+                        getHistoryUserNutritionList(document[COLUMN_USER_NUTRITION_LIST] as List<String>)
+
+                    }
             }
+        }
     }
 
     fun updateFoodAndNuList(){
 
-        user.get()
-            .addOnSuccessListener { result ->
-                for (doc in result){
-                    if (doc.id == userUid){
-                        val user = doc.toObject(User::class.java)
-//                        if (user.foodlist == null){
-                            db.collection("Users").document(doc.id).update("foodlist", newFuList.distinct()).addOnCompleteListener{}
-//                        }
-//                        if (user.nutritionlist == null){
-                            db.collection("Users").document(doc.id).update("nutritionlist", newNuList.distinct()).addOnCompleteListener {  }
-//                        }
-                    }
-                }
+        if (UserManager.isLogin()){
+
+            UserManager.USER_REFERENCE?.let {user ->
+
+                user.update(COLUMN_USER_FOOD_LIST, toUpdateUserFoodList2Firebase.distinct())
+                user.update(COLUMN_USER_NUTRITION_LIST, toUpdateUserNutritionList2Firebase.distinct())
 
             }
+        }
     }
-
-
 
 
 }
