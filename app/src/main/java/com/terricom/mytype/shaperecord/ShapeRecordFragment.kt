@@ -129,9 +129,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             if (it == true){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
             } else if (it == false){
+
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
+
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_shape_record_failure)}
                 ))
+                binding.buttonShaperecordSave.background  = App.applicationContext().getDrawable(R.color.colorMyType)
             }
         })
 

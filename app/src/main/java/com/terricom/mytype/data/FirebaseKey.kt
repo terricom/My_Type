@@ -30,6 +30,9 @@ class FirebaseKey {
 
         const val COLUMN_USER_FOOD_LIST: String = "food_list"
         const val COLUMN_USER_NUTRITION_LIST: String = "nutrition_list"
+        const val COLUMN_USER_NAME: String = "user_name"
+        const val COLUMN_USER_PICTURE = "user_picture"
+        const val COLUMN_USER_EMAIL = "user_email"
 
         const val COLUMN_GOAL_WATER: String = "water"
         const val COLUMN_GOAL_OIL: String = "oil"

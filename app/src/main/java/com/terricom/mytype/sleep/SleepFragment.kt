@@ -1,8 +1,5 @@
 package com.terricom.mytype.sleep
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -110,6 +107,7 @@ class SleepFragment: Fragment() {
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_sleep_record_failure) }
                 ))
+                binding.buttonSleepSave.background  = App.applicationContext().getDrawable(R.color.colorMyType)
             }
         })
 

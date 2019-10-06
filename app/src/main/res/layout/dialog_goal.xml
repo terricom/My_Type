@@ -16,10 +16,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_message"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/calendar_date"
                 android:onClick="@{() -> dialog.dismiss()}"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -32,14 +31,11 @@ class LoginFragment: Fragment() {
 
     private val viewModel : LoginViewModel by lazy {
         ViewModelProviders.of(this).get(LoginViewModel::class.java)}
-    private lateinit var binding: FragmentLoginBinding
-    private lateinit var auth: FirebaseAuth
-    private var currentUser : FirebaseUser ?= null
 
+    private lateinit var binding: FragmentLoginBinding
 
     override fun onStart() {
         super.onStart()
-//        (activity as MainActivity).toolbar.visibility = View.GONE
         (activity as MainActivity).bottom_nav_view.visibility = View.GONE
         // Configure Google Sign In
         currentUser = auth.currentUser
@@ -53,20 +49,33 @@ class LoginFragment: Fragment() {
         auth = FirebaseAuth.getInstance()
 
         if (UserManager.userToken!!.isNotEmpty()){
+
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).fab.visibility = View.VISIBLE
-            (activity as MainActivity).closeFABMenu()
+            (activity as MainActivity).back2DiaryFragment()
+
         } else {
 
         binding.buttonLoginFacebook.setOnClickListener {
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
-            viewModel.loginFB()
+            if (isConnected()){
+
+                LoginManager.getInstance().logInWithReadPermissions(this, listOf(
+                    logInWithPermissionsEmail, loginWithPermissionProfile))
+                viewModel.loginFB()
+
+            }else {
+
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+            }
         }
         binding.buttonLoginGoogle.setOnClickListener {
-//            initGoogleClient(googleSignInClient)
-            signIn()
+            if (isConnected()){
+
+                loginGoogle()
+            }else {
+
+                Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+            }
+
         }
 
 
@@ -97,38 +106,27 @@ class LoginFragment: Fragment() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Logger.d( "signInWithCredential:success")
                     var user = auth.currentUser
+                    user?.let {
+                        UserManager.uid = it.uid
+                    }
                     viewModel.checkUser(user!!.uid)
-                    Logger.i("UserManager.userToken onActivityResult=${UserManager.userToken}")
-//                    if (UserManager.userToken!!.isNotEmpty()){
-//                        this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-//                        (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//                        (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-//                        (activity as MainActivity).fab.visibility = View.VISIBLE
-//                        (activity as MainActivity).fabShadow.visibility = View.GONE
-//                        (activity as MainActivity).closeFABMenu()
-//                        Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with FB")
-//                    }
+
                 } else {
                     // If sign in fails, display a message to the user.
-                    Logger.w("signInWithCredential:failure ${task.exception}")
                     Toast.makeText(
-                        App.applicationContext(), "Authentication failed.",
+                        App.applicationContext(), App.applicationContext().getString(R.string.login_fail_toast),
                         Toast.LENGTH_SHORT).show()
                 }
-
-                // ...
             }
     }
 
 
-    val RC_SIGN_IN: Int = 1
 
 
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private fun loginGoogle() {
 
-    private fun signIn() {
+        val googleSignInClient: GoogleSignInClient
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -137,14 +135,14 @@ class LoginFragment: Fragment() {
 
         googleSignInClient = GoogleSignIn.getClient(App.applicationContext(), gso)
         val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, Companion.RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         viewModel.callbackManager?.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Companion.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             auth = FirebaseAuth.getInstance()
             try {
@@ -158,16 +156,6 @@ class LoginFragment: Fragment() {
 
                 firebaseAuthWithGoogle(account)
                 Logger.i("ServerAuthCode =${account.serverAuthCode} account.id =${account.id}")
-//                if (UserManager.userToken!!.isNotEmpty()){
-//
-//                    this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-//                    (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-//                    (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-//                    (activity as MainActivity).fab.visibility = View.VISIBLE
-//                    (activity as MainActivity).fabShadow.visibility = View.GONE
-//                    (activity as MainActivity).closeFABMenu()
-//                    Logger.i("findNavController().navigate(NavigationDirections.navigateToDiaryFragment()) with GOOGLE")
-//                }
 
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -180,20 +168,24 @@ class LoginFragment: Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Logger.d("firebaseAuthWithGoogle: ${acct.id!!}")
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener((activity as MainActivity)) { task ->
+
                 if (task.isSuccessful) {
+
                     // Sign in success, update UI with the signed-in user's information
                     Logger.d("signInWithCredential:success")
+
                     val user = auth.currentUser
                     viewModel.checkUser(user!!.uid)
                 } else {
+                    Toast.makeText(
+                        App.applicationContext(), App.applicationContext().getString(R.string.login_fail_toast),
+                        Toast.LENGTH_SHORT).show()
                     // If sign in fails, display a message to the user.
                     Logger.w("signInWithCredential:failure ${task.exception} error_code =${task.exception}")
-                    Snackbar.make(binding.root, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                 }
 
             }
@@ -202,12 +194,16 @@ class LoginFragment: Fragment() {
 
     override fun onStop() {
         super.onStop()
-        (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
-        (activity as MainActivity).isFABOpen = false
+        (activity as MainActivity).backFromEditPage()
 
+    }
+
+    companion object {
+        private lateinit var auth: FirebaseAuth
+        private var currentUser : FirebaseUser ?= null
+        private val logInWithPermissionsEmail = "email"
+        private val loginWithPermissionProfile = "public_profile"
+        val RC_SIGN_IN: Int = 1
     }
 
 

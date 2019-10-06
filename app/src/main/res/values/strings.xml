@@ -2,6 +2,7 @@
     <string name="app_name">種天菜</string>
     <string name="login_google">Google 登入</string>
     <string name="login_facebook">Facebook 登入</string>
+    <string name="login_fail_toast">登入失敗，請稍後再試</string>
     <string name="setting_dream_board">你的夢想版是空的 \n 快上傳你的夢想吧！</string>
     <string name="upload_dream_board">上傳夢想版</string>
     <string name="foodie_hello">Hi 今天吃得好嗎？</string>
@@ -164,14 +165,6 @@
     <string name="foodie_example_protein">2.0</string>
     <string name="foodie_example_carbon">0.5</string>
 
-    <string name="user_manager_token">token</string>
-    <string name="user_manager_name">name</string>
-    <string name="user_manager_uid">uid</string>
-    <string name="user_manager_pic">pic</string>
-    <string name="user_manager_mail">mail</string>
-    <string name="user_manager_times">times</string>
-    <string name="user_manager_puzzle">puzzle</string>
-
     <string name="firebase_docid">docId</string>
     <string name="hash_tag">#</string>
     <string name="firebase_storage_reference">images/users/%s/%s.jpg</string>
@@ -190,6 +183,5 @@
     <string name="notification_goal_fruit_reach">🍎 水果完成 %s 份</string>
     <string name="notification_goal_carbon">🥔 醣類還差 %s 份\n💪 辛苦了，下午繼續加油！</string>
     <string name="notification_goal_carbon_reach">🥔 醣類完成 %s 份\n💪 辛苦了，下午繼續加油！</string>
-
 
 </resources>
