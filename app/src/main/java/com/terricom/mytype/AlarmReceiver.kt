@@ -1,21 +1,19 @@
 package com.terricom.mytype
 
-import android.app.AlarmManager
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
-import android.os.Handler
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
@@ -23,133 +21,34 @@ import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 class AlarmReceiver : BroadcastReceiver() {
 
-    private var textTitle: String ?= ""
-    private var textContent: String ?= ""
-    val CHANNEL_ID = "MyType"
 
-    val _fireFoodie = MutableLiveData<List<Foodie>>()
-    val fireFoodie: LiveData<List<Foodie>>
+
+    private val _fireFoodie = MutableLiveData<List<Foodie>>()
+    private val fireFoodie: LiveData<List<Foodie>>
         get() = _fireFoodie
 
-    fun fireFoodieBack (foo: List<Foodie>){
+    private fun fireFoodieBack (foo: List<Foodie>){
         _fireFoodie.value = foo
     }
-
-    val totalWater = MutableLiveData<Float>()
-
-    val totalOil = MutableLiveData<Float>()
-
-    val totalVegetable = MutableLiveData<Float>()
-
-    val totalProtein = MutableLiveData<Float>()
-
-    val totalFruit = MutableLiveData<Float>()
-
-    val totalCarbon = MutableLiveData<Float>()
 
     override fun onReceive(context: Context, intent: Intent) {
 
         Logger.i("AlarmReceiver onReceive time = ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}")
-        val bData = intent.extras
-        if (bData!!.get("title") == "activity_app" && SimpleDateFormat("HH").format(Date()) == "12") {
-            setMessage()
 
-            Handler().postDelayed({
-                createNotificationChannel()
-            },3000)
-            Logger.i("AlarmReceiver onReceive time = ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}")
+        intent.extras?.let {
+
+            if (it.get(receiveTitle) == receiveTag && Date().toDateFormat(FORMAT_HH_MM).split(":")[0] == "12"){
+
+                setMessage()
+            }
         }
-
-//        setMessage()
-//
-//        Handler().postDelayed({
-//            createNotificationChannel()
-//        },5000)
-
-        //建立通知發布鬧鐘
-//        val calendar: Calendar = Calendar.getInstance().apply {
-//            timeInMillis = System.currentTimeMillis()
-//            set(Calendar.HOUR_OF_DAY, 20)
-//            add(Calendar.MINUTE, 35)
-//        }
-//        add_alarm(context, calendar)
-//
-//        val cal = GregorianCalendar(TimeZone.getTimeZone("GMT+8:00")) //取得時間
-//
-//        cal.add(Calendar.MINUTE, 1)    //加一分鐘
-//        cal.set(Calendar.SECOND, 0)    //設定秒數為0
-//        add_alarm(context, cal)        //註冊鬧鐘
-
-
     }
 
-    /***    加入(與系統註冊)鬧鐘     */
-    fun add_alarm(context: Context, cal: Calendar) {
-        Logger.d(
-            "alarm add time: " + "${cal.get(Calendar.MONTH)}" + "." + "${cal.get(Calendar.DATE)}"
-             + " " + "${cal.get(Calendar.HOUR_OF_DAY)}" + ":" + "${cal.get(Calendar.MINUTE)}" + ":" + "${cal.get(
-                Calendar.SECOND
-            )}")
-
-        val intent = Intent(context, AlarmReceiver::class.java)
-        // 以日期字串組出不同的 category 以添加多個鬧鐘
-        intent.addCategory(
-            "ID." + "${cal.get(Calendar.MONTH)}" + "." + "${cal.get(Calendar.DATE)}" + "-" +
-                "${cal.get(Calendar.HOUR_OF_DAY)}"
-             + "." + "${cal.get(Calendar.MINUTE)}" + "." +
-                "${cal.get(
-                    Calendar.SECOND
-                )}"
-        )
-
-        val AlarmTimeTag =
-            "Alarmtime " + "${cal.get(Calendar.HOUR_OF_DAY)}" + ":" +"${cal.get(Calendar.MINUTE)}" + ":" + "${cal.get(Calendar.SECOND)}"
-
-        intent.putExtra("title", "activity_app")
-        intent.putExtra("time", AlarmTimeTag)
-
-        val pi = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val am = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        am.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pi)       //註冊鬧鐘
-    }
-
-    /***    取消(與系統註冊的)鬧鐘     */
-    private fun cancel_alarm(context: Context, cal: Calendar) {
-        Logger.d(
-            "alarm cancel time: " + "${cal.get(Calendar.MONTH)}" + "." +
-                "${cal.get(Calendar.DATE)}" + " " + "${cal.get(Calendar.HOUR_OF_DAY)}" + ":" + "${cal.get(Calendar.MINUTE)}" + ":" + "${cal.get(
-                Calendar.SECOND
-            )}"
-        )
-
-        val intent = Intent(context, AlarmReceiver::class.java)
-        // 以日期字串組出不同的 category 以添加多個鬧鐘
-        intent.addCategory(
-            "ID." + "${cal.get(Calendar.MONTH)}" + "." + "${cal.get(Calendar.DATE)}" + "-" +
-                "${cal.get(Calendar.HOUR_OF_DAY)}" + "." + "${cal.get(Calendar.MINUTE)}" + "." +
-                "${cal.get(
-                    Calendar.SECOND
-                )}"
-            )
-
-        val AlarmTimeTag =
-            "Alarmtime " + "${cal.get(Calendar.HOUR_OF_DAY)}" + ":" +
-                "${cal.get(Calendar.MINUTE)}"+
-                    ":" + "${cal.get(Calendar.SECOND)}"
-
-        intent.putExtra("title", "activity_app")
-        intent.putExtra("time", AlarmTimeTag)
-
-        val pi = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val am = context.getSystemService(ALARM_SERVICE) as AlarmManager
-        am.cancel(pi)    //取消鬧鐘，只差在這裡
-    }
     private fun createNotificationChannel() {
 
 
@@ -163,7 +62,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         var builder = NotificationCompat.Builder(App.applicationContext(), CHANNEL_ID)
             .setSmallIcon(R.drawable.icon_my_type)
-            .setContentTitle(textTitle)
+            .setContentTitle(Companion.textTitle)
             .setContentText(textContent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             // Set the intent that will fire when the user taps the notification
@@ -197,71 +96,34 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun setMessage(){
-        val db = FirebaseFirestore.getInstance()
-        val users = db.collection("Users")
-        val userUid = UserManager.uid
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
 
+        if (UserManager.isLogin()){
 
-        if (!userUid.isNullOrEmpty()){
-            val foodieDiary = users
-                .document(userUid).collection("Foodie")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(Date())} 00:00:00.000000000"))
+            UserManager.USER_REFERENCE?.let {userDocument ->
 
-            val goal = users
-                .document(userUid).collection("Goal")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+                userDocument.collection(FirebaseKey.COLLECTION_FOODIE)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                    .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp.valueOf(Date().toDateFormat(
+                        FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF)))
+                    .get()
+                    .addOnSuccessListener {
 
-            val goalWater = MutableLiveData<Float>()
-            val goalOil = MutableLiveData<Float>()
-            val goalVegetable = MutableLiveData<Float>()
-            val goalFruit = MutableLiveData<Float>()
-            val goalProtein = MutableLiveData<Float>()
-            val goalCarbon = MutableLiveData<Float>()
-
-            goal
-                .get()
-                .addOnSuccessListener {
-                    if (it.size() != 0){
-                        val latestGoal = it.documents[0].toObject(Goal::class.java)
-                        latestGoal?.let {
-                            goalWater.value = it.water
-                            goalVegetable.value = it.vegetable
-                            goalFruit.value = it.fruit
-                            goalCarbon.value = it.carbon
-                            goalOil.value = it.oil
-                            goalProtein.value = it.protein
-                        }
-                    }else{
-                        goalWater.value = 0.0f
-                        goalOil.value = 0.0f
-                        goalVegetable.value = 0.0f
-                        goalProtein.value = 0.0f
-                        goalFruit.value = 0.0f
-                        goalCarbon.value = 0.0f
-                    }
-                }
-
-
-            foodieDiary
-                .get()
-                .addOnSuccessListener {
                         val items = mutableListOf<Foodie>()
                         for (fooDiary in it){
                             items.add(fooDiary.toObject(Foodie::class.java))
                         }
                         fireFoodieBack(items)
                         Logger.i("FireFoodie.value = ${fireFoodie.value}")
-                        totalWater.value = 0f
+                        Companion.totalWater.value = 0f
                         totalOil.value = 0f
                         totalVegetable.value = 0f
                         totalProtein.value = 0f
                         totalFruit.value = 0f
                         totalCarbon.value = 0f
                         for (today in fireFoodie.value!!){
-                            totalWater.value = totalWater.value!!.plus(today.water ?: 0f)
+                            Companion.totalWater.value = Companion.totalWater.value!!.plus(today.water ?: 0f)
                             totalOil.value = totalOil.value!!.plus(today.oil ?: 0f)
                             totalVegetable.value = totalVegetable.value!!.plus(today.vegetable ?: 0f)
                             totalProtein.value = totalProtein.value!!.plus(today.protein ?: 0f)
@@ -269,37 +131,110 @@ class AlarmReceiver : BroadcastReceiver() {
                             totalCarbon.value = totalCarbon.value!!.plus(today.carbon ?: 0f)
                         }
 
-                        Handler().postDelayed({
-                            Logger.i("goalWater =${goalWater.value} totalWater = ${totalWater.value}")
+                        userDocument.collection(FirebaseKey.COLLECTION_GOAL)
+                            .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener {
 
-                            val diffWater = goalWater.value?.minus(totalWater.value!!.toFloat())
-                            val diffOil = goalOil.value?.minus(totalOil.value!!.toFloat())
-                            val diffVegetable =
-                                goalVegetable.value?.minus(totalVegetable.value!!.toFloat())
-                            val diffProtein =
-                                goalProtein.value?.minus(totalProtein.value!!.toFloat())
-                            val diffFruit = goalFruit.value?.minus(totalFruit.value!!.toFloat())
-                            val diffCarbon = goalCarbon.value?.minus(totalCarbon.value!!.toFloat())
+                                val items = mutableListOf<Goal>()
+                                for (document in it){
 
-                            textTitle = "好的開始是成功的一半"
-                            textContent =
-                                "距離今日目標\n" +
-                                        "\uD83D\uDCA7 飲水量還差 ${if (diffWater!! <= 0.0f) 0.0f else diffWater} 份  " +
-                                        "\uD83E\uDD51 油脂還差 ${if (diffOil!! <= 0.0f) 0.0f else diffOil} 份\n" +
-                                        "\uD83E\uDD66 蔬菜還差 ${if (diffVegetable!! <= 0.0f) 0.0f else diffVegetable} 份      " +
-                                        "\uD83C\uDF73 蛋白質還差 ${if (diffProtein!! <= 0.0f) 0.0f else diffProtein} 份\n" +
-                                        "\uD83C\uDF4E 水果還差 ${if (diffFruit!! <= 0.0f) 0.0f else diffFruit} 份      " +
-                                        "\uD83E\uDD54 醣類還差 ${if (diffCarbon!! <= 0.0f) 0.0f else diffCarbon} 份\n" +
-                                        "\uD83D\uDCAA 辛苦了，下午繼續加油！"
+                                    items.add(document.toObject(Goal::class.java))
+                                }
+                                if (items.size > 0){
 
-                        },2000)
+                                    items[0].let {
+                                        goalWater.value = it.water.toDemicalPoint(1)
+                                        goalVegetable.value = it.vegetable.toDemicalPoint(1)
+                                        goalFruit.value = it.fruit.toDemicalPoint(1)
+                                        goalCarbon.value = it.carbon.toDemicalPoint(1)
+                                        goalOil.value = it.oil.toDemicalPoint(1)
+                                        goalProtein.value = it.protein.toDemicalPoint(1)
+                                    }
+                                }else{
+                                    goalWater.value = 0.0f.toDemicalPoint(1)
+                                    goalOil.value = 0.0f.toDemicalPoint(1)
+                                    goalVegetable.value = 0.0f.toDemicalPoint(1)
+                                    goalProtein.value = 0.0f.toDemicalPoint(1)
+                                    goalFruit.value = 0.0f.toDemicalPoint(1)
+                                    goalCarbon.value = 0.0f.toDemicalPoint(1)
+                                }
+                            }
 
-                }
 
+                        textTitle = App.applicationContext().getString(R.string.notification_title)
+                        textContent =
+                            App.applicationContext().getString(R.string.notification_today_goal)+
+                                    if (goalWater.value.toFloatFormat() > Companion.totalWater.value!!) {
+                                        App.applicationContext().getString(
+                                            R.string.notification_goal_water,
+                                            "${abs(goalWater.value.toFloatFormat().minus(Companion.totalWater.value!!))}")
+                                    }else {App.applicationContext().getString(R.string.notification_goal_water_reach,
+                                        "${abs(goalWater.value.toFloatFormat().minus(Companion.totalWater.value!!))}")
+                                    }+"   "+
+                                    if (goalOil.value.toFloatFormat() > totalOil.value!!){
+                                        App.applicationContext().getString(R.string.notification_goal_oil,
+                                            "${abs(goalOil.value.toFloatFormat().minus(totalOil.value!!))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_oil_reach,
+                                            "${abs(goalOil.value.toFloatFormat().minus(totalOil.value!!))}")
+                                    }+
+                                    if (goalVegetable.value.toFloatFormat() > totalVegetable.value!!){
+                                        App.applicationContext().getString(R.string.notification_goal_vegetable,
+                                            "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable.value!!))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_vegetable_reach,
+                                            "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable.value!!))}")
+                                    }+"       "+
+                                    if (goalProtein.value.toFloatFormat() > totalProtein.value!!){
+                                        App.applicationContext().getString(R.string.notification_goal_protein,
+                                            "${abs(goalProtein.value.toFloatFormat().minus(totalProtein.value!!))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_protein_reach,
+                                            "${abs(goalProtein.value.toFloatFormat().minus(totalProtein.value!!))}")
+                                    }+
+                                    if (goalFruit.value.toFloatFormat() > totalFruit.value!!){
+                                        App.applicationContext().getString(R.string.notification_goal_fruit,
+                                            "${abs(goalFruit.value.toFloatFormat().minus(totalFruit.value!!))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_fruit_reach,
+                                            "${abs(goalFruit.value.toFloatFormat().minus(totalFruit.value!!))}")
+                                    }+"       "+
+                                    if (goalCarbon.value.toFloatFormat() > totalCarbon.value!!){
+                                        App.applicationContext().getString(R.string.notification_goal_carbon,
+                                            "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon.value!!))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_carbon_reach,
+                                            "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon.value!!))}")
+                                    }
 
+                        if (textTitle.equals(App.applicationContext().getString(R.string.notification_title))){
+
+                            createNotificationChannel()
+                        }
+                    }
+            }
         }
+    }
 
-
+    companion object {
+        const val receiveTitle = "title"
+        const val receiveTag = "activity_app"
+        val goalWater = MutableLiveData<String>()
+        val goalOil = MutableLiveData<String>()
+        val goalVegetable = MutableLiveData<String>()
+        val goalFruit = MutableLiveData<String>()
+        val goalProtein = MutableLiveData<String>()
+        val goalCarbon = MutableLiveData<String>()
+        val totalWater = MutableLiveData<Float>()
+        val totalOil = MutableLiveData<Float>()
+        val totalVegetable = MutableLiveData<Float>()
+        val totalProtein = MutableLiveData<Float>()
+        val totalFruit = MutableLiveData<Float>()
+        val totalCarbon = MutableLiveData<Float>()
+        private var textTitle: String ?= ""
+        private var textContent: String ?= ""
+        const val CHANNEL_ID = "MyType"
     }
 
 }

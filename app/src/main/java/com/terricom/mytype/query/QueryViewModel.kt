@@ -150,7 +150,7 @@ class QueryViewModel: ViewModel(){
                             items.add(document.toObject(Goal::class.java))
                             items[items.size-1].docId = document.id
                         }
-                        Logger.i("items in LinechartViewModel = $items")
+                        Logger.i("items in LineChartViewModel = $items")
                         if (items.size > 0 ){
                             goalWater.value = "%.1f".format(items[0].water)
                             goalCarbon.value = "%.1f".format(items[0].carbon)

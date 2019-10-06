@@ -207,7 +207,7 @@ class MainActivity : BaseActivity(){
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.foodieFragment -> CurrentFragmentType.FOODIE
                 R.id.diaryFragment -> CurrentFragmentType.DIARY
-                R.id.linechartFragment -> CurrentFragmentType.LINE_CHART
+                R.id.lineChartFragment -> CurrentFragmentType.LINE_CHART
                 R.id.achivementFragment -> CurrentFragmentType.ACHIEVEMENT
                 R.id.loginFragment -> CurrentFragmentType.LOGIN
                 R.id.shaperecordFragment -> CurrentFragmentType.SHAPE_RECORD
@@ -326,5 +326,12 @@ class MainActivity : BaseActivity(){
 
     }
 
+    fun back2DiaryFragment(){
+
+        bottom_nav_view!!.visibility = View.VISIBLE
+        bottom_nav_view.selectedItemId = R.id.navigation_diary
+        fab.visibility = View.VISIBLE
+        closeFABMenu()
+    }
 
 }

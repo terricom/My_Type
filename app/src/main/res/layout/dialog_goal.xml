@@ -12,18 +12,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:onClick="@{() -> dialog.dismiss()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_message"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/calendar_date"
+                android:onClick="@{() -> dialog.dismiss()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{() -> dialog.dismiss()}">
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/centerGuide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
             <TextView
                     android:id="@+id/text_message_content"
@@ -33,7 +42,7 @@
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="份量參考基準"
+                    android:text="@string/dialog_daily_reference"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +56,7 @@
                     android:fontFamily="@font/noto_sans"
                     android:text="水分 : 240 毫升"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintStart_toEndOf="@+id/imageView11"
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
                     app:layout_constraintTop_toBottomOf="@+id/text_message_content" />
 
             <TextView
@@ -70,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_sans"
-                    android:text="@string/shape_body_age"
+                    android:text="@string/shape_body_fat"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintEnd_toStartOf="@+id/imageView16"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -93,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="脂肪 : 一大匙"
+                    android:text="@string/dialog_oil"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
                     app:layout_constraintTop_toBottomOf="@+id/text_message_content" />
@@ -102,12 +111,13 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蔬菜 : 一杯生蔬菜"
+                    android:text="@string/dialog_vegetable"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintStart_toEndOf="@+id/imageView11"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintEnd_toStartOf="@+id/centerGuide"
+                    app:layout_constraintStart_toEndOf="@+id/imageView10"
+                    app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
             <TextView
                     android:id="@+id/textView5"
@@ -115,33 +125,32 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蛋白質 : 手掌大小"
+                    android:text="@string/dialog_protein"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView7"
-                    app:layout_constraintTop_toTopOf="@+id/textView4" />
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView13"
+                    app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
             <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="水果 : 中型水果一個"
+                    android:text="@string/dialog_fruit"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView4"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="醣類 : 拳頭大小"
+                    android:text="@string/dialog_carbon"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintStart_toStartOf="@+id/textView5"
                     app:layout_constraintTop_toTopOf="@+id/textView6" />
 
             <TextView
@@ -154,7 +163,7 @@
                     android:maxLines="2"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="身體數據圖示"
+                    android:text="@string/dialog_body_reference"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -166,19 +175,20 @@
                     android:layout_height="0dp"
                     android:paddingVertical="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                    app:layout_constraintEnd_toStartOf="@+id/textView3"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView13"
                     app:layout_constraintStart_toStartOf="@+id/imageView13"
                     app:layout_constraintTop_toTopOf="@+id/textView3"
                     app:srcCompat="@drawable/icon_coconut" />
 
             <ImageView
                     android:id="@+id/imageView13"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="30dp"
+                    android:layout_height="22dp"
                     android:paddingVertical="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView10"
                     app:layout_constraintEnd_toStartOf="@+id/textView5"
-                    app:layout_constraintStart_toStartOf="@+id/imageView12"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView4"
+                    app:layout_constraintStart_toStartOf="@+id/centerGuide"
                     app:layout_constraintTop_toTopOf="@+id/imageView10"
                     app:srcCompat="@drawable/icon_protein" />
 
@@ -186,11 +196,12 @@
                     android:id="@+id/imageView12"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
                     android:paddingVertical="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                    app:layout_constraintEnd_toStartOf="@+id/textView7"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView13"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintStart_toStartOf="@+id/imageView13"
                     app:layout_constraintTop_toTopOf="@+id/imageView11"
                     app:srcCompat="@drawable/icon_carbon" />
 
@@ -198,36 +209,35 @@
                     android:id="@+id/imageView8"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
                     android:paddingVertical="2dp"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/textView2"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView10"
+                    app:layout_constraintStart_toStartOf="@+id/imageView10"
                     app:layout_constraintTop_toTopOf="@+id/textView2"
                     app:srcCompat="@drawable/icon_water" />
 
             <ImageView
                     android:id="@+id/imageView10"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="30dp"
+                    android:layout_height="22dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:paddingVertical="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView4"
                     app:layout_constraintEnd_toStartOf="@+id/textView4"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView8"
                     app:srcCompat="@drawable/icon_vegetable" />
 
             <ImageView
                     android:id="@+id/imageView11"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
                     android:paddingVertical="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"
-                    app:layout_constraintEnd_toStartOf="@+id/textView6"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView10"
+                    app:layout_constraintStart_toStartOf="@+id/imageView10"
                     app:layout_constraintTop_toTopOf="@+id/textView6"
                     app:srcCompat="@drawable/icon_fruit" />
 

@@ -3,7 +3,7 @@
     <data>
         <import type="android.view.View"/>
         <variable name="foodieSum" type="com.terricom.mytype.data.FoodieSum"/>
-        <variable name="viewModel" type="com.terricom.mytype.linechart.LinechartViewModel"/>
+        <variable name="viewModel" type="com.terricom.mytype.linechart.LineChartViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

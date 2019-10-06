@@ -5,31 +5,26 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.R
+import com.terricom.mytype.toDemicalPoint
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-/**
- * Created by Terri.
- * Graph | Copyrights 2019-08-31.
- */
 @SuppressLint("ViewConstructor")
 class LineChart : View {
 
-    private var mPaddingTop: Float = 40f
-    var mPaddingRight: Float = 40f
-    var mPaddingLeft: Float = 40f
-    var mPaddingBottom: Float = 90f
-    var maxValue: Long = 0
-    var marginTop: Int = 50
+    private var paddingTop: Float = 40f
+    var paddingRight: Float = 40f
+    var paddingLeft: Float = 40f
+    var paddingBottom: Float = 90f
+    private var maxValue: Float = 0.0f
+    private var marginTop: Int = 50
     var legendArray: ArrayList<String>? = null
-    var legendYArray: ArrayList<String>? = null
 
-    var lineColor: Int = 0
-    var bgColor: Int = 0
-    var typeFace: Typeface? = null
+    private var lineColor: Int = 0
+    private var bgColor: Int = 0
+    private var typeFace: Typeface? = null
 
     private var xLength: Int = 0
     private var yLength: Int = 0
@@ -46,7 +41,6 @@ class LineChart : View {
     private var pBaseLineY = Paint()
     private var pMarkText = Paint()
     private var pMarkTextY = Paint()
-
 
     private var chartEntities: List<ChartEntity>? = null
 
@@ -69,10 +63,10 @@ class LineChart : View {
 
             this.bgColor = typeArray.getColor(R.styleable.LineChart_chart_bg_color, Color.parseColor("#209387"))
             this.lineColor = typeArray.getColor(R.styleable.LineChart_chart_line_color, Color.parseColor("#32FFFFFF"))
-            this.mPaddingTop = typeArray.getDimension(R.styleable.LineChart_chart_padding_top, 20f)
-            this.mPaddingRight = typeArray.getDimension(R.styleable.LineChart_chart_padding_right, 20f)
-            this.mPaddingBottom = typeArray.getDimension(R.styleable.LineChart_chart_padding_bottom, 20f)
-            this.mPaddingLeft = typeArray.getDimension(R.styleable.LineChart_chart_padding_left, 20f)
+            this.paddingTop = typeArray.getDimension(R.styleable.LineChart_chart_padding_top, 20f)
+            this.paddingRight = typeArray.getDimension(R.styleable.LineChart_chart_padding_right, 20f)
+            this.paddingBottom = typeArray.getDimension(R.styleable.LineChart_chart_padding_bottom, 20f)
+            this.paddingLeft = typeArray.getDimension(R.styleable.LineChart_chart_padding_left, 20f)
 
             typeArray.recycle()
         }
@@ -89,36 +83,20 @@ class LineChart : View {
     }
 
 
-//    fun setList(list: List<ChartEntity>) {
-//        this.chartEntities = null
-//        invalidate()
-//        this.chartEntities = list
-//        val maxes = ArrayList<Float>()
-//        for (lineGraph in chartEntities!!) {
-//            val copies =
-//                lineGraph.values.copyOf(lineGraph.values.size)
-//            Arrays.sort(copies)
-//            maxes.add(copies[copies.size - 1])
-//
-//        }
-//        Logger.i("LineChart maxes = $maxes")
-//        this.maxValue = (Collections.max(maxes) as Float).toLong()
-//    }
-
     fun setList(list: List<ChartEntity>) {
-        Logger.i("LineChart chartEntities = $chartEntities list =$list")
+
         this.chartEntities = null
         invalidate()
         this.chartEntities = list
-        Logger.i("LineChart setList chartEntities size = ${list.size}")
         val maxes = ArrayList<Float>()
         for (lineGraph in chartEntities!!) {
+
             val copies =
                 lineGraph.values.copyOf(lineGraph.values.size)
             Arrays.sort(copies)
             maxes.add(copies[copies.size - 1])
         }
-        this.maxValue = (Collections.max(maxes) as Float).toLong()
+        this.maxValue = (Collections.max(maxes) as Float)
     }
 
 
@@ -136,27 +114,25 @@ class LineChart : View {
 
         this.initializePaint()
 
-        this.xLength = (width - (mPaddingLeft + mPaddingRight)).toInt()
-        this.yLength = (height - (mPaddingBottom + mPaddingTop + marginTop)).toInt()
+        this.xLength = (width - (paddingLeft + paddingRight)).toInt()
+        this.yLength = (height - (paddingBottom + paddingTop + marginTop)).toInt()
 
-        this.chartXLength = (width - (mPaddingLeft + mPaddingRight)).toInt()
-        this.chartYLength = (height - (mPaddingTop + mPaddingBottom)).toInt()
+        this.chartXLength = (width - (paddingLeft + paddingRight)).toInt()
+        this.chartYLength = (height - (paddingTop + paddingBottom)).toInt()
 
         canvas.drawColor(bgColor)
 
 
-        val graphCanvasWrapper = GraphCanvasWrapper(canvas, this.width, this.height, this.mPaddingLeft.toInt(), this.mPaddingBottom.toInt())
+        val graphCanvasWrapper = GraphCanvasWrapper(
+            canvas, this.width, this.height, this.paddingLeft.toInt(), this.paddingBottom.toInt())
         graphCanvasWrapper.drawLine(0.0f, 0.0f, chartXLength.toFloat(), 0.0f, pBaseLine)
         graphCanvasWrapper.drawLine(0.0f, 0.0f, chartYLength.toFloat(), 0.0f, pBaseLine)
 
 
-        var newX: Float
         var newY: Float
-//        val gap = chartXLength / (chartEntities!![0].values.size - 1)
         val yGap = (yLength / 10).toFloat()
 
         for (i in 0 until 11) {
-            val gapY = yGap * i
 
             newY = yGap * i
             graphCanvasWrapper.drawLine(0.0f, newY, chartXLength.toFloat(), newY, pBaseLine)
@@ -181,11 +157,10 @@ class LineChart : View {
         val yGap = (yLength / 10).toFloat()
 
         for (i in 0 until 11){
-            val rect = Rect()
-            val values = chartEntities!![0].values.sortedDescending()[0]
 
-            val text = "%.1f".format(values/10*i)
-//            val text = "%.1f".format(if (values in 20.0..25.0) 25.0/10*i else if (values in 15.0..20.0) 20.0/10*i else if (values in 10.0..15.0) 15.0/10*i else 10.0/10*i)
+            val rect = Rect()
+
+            val text = (maxValue/10*i).toDemicalPoint(1)
             pMarkTextY.measureText(text)
             pMarkTextY.textSize = 20f
             pMarkTextY.typeface = typeFace
@@ -246,7 +221,7 @@ class LineChart : View {
         this.pCircleBG.color = bgColor
 
         for (m in chartEntities!!.indices) {
-            val linePath = GraphPath(width, height, mPaddingLeft.toInt(), mPaddingBottom.toInt())
+            val linePath = GraphPath(width, height, paddingLeft.toInt(), paddingBottom.toInt())
             var first = false
 
             var x: Float
@@ -278,7 +253,6 @@ class LineChart : View {
                     x = (xGap * t).toFloat()
                     y = yLength * chartEntities!![m].values[t] / maxValue
                     graphCanvasWrapper.drawCircle(x, y, 2.0f, pCircle)
-//                    graphCanvasWrapper.drawCircle(x, y, 0.5f, pCircleBG)
                 }
             }
         }

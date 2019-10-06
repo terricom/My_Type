@@ -31,6 +31,18 @@ class FirebaseKey {
         const val COLUMN_USER_FOOD_LIST: String = "food_list"
         const val COLUMN_USER_NUTRITION_LIST: String = "nutrition_list"
 
+        const val COLUMN_GOAL_WATER: String = "water"
+        const val COLUMN_GOAL_OIL: String = "oil"
+        const val COLUMN_GOAL_FRUIT: String = "fruit"
+        const val COLUMN_GOAL_CARBON: String = "carbon"
+        const val COLUMN_GOAL_PROTEIN: String = "protein"
+        const val COLUMN_GOAL_VEGETABLE: String = "vegetable"
+        const val COLUMN_GOAL_WEIGHT: String = "weight"
+        const val COLUMN_GOAL_BODY_FAT: String = "bodyFat"
+        const val COLUMN_GOAL_MUSCLE: String = "muscle"
+        const val COLUMN_GOAL_DEADLINE: String = "deadline"
+        const val COLUMN_GOAL_CHEER_UP: String = "cheerUp"
+
     }
 
 }

@@ -4,30 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.R
+import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_linechart.*
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 
-class LinechartFragment: Fragment() {
+class LineChartFragment: Fragment() {
 
-    val currentDateTime = Calendar.getInstance()
-    val thisWeek = mutableListOf<String>()
-    private val week = arrayListOf<String>()
-    private val viewModel: LinechartViewModel by lazy {
-        ViewModelProviders.of(this).get(LinechartViewModel::class.java)
+    private val viewModel: LineChartViewModel by lazy {
+        ViewModelProviders.of(this).get(LineChartViewModel::class.java)
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.FragmentLinechartBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
 
         var currentPosition = 0
 
@@ -46,12 +42,16 @@ class LinechartFragment: Fragment() {
         })
 
         binding.buttonBack.setOnClickListener {
-            currentPosition = currentPosition-1
-            viewModel.setDate(Date(Timestamp.valueOf("${sdf.format(Date())} 23:59:59.999999999").time.plus(604800000L*(currentPosition))))
+            currentPosition -= 1
+            viewModel.setDate(Date(Timestamp.valueOf(App.applicationContext().getString(
+                R.string.timestamp_dayend, Date().toDateFormat(
+                FORMAT_YYYY_MM_DD))).time.plus(604800000L*(currentPosition))))
         }
         binding.buttonNext.setOnClickListener {
-            currentPosition = currentPosition+1
-            viewModel.setDate(Date(Timestamp.valueOf("${sdf.format(Date())} 23:59:59.999999999").time.plus(604800000L*(currentPosition))))
+            currentPosition += 1
+            viewModel.setDate(Date(Timestamp.valueOf(App.applicationContext().getString(
+                R.string.timestamp_dayend, Date().toDateFormat(
+                    FORMAT_YYYY_MM_DD))).time.plus(604800000L*(currentPosition))))
         }
 
         viewModel.recordDate.observe(this, androidx.lifecycle.Observer {
@@ -60,7 +60,7 @@ class LinechartFragment: Fragment() {
                 viewModel.listDates.observe(this, androidx.lifecycle.Observer {
                     if (it != null && it.isNotEmpty() && it[0].values.isNotEmpty()){
 
-                        binding.lineChart.legendArray = viewModel.fireDate.value
+                        binding.lineChart.legendArray = viewModel.chartListDate.value
                         binding.lineChart.setList(it)
                         binding.lineChart.visibility = View.VISIBLE
                         binding.iconMyType.visibility = View.GONE
@@ -118,6 +118,10 @@ class LinechartFragment: Fragment() {
             }
         })
 
+        if (!isConnected()){
+            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+            //告訴使用者網路無法使用
+        }
 
         return binding.root
     }

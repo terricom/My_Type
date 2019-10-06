@@ -48,6 +48,7 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
         if(dateSelected != null){
             val selectedDateTime = getCalendarFromTimestamp(dateSelected.time)
             selectedDay = selectedDateTime.get(Calendar.DATE)
+            selected = false
         }
         if (selected){
             monthOfDate.setTypeface(null, Typeface.BOLD)
@@ -107,7 +108,6 @@ class ShapeCalendarViewHolder( private var binding: com.terricom.mytype.databind
                         R.drawable.input_column,
                         null
                     )
-
             }
 
             itemView.setOnClickListener{

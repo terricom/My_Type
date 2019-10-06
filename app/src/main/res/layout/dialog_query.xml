@@ -9,18 +9,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:onClick="@{() -> dialog.dismiss()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/calendar_date"
                 android:onClick="@{() -> dialog.dismiss()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/centerGuide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
             <TextView
                     android:id="@+id/text_message_content"
@@ -30,7 +40,7 @@
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="份量參考"
+                    android:text="@string/dialog_daily_reference"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +54,7 @@
                     android:fontFamily="@font/noto_sans"
                     android:gravity="center"
                     android:maxLines="2"
-                    android:text="圖示說明"
+                    android:text="@string/dialog_image_definition"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="水分 : 240 毫升"
+                    android:text="@string/dialog_water"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
                     app:layout_constraintTop_toBottomOf="@+id/text_message_content" />
@@ -67,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="脂肪 : 一大匙"
+                    android:text="@string/dialog_oil"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
                     app:layout_constraintTop_toBottomOf="@+id/text_message_content" />
@@ -77,9 +87,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蔬菜 : 一杯生蔬菜"
+                    android:text="@string/dialog_vegetable"
                     android:textSize="@dimen/text_content"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView13"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -89,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蛋白質 : 手掌大小"
+                    android:text="@string/dialog_protein"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
@@ -103,22 +115,11 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="水果 : 中型水果一個"
+                    android:text="@string/dialog_fruit"
                     android:textSize="@dimen/text_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-            <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="醣類 : 拳頭大小"
-                    android:textSize="@dimen/text_content"
-                    app:layout_constraintStart_toEndOf="@+id/textView6"
-                    app:layout_constraintTop_toTopOf="@+id/textView6" />
 
             <!--            <TextView-->
             <!--                    android:id="@+id/textView8"-->
@@ -138,6 +139,16 @@
             <!--                    app:layout_constraintStart_toStartOf="parent"-->
             <!--                    app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
 
+            <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/dialog_carbon"
+                    android:textSize="@dimen/text_content"
+                    app:layout_constraintStart_toEndOf="@+id/imageView12"
+                    app:layout_constraintTop_toTopOf="@+id/imageView12" />
+
             <ImageView
                     android:id="@+id/imageView14"
                     android:layout_width="0dp"
@@ -156,7 +167,7 @@
                     android:paddingVertical="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView10"
                     app:layout_constraintEnd_toStartOf="@+id/textView5"
-                    app:layout_constraintStart_toStartOf="@+id/imageView12"
+                    app:layout_constraintStart_toStartOf="@+id/centerGuide"
                     app:layout_constraintTop_toTopOf="@+id/imageView10"
                     app:srcCompat="@drawable/icon_protein" />
 
@@ -164,11 +175,10 @@
                     android:id="@+id/imageView12"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
                     android:paddingVertical="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                    app:layout_constraintEnd_toStartOf="@+id/textView7"
-                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView13"
+                    app:layout_constraintStart_toStartOf="@+id/centerGuide"
                     app:layout_constraintTop_toTopOf="@+id/imageView11"
                     app:srcCompat="@drawable/icon_carbon" />
 
@@ -228,10 +238,9 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:hint="0.3"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="@dimen/elevation_all"
-                    android:text="3.0"
+                    android:text="@string/foodie_example_fruit"
                     android:textAlignment="textEnd"
                     android:textColor="@color/colorWater"
                     android:textColorHint="@color/colorWhite"
@@ -248,7 +257,7 @@
                     android:background="@drawable/tag_right_corners"
                     android:backgroundTint="@color/colorWater"
                     android:paddingVertical="@dimen/elevation_all"
-                    android:text="8.0"
+                    android:text="@string/foodie_example_water"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
@@ -264,7 +273,7 @@
                     android:id="@+id/textView15"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="代表營養"
+                    android:text="@string/dialog_nutrition_represent"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toTopOf="@+id/text_message_content"
                     app:layout_constraintEnd_toStartOf="@+id/goal_water"
@@ -275,13 +284,11 @@
                     android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="目標份量"
+                    android:text="@string/dialog_goal_number"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toTopOf="@+id/text_message_content"
                     app:layout_constraintEnd_toEndOf="@+id/goal_water"
-                    app:layout_constraintEnd_toStartOf="@+id/textView16"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textView15"
                     app:layout_constraintStart_toStartOf="@+id/goal_water"
                     app:layout_constraintTop_toBottomOf="@+id/goal_water" />
 
@@ -289,7 +296,7 @@
                     android:id="@+id/textView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="平均貢獻"
+                    android:text="@string/dialog_average_contribution"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toTopOf="@+id/text_message_content"
                     app:layout_constraintEnd_toEndOf="@+id/diff_water"
