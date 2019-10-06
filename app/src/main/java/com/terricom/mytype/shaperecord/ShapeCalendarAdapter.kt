@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.databinding.ItemCalendarSquareBinding
-import com.terricom.mytype.tools.Logger
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,11 +31,9 @@ class ShapeCalendarAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ShapeCalendarViewHolder, position: Int) {
-        Logger.i("recordedDates =$recordedDates")
         if (recordedDates.contains(sdf.format(listDates[position]))){
             viewHolder.recorded = true
         }
-        Logger.i("selectedDate = $selectedDate selectedDateBefore = $selectedDateBefore")
         if (sdf.format(listDates[position]) == sdf.format(selectedDateBefore)){
             viewHolder.selected = true
         }

@@ -11,15 +11,8 @@ class GraphPath(width: Int, height: Int, paddingLeft: Int, paddingBottom: Int) :
         super.moveTo(mMt.calcX(x), mMt.calcY(y))
     }
 
-    fun moveTo(point: PointF) {
-        super.moveTo(mMt.calcX(point.x), mMt.calcY(point.y))
-    }
-
     override fun lineTo(x: Float, y: Float) {
         super.lineTo(mMt.calcX(x), mMt.calcY(y))
     }
 
-    fun lineTo(point: PointF) {
-        super.lineTo(mMt.calcX(point.x), mMt.calcY(point.y))
-    }
 }

@@ -36,13 +36,6 @@ class MessageDialog : AppCompatDialogFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-
-    }
-
     private fun init() {
         when (messageType) {
             MessageType.LOGIN_SUCCESS -> {
@@ -61,7 +54,6 @@ class MessageDialog : AppCompatDialogFragment() {
                 iconRes = App.instance!!.getDrawable(R.drawable.icon_puzzle)
                 message = messageType.value.message
             }
-
 
             else -> {
 
@@ -93,12 +85,6 @@ class MessageDialog : AppCompatDialogFragment() {
             this.findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
             (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
             (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-            (activity as MainActivity).fab.visibility = View.VISIBLE
-            (activity as MainActivity).closeFABMenu()
-        } else if ( messageType == MessageType.MESSAGE ){
-            this.findNavController().navigate(NavigationDirections.navigateToProfileFragment())
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_profile
             (activity as MainActivity).fab.visibility = View.VISIBLE
             (activity as MainActivity).closeFABMenu()
         }

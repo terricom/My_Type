@@ -1,8 +1,5 @@
 package com.terricom.mytype.sleep
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
 import com.terricom.mytype.tools.Logger
-import kotlinx.android.synthetic.main.activity_main.*
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
@@ -81,7 +77,7 @@ class SleepFragment: Fragment() {
                     //執行下載任務
                     viewModel.addSleepHr()
                 }else{
-                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT)
+                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
                     //告訴使用者網路無法使用
                 }
             }
@@ -91,10 +87,7 @@ class SleepFragment: Fragment() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-                (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-                (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-                (activity as MainActivity).fab.visibility = View.VISIBLE
-                (activity as MainActivity).closeFABMenu()
+                (activity as MainActivity).back2DiaryFragment()
 
             }
         }
@@ -102,10 +95,7 @@ class SleepFragment: Fragment() {
 
         binding.buttonBack2Main.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
-            (activity as MainActivity).bottom_nav_view!!.visibility = View.VISIBLE
-            (activity as MainActivity).bottom_nav_view.selectedItemId = R.id.navigation_diary
-            (activity as MainActivity).fab.visibility = View.VISIBLE
-            (activity as MainActivity).closeFABMenu()
+            (activity as MainActivity).back2DiaryFragment()
 
         }
 
@@ -117,6 +107,7 @@ class SleepFragment: Fragment() {
                 findNavController().navigate(NavigationDirections.navigateToMessageDialog(
                     MessageDialog.MessageType.MESSAGE.apply { value.message = getString(R.string.dialog_message_sleep_record_failure) }
                 ))
+                binding.buttonSleepSave.background  = App.applicationContext().getDrawable(R.color.colorMyType)
             }
         })
 
@@ -200,21 +191,9 @@ class SleepFragment: Fragment() {
 
     }
 
-    private fun isConnected(): Boolean{
-        val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
-        return if (connectivityManager is ConnectivityManager) {
-            val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
-            networkInfo?.isConnected ?: false
-        } else false
-    }
-
     override fun onStop() {
         super.onStop()
-        (activity as MainActivity).fabLayout1.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout2.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout3.visibility = View.INVISIBLE
-        (activity as MainActivity).fabLayout4.visibility = View.INVISIBLE
-        (activity as MainActivity).isFABOpen = false
+        (activity as MainActivity).backFromEditPage()
 
     }
 

@@ -263,6 +263,7 @@ class AchievementViewModel: ViewModel() {
                         }
 
                         if (items.size > 0){
+
                             goalWeight.value = items[0].weight.toDemicalPoint(1)
                             goalBodyFat.value = items[0].bodyFat.toDemicalPoint(1)
                             goalMuscle.value = items[0].muscle.toDemicalPoint(1)

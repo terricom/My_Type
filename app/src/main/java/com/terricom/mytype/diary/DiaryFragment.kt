@@ -1,8 +1,5 @@
 package com.terricom.mytype.diary
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -173,17 +170,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             }
         })
 
-        fun isConnected(): Boolean{
-            val connectivityManager = App.applicationContext().getSystemService(Context.CONNECTIVITY_SERVICE)
-            return if (connectivityManager is ConnectivityManager) {
-                val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
-                networkInfo?.isConnected ?: false
-            } else false
-        }
-
-        if (isConnected()) {
-            Logger.i("NetworkConnection Network Connected.")
-        }else{
+        if (!isConnected()){
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
             //告訴使用者網路無法使用
         }

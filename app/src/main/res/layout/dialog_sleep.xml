@@ -12,18 +12,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:onClick="@{() -> dialog.dismiss()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/calendar_date"
+                android:onClick="@{() -> dialog.dismiss()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:onClick="@{() -> dialog.dismiss()}">
+                app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                     android:id="@+id/textView"
@@ -82,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蔬菜 : 一杯生蔬菜"
+                    android:text="@string/dialog_vegetable"
                     android:textSize="@dimen/text_content"
                     android:visibility="invisible"
                     app:layout_constraintStart_toEndOf="@+id/imageView11"
@@ -94,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="蛋白質 : 手掌大小"
+                    android:text="@string/dialog_protein"
                     android:textSize="@dimen/text_content"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="水果 : 中型水果一個"
+                    android:text="@string/dialog_fruit"
                     android:textSize="@dimen/text_content"
                     android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="醣類 : 拳頭大小"
+                    android:text="@string/dialog_carbon"
                     android:textSize="@dimen/text_content"
                     android:visibility="invisible"
                     app:layout_constraintStart_toEndOf="@+id/textView6"

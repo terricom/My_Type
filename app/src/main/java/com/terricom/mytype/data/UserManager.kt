@@ -5,7 +5,7 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
-import com.terricom.mytype.R
+import com.terricom.mytype.tools.Logger
 
 private inline fun SharedPreferences.edit(
     operation: (SharedPreferences.Editor
@@ -16,64 +16,71 @@ private inline fun SharedPreferences.edit(
     editor.apply()
 }
 
+const val tagUserToken = "token"
+const val tagUserName = "name"
+const val tagUserUid = "uid"
+const val tagUserPhoto = "pic"
+const val tagUserMail = "mail"
+const val tagPuzzleNew = "times"
+const val tagPuzzleOld = "puzzle"
+
+
 object UserManager {
 
-    var prefs : SharedPreferences? = App.instance?.getSharedPreferences(
-        App.applicationContext().getString(R.string.user_manager_token), 0)
+    var prefs : SharedPreferences? = App.instance?.getSharedPreferences(tagUserToken, 0)
 
 
     var userToken: String? = null
         get() {
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_token), "" )
+                tagUserToken, "" )
         }
         set(value) {
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_token), value)?.apply().toString()
-            Log.i("UserManager.token", value)
+                tagUserToken, value)?.apply().toString()
         }
 
     var name : String? = null
         get(){
             return  prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_name), "")
+                tagUserName, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_name),value)?.apply().toString()
+                tagUserName,value)?.apply().toString()
             Log.i("UserManager.Name", value)
         }
 
     var picture : String? = null
         get(){
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_pic), "")
+                tagUserPhoto, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_pic),value)?.apply().toString()
+                tagUserPhoto,value)?.apply().toString()
             Log.i("UserManager.Picture", value)
         }
 
     var uid : String? = null
         get(){
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_uid), "")
+                tagUserUid, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_uid),value)?.apply().toString()
+                tagUserUid,value)?.apply().toString()
             Log.i("UserManager.Uid", value)
         }
 
     var mail : String? = null
         get(){
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_mail), "")
+                tagUserMail, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_mail),value)?.apply().toString()
+                tagUserMail,value)?.apply().toString()
             Log.i("UserManager.mail", value)
         }
 
@@ -81,11 +88,11 @@ object UserManager {
     var getPuzzleNewUser : String? = null
         get(){
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_times), "")
+                tagPuzzleNew, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_times),value)?.apply().toString()
+                tagPuzzleNew,value)?.apply().toString()
             Log.i("UserManager.times", value!!.toString())
         }
 
@@ -93,16 +100,17 @@ object UserManager {
     var getPuzzleOldUser: String? = null
         get(){
             return prefs?.getString(
-                App.applicationContext().getString(R.string.user_manager_puzzle), "")
+                tagPuzzleOld, "")
         }
         set(value){
             field = prefs?.edit()?.putString(
-                App.applicationContext().getString(R.string.user_manager_puzzle),value)?.apply().toString()
+                tagPuzzleOld,value)?.apply().toString()
             Log.i("UserManager.puzzle", value!!.toString())
         }
 
     fun isLogin(): Boolean{
 
+        Logger.i("UserManager uid = $uid")
         uid?.let {
             USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS)
                 .document(it)

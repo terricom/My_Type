@@ -5,45 +5,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
+import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.toDateFormat
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 class GoalSettingViewModel: ViewModel() {
     val userUid = UserManager.uid
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val sdfDetail = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-    val _date = MutableLiveData<Date>()
+    private val _date = MutableLiveData<Date>()
     val date: LiveData<Date>
         get() = _date
 
-    val _addGoal = MutableLiveData<Boolean>()
-    val addGoal: LiveData<Boolean>
-        get() = _addGoal
+    private val _isAddGoal2Firebase = MutableLiveData<Boolean>()
+    val isAddGoal2Firebase: LiveData<Boolean>
+        get() = _isAddGoal2Firebase
 
-    fun addGoal2FirebaseSuccess(){
-        _addGoal.value = true
+    private fun addGoal2FirebaseSuccess(){
+        _isAddGoal2Firebase.value = true
     }
-    fun addGoal2FirebaseFail(){
-        _addGoal.value = false
+    private fun addGoal2FirebaseFail(){
+        _isAddGoal2Firebase.value = false
     }
-    fun addGoal2FirebaseComplete(){
-        _addGoal.value = null
-    }
-
-    val _updateGoal = MutableLiveData<Goal>()
-    val updateGoal : LiveData<Goal>
-        get() = _updateGoal
-
-    fun updateGoal(goal: Goal){
-        _updateGoal.value = goal
-    }
-
 
     val cheerUp = MutableLiveData<String>()
     val water =  MutableLiveData<Float>()
@@ -55,7 +42,6 @@ class GoalSettingViewModel: ViewModel() {
     var weight = MutableLiveData<Float>()
     var bodyFat = MutableLiveData<Float>()
     var muscle = MutableLiveData<Float>()
-    val goalDocId = MutableLiveData<String>()
 
     fun setDate(date: Date){
         _date.value = date
@@ -65,103 +51,81 @@ class GoalSettingViewModel: ViewModel() {
         return try {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
-            0.0f
+            0f
         }
     }
 
     @InverseMethod("convertStringToFloat")
     fun floatToString(value:Float) = value.toString()
 
-    val db = FirebaseFirestore.getInstance()
-    val user = db.collection("Users")
-
     init {
         setDate(Date())
     }
 
-    fun addGoal(){
 
-        //發文功能
+    fun addGoal(documentId : String){
+
         val goalContent = hashMapOf(
-            "timestamp" to FieldValue.serverTimestamp(),
-            "deadline" to Timestamp.valueOf("${sdf.format(date.value)} 12:00:00.000000000"),
-            "water" to water.value,
-            "oil" to oil.value,
-            "vegetable" to vegetable.value,
-            "protein" to protein.value,
-            "fruit" to fruit.value,
-            "carbon" to carbon.value,
-            "weight" to weight.value,
-            "bodyFat" to bodyFat.value,
-            "muscle" to muscle.value,
-            "cheerUp" to cheerUp.value
+            FirebaseKey.TIMESTAMP to FieldValue.serverTimestamp(),
+            FirebaseKey.COLUMN_GOAL_DEADLINE to Timestamp.valueOf(
+                date.value.toDateFormat(
+                    FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF)
+            ),
+            FirebaseKey.COLUMN_GOAL_WATER to water.value,
+            FirebaseKey.COLUMN_GOAL_OIL to oil.value,
+            FirebaseKey.COLUMN_GOAL_VEGETABLE to vegetable.value,
+            FirebaseKey.COLUMN_GOAL_PROTEIN to protein.value,
+            FirebaseKey.COLUMN_GOAL_FRUIT to fruit.value,
+            FirebaseKey.COLUMN_GOAL_CARBON to carbon.value,
+            FirebaseKey.COLUMN_GOAL_WEIGHT to weight.value,
+            FirebaseKey.COLUMN_GOAL_BODY_FAT to bodyFat.value,
+            FirebaseKey.COLUMN_GOAL_MUSCLE to muscle.value,
+            FirebaseKey.COLUMN_GOAL_CHEER_UP to cheerUp.value
         )
 
-        if (userUid!!.isNotEmpty()){
+        if (UserManager.isLogin()){
 
-            val goal = user
-                .document(userUid).collection("Goal")
-                .orderBy("deadline", Query.Direction.DESCENDING)
+            UserManager.USER_REFERENCE?.let {
 
-            goal.get()
-                .addOnSuccessListener { result->
-                    val items = mutableListOf<Goal>()
-                    for (doc in result){
-                        val goal = doc.toObject(Goal::class.java)
-                        items.add(goal)
+                when (documentId){
+
+                    "" -> {
+
+                        it.collection(FirebaseKey.COLLECTION_GOAL)
+                            .orderBy(FirebaseKey.COLUMN_GOAL_DEADLINE, Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener { result->
+
+                                val items = mutableListOf<Goal>()
+                                for (doc in result){
+                                    val goal = doc.toObject(Goal::class.java)
+                                    items.add(goal)
+                                }
+                                if (items.isEmpty()){
+
+                                    it.collection(FirebaseKey.COLLECTION_GOAL).document().set(goalContent)
+                                    addGoal2FirebaseSuccess()
+
+                                }else {
+                                    //現在日期早於最近一筆目標日期
+                                    if (items[0].deadline!!.time > Date().time){
+                                        addGoal2FirebaseFail()
+                                    } else {
+                                        it.collection(FirebaseKey.COLLECTION_GOAL).document().set(goalContent)
+                                        addGoal2FirebaseSuccess()
+                                    }
+                                }
+                            }
                     }
-                    if (items.isEmpty()){
-                        user.document(userUid).collection("Goal").document().set(goalContent)
+
+                    else -> {
+
+                        it.collection(FirebaseKey.COLLECTION_GOAL).document(documentId).update(goalContent)
                         addGoal2FirebaseSuccess()
-                    }else {
-                        if (items[0].deadline!!.time > Date().time //現在日期早於最近一筆目標日期
-//                            && sdf.format(items[0].deadline)!= sdf.format(date.value)
-//                            && sdf.format(items[0].deadline)!= sdf.format(Date())
-                        ){
-                            addGoal2FirebaseFail()
-                        } else {
-                            user.document(userUid).collection("Goal").document().set(goalContent)
-                            addGoal2FirebaseSuccess()
-                        }
                     }
-
                 }
+            }
         }
-
-
     }
 
-    fun adjustGoal(){
-
-        //發文功能
-        val goalContent = hashMapOf(
-            "timestamp" to FieldValue.serverTimestamp(),
-            "deadline" to Timestamp.valueOf("${sdf.format(date.value)} 12:00:00.000000000"),
-            "water" to water.value,
-            "oil" to oil.value,
-            "vegetable" to vegetable.value,
-            "protein" to protein.value,
-            "fruit" to fruit.value,
-            "carbon" to carbon.value,
-            "weight" to weight.value,
-            "bodyFat" to bodyFat.value,
-            "muscle" to muscle.value,
-            "cheerUp" to cheerUp.value
-        )
-
-        if (userUid!!.isNotEmpty()){
-
-            val goal = user
-                .document(userUid).collection("Goal")
-                .orderBy("deadline", Query.Direction.DESCENDING)
-
-            goal.get()
-                .addOnSuccessListener { result->
-                    user.document(userUid).collection("Goal").document(goalDocId.value!!).set(goalContent)
-                    addGoal2FirebaseSuccess()
-                }
-        }
-
-
-    }
 }

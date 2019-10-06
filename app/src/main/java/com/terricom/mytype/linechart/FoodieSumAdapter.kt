@@ -10,33 +10,27 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.FoodieSum
 import com.terricom.mytype.databinding.ItemLinechartFoodiesumBinding
-import java.text.SimpleDateFormat
+import com.terricom.mytype.toDemicalPoint
 
-class FoodieSumAdapter(val viewModel: LinechartViewModel
-//                    , private val onClickListener: OnClickListener
+class FoodieSumAdapter(
+    val viewModel: LineChartViewModel
 ) : ListAdapter<FoodieSum, FoodieSumAdapter.ProductViewHolder>(DiffCallback) {
 
-//    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
-//        fun onClick(foodie: Foodie) = clickListener(foodie)
-//    }
+    class ProductViewHolder(private var binding: ItemLinechartFoodiesumBinding):
+        RecyclerView.ViewHolder(binding.root), LifecycleOwner {
 
-
-    class ProductViewHolder(private var binding: ItemLinechartFoodiesumBinding): RecyclerView.ViewHolder(binding.root),
-        LifecycleOwner {
-
-        fun bind(foodieSum: FoodieSum, viewModel: LinechartViewModel) {
+        fun bind(foodieSum: FoodieSum, viewModel: LineChartViewModel) {
 
             binding.lifecycleOwner =this
             binding.foodieSum = foodieSum
             binding.viewModel = viewModel
-            val sdf = SimpleDateFormat("yyyy.")
-            binding.time.text = foodieSum.day!!.replace("-", ".")
-            binding.numberWater.text = if (foodieSum.water.toString().split(".")[0] == null || foodieSum.water.toString().split(".")[0] == "null" ) " - " else "%.1f".format(foodieSum.water)
-            binding.numberFruit.text = if (foodieSum.fruit.toString() == null || foodieSum.fruit.toString() == "null") " - " else "%.1f".format(foodieSum.fruit)
-            binding.numberVegetable.text = if (foodieSum.vegetable.toString() == null || foodieSum.vegetable.toString() == "null")" - " else "%.1f".format(foodieSum.vegetable)
-            binding.numberOil.text = if (foodieSum.oil.toString() == null || foodieSum.oil.toString() == "null")" - " else "%.1f".format(foodieSum.oil)
-            binding.numberProtein.text = if (foodieSum.protein.toString().split(".")[0]==null || foodieSum.protein.toString().split(".")[0]=="null") " - " else "%.1f".format(foodieSum.protein)
-            binding.numberCarbon.text = if (foodieSum.carbon.toString() == null || foodieSum.carbon.toString() == "null") " - " else "%.1f".format(foodieSum.carbon)
+            binding.time.text = foodieSum.day.replace("-", ".")
+            binding.numberWater.text = foodieSum.water.toDemicalPoint(1)
+            binding.numberFruit.text = foodieSum.fruit.toDemicalPoint(1)
+            binding.numberVegetable.text = foodieSum.vegetable.toDemicalPoint(1)
+            binding.numberOil.text = foodieSum.oil.toDemicalPoint(1)
+            binding.numberProtein.text = foodieSum.protein.toDemicalPoint(1)
+            binding.numberCarbon.text = foodieSum.carbon.toDemicalPoint(1)
 
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
@@ -82,7 +76,6 @@ class FoodieSumAdapter(val viewModel: LinechartViewModel
 
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
         val product = getItem(position)
 
         product.let {

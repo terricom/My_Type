@@ -2,6 +2,7 @@
     <string name="app_name">種天菜</string>
     <string name="login_google">Google 登入</string>
     <string name="login_facebook">Facebook 登入</string>
+    <string name="login_fail_toast">登入失敗，請稍後再試</string>
     <string name="setting_dream_board">你的夢想版是空的 \n 快上傳你的夢想吧！</string>
     <string name="upload_dream_board">上傳夢想版</string>
     <string name="foodie_hello">Hi 今天吃得好嗎？</string>
@@ -26,6 +27,12 @@
     <string name="login_greet">每天都值得把自己當成天菜來愛</string>
     <string name="foodie_title_nutrition">選擇營養</string>
     <string name="foodie_add_food">新增食物</string>
+    <string name="foodie_upload_permission_hint">記得到系統設定相機和相簿權限才能上傳喔</string>
+    <string name="foodie_show_gallery_select_picture">Select Picture</string>
+    <string name="foodie_show_gallery_intent_type">image/*</string>
+    <string name="foodie_start_camera_provider">.provider</string>
+    <string name="foodie_start_camera_camera">Camera</string>
+    <string name="foodie_start_camera_jpg">.jpg</string>
     <string name="shape_weight">體  重</string>
     <string name="shape_body_fat">體脂率</string>
     <string name="shape_body_water">含水量</string>
@@ -114,9 +121,22 @@
     <string name="query_title_average">平均成就</string>
     <string name="login_success">登入成功\n歡迎回來</string>
 
+    <string name="dialog_daily_reference">每日份量參考</string>
+    <string name="dialog_body_reference">身體數據圖示</string>
+    <string name="dialog_water">水分 : 240 毫升</string>
+    <string name="dialog_oil">脂肪 : 一大匙</string>
+    <string name="dialog_vegetable">蔬菜 : 一杯生蔬菜</string>
+    <string name="dialog_protein">蛋白質 : 手掌大小</string>
+    <string name="dialog_fruit">水果 : 中型水果</string>
+    <string name="dialog_carbon">醣類 : 拳頭大小</string>
+    <string name="dialog_image_definition">圖示說明</string>
+    <string name="dialog_goal_number">目標份量</string>
+    <string name="dialog_average_contribution">平均貢獻</string>
+    <string name="dialog_nutrition_represent">代表營養</string>
     <string name="timestamp_dayend">%s 23:59:59.999999999</string>
     <string name="timestamp_daybegin">%s 00:00:00.000000000</string>
     <string name="year_month_date">%s-%s-%s</string>
+    <string name="hour_minute">%s:%s</string>
 
     <string name="simpledateformat_yyyy_MM_dd">yyyy-MM-dd</string>
     <string name="simpledateformat_MM_dd">MM-dd</string>
@@ -124,6 +144,9 @@
     <string name="simpledateformat_HH_mm">HH:mm</string>
     <string name="simpledateformat_HH_mm_ss_fffffffff">HH:mm:ss.%s</string>
     <string name="simpledateformat_yyyy_MM_dd_HHmmss">yyyy-MM-dd-HHmmss</string>
+    <string name="simpledateformat_date_time_to_timestamp">%s %s:00.000000000</string>
+    <string name="simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff">yyyy-MM-dd HH:mm:ss.%s</string>
+
 
     <string name="float_round_one">%.1f</string>
     <string name="float_round_zero">%.0f</string>
@@ -142,17 +165,23 @@
     <string name="foodie_example_protein">2.0</string>
     <string name="foodie_example_carbon">0.5</string>
 
-    <string name="user_manager_token">token</string>
-    <string name="user_manager_name">name</string>
-    <string name="user_manager_uid">uid</string>
-    <string name="user_manager_pic">pic</string>
-    <string name="user_manager_mail">mail</string>
-    <string name="user_manager_times">times</string>
-    <string name="user_manager_puzzle">puzzle</string>
-
     <string name="firebase_docid">docId</string>
     <string name="hash_tag">#</string>
     <string name="firebase_storage_reference">images/users/%s/%s.jpg</string>
 
+    <string name="notification_title">好的開始是成功的一半</string>
+    <string name="notification_today_goal">距離今日目標\n</string>
+    <string name="notification_goal_water">💧 飲水量還差 %s 份</string>
+    <string name="notification_goal_water_reach">💧 飲水量完成 %s 份</string>
+    <string name="notification_goal_oil">🥑 油脂還差 %s 份\n</string>
+    <string name="notification_goal_oil_reach">🥑 油脂完成 %s 份\n</string>
+    <string name="notification_goal_vegetable">🥦 蔬菜還差 %s 份</string>
+    <string name="notification_goal_vegetable_reach">🥦 蔬菜完成 %s 份</string>
+    <string name="notification_goal_protein">🍳 蛋白質還差 %s 份\n</string>
+    <string name="notification_goal_protein_reach">🍳 蛋白質完成 %s 份\n</string>
+    <string name="notification_goal_fruit">🍎 水果還差 %s 份</string>
+    <string name="notification_goal_fruit_reach">🍎 水果完成 %s 份</string>
+    <string name="notification_goal_carbon">🥔 醣類還差 %s 份\n💪 辛苦了，下午繼續加油！</string>
+    <string name="notification_goal_carbon_reach">🥔 醣類完成 %s 份\n💪 辛苦了，下午繼續加油！</string>
 
 </resources>

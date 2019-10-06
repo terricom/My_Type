@@ -18,13 +18,13 @@
                 android:id="@+id/button_save_calendar"
                 android:layout_width="30dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="30dp"
                 android:background="@drawable/tag_right_corners"
                 android:backgroundTint="@color/colorAllTransparent"
                 android:tint="@color/colorMyType"
                 app:layout_constraintBottom_toBottomOf="@+id/diary_date"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toTopOf="@+id/diary_date" />
+
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
@@ -92,6 +92,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2019-09-10" />
+
+        <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:letterSpacing="0.15"
+                android:text="2019-09-10"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/diary_date"
+                app:layout_constraintEnd_toEndOf="@+id/diary_date"
+                app:layout_constraintStart_toStartOf="@+id/diary_date"
+                app:layout_constraintTop_toTopOf="@+id/diary_date" />
 
         <ImageView
                 android:id="@+id/button_expand_arrow"

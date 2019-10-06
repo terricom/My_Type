@@ -14,12 +14,6 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:background="@color/colorWhite">
-        <!--<WebView android:layout_width="0dp" android:layout_height="0dp"-->
-                 <!--android:id="@+id/os_view"-->
-                 <!--app:layout_constraintEnd_toEndOf="@+id/foodiephoto"-->
-                 <!--app:layout_constraintStart_toStartOf="@+id/foodiephoto"-->
-                 <!--app:layout_constraintTop_toTopOf="@+id/foodiephoto"-->
-                 <!--app:layout_constraintBottom_toBottomOf="@+id/foodiephoto"></WebView>-->
 
         <ScrollView
                 android:id="@+id/foodie_scroll"
@@ -64,42 +58,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/icon_back" />
 
-                <!--                <ImageView-->
-                <!--                        android:id="@+id/imageView10"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="0dp"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/upload_icon"-->
-                <!--                        app:layout_constraintEnd_toEndOf="@+id/upload_icon"-->
-                <!--                        app:layout_constraintStart_toStartOf="@+id/upload_icon"-->
-                <!--                        app:layout_constraintTop_toTopOf="@+id/upload_icon"-->
-                <!--                        app:srcCompat="@drawable/calendar_date" />-->
-
-                <!--                <ImageView-->
-                <!--                        android:id="@+id/buttonUploadPhoto"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="28dp"-->
-                <!--                        android:layout_marginStart="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:background="@drawable/calendar_date"-->
-                <!--                        android:backgroundTint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#00FFFFFF") :Color.parseColor("#209387")}'-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/editTime"-->
-                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                        app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                        app:layout_constraintStart_toEndOf="@+id/editTime"-->
-                <!--                        app:layout_constraintTop_toTopOf="@+id/editTime" />-->
-
-                <!--                <ImageView-->
-                <!--                        android:id="@+id/upload_icon"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="0dp"-->
-                <!--                        android:paddingTop="3dp"-->
-                <!--                        android:tint='@{viewModel.addPhoto.booleanValue() == true ?Color.parseColor("#209387") :Color.parseColor("#FFFFFF")}'-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/buttonUploadPhoto"-->
-                <!--                        app:layout_constraintEnd_toEndOf="@+id/buttonUploadPhoto"-->
-                <!--                        app:layout_constraintStart_toStartOf="@+id/buttonUploadPhoto"-->
-                <!--                        app:layout_constraintTop_toTopOf="@+id/buttonUploadPhoto"-->
-                <!--                        app:srcCompat="@drawable/icon_image" />-->
-
                 <TextView
                         android:id="@+id/editDate"
                         android:layout_width="0dp"
@@ -125,32 +83,6 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                <!--                <EditText-->
-                <!--                        android:id="@+id/editDate"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="28dp"-->
-                <!--                        android:layout_marginStart="16dp"-->
-                <!--                        android:layout_marginTop="60dp"-->
-                <!--                        android:background="@drawable/calendar_date"-->
-                <!--                        android:ems="10"-->
-                <!--                        android:fontFamily="@font/noto_sans"-->
-                <!--                        android:hint="@{Converter.dateToString(viewModel.date)}"-->
-                <!--                        android:inputType="date"-->
-                <!--                        android:paddingLeft="@dimen/elevation_all"-->
-                <!--                        android:paddingTop="@dimen/elevation_all"-->
-                <!--                        android:paddingRight="@dimen/elevation_all"-->
-                <!--                        android:paddingBottom="@dimen/elevation_all"-->
-                <!--                        android:maxLength="10"-->
-                <!--                        android:digits="1234567890-"-->
-                <!--                        android:text="@{Converter.dateToString(viewModel.date)}"-->
-                <!--                        android:textAlignment="center"-->
-                <!--                        android:textColor="@color/colorMyType"-->
-                <!--                        android:textColorHint="@color/colorMyType"-->
-                <!--                        android:textSize="@dimen/text_content"-->
-                <!--                        app:layout_constraintEnd_toStartOf="@+id/editTime"-->
-                <!--                        app:layout_constraintHorizontal_bias="0.5"-->
-                <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
                 <TextView
                         android:id="@+id/editTime"
@@ -220,14 +152,13 @@
                         app:layout_constraintTop_toBottomOf="@+id/nutritionsMoveOut" />
 
                 <ImageView
-                        android:id="@+id/button_shape_show_info"
+                        android:id="@+id/button_foodie_show_info"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/icon_info"
                         app:layout_constraintBottom_toBottomOf="@+id/foodie_title_nutrition"
                         app:layout_constraintStart_toEndOf="@+id/foodie_title_nutrition"
                         app:layout_constraintTop_toTopOf="@+id/foodie_title_nutrition"
@@ -480,28 +411,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/foodiePhoto">
 
-                    <!--                    <EditText-->
-                    <!--                            android:id="@+id/editFood"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:layout_gravity="center_vertical"-->
-                    <!--                            android:layout_marginStart="@dimen/elevation_all"-->
-                    <!--                            android:background="@drawable/calendar_date"-->
-                    <!--                            android:fontFamily="@font/noto_sans"-->
-                    <!--                            android:foregroundGravity="center_vertical"-->
-                    <!--                            android:hint="@string/foodie_add_food"-->
-                    <!--                            android:maxLength="10"-->
-                    <!--                            android:paddingHorizontal="5dp"-->
-                    <!--                            android:paddingVertical="1dp"-->
-                    <!--                            android:singleLine="true"-->
-                    <!--                            android:text="@={viewModel.editFood}"-->
-                    <!--                            android:textAlignment="center"-->
-                    <!--                            android:textColor="@color/colorMyType"-->
-                    <!--                            android:textColorHint="@color/colorMyType"-->
-                    <!--                            android:textSize="@dimen/text_content" />-->
-
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/foods_transported_recycler"
+                            android:id="@+id/recycler_added_foods"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_1sdp"
@@ -540,26 +451,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/chosed_food"
                         tools:listitem="@layout/item_foodie_food" />
 
-                <!--                <EditText-->
-                <!--                        android:id="@+id/add_food"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:background="@drawable/calendar_date"-->
-                <!--                        android:fontFamily="@font/noto_sans"-->
-                <!--                        android:hint="@string/foodie_add_food"-->
-                <!--                        android:paddingHorizontal="5dp"-->
-                <!--                        android:paddingVertical="1dp"-->
-                <!--                        android:text="@={viewModel.addFood}"-->
-                <!--                        android:textAlignment="center"-->
-                <!--                        android:textColor="@color/colorMyType"-->
-                <!--                        android:textColorHint="@color/colorMyType"-->
-                <!--                        android:textSize="@dimen/text_content"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/button_add_food"-->
-                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_food" />-->
-
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/nutrition_recycler"
                         android:layout_width="0dp"
@@ -590,7 +481,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/button_coconut">
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/nutritions_transported_recycler"
+                            android:id="@+id/recycler_added_nutritions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_1sdp"
@@ -615,36 +506,6 @@
                         app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"
                         app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"
                         app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />
-
-                <!--                <EditText-->
-                <!--                        android:id="@+id/add_nutrition"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginTop="8dp"-->
-                <!--                        android:layout_marginEnd="16dp"-->
-                <!--                        android:background="@drawable/calendar_date"-->
-                <!--                        android:fontFamily="@font/noto_sans"-->
-                <!--                        android:hint="@string/diary_add_nutrition"-->
-                <!--                        android:paddingHorizontal="5dp"-->
-                <!--                        android:paddingVertical="1dp"-->
-                <!--                        android:text="@={viewModel.addNutrition}"-->
-                <!--                        android:textColor="@color/colorMyType"-->
-                <!--                        android:textColorHint="@color/colorMyType"-->
-                <!--                        android:textSize="@dimen/text_content"-->
-                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                        app:layout_constraintTop_toBottomOf="@+id/chosed_nutrition" />-->
-
-                <!--                <TextView-->
-                <!--                        android:id="@+id/dag_food_hint"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="8dp"-->
-                <!--                        android:fontFamily="@font/noto_sans"-->
-                <!--                        android:text="@string/foodie_drag_food_hint"-->
-                <!--                        android:textColor="@color/colorWhite"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/chosed_food"-->
-                <!--                        app:layout_constraintStart_toStartOf="@+id/chosed_food"-->
-                <!--                        app:layout_constraintTop_toTopOf="@+id/chosed_food" />-->
 
                 <LinearLayout
                         android:id="@+id/foodsMoveOut"
@@ -732,18 +593,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/editDate">
 
                 </TimePicker>
-
-                <!--                <TextView-->
-                <!--                        android:id="@+id/drag_nutrition_hint"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginStart="8dp"-->
-                <!--                        android:fontFamily="@font/noto_sans"-->
-                <!--                        android:text="@string/foodie_drag_nutrition_hint"-->
-                <!--                        android:textColor="@color/colorWhite"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="@+id/chosed_nutrition"-->
-                <!--                        app:layout_constraintStart_toStartOf="@+id/chosed_nutrition"-->
-                <!--                        app:layout_constraintTop_toTopOf="@+id/chosed_nutrition" />-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

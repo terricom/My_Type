@@ -393,8 +393,8 @@ class FoodieViewModel: ViewModel() {
             updatePuzzle()
         }
         setCurrentDate(Date())
-        editDateClickedAgain()
-        editTimeClickedAgain()
+        editDateClicked()
+        editTimeClicked()
     }
 
     private fun getFoodAndNutritionList(){

@@ -135,7 +135,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             this.showingDateCalendar = currentDateCalendar
             this.listener = this@ShapeCalendarFragment
             this.recordedDates = recordedDate.value ?: listOf()
-            this.selectedDateBefore = selectedDayOut
+            this.selectedDateBefore = selectDateOut.value
         }
 
         gridRecycler.adapter = calendarAdapter
@@ -144,7 +144,6 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
     }
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    var selectedDayOut: Date = Date()
     val thisMonth: List<String> ?= null
 
 
@@ -234,10 +233,21 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         return currentDateCalendar.get(Calendar.DAY_OF_MONTH)
     }
 
+    private var _selectDateOut = MutableLiveData<Date>()
+    val selectDateOut: LiveData<Date>
+        get() = _selectDateOut
 
-    var selectDateOut: Date ?= null
+    fun setSelecteDate(date: Date){
+        _selectDateOut.value = date
+    }
+
+    init {
+        setSelecteDate(Date())
+    }
+
 
     override fun onDateSelect(selectDate: Date) {
+        Logger.i("onDateSelect = $selectDate")
         val tempAdapter = gridRecycler.adapter as ShapeCalendarAdapter
         tempAdapter.selectedDate = selectDate
         tempAdapter.notifyDataSetChanged()
@@ -246,7 +256,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         tempCalendar.time = selectDate
         filterdate(selectDate)
         tempAdapter.recordedDates = recordedDate.value!!
-        selectDateOut = selectDate
+        setSelecteDate(selectDate)
         setHeader(tempCalendar)
     }
 
@@ -261,9 +271,6 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             buttonNextLarge.visibility = View.VISIBLE
         }
     }
-
-
-
 
     fun setEventHandler(eventHandler: EventBetweenCalendarAndFragment) {
         this.eventHandler = eventHandler

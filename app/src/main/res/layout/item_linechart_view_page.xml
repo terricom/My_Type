@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.terricom.mytype.linechart.LinechartViewModel" />
+            type="com.terricom.mytype.linechart.LineChartViewModel" />
         <variable
                 name="chartEntity"
                 type="com.terricom.mytype.linechart.ChartEntity" />

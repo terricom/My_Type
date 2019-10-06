@@ -16,7 +16,7 @@
     <action android:id="@+id/navigate_to_diary_fragment" app:destination="@id/diaryFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
-    <action android:id="@+id/navigate_to_linechart_fragment" app:destination="@id/linechartFragment"
+    <action android:id="@+id/navigate_to_linechart_fragment" app:destination="@id/lineChartFragment"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
@@ -52,7 +52,7 @@
             />
     <fragment android:id="@+id/diaryFragment" android:name="com.terricom.mytype.diary.DiaryFragment"
               android:label="DiaryFragment"/>
-    <fragment android:id="@+id/linechartFragment" android:name="com.terricom.mytype.linechart.LinechartFragment"
+    <fragment android:id="@+id/lineChartFragment" android:name="com.terricom.mytype.linechart.LineChartFragment"
               android:label="LinechartFragment"/>
     <fragment android:id="@+id/profileFragment" android:name="com.terricom.mytype.profile.ProfileFragment"
               android:label="HarvestFragment"/>
