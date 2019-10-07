@@ -13,7 +13,6 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
-import com.terricom.mytype.profile.CardAvatarOutlineProvider
 import com.terricom.mytype.tools.Logger
 import java.sql.Timestamp
 import java.util.*

@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentProfileBinding
-import com.terricom.mytype.tools.Logger
-
 
 
 class ProfileFragment: Fragment() {
@@ -35,7 +33,7 @@ class ProfileFragment: Fragment() {
             attachToRecyclerView(binding.recyclerPuzzle)
         }
 
-        binding.recyclerPuzzle.adapter = PazzleAdapter(viewModel)
+        binding.recyclerPuzzle.adapter = PuzzleAdapter(viewModel)
         binding.recyclerPuzzle.setOnScrollChangeListener { _, _, _, _, _ ->
             viewModel.onGalleryScrollChange(
                 binding.recyclerPuzzle.layoutManager,
@@ -43,10 +41,10 @@ class ProfileFragment: Fragment() {
             )
         }
 
-        (binding.recyclerGoal.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
+        (binding.recyclerGoal.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.recyclerGoal.setHasFixedSize(true)
 
-        viewModel.getPazzleOrNot.observe(this, Observer {
+        viewModel.isPuzzleGot.observe(this, Observer {
             if (it){
                 binding.profileGoalSettingReference.setOnClickListener {
                     findNavController().navigate(NavigationDirections.navigateToGoalSettingDialog())
@@ -61,19 +59,45 @@ class ProfileFragment: Fragment() {
             }
         })
 
+        viewModel.isGoalExpanded.observe(this, Observer {
+
+            if (it == true){
+
+                viewModel.goal.observe(this, Observer {
+
+                    it?.let {
+
+                        when (it.size){
+
+                            1 -> binding.recyclerGoal.minimumHeight =
+                                App.applicationContext().resources.getDimension(R.dimen.min_height_goal_one).toInt()
+                            else -> binding.recyclerGoal.minimumHeight =
+                                App.applicationContext().resources.getDimension(R.dimen.min_height_goal_one).toInt()*it.size
+                        }
+
+                    }
+                })
+
+            } else if (it == false){
+
+                binding.recyclerGoal.minimumHeight =
+                    App.applicationContext().resources.getDimension(R.dimen.profile_recycler_goal_min).toInt()
+
+            }
+        })
+
         binding.profilePuzzleReference.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
                 value.message = getString(R.string.profile_puzzle_info)
             }))
         }
 
-        viewModel.puzzle.value?.let { pazzleList ->
+        viewModel.puzzle.value?.let { puzzleList ->
             binding.recyclerPuzzle
-                .scrollToPosition(pazzleList.size * 100)
+                .scrollToPosition(puzzleList.size * 100)
         }
 
         viewModel.goal.observe(this, Observer {
-            Logger.i("viewModel.goal.observe = $it")
             if (it.isNotEmpty()){
                 binding.recyclerGoal.adapter = GoalAdapter(viewModel, GoalAdapter.OnClickListener{
                     findNavController().navigate(NavigationDirections.navigateToGoalSettingFragment(it))
@@ -88,8 +112,7 @@ class ProfileFragment: Fragment() {
             //告訴使用者網路無法使用
         }
 
-        viewModel.getGoalOrNot.observe(this, Observer {
-            Logger.i("viewModel.getGoalOrNot.observe = $it")
+        viewModel.isGoalGot.observe(this, Observer {
             if (it){
                 binding.iconMyType.visibility = View.INVISIBLE
                 binding.profileHintAddGoal.visibility = View.INVISIBLE
