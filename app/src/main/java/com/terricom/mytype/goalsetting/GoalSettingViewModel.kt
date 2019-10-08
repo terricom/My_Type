@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.toDateFormat
+import com.terricom.mytype.tools.toDateFormat
 import java.sql.Timestamp
 import java.util.*
 
@@ -69,7 +69,8 @@ class GoalSettingViewModel: ViewModel() {
             FirebaseKey.TIMESTAMP to FieldValue.serverTimestamp(),
             FirebaseKey.COLUMN_GOAL_DEADLINE to Timestamp.valueOf(
                 date.value.toDateFormat(
-                    FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF)
+                    FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
+                )
             ),
             FirebaseKey.COLUMN_GOAL_WATER to water.value,
             FirebaseKey.COLUMN_GOAL_OIL to oil.value,

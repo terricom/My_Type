@@ -1,9 +1,10 @@
-package com.terricom.mytype
+package com.terricom.mytype.tools
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -11,13 +12,25 @@ fun Date?.toDateFormat(dateFormat: Int): String {
 
     return SimpleDateFormat(
         when (dateFormat){
-            FORMAT_MM_DD -> App.applicationContext().getString(R.string.simpledateformat_MM_dd)
-            FORMAT_YYYY_MM -> App.applicationContext().getString(R.string.simpledateformat_yyyy_MM)
-            FORMAT_YYYY_MM_DD -> App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd)
-            FORMAT_HH_MM -> App.applicationContext().getString(R.string.simpledateformat_HH_mm)
-            FORMAT_HH_MM_SS_FFFFFFFFF -> App.applicationContext().getString(R.string.simpledateformat_HH_mm_ss_fffffffff, "000000000")
-            FORMAT_YYYY_MM_DDHHMMSS -> App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd_HHmmss)
-            FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF -> App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff, "000000000")
+            FORMAT_MM_DD -> App.applicationContext().getString(
+                R.string.simpledateformat_MM_dd
+            )
+            FORMAT_YYYY_MM -> App.applicationContext().getString(
+                R.string.simpledateformat_yyyy_MM
+            )
+            FORMAT_YYYY_MM_DD -> App.applicationContext().getString(
+                R.string.simpledateformat_yyyy_MM_dd
+            )
+            FORMAT_HH_MM -> App.applicationContext().getString(
+                R.string.simpledateformat_HH_mm
+            )
+            FORMAT_HH_MM_SS_FFFFFFFFF -> App.applicationContext().getString(
+                R.string.simpledateformat_HH_mm_ss_fffffffff, "000000000")
+            FORMAT_YYYY_MM_DDHHMMSS -> App.applicationContext().getString(
+                R.string.simpledateformat_yyyy_MM_dd_HHmmss
+            )
+            FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF -> App.applicationContext().getString(
+                R.string.simpledateformat_yyyy_MM_dd_HH_mm_ss_fffffffff, "000000000")
             else -> null
         }
     , Locale.US).format(this)
@@ -42,7 +55,10 @@ fun String?.toFloatFormat(): Float {
 
 fun Float?.toDemicalPoint(point: Int):String {
 
-    return "%.${point}f".format(this ?: 0f)
+    return when (this){
+        null -> "-"
+        else -> "%.${point}f".format(this)
+    }
 }
 
 fun isConnected(): Boolean{

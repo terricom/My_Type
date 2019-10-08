@@ -14,15 +14,9 @@ import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.databinding.ItemQueryFoodieBinding
 
 class QueryAdapter(val viewModel: QueryViewModel
-                      , private val onClickListener: OnClickListener
-) : ListAdapter<Foodie, QueryAdapter.ProductViewHolder>(DiffCallback) {
+) : ListAdapter<Foodie, QueryAdapter.QueryViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (foodie: Foodie) -> Unit) {
-        fun onClick(foodie: Foodie) = clickListener(foodie)
-    }
-
-
-    class ProductViewHolder(private var binding: ItemQueryFoodieBinding): RecyclerView.ViewHolder(binding.root),
+    class QueryViewHolder(private var binding: ItemQueryFoodieBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
         fun bind(food: Foodie, viewModel: QueryViewModel) {
@@ -65,13 +59,13 @@ class QueryAdapter(val viewModel: QueryViewModel
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(ItemQueryFoodieBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueryViewHolder {
+        return QueryViewHolder(ItemQueryFoodieBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
+    override fun onBindViewHolder(holder: QueryViewHolder, position: Int) {
+
         val product = getItem(position)
 
         holder.bind(product, viewModel)
@@ -79,12 +73,12 @@ class QueryAdapter(val viewModel: QueryViewModel
             Navigation.findNavController(it).navigate(NavigationDirections.navigateToFoodieFragment(product))
         }
     }
-    override fun onViewAttachedToWindow(holder: ProductViewHolder) {
+    override fun onViewAttachedToWindow(holder: QueryViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: ProductViewHolder) {
+    override fun onViewDetachedFromWindow(holder: QueryViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.markDetach()
     }

@@ -14,7 +14,10 @@ import com.terricom.mytype.calendar.CalendarComponentLayout
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDateFormat
 
 
 class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAndFragment

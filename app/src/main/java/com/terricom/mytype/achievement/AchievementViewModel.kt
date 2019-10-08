@@ -14,6 +14,7 @@ import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.linechart.ChartEntity
+import com.terricom.mytype.tools.*
 import java.sql.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
@@ -132,7 +133,8 @@ class AchievementViewModel: ViewModel() {
                             items.add(document.toObject(Shape::class.java))
                             items[items.lastIndex].docId = document.id
                             dateList.add(document.toObject(Shape::class.java).timestamp.toDateFormat(
-                                FORMAT_MM_DD))
+                                FORMAT_MM_DD
+                            ))
                         }
 
                         setRecordedDatesOfThisMonth(ArrayList(dateList.distinct()))

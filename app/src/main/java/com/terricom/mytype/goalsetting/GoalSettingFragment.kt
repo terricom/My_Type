@@ -14,6 +14,7 @@ import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentGoalSettingBinding
 import com.terricom.mytype.shaperecord.ShapeCalendarFragment
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.fragment_shape_record_calendar.view.*
 import java.util.*
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentProfileBinding
+import com.terricom.mytype.tools.isConnected
 
 
 class ProfileFragment: Fragment() {

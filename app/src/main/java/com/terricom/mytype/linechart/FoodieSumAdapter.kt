@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.FoodieSum
 import com.terricom.mytype.databinding.ItemLinechartFoodiesumBinding
-import com.terricom.mytype.toDemicalPoint
+import com.terricom.mytype.tools.toDemicalPoint
 
 class FoodieSumAdapter(
     val viewModel: LineChartViewModel

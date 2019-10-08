@@ -13,7 +13,7 @@ import com.terricom.mytype.App
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import com.terricom.mytype.isConnected
+import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 

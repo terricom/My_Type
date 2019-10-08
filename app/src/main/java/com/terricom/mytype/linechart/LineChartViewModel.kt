@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.*
 import com.terricom.mytype.data.*
+import com.terricom.mytype.tools.*
 import java.sql.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
@@ -133,7 +134,8 @@ class LineChartViewModel: ViewModel() {
                             items.add(document.toObject(Foodie::class.java))
                             items[items.lastIndex].docId = document.id
                             dateList.add(document.toObject(Foodie::class.java).timestamp.toDateFormat(
-                                FORMAT_MM_DD))
+                                FORMAT_MM_DD
+                            ))
                         }
 
                         val dateListClean = mutableListOf<String>()
@@ -152,7 +154,8 @@ class LineChartViewModel: ViewModel() {
                                 if (items[i].timestamp.toDateFormat(FORMAT_MM_DD) == eachDay){
 
                                     dateListClean.add(items[i].timestamp.toDateFormat(
-                                        FORMAT_YYYY_MM_DD))
+                                        FORMAT_YYYY_MM_DD
+                                    ))
                                     items[i].water?.let {
                                         waterListTemp.add(it)
                                     }

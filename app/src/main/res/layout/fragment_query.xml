@@ -7,6 +7,7 @@
                 name="viewModel"
                 type="com.terricom.mytype.query.QueryViewModel" />
         <import type="android.graphics.Color"/>
+        <import type="android.view.View"/>
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical" android:layout_width="match_parent"
@@ -53,7 +54,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="10篇貼文"
             android:textAlignment="viewStart"
             android:textColor="@color/colorMyType"
             android:textSize="@dimen/text_content_title"
@@ -72,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="沙拉" />
+            tools:text="@string/foodie_carbon" />
 
     <ImageView
             android:id="@+id/buttonBack2Main"
@@ -108,7 +108,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:hint="0.3"
             android:text="@{String.valueOf(viewModel.averageWater)}"
             android:textColor='@color/colorWater'
             android:paddingHorizontal="2dp"
@@ -123,14 +122,30 @@
 
 
     <TextView
+            android:id="@+id/goal_water2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorWater"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/diff_water"
+            app:layout_constraintStart_toEndOf="@+id/icon_water_goal"
+            app:layout_constraintTop_toTopOf="@+id/diff_water" />
+
+    <TextView
             android:id="@+id/goal_water"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorWater"
-            android:hint="0.3"
             android:text="@{String.valueOf(viewModel.goalWater)}"
+            android:visibility='@{viewModel.goalWater == null ?View.INVISIBLE :View.VISIBLE}'
             android:paddingVertical="@dimen/elevation_all"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
@@ -162,7 +177,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:hint="0.3"
             android:paddingHorizontal="2dp"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.averageVegetable)}"
@@ -180,7 +194,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:hint="0.3"
             android:paddingHorizontal="2dp"
             android:paddingVertical="@dimen/elevation_all"
             android:textColor='@color/colorFruit'
@@ -194,15 +207,32 @@
             app:layout_constraintTop_toTopOf="@+id/icon_water_goal" />
 
     <TextView
+            android:id="@+id/goal_fruit2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorFruit"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/diff_fruit"
+            app:layout_constraintStart_toEndOf="@+id/icon_fruit"
+            app:layout_constraintTop_toTopOf="@+id/diff_fruit" />
+
+    <TextView
             android:id="@+id/goal_fruit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorFruit"
-            android:hint="0.3"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.goalFruit)}"
+            android:visibility='@{viewModel.goalFruit == null ?View.INVISIBLE :View.VISIBLE}'
+
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
@@ -229,15 +259,32 @@
             app:srcCompat="@drawable/icon_fruit" />
 
     <TextView
+            android:id="@+id/goal_vegetable2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorVegetable"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/diff_vegetable"
+            app:layout_constraintStart_toStartOf="@+id/diff_vegetable"
+            app:layout_constraintTop_toTopOf="@+id/diff_vegetable" />
+
+    <TextView
             android:id="@+id/goal_vegetable"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorVegetable"
-            android:hint="0.3"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.goalVegetable)}"
+            android:visibility='@{viewModel.goalVegetable == null ?View.INVISIBLE :View.VISIBLE}'
+
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
@@ -266,7 +313,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:hint="0.3"
             android:paddingHorizontal="2dp"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.averageOil)}"
@@ -281,6 +327,23 @@
             app:layout_constraintTop_toTopOf="@+id/icon_oil_goal" />
 
     <TextView
+            android:id="@+id/goal_oil2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorOil"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/diff_oil"
+            app:layout_constraintStart_toEndOf="@+id/icon_oil_goal"
+            app:layout_constraintTop_toBottomOf="@+id/goal_water" />
+
+    <TextView
             android:id="@+id/goal_oil"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -288,9 +351,10 @@
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorOil"
-            android:hint="0.3"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.goalOil)}"
+            android:visibility='@{viewModel.goalOil == null ?View.INVISIBLE :View.VISIBLE}'
+
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
@@ -321,7 +385,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:hint="0.3"
             android:paddingHorizontal="2dp"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.averageCarbon)}"
@@ -339,7 +402,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:hint="0.3"
             android:paddingHorizontal="2dp"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.averageProtein)}"
@@ -354,15 +416,32 @@
 
 
     <TextView
+            android:id="@+id/goal_protein2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorProtein"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
+            app:layout_constraintEnd_toEndOf="@+id/diff_protein"
+            app:layout_constraintStart_toStartOf="@+id/diff_protein"
+            app:layout_constraintTop_toTopOf="@+id/goal_oil" />
+
+    <TextView
             android:id="@+id/goal_protein"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorProtein"
-            android:hint="0.3"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.goalProtein)}"
+            android:visibility='@{viewModel.goalProtein == null ?View.INVISIBLE :View.VISIBLE}'
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
@@ -390,15 +469,32 @@
             app:srcCompat="@drawable/icon_protein" />
 
     <TextView
+            android:id="@+id/goal_carbon2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/tag_right_corners"
+            android:backgroundTint="@color/colorCarbon"
+            android:paddingVertical="@dimen/elevation_all"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/goal_oil"
+            app:layout_constraintEnd_toEndOf="@+id/diff_carbon"
+            app:layout_constraintStart_toStartOf="@+id/diff_carbon"
+            app:layout_constraintTop_toTopOf="@+id/goal_oil" />
+
+    <TextView
             android:id="@+id/goal_carbon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
             android:background="@drawable/tag_right_corners"
             android:backgroundTint="@color/colorCarbon"
-            android:hint="0.3"
             android:paddingVertical="@dimen/elevation_all"
             android:text="@{String.valueOf(viewModel.goalCarbon)}"
+            android:visibility='@{viewModel.goalCarbon == null ?View.INVISIBLE :View.VISIBLE}'
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"

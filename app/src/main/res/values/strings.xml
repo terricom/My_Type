@@ -184,4 +184,7 @@
     <string name="notification_goal_carbon">🥔 醣類還差 %s 份\n💪 辛苦了，下午繼續加油！</string>
     <string name="notification_goal_carbon_reach">🥔 醣類完成 %s 份\n💪 辛苦了，下午繼續加油！</string>
 
+    <string name="query_foodie_total_number">%d 篇食記</string>
+    <string name="query_foodie_title">#%s</string>
+
 </resources>

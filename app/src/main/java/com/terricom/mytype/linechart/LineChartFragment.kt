@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.terricom.mytype.*
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDateFormat
 import kotlinx.android.synthetic.main.fragment_linechart.*
 import java.sql.Timestamp
 import java.util.*
@@ -45,13 +48,15 @@ class LineChartFragment: Fragment() {
             currentPosition -= 1
             viewModel.setDate(Date(Timestamp.valueOf(App.applicationContext().getString(
                 R.string.timestamp_dayend, Date().toDateFormat(
-                FORMAT_YYYY_MM_DD))).time.plus(604800000L*(currentPosition))))
+                    FORMAT_YYYY_MM_DD
+                ))).time.plus(604800000L*(currentPosition))))
         }
         binding.buttonNext.setOnClickListener {
             currentPosition += 1
             viewModel.setDate(Date(Timestamp.valueOf(App.applicationContext().getString(
                 R.string.timestamp_dayend, Date().toDateFormat(
-                    FORMAT_YYYY_MM_DD))).time.plus(604800000L*(currentPosition))))
+                    FORMAT_YYYY_MM_DD
+                ))).time.plus(604800000L*(currentPosition))))
         }
 
         viewModel.recordDate.observe(this, androidx.lifecycle.Observer {

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.isConnected
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter

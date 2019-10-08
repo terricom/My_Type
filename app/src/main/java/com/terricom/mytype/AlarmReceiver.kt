@@ -17,7 +17,7 @@ import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,7 +106,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 userDocument.collection(FirebaseKey.COLLECTION_FOODIE)
                     .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                     .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp.valueOf(Date().toDateFormat(
-                        FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF)))
+                        FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
+                    )))
                     .get()
                     .addOnSuccessListener {
 
