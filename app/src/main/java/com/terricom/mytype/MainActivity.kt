@@ -32,7 +32,7 @@ class MainActivity : BaseActivity(){
     }
 
     private lateinit var binding: ActivityMainBinding
-    var isFABOpen: Boolean = false
+    private var isFABOpen: Boolean = false
 
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
@@ -91,10 +91,10 @@ class MainActivity : BaseActivity(){
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        val bundle: Bundle = Bundle()
+        val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "userUid = $uid");
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "userName = $name");
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
         firebaseAnalytics!!.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
@@ -177,9 +177,12 @@ class MainActivity : BaseActivity(){
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        val notificationKey = "title"
+        val notificationIntentValue = "activity_app"
+
         alarmMgr = App.applicationContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(App.applicationContext(), AlarmReceiver::class.java).let { intent ->
-            intent.putExtra("title","activity_app")
+            intent.putExtra(notificationKey,notificationIntentValue)
             PendingIntent.getBroadcast(App.applicationContext(), 0, intent, 0)
         }
 
@@ -234,11 +237,11 @@ class MainActivity : BaseActivity(){
         })
     }
 
-    fun hideBottomNavView(){
+    private fun hideBottomNavView(){
         binding.bottomNavView.visibility = View.GONE
     }
 
-    fun hideFABView(){
+    private fun hideFABView(){
         binding.fab.visibility = View.GONE
         binding.fabLayout1.visibility = View.GONE
         binding.fabLayout2.visibility = View.GONE
@@ -253,7 +256,7 @@ class MainActivity : BaseActivity(){
     }
 
 
-    fun showFABMenu() {
+    private fun showFABMenu() {
         when (fabLayout1.y){
             resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
             else -> fabLayout1.visibility = View.VISIBLE

@@ -13,7 +13,7 @@
             android:orientation="vertical">
 
 
-        <!--        android:text="@{String.valueOf(viewModel.date)}"-->
+        <!--        android:text="@{String.valueOf(viewModel.currentDate)}"-->
         <ImageView
                 android:id="@+id/button_save_calendar"
                 android:layout_width="30dp"

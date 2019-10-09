@@ -15,11 +15,6 @@ class ShapeRecordDialog: AppCompatDialogFragment() {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.MessageDialog)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = com.terricom.mytype.databinding.DialogShapeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this

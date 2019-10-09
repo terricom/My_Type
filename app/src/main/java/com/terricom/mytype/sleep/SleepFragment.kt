@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
-import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.FORMAT_HH_MM
 import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDateFormat
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -30,59 +30,58 @@ class SleepFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        //        AndroidThreeTen.init(this)
-
 
         binding = FragmentSleepRecordBinding.inflate(inflater)
         binding.viewModel = viewModel
+
         val sleep = SleepFragmentArgs.fromBundle(arguments!!).selectedProperty
-        if (sleep.timestamp != null){
-//            if (sleep.wakeUp!= null){
-//                viewModel.setWakeTime(Timestamp(sleep.wakeUp.time))
-//            }
-//            if (sleep.goToBed!= null){
-//                viewModel.setSleepTime(Timestamp(sleep.goToBed.time))
-//            }
-//            if (sleep.sleepHr!= null){
-//                viewModel.setSleepHr(sleep.goToBed!!, sleep.wakeUp!!)
-//            }
-            binding.timePicker.setTime(org.threeten.bp.LocalTime.of(SimpleDateFormat("HH").format(sleep.goToBed).toInt()
-                , SimpleDateFormat("mm").format(sleep.goToBed).toInt())
-                , org.threeten.bp.LocalTime.of(SimpleDateFormat("HH").format(sleep.wakeUp).toInt()
-                    , SimpleDateFormat("mm").format(sleep.wakeUp).toInt()))
-            binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
-                Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
-                handleUpdate(bedTime, wakeTime)
-            }
-            handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
 
-            binding.shapeRecordTitle.setText("修改睡眠")
-            viewModel.sleepDocId.value = sleep.docId
+        when (sleep.timestamp){
 
-            binding.buttonSleepSave.setOnClickListener {
-                viewModel.updateSleepHr()
-            }
+            null -> {
+                binding.timePicker.setTime(org.threeten.bp.LocalTime.of(23, 0), org.threeten.bp.LocalTime.of(7, 0))
 
-        } else {
-            binding.timePicker.setTime(org.threeten.bp.LocalTime.of(23, 0), org.threeten.bp.LocalTime.of(7, 0))
+                binding.timePicker.listener = {
+                        bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
+                    Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
+                    handleUpdate(bedTime, wakeTime)
+                }
+                handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
 
-            binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
-                Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
-                handleUpdate(bedTime, wakeTime)
-            }
-            handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
-
-            binding.buttonSleepSave.setOnClickListener {
-                if (isConnected()) {
-                    Logger.i("NetworkConnection Network Connected.")
-                    //執行下載任務
-                    viewModel.addSleepHr()
-                }else{
-                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-                    //告訴使用者網路無法使用
+                binding.buttonSleepSave.setOnClickListener {
+                    if (isConnected()) {
+                        //執行下載任務
+                        viewModel.addOrUpdateSleepHr("")
+                    }else{
+                        Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                        //告訴使用者網路無法使用
+                    }
                 }
             }
 
+            else -> {
+
+                binding.timePicker.setTime(
+                    org.threeten.bp.LocalTime.of(
+                        sleep.goToBed.toDateFormat(FORMAT_HH_MM).split(":")[0].toInt()
+                    , sleep.goToBed.toDateFormat(FORMAT_HH_MM).split(":")[1].toInt())
+                    , org.threeten.bp.LocalTime.of(
+                        sleep.wakeUp.toDateFormat(FORMAT_HH_MM).split(":")[0].toInt()
+                        , sleep.wakeUp.toDateFormat(FORMAT_HH_MM).split(":")[1].toInt()
+                    )
+                )
+                binding.timePicker.listener = { bedTime: org.threeten.bp.LocalTime, wakeTime: org.threeten.bp.LocalTime ->
+                    Timber.d("time changed \nbedtime= $bedTime\nwaketime=$wakeTime")
+                    handleUpdate(bedTime, wakeTime)
+                }
+                handleUpdate(binding.timePicker.getBedTime(), binding.timePicker.getWakeTime())
+
+                binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.sleep_adjust_title)
+
+                binding.buttonSleepSave.setOnClickListener {
+                    viewModel.addOrUpdateSleepHr(sleep.docId)
+                }
+            }
         }
 
         val callback = object : OnBackPressedCallback(true) {
@@ -131,63 +130,64 @@ class SleepFragment: Fragment() {
         val minutes = duration.toMinutes() % 60
         binding.tvHours.text = hours.toString()
         binding.tvMins.text = minutes.toString()
-//        viewModel.setSleepHr(hours,minutes)
+
         if (minutes > 0) binding.llMins.visibility = View.VISIBLE else binding.llMins.visibility = View.GONE
 
         if (bedDate < wakeDate){
-            Logger.i("bedDate == wakeDate ${bedDate.dayOfMonth} - ${wakeDate.dayOfMonth}")
+
             if (bedDate.dayOfMonth == wakeDate.dayOfMonth){
+
                 val newBedDate = "${bedDate.year}" +
                         "-${bedDate.monthValue}" +
                         "-${bedDate.dayOfMonth} ${bedDate.hour}" +
                         ":${bedDate.minute}:${bedDate.second}.000000000"
-                var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+                var timeStampBed = Timestamp.valueOf(newBedDate)
                 viewModel.setSleepTime(timeStampBed)
                 val newWakeDate = "${wakeDate.year}" +
                         "-${wakeDate.monthValue}" +
                         "-${wakeDate.dayOfMonth} ${wakeDate.hour}" +
                         ":${wakeDate.minute}:${wakeDate.second}.000000000"
-                var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+                var timeStampWake = Timestamp.valueOf(newWakeDate)
                 viewModel.setWakeTime(timeStampWake)
-                viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
-                Logger.i("bedDate == wakeDate newBedDate = $newBedDate newWakeDate =$newWakeDate")
+                viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time),
+                    java.sql.Date(Timestamp.valueOf(newWakeDate).time))
+
             }else if (bedDate.dayOfMonth < wakeDate.dayOfMonth){
+
                 wakeDate.minusDays(1)
                 bedDate.minusDays(1)
                 val newBedDate = "${bedDate.minusDays(1).year}" +
                         "-${bedDate.minusDays(1).monthValue}" +
                         "-${bedDate.minusDays(1).dayOfMonth} ${bedDate.minusDays(1).hour}" +
                         ":${bedDate.minute}:${bedDate.minusDays(1).second}.000000000"
-                var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+                var timeStampBed = Timestamp.valueOf(newBedDate)
                 viewModel.setSleepTime(timeStampBed)
                 val newWakeDate = "${wakeDate.minusDays(1).year}" +
                         "-${wakeDate.minusDays(1).monthValue}" +
                         "-${wakeDate.minusDays(1).dayOfMonth} ${wakeDate.minusDays(1).hour}" +
                         ":${wakeDate.minusDays(1).minute}:${wakeDate.minusDays(1).second}.000000000"
-                var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+                var timeStampWake = Timestamp.valueOf(newWakeDate)
                 viewModel.setWakeTime(timeStampWake)
                 viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
-                Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
             }
 
         }else if (bedDate == wakeDate){
-            Logger.i("bedDate == wakeDate ${bedDate.dayOfMonth} - ${wakeDate.dayOfMonth}")
+
             wakeDate.plusDays(1)
             bedDate.plusDays(1)
             val newBedDate = "${bedDate.year}" +
                     "-${bedDate.monthValue}" +
                     "-${bedDate.plusDays(1).dayOfMonth} ${bedDate.hour}" +
                     ":${bedDate.minute}:${bedDate.second}.000000000"
-            var timeStampBed = java.sql.Timestamp.valueOf(newBedDate)
+            var timeStampBed = Timestamp.valueOf(newBedDate)
             viewModel.setSleepTime(timeStampBed)
             val newWakeDate = "${wakeDate.year}" +
                     "-${wakeDate.monthValue}" +
                     "-${wakeDate.plusDays(1).dayOfMonth} ${wakeDate.hour}" +
                     ":${wakeDate.minute}:${wakeDate.second}.000000000"
-            var timeStampWake = java.sql.Timestamp.valueOf(newWakeDate)
+            var timeStampWake = Timestamp.valueOf(newWakeDate)
             viewModel.setWakeTime(timeStampWake)
             viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
-            Logger.i("newBedDate = $newBedDate newWakeDate =$newWakeDate")
         }
 
     }

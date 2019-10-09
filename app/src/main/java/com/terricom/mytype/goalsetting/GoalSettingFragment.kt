@@ -55,9 +55,9 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             viewModel.cheerUp.value = goal.cheerUp
 
             binding.smartCustomCalendar.setEventHandler(this)
-            binding.smartCustomCalendar.filterdate(goal.deadline)
-            binding.smartCustomCalendar.getThisMonth()
-            binding.smartCustomCalendar.setSelecteDate(goal.deadline)
+            binding.smartCustomCalendar.filterDate(goal.deadline)
+            binding.smartCustomCalendar.getAndSetDataShape()
+            binding.smartCustomCalendar.setSelectDate(goal.deadline)
             binding.smartCustomCalendar.selectDateOut.observe(this, Observer {
                 Logger.i("binding.smartCustomCalendar.selectDateOut.observe = $it")
                 viewModel.setDate(it)
@@ -87,8 +87,8 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
             binding.smartCustomCalendar.setEventHandler(this)
             binding.smartCustomCalendar.toNext.visibility = View.VISIBLE
-            binding.smartCustomCalendar.filterdate(binding.smartCustomCalendar.selectDateOut.value ?: Date())
-            binding.smartCustomCalendar.getThisMonth()
+            binding.smartCustomCalendar.filterDate(binding.smartCustomCalendar.selectDateOut.value ?: Date())
+            binding.smartCustomCalendar.getAndSetDataShape()
             binding.smartCustomCalendar.recordedDate.observe(this, Observer {
                 binding.smartCustomCalendar.updateCalendar()
             })
@@ -162,9 +162,9 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
     override fun onCalendarNextPressed() {
         binding.smartCustomCalendar.selectDateOut.observe(this, Observer {
-            binding.smartCustomCalendar.filterdate(it)
+            binding.smartCustomCalendar.filterDate(it)
         })
-        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, Observer {
             binding.smartCustomCalendar.updateCalendar()
         })
@@ -173,9 +173,9 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
     override fun onCalendarPreviousPressed() {
         binding.smartCustomCalendar.selectDateOut.observe(this, Observer {
-            binding.smartCustomCalendar.filterdate(it)
+            binding.smartCustomCalendar.filterDate(it)
         })
-        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, Observer {
             binding.smartCustomCalendar.updateCalendar()
         })

@@ -187,4 +187,6 @@
     <string name="query_foodie_total_number">%d 篇食記</string>
     <string name="query_foodie_title">#%s</string>
 
+    <string name="sleep_adjust_title">修改睡眠</string>
+
 </resources>
