@@ -25,6 +25,7 @@ import com.terricom.mytype.*
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentLoginBinding
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginFragment: Fragment() {

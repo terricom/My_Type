@@ -35,6 +35,7 @@ import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.tools.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
 import java.sql.Timestamp

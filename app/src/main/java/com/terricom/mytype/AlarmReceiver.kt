@@ -17,7 +17,7 @@ import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,6 +35,19 @@ class AlarmReceiver : BroadcastReceiver() {
     private fun fireFoodieBack (foo: List<Foodie>){
         _fireFoodie.value = foo
     }
+
+    val goalWater = MutableLiveData<String>()
+    val goalOil = MutableLiveData<String>()
+    val goalVegetable = MutableLiveData<String>()
+    val goalFruit = MutableLiveData<String>()
+    val goalProtein = MutableLiveData<String>()
+    val goalCarbon = MutableLiveData<String>()
+    private val totalWater = MutableLiveData<Float>()
+    private val totalOil = MutableLiveData<Float>()
+    private val totalVegetable = MutableLiveData<Float>()
+    private val totalProtein = MutableLiveData<Float>()
+    private val totalFruit = MutableLiveData<Float>()
+    private val totalCarbon = MutableLiveData<Float>()
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -106,7 +119,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 userDocument.collection(FirebaseKey.COLLECTION_FOODIE)
                     .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                     .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp.valueOf(Date().toDateFormat(
-                        FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF)))
+                        FORMAT_YYYY_MM_DD_HH_MM_SS_FFFFFFFFF
+                    )))
                     .get()
                     .addOnSuccessListener {
 
@@ -116,14 +130,14 @@ class AlarmReceiver : BroadcastReceiver() {
                         }
                         fireFoodieBack(items)
                         Logger.i("FireFoodie.value = ${fireFoodie.value}")
-                        Companion.totalWater.value = 0f
+                        totalWater.value = 0f
                         totalOil.value = 0f
                         totalVegetable.value = 0f
                         totalProtein.value = 0f
                         totalFruit.value = 0f
                         totalCarbon.value = 0f
                         for (today in fireFoodie.value!!){
-                            Companion.totalWater.value = Companion.totalWater.value!!.plus(today.water ?: 0f)
+                            totalWater.value = totalWater.value!!.plus(today.water ?: 0f)
                             totalOil.value = totalOil.value!!.plus(today.oil ?: 0f)
                             totalVegetable.value = totalVegetable.value!!.plus(today.vegetable ?: 0f)
                             totalProtein.value = totalProtein.value!!.plus(today.protein ?: 0f)
@@ -165,12 +179,12 @@ class AlarmReceiver : BroadcastReceiver() {
                         textTitle = App.applicationContext().getString(R.string.notification_title)
                         textContent =
                             App.applicationContext().getString(R.string.notification_today_goal)+
-                                    if (goalWater.value.toFloatFormat() > Companion.totalWater.value!!) {
+                                    if (goalWater.value.toFloatFormat() > totalWater.value!!) {
                                         App.applicationContext().getString(
                                             R.string.notification_goal_water,
-                                            "${abs(goalWater.value.toFloatFormat().minus(Companion.totalWater.value!!))}")
+                                            "${abs(goalWater.value.toFloatFormat().minus(totalWater.value!!))}")
                                     }else {App.applicationContext().getString(R.string.notification_goal_water_reach,
-                                        "${abs(goalWater.value.toFloatFormat().minus(Companion.totalWater.value!!))}")
+                                        "${abs(goalWater.value.toFloatFormat().minus(totalWater.value!!))}")
                                     }+"   "+
                                     if (goalOil.value.toFloatFormat() > totalOil.value!!){
                                         App.applicationContext().getString(R.string.notification_goal_oil,
@@ -220,18 +234,7 @@ class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val receiveTitle = "title"
         const val receiveTag = "activity_app"
-        val goalWater = MutableLiveData<String>()
-        val goalOil = MutableLiveData<String>()
-        val goalVegetable = MutableLiveData<String>()
-        val goalFruit = MutableLiveData<String>()
-        val goalProtein = MutableLiveData<String>()
-        val goalCarbon = MutableLiveData<String>()
-        val totalWater = MutableLiveData<Float>()
-        val totalOil = MutableLiveData<Float>()
-        val totalVegetable = MutableLiveData<Float>()
-        val totalProtein = MutableLiveData<Float>()
-        val totalFruit = MutableLiveData<Float>()
-        val totalCarbon = MutableLiveData<Float>()
+
         private var textTitle: String ?= ""
         private var textContent: String ?= ""
         const val CHANNEL_ID = "MyType"

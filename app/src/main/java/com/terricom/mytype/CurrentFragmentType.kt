@@ -6,7 +6,6 @@ enum class CurrentFragmentType(val value: String) {
     LINE_CHART(App.instance?.getString(R.string.title_linechart) as String),
     ACHIEVEMENT(App.instance?.getString(R.string.title_achievement) as String),
     LOGIN(""),
-    DREAM_BOARD(App.instance?.getString(R.string.title_dream_puzzle) as String),
     SHAPE_RECORD(App.instance?.getString(R.string.title_shape_record) as String),
     PROFILE(App.instance?.getString(R.string.title_profile) as String),
     SLEEP(App.instance?.getString(R.string.title_sleep) as String),

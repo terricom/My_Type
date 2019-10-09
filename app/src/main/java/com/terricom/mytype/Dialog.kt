@@ -30,8 +30,6 @@ class MessageDialog : AppCompatDialogFragment() {
         binding.lifecycleOwner = this
         binding.dialog = this
         this.isCancelable = true
-        com.terricom.mytype.tools.Logger.i("messageType = $messageType")
-
 
         return binding.root
     }

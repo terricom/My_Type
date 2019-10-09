@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
 import com.terricom.mytype.diary.DiaryViewModel
-import com.terricom.mytype.toDateFormat
+import com.terricom.mytype.tools.toDateFormat
 import java.util.*
 
 class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {

@@ -5,11 +5,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Converter {
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_yyyy_MM_dd), Locale.getDefault())
+    private val hourFormat = SimpleDateFormat(App.applicationContext().getString(R.string.simpledateformat_HH_mm), Locale.getDefault())
 
-    //Without this annotation, the Kotlin compiler would generate the static method that is required in the layout
-    //More info: https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#static-methods
     @JvmStatic
     @InverseMethod("stringToDate")
     fun dateToString(date: Date): String {

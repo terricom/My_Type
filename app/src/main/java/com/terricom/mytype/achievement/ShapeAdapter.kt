@@ -9,11 +9,11 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.databinding.ItemAchievementShapeBinding
-import com.terricom.mytype.toDateFormat
-import com.terricom.mytype.toDemicalPoint
+import com.terricom.mytype.tools.toDateFormat
+import com.terricom.mytype.tools.toDemicalPoint
 
 class ShapeAdapter(
     val viewModel: AchievementViewModel,

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.terricom.mytype.data.PlaceHolder
 import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.profile.PazzleAdapter
+import com.terricom.mytype.profile.PuzzleAdapter
 import com.terricom.mytype.tools.Logger
 
 
@@ -34,8 +34,8 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Puzzle>?
     images?.let {
         recyclerView.adapter?.apply {
             when (this) {
-                is PazzleAdapter -> {
-                    submitPazzles(it)
+                is PuzzleAdapter -> {
+                    submitPuzzles(it)
                 }
             }
         }

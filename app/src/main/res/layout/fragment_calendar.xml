@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <!-- date toolbar -->
+        <!-- currentDate toolbar -->
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbarCurrentDate"
                 android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- date title -->
+            <!-- currentDate title -->
 
             <ImageView
                     android:id="@+id/buttonBack"

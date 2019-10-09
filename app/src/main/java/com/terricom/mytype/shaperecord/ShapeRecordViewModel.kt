@@ -4,21 +4,19 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.toDateFormat
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ShapeRecordViewModel: ViewModel() {
 
-    val userUid = UserManager.uid
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
-
-    val _date = MutableLiveData<Date>()
+    private val _date = MutableLiveData<Date>()
     val date: LiveData<Date>
         get() = _date
 
@@ -41,44 +39,26 @@ class ShapeRecordViewModel: ViewModel() {
         }
     }
 
-    val _fireShapeM = MutableLiveData<List<Shape>>()
-    val fireShapeM : LiveData<List<Shape>>
-        get() = _fireShapeM
-
-    fun fireShapeBackM (shape: List<Shape>){
-        _fireShapeM.value = shape
-    }
-
-    val _recordedDates = MutableLiveData<List<String>>()
-    val recordedDates : LiveData<List<String>>
+    private val _recordedDates = MutableLiveData<List<String>>()
+    private val recordedDates : LiveData<List<String>>
         get() = _recordedDates
 
-    fun getRecordedDates(list: List<String>){
+    private fun getRecordedDates(list: List<String>){
         _recordedDates.value = list
     }
 
 
-    val _addShapeResult = MutableLiveData<Boolean>()
-    val addShapeResult : LiveData<Boolean>
-        get() = _addShapeResult
+    private val _isAddDataShape = MutableLiveData<Boolean>()
+    val isAddDataShape : LiveData<Boolean>
+        get() = _isAddDataShape
 
-    fun addShapeSuccess(){
-        _addShapeResult.value = true
+    private fun addShapeSuccess(){
+        _isAddDataShape.value = true
     }
 
-    fun addShapeFail(){
-        _addShapeResult.value = false
+    private fun addShapeFail(){
+        _isAddDataShape.value = false
     }
-
-    val _updateShape = MutableLiveData<Shape>()
-    val updateShape : LiveData<Shape>
-        get() = _updateShape
-
-    fun updateShape(shape: Shape){
-        _updateShape.value = shape
-    }
-
-    val docId = MutableLiveData<String>()
 
     init {
         setDate(Date())
@@ -87,120 +67,68 @@ class ShapeRecordViewModel: ViewModel() {
     @InverseMethod("convertStringToFloat")
     fun floatToString(value:Float) = value.toString()
 
-    val db = FirebaseFirestore.getInstance()
-    val user = db.collection("Users")
 
-    fun addShape(){
+    fun addOrUpdateShape2Firebase(docId: String){
 
-        Logger.i("date.value = ${date.value}")
+        Logger.i("currentDate.value = ${date.value}")
         //發文功能
         val shapeContent = hashMapOf(
-            "timestamp" to Timestamp(date.value!!.time),
-            "weight" to weight.value,
-            "bodyWater" to bodyWater.value,
-            "bodyFat" to bodyFat.value,
-            "muscle" to muscle.value,
-            "tdee" to tdee.value,
-            "bodyAge" to bodyAge.value
+            FirebaseKey.TIMESTAMP to Timestamp(date.value!!.time),
+            FirebaseKey.COLUMN_SHAPE_WEIGHT to weight.value,
+            FirebaseKey.COLUMN_SHAPE_BODY_WATER to bodyWater.value,
+            FirebaseKey.COLUMN_SHAPE_BODY_FAT to bodyFat.value,
+            FirebaseKey.COLUMN_SHAPE_MUSCLE to muscle.value,
+            FirebaseKey.COLUMN_SHAPE_TDEE to tdee.value,
+            FirebaseKey.COLUMN_SHAPE_BODY_AGE to bodyAge.value
         )
 
-        if (userUid!!.isNotEmpty()) {
-            user.get()
-                .addOnSuccessListener { result ->
-//                    for (doc in result) {
-                        if (recordedDates.value!!.contains("${sdf.format(date.value)}")) {
-                            addShapeFail()
-                        } else {
-                            user.document(userUid).collection("Shape").document().set(shapeContent)
+        if (UserManager.isLogin()){
+
+            UserManager.USER_REFERENCE?.let {userDocument ->
+
+                recordedDates.value?.let {
+
+                    when (it.contains(date.value.toDateFormat(FORMAT_YYYY_MM_DD))){
+
+                        true -> addShapeFail()
+                        false -> {
+
+                            when (docId){
+                                "" -> userDocument.collection(FirebaseKey.COLLECTION_SHAPE).document().set(shapeContent)
+                                else -> userDocument.collection(FirebaseKey.COLLECTION_SHAPE).document(docId).set(shapeContent)
+                            }
                             addShapeSuccess()
                         }
-//                    }
-
-                }
-        }
-
-    }
-
-    fun updateShape2Firebase(){
-
-        Logger.i("date.value = ${date.value}")
-        //發文功能
-        val shapeContent = hashMapOf(
-            "timestamp" to Timestamp(date.value!!.time),
-            "weight" to weight.value,
-            "bodyWater" to bodyWater.value,
-            "bodyFat" to bodyFat.value,
-            "muscle" to muscle.value,
-            "tdee" to tdee.value,
-            "bodyAge" to bodyAge.value
-        )
-
-        if (userUid!!.isNotEmpty()) {
-            user.get()
-                .addOnSuccessListener { result ->
-                    user.document(userUid).collection("Shape").document(docId.value!!).set(shapeContent)
-                    addShapeSuccess()
-
-                }
-        }
-
-    }
-
-
-    fun getToday(): Boolean {
-        val items = mutableListOf<Shape>()
-
-        if (userUid!!.isNotEmpty()){
-            val shapeRecord = user
-                .document(userUid)
-                .collection("Shape")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereGreaterThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 00:00:00.000000000"))
-                .whereLessThanOrEqualTo("timestamp", Timestamp.valueOf("${sdf.format(date.value)} 23:59:59.000000000"))
-
-            shapeRecord
-                .get()
-                .addOnSuccessListener {
-                    for (document in it) {
-                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                            items.add(document.toObject(Shape::class.java))
-                            items[items.size-1].docId = document.id
                     }
                 }
+
+            }
         }
-        Logger.i("items = $items")
-        Logger.i("getToday() items = $items")
-        Logger.i("date = ${sdf.format(date.value)}  ")
-        return items.size == 0
     }
 
-    fun getThisMonth() {
-        if (userUid!!.isNotEmpty()){
-            val shapeRecord = user
-                .document(userUid)
-                .collection("Shape")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
+    fun getRecordedDates() {
 
-            shapeRecord
-                .get()
-                .addOnSuccessListener {
-                    val items = mutableListOf<Shape>()
-                    val cleanDates = mutableListOf<String>()
-                    for (document in it) {
-                        val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                        if (date.value != null && "${sdf.format(convertDate).split("-")[0]}-" +
-                            "${sdf.format(convertDate).split("-")[1]}" ==
-                            "${sdf.format(date.value)!!.split("-")[0]}-" +
-                            "${sdf.format(date.value)!!.split("-")[1]}"){
+        if (UserManager.isLogin()){
+
+            UserManager.USER_REFERENCE?.let {userDocument ->
+
+                userDocument.collection(FirebaseKey.COLLECTION_SHAPE)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener {
+                        val items = mutableListOf<Shape>(
+                        )
+                        val cleanDates = mutableListOf<String>()
+                        for (document in it) {
+
                             items.add(document.toObject(Shape::class.java))
                             items[items.size-1].docId = document.id
-                            cleanDates.add(sdf.format(Date(document.toObject(Shape::class.java).timestamp!!.time)))
+                            cleanDates.add(document.toObject(Shape::class.java).timestamp.toDateFormat(
+                                FORMAT_YYYY_MM_DD))
                         }
+                        getRecordedDates(cleanDates.distinct())
                     }
-                    getRecordedDates(cleanDates.distinct())
-                    fireShapeBackM(items)
-                    Logger.i("fireFoodieM =${fireShapeM.value}")
-                }
+            }
         }
     }
 

@@ -37,6 +37,7 @@
     <dimen name="height_profile_header">92dp</dimen>
     <dimen name="profile_text_padding_left">50dp</dimen>
     <dimen name="radius_profile_avatar">60dp</dimen>
+    <dimen name="min_height_goal_one">38dp</dimen>
 
 
     <!-- FAB  -->

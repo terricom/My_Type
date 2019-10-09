@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
-import java.util.*
+import com.terricom.mytype.tools.isConnected
 
 class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
@@ -32,81 +32,115 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
             viewModel.setDate(it)
         })
-        binding.shape = shape
-        if (shape.timestamp != null){
-            viewModel.updateShape(shape)
-            binding.shapeRecordTitle.setText(App.applicationContext().getString(R.string.shaperecord_edit_accumulation))
 
-            viewModel.setDate(shape.timestamp!!)
-            viewModel.weight.value = shape.weight
-            viewModel.bodyFat.value = shape.bodyFat
-            viewModel.muscle.value = shape.muscle
-            viewModel.bodyAge.value = shape.bodyAge
-            viewModel.bodyWater.value = shape.bodyWater
-            viewModel.tdee.value = shape.tdee
-            viewModel.docId.value = shape.docId
-            binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
+        binding.shape = ShapeRecordFragmentArgs.fromBundle(arguments!!).selectedProperty
 
-            binding.smartCustomCalendar.filterdate(shape.timestamp)
-            binding.smartCustomCalendar.getThisMonth()
-            binding.smartCustomCalendar.setSelecteDate(shape.timestamp)
+        when (shape.timestamp){
+            null -> {
 
-            binding.smartCustomCalendar.isSelected = true
-            binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
-                binding.smartCustomCalendar.updateCalendar()
-            })
+                binding.smartCustomCalendar.getAndSetDataShape()
+                binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+                    binding.smartCustomCalendar.updateCalendar()
+                })
+                binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
+                    binding.smartCustomCalendar.filterDate(it)
+                })
 
-            binding.buttonShaperecordSave.setOnClickListener {
-                it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
-                viewModel.updateShape2Firebase()
-                viewModel.clearData()
-            }
+                binding.buttonShaperecordSave.setOnClickListener {
 
-        } else {
+                    it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+                    if ((viewModel.weight.value ?: 0.0f)
+                            .plus(viewModel.bodyWater.value ?: 0.0f)
+                            .plus(viewModel.bodyFat.value ?: 0.0f)
+                            .plus(viewModel.tdee.value ?: 0.0f)
+                            .plus(viewModel.muscle.value ?: 0.0f)
+                            .plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
 
+                        if (isConnected()) {
 
-        val calendar: Calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+                            viewModel.addOrUpdateShape2Firebase("")
+                            viewModel.clearData()
+                        }else{
 
-        binding.smartCustomCalendar.getThisMonth()
-        binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.updateCalendar()
-        })
-        binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.filterdate(it)
-        })
+                            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                            it.background = App.applicationContext().getDrawable(R.color.colorMyType)
+                            //告訴使用者網路無法使用
+                        }
+                    }else if ((viewModel.weight.value ?: 0.0f)
+                            .plus(viewModel.bodyWater.value ?: 0.0f)
+                            .plus(viewModel.bodyFat.value ?: 0.0f)
+                            .plus(viewModel.tdee.value ?: 0.0f)
+                            .plus(viewModel.muscle.value ?: 0.0f)
+                            .plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
 
-        binding.buttonShaperecordSave.setOnClickListener {
-
-            it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
-            if ((viewModel.weight.value ?: 0.0f)
-                    .plus(viewModel.bodyWater.value ?: 0.0f)
-                    .plus(viewModel.bodyFat.value ?: 0.0f)
-                    .plus(viewModel.tdee.value ?: 0.0f)
-                    .plus(viewModel.muscle.value ?: 0.0f)
-                    .plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
-                if (isConnected()) {
-                }else{
-                    Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-                    //告訴使用者網路無法使用
+                        Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
+                        it.background = App.applicationContext().getDrawable(R.color.colorMyType)
+                    }
                 }
-                viewModel.addShape()
-                viewModel.clearData()
-            }else if ((viewModel.weight.value ?: 0.0f).plus(viewModel.bodyWater.value ?: 0.0f)
-                    .plus(viewModel.bodyFat.value ?: 0.0f).plus(viewModel.tdee.value ?: 0.0f)
-                    .plus(viewModel.muscle.value ?: 0.0f).plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
-                Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
-                it.background = App.applicationContext().getDrawable(R.color.colorMyType)
-            }
 
-        }
+            }
+            else -> {
+
+                binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.shaperecord_edit_accumulation)
+
+                viewModel.setDate(shape.timestamp)
+                viewModel.weight.value = shape.weight
+                viewModel.bodyFat.value = shape.bodyFat
+                viewModel.muscle.value = shape.muscle
+                viewModel.bodyAge.value = shape.bodyAge
+                viewModel.bodyWater.value = shape.bodyWater
+                viewModel.tdee.value = shape.tdee
+                binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
+
+                binding.smartCustomCalendar.filterDate(shape.timestamp)
+                binding.smartCustomCalendar.getAndSetDataShape()
+                binding.smartCustomCalendar.setSelectDate(shape.timestamp)
+
+                binding.smartCustomCalendar.isSelected = true
+                binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
+                    binding.smartCustomCalendar.updateCalendar()
+                })
+
+                binding.buttonShaperecordSave.setOnClickListener {
+
+                    it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
+
+                    if ((viewModel.weight.value ?: 0.0f)
+                            .plus(viewModel.bodyWater.value ?: 0.0f)
+                            .plus(viewModel.bodyFat.value ?: 0.0f)
+                            .plus(viewModel.tdee.value ?: 0.0f)
+                            .plus(viewModel.muscle.value ?: 0.0f)
+                            .plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
+
+                        if (isConnected()) {
+
+                            viewModel.addOrUpdateShape2Firebase(shape.docId)
+                            viewModel.clearData()
+                        }else{
+
+                            Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
+                            it.background = App.applicationContext().getDrawable(R.color.colorMyType)
+                            //告訴使用者網路無法使用
+                        }
+                    }else if ((viewModel.weight.value ?: 0.0f)
+                            .plus(viewModel.bodyWater.value ?: 0.0f)
+                            .plus(viewModel.bodyFat.value ?: 0.0f)
+                            .plus(viewModel.tdee.value ?: 0.0f)
+                            .plus(viewModel.muscle.value ?: 0.0f)
+                            .plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
+
+                        Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
+                        it.background = App.applicationContext().getDrawable(R.color.colorMyType)
+                    }
+
+                }
+
+            }
         }
 
 
         viewModel.date.observe(this, androidx.lifecycle.Observer {
-            viewModel.getThisMonth()
+            viewModel.getRecordedDates()
         })
 
         val callback = object : OnBackPressedCallback(true) {
@@ -125,7 +159,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
         }
 
 
-        viewModel.addShapeResult.observe(this, androidx.lifecycle.Observer {
+        viewModel.isAddDataShape.observe(this, androidx.lifecycle.Observer {
             if (it == true){
                 this.findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
             } else if (it == false){
@@ -147,9 +181,9 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
     override fun onCalendarNextPressed() {
         binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.filterdate(it)
+            binding.smartCustomCalendar.filterDate(it)
         })
-        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
             binding.smartCustomCalendar.updateCalendar()
         })
@@ -158,9 +192,9 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
     override fun onCalendarPreviousPressed() {
         binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.filterdate(it)
+            binding.smartCustomCalendar.filterDate(it)
         })
-        binding.smartCustomCalendar.getThisMonth()
+        binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
             binding.smartCustomCalendar.updateCalendar()
         })

@@ -30,6 +30,9 @@ import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.data.PuzzleImg
 import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.tools.FORMAT_HH_MM_SS_FFFFFFFFF
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.toDateFormat
 import java.sql.Time
 import java.sql.Timestamp
 import java.util.*
@@ -221,7 +224,8 @@ class FoodieViewModel: ViewModel() {
 
             TIMESTAMP to Timestamp.valueOf(
                 "${date.value.toDateFormat(FORMAT_YYYY_MM_DD)} ${time.value.toDateFormat(
-                FORMAT_HH_MM_SS_FFFFFFFFF)}"
+                    FORMAT_HH_MM_SS_FFFFFFFFF
+                )}"
             ),
             COLUMN_FOODIE_WATER to water.value,
             COLUMN_FOODIE_OIL to oil.value,
@@ -259,7 +263,8 @@ class FoodieViewModel: ViewModel() {
         val foodieContent = hashMapOf(
 
             TIMESTAMP to Timestamp.valueOf("${date.value.toDateFormat(FORMAT_YYYY_MM_DD)} ${time.value.toDateFormat(
-                FORMAT_HH_MM_SS_FFFFFFFFF)}"),
+                FORMAT_HH_MM_SS_FFFFFFFFF
+            )}"),
             COLUMN_FOODIE_WATER to water.value,
             COLUMN_FOODIE_OIL to oil.value,
             COLUMN_FOODIE_VEGETABLE to vegetable.value,
@@ -304,7 +309,8 @@ class FoodieViewModel: ViewModel() {
 
                             dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
                                 .toDateFormat(
-                                FORMAT_YYYY_MM_DD)
+                                    FORMAT_YYYY_MM_DD
+                                )
                             )
                         }
 
@@ -332,14 +338,16 @@ class FoodieViewModel: ViewModel() {
                                         if (
                                             puzzleList[0].position!!.sum()!= 105 //拼到一半的拼圖
                                             && !puzzleList[0].recordedDates!!.contains(date.value.toDateFormat(
-                                                FORMAT_YYYY_MM_DD)) //已經發放的日期不能重複發放
+                                                FORMAT_YYYY_MM_DD
+                                            )) //已經發放的日期不能重複發放
                                         ){
                                             val positionList = puzzleList[0].position!!.toMutableList()
                                             val recordedDatesList = puzzleList[0].recordedDates!!.toMutableList()
 
                                             positionList.add((1..15).minus(positionList).random()) //隨機新增一塊拼圖
                                             recordedDatesList.add(date.value.toDateFormat(
-                                                FORMAT_YYYY_MM_DD)) //加上新增的日期，以免同一天重複發放
+                                                FORMAT_YYYY_MM_DD
+                                            )) //加上新增的日期，以免同一天重複發放
 
                                             user.collection(COLLECTION_PUZZLE).document(puzzleList[0].docId).update(
 
@@ -353,13 +361,15 @@ class FoodieViewModel: ViewModel() {
                                         } else if (
                                             puzzleList[0].position!!.sum()== 105 //只有拼完的拼圖
                                             && !puzzleList[0].recordedDates!!.contains(date.value.toDateFormat(
-                                                FORMAT_YYYY_MM_DD)) //已經發放的日期不能重複發放
+                                                FORMAT_YYYY_MM_DD
+                                            )) //已經發放的日期不能重複發放
                                         ){
                                             val newPuzzle = hashMapOf(
                                                 COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
                                                 COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[ puzzleList.size ].value,
                                                 COLUMN_PUZZLE_RECORDEDDATES to listOf(date.value.toDateFormat(
-                                                    FORMAT_YYYY_MM_DD)),
+                                                    FORMAT_YYYY_MM_DD
+                                                )),
                                                 TIMESTAMP to FieldValue.serverTimestamp()
 
                                             )

@@ -6,7 +6,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import com.terricom.mytype.R
-import com.terricom.mytype.toDemicalPoint
+import com.terricom.mytype.tools.toDemicalPoint
 import java.util.*
 import kotlin.collections.ArrayList
 

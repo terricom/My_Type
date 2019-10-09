@@ -46,6 +46,17 @@ class FirebaseKey {
         const val COLUMN_GOAL_DEADLINE: String = "deadline"
         const val COLUMN_GOAL_CHEER_UP: String = "cheerUp"
 
+        const val COLUMN_SHAPE_WEIGHT: String = "weight"
+        const val COLUMN_SHAPE_BODY_WATER = "bodyWater"
+        const val COLUMN_SHAPE_BODY_FAT = "bodyFat"
+        const val COLUMN_SHAPE_MUSCLE = "muscle"
+        const val COLUMN_SHAPE_TDEE = "tdee"
+        const val COLUMN_SHAPE_BODY_AGE = "bodyAge"
+
+        const val COLUMN_SLEEP_WAKE_UP = "wakeUp"
+        const val COLUMN_SLEEP_GO_TO_BED = "goToBed"
+        const val COLUMN_SLEEP_HR = "sleepHr"
+
     }
 
 }

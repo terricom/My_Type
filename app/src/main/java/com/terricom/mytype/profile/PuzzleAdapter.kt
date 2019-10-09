@@ -1,6 +1,5 @@
 package com.terricom.mytype.profile
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,27 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.databinding.ItemProfileDreamBoardBinding
 
-class PazzleAdapter(val viewModel: ProfileViewModel
-) : RecyclerView.Adapter<PazzleAdapter.PazzleViewHolder>()
-{
+class PuzzleAdapter(
+    val viewModel: ProfileViewModel
+) : RecyclerView.Adapter<PuzzleAdapter.PuzzleViewHolder>() {
 
-    private lateinit var context: Context
-    // the data of adapter
     private var puzzles: List<Puzzle>? = null
 
-
-    fun submitPazzles(puzzles: List<Puzzle>) {
+    fun submitPuzzles(puzzles: List<Puzzle>) {
         this.puzzles = puzzles
         notifyDataSetChanged()
     }
 
-
-
-    class PazzleViewHolder(private var binding: ItemProfileDreamBoardBinding): RecyclerView.ViewHolder(binding.root),
+    class PuzzleViewHolder(private var binding: ItemProfileDreamBoardBinding): RecyclerView.ViewHolder(binding.root),
         LifecycleOwner {
 
-        fun bind(context: Context, puzzle: Puzzle) {
+        fun bind(puzzle: Puzzle) {
+            binding.lifecycleOwner =this
             binding.puzzle = puzzle
+
             puzzle?.let {
                 binding.puzzle1.visibility =
                     if (puzzle.position!!.contains(0)) View.INVISIBLE else View.VISIBLE
@@ -64,13 +60,7 @@ class PazzleAdapter(val viewModel: ProfileViewModel
                 binding.puzzle15.visibility =
                     if (puzzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
             }
-//            val displayMetrics = DisplayMetrics()
-//            (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
-//            binding.dreamboard.layoutParams = ConstraintLayout.LayoutParams(displayMetrics.widthPixels,
-//                context.resources.getDimensionPixelSize(R.dimen.height_profile_pazzle))
-            binding.lifecycleOwner =this
-            // This is important, because it forces the data binding to execute immediately,
-            // which allows the RecyclerView to make the correct view size measurements
+
             binding.executePendingBindings()
         }
 
@@ -94,27 +84,16 @@ class PazzleAdapter(val viewModel: ProfileViewModel
     }
 
 
-//    companion object DiffCallback : DiffUtil.ItemCallback<ArrayList<Int>>() {
-//        override fun areItemsTheSame(oldItem: ArrayList<Int>, newItem: ArrayList<Int>): Boolean {
-//            return (oldItem == newItem)
-//        }
-//
-//        override fun areContentsTheSame(oldItem: ArrayList<Int>, newItem: ArrayList<Int>): Boolean {
-//            return oldItem == newItem
-//        }
-//    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PuzzleViewHolder {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PazzleViewHolder {
-        context = parent.context
-        return PazzleViewHolder(ItemProfileDreamBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return PuzzleViewHolder(ItemProfileDreamBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
 
-    override fun onBindViewHolder(holder: PazzleViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
-            puzzles?.let {
-                holder.bind(context, it[getRealPosition(position)])
+    override fun onBindViewHolder(holder: PuzzleViewHolder, position: Int) {
+
+        puzzles?.let {
+                holder.bind(it[getRealPosition(position)])
             }
         }
 
@@ -127,12 +106,12 @@ class PazzleAdapter(val viewModel: ProfileViewModel
         position % it.size
     } ?: 0
 
-    override fun onViewAttachedToWindow(holder: PazzleAdapter.PazzleViewHolder) {
+    override fun onViewAttachedToWindow(holder: PuzzleViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
     }
 
-    override fun onViewDetachedFromWindow(holder: PazzleAdapter.PazzleViewHolder) {
+    override fun onViewDetachedFromWindow(holder: PuzzleViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.markDetach()
     }

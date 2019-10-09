@@ -3,35 +3,30 @@ package com.terricom.mytype.sleep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.App
+import com.terricom.mytype.R
+import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.toDateFormat
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
 
 class SleepViewModel: ViewModel() {
 
-    val userUid = UserManager.uid
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    private val wakeUp = MutableLiveData<Timestamp>()
+    private val goToSleep = MutableLiveData<Timestamp>()
+    private val sleepHr = MutableLiveData<Float>()
 
-    val wakeUp = MutableLiveData<Timestamp>()
-    val goToSleep = MutableLiveData<Timestamp>()
-    val sleepHr = MutableLiveData<Float>()
-    val sleepDocId = MutableLiveData<String>()
-
-    val db = FirebaseFirestore.getInstance()
-    val sleep = db.collection("Users")
-
-    val _sleepToday = MutableLiveData<List<Sleep>>()
-    val sleepToday : LiveData<List<Sleep>>
+    private val _sleepToday = MutableLiveData<List<Sleep>>()
+    private val sleepToday : LiveData<List<Sleep>>
         get() = _sleepToday
 
-    fun setSleepToday(sleepToday: List<Sleep>){
+    private fun setSleepToday(sleepToday: List<Sleep>){
         _sleepToday.value = sleepToday
     }
 
@@ -48,105 +43,88 @@ class SleepViewModel: ViewModel() {
         return wakeUp.time.minus(sleep.time)/(1000 * 60 * 60).toFloat()
     }
 
-    val _addSleepResult = MutableLiveData<Boolean>()
+    private val _addSleepResult = MutableLiveData<Boolean>()
     val addSleepResult : LiveData<Boolean>
         get() = _addSleepResult
 
-    fun addSleepSuccess(){
+    private fun addSleepSuccess(){
         _addSleepResult.value = true
     }
 
-    fun addSleepFail(){
+    private fun addSleepFail(){
         _addSleepResult.value = false
     }
 
     init {
-        getToday()
+        checkSleepRecord()
     }
 
-    fun addSleepHr(){
-        if (userUid != null){
-        //發文功能
+    fun addOrUpdateSleepHr(docId: String){
+
         val sleepContent = hashMapOf(
-            "wakeUp" to wakeUp.value,
-            "goToBed" to goToSleep.value,
-            "sleepHr" to sleepHr.value,
-            "timestamp" to Timestamp(Date().time)
+            FirebaseKey.COLUMN_SLEEP_WAKE_UP to wakeUp.value,
+            FirebaseKey.COLUMN_SLEEP_GO_TO_BED to goToSleep.value,
+            FirebaseKey.COLUMN_SLEEP_HR to sleepHr.value,
+            FirebaseKey.TIMESTAMP to Timestamp(Date().time)
         )
-        sleep.get()
-            .addOnSuccessListener { result->
-//                for (doc in result){
-                    if (sleepToday.value.isNullOrEmpty()){
-                        sleep.document(userUid).collection("Sleep").document().set(sleepContent)
-                        addSleepSuccess()
 
-                    } else {
-                        addSleepFail()
-                    }
-                }
-//            }
-        }
+        if (UserManager.isLogin()){
 
+            UserManager.USER_REFERENCE?.let {userDocument ->
 
-    }
+                when (docId){
 
-    fun updateSleepHr(){
-        if (userUid != null){
-            //發文功能
-            val sleepContent = hashMapOf(
-                "wakeUp" to wakeUp.value,
-                "goToBed" to goToSleep.value,
-                "sleepHr" to sleepHr.value,
-                "timestamp" to Timestamp(Date().time)
-            )
-//            getToday()
-            sleep.get()
-                .addOnSuccessListener { result->
-//                    for (doc in result){
-//                        if (sleepToday.value.isNullOrEmpty()){
-//                            addSleepFail()
-//                        } else {
-                            sleep.document(userUid).collection("Sleep").document(sleepDocId.value!!).set(sleepContent)
+                    "" ->{
+                        if (sleepToday.value.isNullOrEmpty()){
+
+                            userDocument.collection(FirebaseKey.COLLECTION_SLEEP).document().set(sleepContent)
                             addSleepSuccess()
-//                        }
-//                    }
+                        } else {
+
+                            addSleepFail()
+                        }
+                    }
+                    else -> {
+                        userDocument.collection(FirebaseKey.COLLECTION_SLEEP).document(docId).set(sleepContent)
+                        addSleepSuccess()
+                    }
+
                 }
+            }
         }
-
-
     }
 
-    fun getToday(): Boolean {
+
+    private fun checkSleepRecord(): Boolean {
         val items = mutableListOf<Sleep>()
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = Date()
-        val localDateStart: LocalDate = LocalDate.parse("${sdf.format(Date())}")
+        val localDateStart: LocalDate = LocalDate.parse(Date().toDateFormat(FORMAT_YYYY_MM_DD))
         localDateStart.atTime(LocalTime.MIDNIGHT)
-        val localDateEnd : LocalDate = LocalDate.parse("${sdf.format(Date())}")
+        val localDateEnd : LocalDate = LocalDate.parse(Date().toDateFormat(FORMAT_YYYY_MM_DD))
         localDateEnd.atTime(LocalTime.MAX)
-        Logger.i("getToday() localDateStart = ${localDateStart} localDateEnd = ${localDateEnd}")
 
-        if (userUid!!.isNotEmpty()){
-            val sleepRecord = sleep
-                .document(userUid)
-                .collection("Sleep")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereGreaterThan("timestamp", Timestamp(Timestamp.valueOf("${localDateStart} 00:00:00.000000000").time))
+        if (UserManager.isLogin()){
 
-            sleepRecord
-                .get()
-                .addOnSuccessListener {
-                    for (document in it) {
-                        val convertDate = java.sql.Date(document.toObject(Sleep::class.java).timestamp!!.time)
-                        items.add(document.toObject(Sleep::class.java))
-                        items[items.size-1].docId = document.id
-                        Logger.i("items.add(document.toObject(Sleep::class.java)) = $items")
+            UserManager.USER_REFERENCE?.let { userDocument ->
+
+                userDocument.collection(FirebaseKey.COLLECTION_SLEEP)
+                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
+                    .whereGreaterThanOrEqualTo(
+                        FirebaseKey.TIMESTAMP,
+                        Timestamp.valueOf(App.applicationContext().getString(R.string.timestamp_daybegin, "$localDateStart"))
+                    )
+                    .get()
+                    .addOnSuccessListener {
+                        for (document in it) {
+                            items.add(document.toObject(Sleep::class.java))
+                            items[items.size-1].docId = document.id
+                        }
+                        setSleepToday(items)
                     }
-                    setSleepToday(items)
-                }
-            Logger.i("getToday() items = $items")
+            }
         }
-        Logger.i("items.size =${items.size}")
+
         return items.size != 0
     }
 

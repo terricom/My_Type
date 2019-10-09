@@ -39,7 +39,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- date title -->
+            <!-- currentDate title -->
 
             <ImageView
                     android:id="@+id/buttonBack"

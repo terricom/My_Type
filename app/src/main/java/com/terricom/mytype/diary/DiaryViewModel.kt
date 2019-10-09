@@ -13,8 +13,10 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
-import com.terricom.mytype.profile.CardAvatarOutlineProvider
+import com.terricom.mytype.tools.FORMAT_HH_MM
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.toDateFormat
 import java.sql.Timestamp
 import java.util.*
 
@@ -206,7 +208,8 @@ class DiaryViewModel: ViewModel() {
                                 items.add(document.toObject(Foodie::class.java))
                                 items[items.lastIndex].docId = document.id
                                 dates.add(document.toObject(Foodie::class.java).timestamp.toDateFormat(
-                                    FORMAT_YYYY_MM_DD)
+                                    FORMAT_YYYY_MM_DD
+                                )
                                 )
                             }
                         }
@@ -335,7 +338,9 @@ class DiaryViewModel: ViewModel() {
                         val items = mutableListOf<Foodie>()
                         for (document in it) {
 
-                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(FORMAT_YYYY_MM_DD))
+                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
+                                FORMAT_YYYY_MM_DD
+                            ))
                             items.add(document.toObject(Foodie::class.java))
                         }
                         if (dates.distinct().size % 7 == 0){
@@ -366,7 +371,9 @@ class DiaryViewModel: ViewModel() {
                                                     hashMapOf(
                                                         COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
                                                         COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
-                                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)),
+                                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(Date().toDateFormat(
+                                                            FORMAT_YYYY_MM_DD
+                                                        )),
                                                         TIMESTAMP to FieldValue.serverTimestamp()
                                                     )
                                                 )
@@ -405,7 +412,9 @@ class DiaryViewModel: ViewModel() {
                         val items = mutableListOf<Foodie>()
                         for (document in it) {
 
-                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(FORMAT_YYYY_MM_DD))
+                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
+                                FORMAT_YYYY_MM_DD
+                            ))
                             items.add(document.toObject(Foodie::class.java))
                             items[items.lastIndex].docId = document.id
                         }
