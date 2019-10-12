@@ -703,6 +703,29 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/time_show" />
 
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/recycler_foodie_sum"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/blank_hint_linechart"
+                app:loadingStatus="@{viewModel.status}" />
+
+        <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/shaperecord_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarCurrentDate"
+                app:loadingStatus="@{viewModel.status}" />
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_foodie_sum"
                 android:layout_width="0dp"

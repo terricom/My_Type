@@ -508,6 +508,29 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/time_show" />
 
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/recycler_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recycler_shape"
+                app:loadingStatus="@{viewModel.status}" />
+
+        <ProgressBar
+                android:id="@+id/progressBar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/ProgressThemeDark"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/lineChart"
+                app:loadingStatus="@{viewModel.status}" />
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_shape"
                 android:layout_width="0dp"

@@ -54,5 +54,10 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
+    <style name="ProgressThemeDark" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/colorMyType</item>
+    </style>
+
+
 
 </resources>

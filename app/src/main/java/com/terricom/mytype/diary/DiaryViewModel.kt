@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
@@ -22,13 +23,15 @@ import java.util.*
 
 class DiaryViewModel: ViewModel() {
 
-    val userUid = UserManager.uid
-
     val outlineProvider = CardAvatarOutlineProvider()
 
     private val _date = MutableLiveData<Date>()
     val date : LiveData<Date>
         get() = _date
+
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
     private val _dataFoodieFromFirebase = MutableLiveData<List<Foodie>>()
     val dataFoodieFromFirebase : LiveData<List<Foodie>>
@@ -208,8 +211,7 @@ class DiaryViewModel: ViewModel() {
                                 items.add(document.toObject(Foodie::class.java))
                                 items[items.lastIndex].docId = document.id
                                 dates.add(document.toObject(Foodie::class.java).timestamp.toDateFormat(
-                                    FORMAT_YYYY_MM_DD
-                                )
+                                    FORMAT_YYYY_MM_DD)
                                 )
                             }
                         }
@@ -231,12 +233,10 @@ class DiaryViewModel: ViewModel() {
                             _totalFruit.value = _totalFruit.value!!.plus(foo.fruit ?:0f)
                         }
                         setDataFoodieFromFirebase(items)
+                        _status.value = true
                     }
-
             }
-
         }
-
     }
 
     private val _totalWater = MutableLiveData<Float>()

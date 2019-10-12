@@ -318,6 +318,29 @@
                 <!--                    app:layout_constraintStart_toStartOf="@+id/number_fruit"-->
                 <!--                    app:layout_constraintTop_toTopOf="@+id/button_protein" />-->
 
+                <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/ProgressThemeDark"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_hint_add_goal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/recyclerGoal"
+                        app:loadingStatus="@{viewModel.status}" />
+
+                <ProgressBar
+                        android:id="@+id/progressBar3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/ProgressThemeDark"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/recyclerPuzzle"
+                        app:loadingStatus="@{viewModel.status}" />
+
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerGoal"
                         android:layout_width="match_parent"
@@ -433,7 +456,9 @@
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/noto_sans"
                 android:padding="@dimen/elevation_all"
-                android:text="@string/login_greet"
+                android:hint="@string/login_greet"
+                android:text="@{viewModel.cheerUp}"
+                android:textColorHint="@color/colorWhite"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_content"
                 app:layout_constraintStart_toEndOf="@+id/image_profile_avatar"

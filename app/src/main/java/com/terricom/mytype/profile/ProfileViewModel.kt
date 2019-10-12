@@ -15,7 +15,10 @@ class ProfileViewModel: ViewModel() {
 
     val userName = UserManager.name
     val userPic = UserManager.picture
-    val userUid = UserManager.uid
+
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
     val outlineProvider = ProfileAvatarOutlineProvider()
 
@@ -132,6 +135,8 @@ class ProfileViewModel: ViewModel() {
 
                             setPuzzle(items)
                             getPuzzle()
+                            _status.value = true
+
                         }
                     }
             }
@@ -165,6 +170,7 @@ class ProfileViewModel: ViewModel() {
                             cheerUp.value = items[0].cheerUp
                             setGoal(items)
                             getGoal()
+                            _status.value = true
                         }
                     }
             }

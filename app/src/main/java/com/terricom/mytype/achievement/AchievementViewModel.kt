@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
@@ -44,6 +45,10 @@ class AchievementViewModel: ViewModel() {
     private val _dataShapeFromFirebase = MutableLiveData<List<Shape>>()
     val dataShapeFromFirebase : LiveData<List<Shape>>
         get() = _dataShapeFromFirebase
+
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
     private fun setDataShapeFromFirebase (shape: List<Shape>){
         _dataShapeFromFirebase.value = shape
@@ -227,6 +232,7 @@ class AchievementViewModel: ViewModel() {
                             .getColor(R.color.blue_facebook), muscleList.toFloatArray()))
 
                         setListDates(chartList.toCollection(ArrayList()))
+                        _status.value = true
 
                         if (shapeListTemp.size != 0){
 
@@ -270,10 +276,8 @@ class AchievementViewModel: ViewModel() {
                             goalBodyFat.value = items[0].bodyFat.toDemicalPoint(1)
                             goalMuscle.value = items[0].muscle.toDemicalPoint(1)
                         }
-
                     }
             }
-
         }
     }
 
