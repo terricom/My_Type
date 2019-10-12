@@ -54,7 +54,7 @@ object UserManager {
     var picture : String? = null
         get(){
             return prefs?.getString(
-                tagUserPhoto, "")
+                tagUserPhoto, "https://firebasestorage.googleapis.com/v0/b/mytype-201909.appspot.com/o/images%2Fprojects%2Ficon_my_type_round.png?alt=media&token=63ef607b-0977-4312-a28a-e59d0cb0cf3f")
         }
         set(value){
             field = prefs?.edit()?.putString(

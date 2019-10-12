@@ -51,10 +51,10 @@ class LoginViewModel: ViewModel() {
 
                                 UserManager.userToken = `object`.getLong(id).toString()
                                 UserManager.name = `object`.getString(name)
-                                UserManager.picture = Profile.getCurrentProfile()
-                                    .getProfilePictureUri(300, 300).toString()
                                 UserManager.mail = `object`.getString(email)
-
+                                Profile.getCurrentProfile()?.let {
+                                    UserManager.picture = it.getProfilePictureUri(300, 300).toString()
+                                }
                             }
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -121,7 +121,7 @@ class LoginViewModel: ViewModel() {
                 }
                 //全新用戶
                 if (items.isEmpty()){
-                    FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document().set(userData)
+                    FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(uid).set(userData)
                     _user.value = User(
                         UserManager.mail,
                         UserManager.name,

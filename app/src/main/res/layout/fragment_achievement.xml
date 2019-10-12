@@ -406,7 +406,7 @@
 
         <TextView
                 android:id="@+id/number_weight_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_weight"
@@ -436,7 +436,7 @@
 
         <TextView
                 android:id="@+id/number_body_water_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_body_water"
@@ -451,7 +451,7 @@
 
         <TextView
                 android:id="@+id/number_body_fat_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_body_fat"
@@ -466,7 +466,7 @@
 
         <TextView
                 android:id="@+id/number_tdeet_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_tdee"
@@ -481,7 +481,7 @@
 
         <TextView
                 android:id="@+id/number_muscle_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/shape_muscle"
@@ -496,7 +496,7 @@
 
         <TextView
                 android:id="@+id/number_body_age_show"
-                android:layout_width="40dp"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/noto_sans"
@@ -552,8 +552,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/number_weight"
-                app:layout_constraintEnd_toEndOf="@+id/number_weight"
-                app:layout_constraintStart_toStartOf="@+id/number_weight"
+                app:layout_constraintEnd_toEndOf="@+id/number_weight_show"
+                app:layout_constraintStart_toStartOf="@+id/number_weight_show"
                 app:layout_constraintTop_toTopOf="@+id/number_weight"
                 app:srcCompat="@drawable/icon_weight" />
 
@@ -563,7 +563,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/number_body_water"
-                app:layout_constraintEnd_toEndOf="@+id/number_body_water"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_water_show"
                 app:layout_constraintStart_toStartOf="@+id/number_body_water"
                 app:layout_constraintTop_toTopOf="@+id/number_body_water"
                 app:srcCompat="@drawable/icon_body_water" />
@@ -574,8 +574,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/number_body_fat"
-                app:layout_constraintEnd_toEndOf="@+id/number_body_fat"
-                app:layout_constraintStart_toStartOf="@+id/number_body_fat"
+                app:layout_constraintEnd_toEndOf="@+id/number_body_fat_show"
+                app:layout_constraintStart_toStartOf="@+id/number_body_fat_show"
                 app:layout_constraintTop_toTopOf="@+id/number_body_fat"
                 app:srcCompat="@drawable/icon_body_fat" />
 
@@ -585,8 +585,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/number_tdeet"
-                app:layout_constraintEnd_toEndOf="@+id/number_tdeet"
-                app:layout_constraintStart_toStartOf="@+id/number_tdeet"
+                app:layout_constraintEnd_toEndOf="@+id/number_tdeet_show"
+                app:layout_constraintStart_toStartOf="@+id/number_tdeet_show"
                 app:layout_constraintTop_toTopOf="@+id/number_tdeet"
                 app:srcCompat="@drawable/icon_tdee" />
 
@@ -597,8 +597,8 @@
                 android:layout_marginTop="2dp"
                 android:paddingLeft="@dimen/dialog_padding"
                 app:layout_constraintBottom_toBottomOf="@+id/number_muscle"
-                app:layout_constraintEnd_toEndOf="@+id/number_muscle"
-                app:layout_constraintStart_toStartOf="@+id/number_muscle"
+                app:layout_constraintEnd_toEndOf="@+id/number_muscle_show"
+                app:layout_constraintStart_toStartOf="@+id/number_muscle_show"
                 app:layout_constraintTop_toTopOf="@+id/number_muscle"
                 app:srcCompat="@drawable/icon_muscle" />
 
@@ -639,7 +639,7 @@
                 android:background="@drawable/icon_postit"
                 android:lineSpacingExtra="@dimen/elevation_all"
                 android:paddingHorizontal="24dp"
-                android:paddingTop="60dp"
+                android:paddingTop="40dp"
                 android:text="@string/achievement_blank_hint"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/lineChart_guide"
@@ -699,7 +699,7 @@
 
                 <TextView
                         android:id="@+id/number_weight_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_weight"
@@ -714,7 +714,7 @@
 
                 <TextView
                         android:id="@+id/number_body_water_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_bodyWater"
@@ -729,7 +729,7 @@
 
                 <TextView
                         android:id="@+id/number_body_fat_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_bodyFat"
@@ -744,7 +744,7 @@
 
                 <TextView
                         android:id="@+id/number_tdeet_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_tdee"
@@ -759,7 +759,7 @@
 
                 <TextView
                         android:id="@+id/number_muscle_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_muscle"
@@ -774,7 +774,7 @@
 
                 <TextView
                         android:id="@+id/number_body_age_ex"
-                        android:layout_width="40dp"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/noto_sans"
                         android:text="@string/shape_example_bodyAge"

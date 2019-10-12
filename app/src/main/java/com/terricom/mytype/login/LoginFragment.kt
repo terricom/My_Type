@@ -110,9 +110,8 @@ class LoginFragment: Fragment() {
                     var user = auth.currentUser
                     user?.let {
                         UserManager.uid = it.uid
+                        viewModel.checkUser(it.uid)
                     }
-                    viewModel.checkUser(user!!.uid)
-
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
@@ -180,7 +179,10 @@ class LoginFragment: Fragment() {
                     Logger.d("signInWithCredential:success")
 
                     val user = auth.currentUser
-                    viewModel.checkUser(user!!.uid)
+                    user?.let {
+                        UserManager.uid = it.uid
+                        viewModel.checkUser(it.uid)
+                    }
                 } else {
                     Toast.makeText(
                         App.applicationContext(), App.applicationContext().getString(R.string.login_fail_toast),
