@@ -1,6 +1,8 @@
 package com.terricom.mytype
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,4 +43,13 @@ fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Puzzle>?
         }
     }
 }
+
+@BindingAdapter("loadingStatus")
+fun bindApiStatus(view: ProgressBar, status: Boolean?) {
+    when (status) {
+        true -> view.visibility = View.INVISIBLE
+        null, false -> view.visibility = View.VISIBLE
+    }
+}
+
 

@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.*
 import com.terricom.mytype.tools.*
 import java.sql.Timestamp
@@ -29,6 +30,10 @@ class LineChartViewModel: ViewModel() {
     private val _recordDate = MutableLiveData<Date>()
     val recordDate: LiveData<Date>
         get() = _recordDate
+
+    private val _status = MutableLiveData<Boolean>()
+    val status: LiveData<Boolean>
+        get() = _status
 
 
     fun setDate(date: Date){
@@ -272,6 +277,7 @@ class LineChartViewModel: ViewModel() {
                         chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), carbonList.toFloatArray()))
 
                         setListDates(chartList.toCollection(ArrayList()))
+                        _status.value = true
                         _listDates.value = null
                     }
             }
