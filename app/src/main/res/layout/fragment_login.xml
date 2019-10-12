@@ -54,6 +54,7 @@
                 android:text="@string/login_facebook"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
+                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -70,6 +71,7 @@
                 android:text="@string/login_google"
                 android:textColor="@color/colorMyType"
                 android:textStyle="bold"
+                style="?android:attr/borderlessButtonStyle"
                 app:layout_constraintBottom_toTopOf="@+id/button_login_facebook"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

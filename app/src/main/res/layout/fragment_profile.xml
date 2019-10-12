@@ -31,7 +31,7 @@
                 android:background="@drawable/icon_my_type_round"
                 android:outlineProvider="@{viewModel.outlineProvider}"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.userPic}"
+                app:imageUrl='@{viewModel.userPic}'
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
