@@ -26,9 +26,9 @@ android {
         applicationId "com.terricom.mytype"
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 11
+        versionCode 12
         multiDexEnabled true
-        versionName "1.0.9"
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -120,10 +120,12 @@ dependencies {
     // Facebook
     implementation 'com.facebook.android:facebook-login:5.0.0'
 
+    //Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:monitor:1.2.0'
     implementation 'androidx.test:monitor:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 
     // Notification
     implementation 'androidx.core:core:1.0.0'
