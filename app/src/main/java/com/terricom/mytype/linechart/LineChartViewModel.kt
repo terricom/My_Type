@@ -272,7 +272,7 @@ class LineChartViewModel: ViewModel() {
                     .minus(goalCarbon.value.toFloatFormat())
         }
 
-        fireDateBack(ArrayList(dateList))
+        fireDateBack(ArrayList(dateList.distinct()))
 
         val chartList = mutableListOf<ChartEntity>()
 
