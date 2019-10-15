@@ -58,6 +58,10 @@
         <item name="colorAccent">@color/colorMyType</item>
     </style>
 
+    <style name="ProgressThemeLight" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
 
 
 </resources>

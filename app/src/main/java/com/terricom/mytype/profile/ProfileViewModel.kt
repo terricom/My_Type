@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.Query
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.Puzzle
@@ -163,7 +165,7 @@ class ProfileViewModel: ViewModel() {
                         }
 
                         if (items.isNullOrEmpty()){
-
+                            cheerUp.value = App.applicationContext().getString(R.string.login_greet)
                             getNoGoal()
                         }else {
 

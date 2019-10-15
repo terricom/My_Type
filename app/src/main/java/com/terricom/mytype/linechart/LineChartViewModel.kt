@@ -3,8 +3,6 @@ package com.terricom.mytype.linechart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
@@ -89,9 +87,6 @@ class LineChartViewModel: ViewModel() {
     val diffOilNum = MutableLiveData<Float>()
     val diffProteinNum = MutableLiveData<Float>()
     val diffVegetableNum = MutableLiveData<Float>()
-
-    val db = FirebaseFirestore.getInstance()
-    val users: CollectionReference = db.collection("Users")
 
     init {
         setDate(Date())
@@ -265,7 +260,7 @@ class LineChartViewModel: ViewModel() {
                                     .minus(goalCarbon.value.toFloatFormat())
                         }
 
-                        fireDateBack(ArrayList(dateList))
+                        fireDateBack(ArrayList(dateList.distinct()))
 
                         val chartList = mutableListOf<ChartEntity>()
 
