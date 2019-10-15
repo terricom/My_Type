@@ -40,7 +40,7 @@ fun Date?.toDateFormat(dateFormat: Int): String {
 //檢查要轉 Float 的字串若為 null 或 empty 則給予 0f 初始值
 fun String?.toFloatFormat(): Float {
 
-    Logger.i("String?.toFloatFormat = $this")
+//    Logger.i("String?.toFloatFormat = $this")
     return when (this.isNullOrEmpty()){
         true -> 0f
         else -> {
