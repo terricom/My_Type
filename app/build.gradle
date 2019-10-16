@@ -126,6 +126,7 @@ dependencies {
     implementation 'androidx.test:monitor:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.mockito:mockito-core:1.10.19'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 
     // Notification
     implementation 'androidx.core:core:1.0.0'
