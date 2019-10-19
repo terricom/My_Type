@@ -73,8 +73,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
+<<<<<<< HEAD
                             <option name="x" value="102" />
                             <option name="y" value="-103" />
+=======
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+>>>>>>> Refactor
                           </Point>
                         </option>
                       </LayoutPositions>

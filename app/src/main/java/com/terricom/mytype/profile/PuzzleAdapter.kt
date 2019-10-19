@@ -6,19 +6,41 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.data.Puzzle
 import com.terricom.mytype.databinding.ItemProfileDreamBoardBinding
+import com.terricom.mytype.databinding.ItemProfileLockPuzzleBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+private const val PUZZLE = 0
+private const val LOCK = 1
 
 class PuzzleAdapter(
     val viewModel: ProfileViewModel
-) : RecyclerView.Adapter<PuzzleAdapter.PuzzleViewHolder>() {
+) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback) {
 
-    private var puzzles: List<Puzzle>? = null
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun submitPuzzles(puzzles: List<Puzzle>) {
-        this.puzzles = puzzles
-        notifyDataSetChanged()
+    fun submitPuzzle(puzzleList: List<Puzzle>){
+
+        adapterScope.launch {
+            val newList = mutableListOf<DataItem>()
+
+            for (puzzle in puzzleList){
+                newList.add(DataItem.Puzzle(puzzle, viewModel))
+            }
+            newList.add(DataItem.Lock(viewModel))
+
+            withContext(Dispatchers.Main) {
+                submitList(newList)
+            }
+        }
+
     }
 
     class PuzzleViewHolder(private var binding: ItemProfileDreamBoardBinding): RecyclerView.ViewHolder(binding.root),
@@ -28,37 +50,37 @@ class PuzzleAdapter(
             binding.lifecycleOwner =this
             binding.puzzle = puzzle
 
-            puzzle?.let {
+            puzzle.let {
                 binding.puzzle1.visibility =
                     if (puzzle.position!!.contains(0)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle2.visibility =
-                    if (puzzle.position!!.contains(1)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(1)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle3.visibility =
-                    if (puzzle.position!!.contains(2)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(2)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle4.visibility =
-                    if (puzzle.position!!.contains(3)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(3)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle5.visibility =
-                    if (puzzle.position!!.contains(4)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(4)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle6.visibility =
-                    if (puzzle.position!!.contains(5)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(5)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle7.visibility =
-                    if (puzzle.position!!.contains(6)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(6)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle8.visibility =
-                    if (puzzle.position!!.contains(7)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(7)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle9.visibility =
-                    if (puzzle.position!!.contains(8)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(8)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle10.visibility =
-                    if (puzzle.position!!.contains(9)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(9)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle11.visibility =
-                    if (puzzle.position!!.contains(10)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(10)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle12.visibility =
-                    if (puzzle.position!!.contains(11)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(11)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle13.visibility =
-                    if (puzzle.position!!.contains(12)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(12)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle14.visibility =
-                    if (puzzle.position!!.contains(13)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(13)) View.INVISIBLE else View.VISIBLE
                 binding.puzzle15.visibility =
-                    if (puzzle.position!!.contains(14)) View.INVISIBLE else View.VISIBLE
+                    if (puzzle.position.contains(14)) View.INVISIBLE else View.VISIBLE
             }
 
             binding.executePendingBindings()
@@ -83,36 +105,107 @@ class PuzzleAdapter(
         }
     }
 
+    class LockViewHolder(private var binding: ItemProfileLockPuzzleBinding): RecyclerView.ViewHolder(binding.root),
+        LifecycleOwner {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PuzzleViewHolder {
+        fun bind(viewModel: ProfileViewModel) {
+            binding.lifecycleOwner =this
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
+        }
 
-        return PuzzleViewHolder(ItemProfileDreamBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        private val lifecycleRegistry = LifecycleRegistry(this)
+
+        init {
+            lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        }
+
+        fun markAttach() {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
+
+        fun markDetach() {
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
+
+        override fun getLifecycle(): Lifecycle {
+            return lifecycleRegistry
+        }
     }
 
+    companion object DiffCallback : DiffUtil.ItemCallback<DataItem>() {
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem === newItem
+        }
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem == newItem
+        }
+    }
 
-    override fun onBindViewHolder(holder: PuzzleViewHolder, position: Int) {
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is DataItem.Puzzle -> PUZZLE
+            is DataItem.Lock -> LOCK
+            else -> throw IllegalArgumentException()
+        }
 
-        puzzles?.let {
-                holder.bind(it[getRealPosition(position)])
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when(viewType){
+
+            PUZZLE -> PuzzleViewHolder(ItemProfileDreamBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            LOCK -> LockViewHolder(ItemProfileLockPuzzleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            else -> throw IllegalArgumentException()
         }
 
 
-    override fun getItemCount(): Int {
-        return puzzles?.let { Int.MAX_VALUE } ?: 0
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        when (holder){
+            is PuzzleViewHolder -> {
+                val header = getItem(position) as DataItem.Puzzle
+                holder.bind(header.puzzle)
+            }
+
+            is LockViewHolder -> {
+                val header = getItem(position) as DataItem.Lock
+                holder.bind(header.viewModel)
+            }
+            else -> throw IllegalArgumentException()
+        }
     }
 
-    private fun getRealPosition(position: Int): Int = puzzles?.let {
-        position % it.size
-    } ?: 0
-
-    override fun onViewAttachedToWindow(holder: PuzzleViewHolder) {
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.markAttach()
+        when (holder) {
+            is PuzzleViewHolder -> holder.markAttach()
+            is LockViewHolder -> holder.markAttach()
+        }
     }
 
-    override fun onViewDetachedFromWindow(holder: PuzzleViewHolder) {
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.markDetach()
+        when (holder) {
+            is PuzzleViewHolder -> holder.markDetach()
+            is LockViewHolder -> holder.markDetach()
+        }
     }
+}
+
+sealed class DataItem {
+
+    data class Puzzle(
+        val puzzle: com.terricom.mytype.data.Puzzle, val viewModel: ProfileViewModel
+    ): DataItem(){
+
+        override val id = puzzle.timestamp.toString()
+    }
+    data class Lock(
+        val viewModel: ProfileViewModel
+    ) : DataItem(){
+
+        override val id = (Long.MIN_VALUE).toString()
+    }
+
+    abstract val id: String
+
 }

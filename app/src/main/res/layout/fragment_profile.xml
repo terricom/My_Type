@@ -60,6 +60,7 @@
                 android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="16dp"
                 android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +71,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
 
 
                 <TextView
@@ -85,7 +85,6 @@
                         android:textSize="@dimen/text_content_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
 
                 <ProgressBar
@@ -205,15 +204,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
                         android:background="@color/colorWhite"
+                        android:clipToPadding="false"
+                        android:foregroundGravity="center_vertical|center|center_horizontal"
                         android:orientation="horizontal"
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board"
-                        app:puzzles="@{viewModel.puzzle}"
                         tools:listitem="@layout/item_profile_dream_board" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

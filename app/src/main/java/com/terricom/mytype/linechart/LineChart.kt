@@ -168,7 +168,7 @@ class LineChart : View {
             y = yGap * i
             x = rect.exactCenterX() - 60
 
-            val degree: Int = 0
+            val degree = 0
             val px = (-(20 + rect.width())).toFloat()
             val py = y + rect.exactCenterY() + y + 10
 

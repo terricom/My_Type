@@ -26,9 +26,9 @@ android {
         applicationId "com.terricom.mytype"
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 14
+        versionCode 15
         multiDexEnabled true
-        versionName "1.1.2"
+        versionName "1.1.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

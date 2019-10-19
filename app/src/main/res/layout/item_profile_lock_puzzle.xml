@@ -4,9 +4,7 @@
         <variable
                 name="viewModel"
                 type="com.terricom.mytype.profile.ProfileViewModel" />
-        <variable
-                name="puzzle"
-                type="com.terricom.mytype.data.Puzzle" />
+
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,17 +20,6 @@
                 android:foregroundGravity="center|center_horizontal"
                 android:orientation="vertical">
 
-            <ImageView
-                    android:id="@+id/dreamboard"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:scaleType="centerCrop"
-                    app:imageUrl="@{puzzle.imgURL}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="3:4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                     android:id="@+id/puzzle_1"
@@ -240,6 +227,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/pazzle_frame" />
+
+            <ImageView
+                    android:id="@+id/puzzle_shadow"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/common_google_signin_btn_text_light_disabled" />
+
+            <ImageView
+                    android:id="@+id/puzzle_lock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="80dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView22"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView22"
+                    app:layout_constraintStart_toStartOf="@+id/imageView22"
+                    app:layout_constraintTop_toTopOf="@+id/imageView22"
+                    app:srcCompat="@drawable/icon_lock" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
