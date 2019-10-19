@@ -5,12 +5,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.terricom.mytype.data.PlaceHolder
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.profile.PuzzleAdapter
 import com.terricom.mytype.tools.Logger
 
 
@@ -28,19 +25,6 @@ fun bindImage(imgView: ImageView, imgUrl: String) {
                         R.drawable.icon_placeholder)
                     .error(R.drawable.icon_placeholder_error))
             .into(imgView)
-    }
-}
-
-@BindingAdapter("puzzles")
-fun bindRecyclerViewWithImages(recyclerView: RecyclerView, images: List<Puzzle>?) {
-    images?.let {
-        recyclerView.adapter?.apply {
-            when (this) {
-                is PuzzleAdapter -> {
-                    submitPuzzles(it)
-                }
-            }
-        }
     }
 }
 

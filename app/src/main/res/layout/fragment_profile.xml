@@ -213,7 +213,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profile_title_dream_board"
-                        app:puzzles="@{viewModel.puzzle}"
                         tools:listitem="@layout/item_profile_dream_board" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

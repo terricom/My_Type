@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.MessageDialog
+import com.terricom.mytype.NavigationDirections
+import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentProfileBinding
 import com.terricom.mytype.tools.isConnected
@@ -30,17 +32,17 @@ class ProfileFragment: Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner= this
 
-        val linearSnapHelper = LinearSnapHelper().apply {
-            attachToRecyclerView(binding.recyclerPuzzle)
+        binding.recyclerPuzzle.adapter = PuzzleAdapter(viewModel)
+
+        binding.profilePuzzleReference.setOnClickListener {
+            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
+                value.message = getString(R.string.profile_puzzle_info)
+            }))
         }
 
-        binding.recyclerPuzzle.adapter = PuzzleAdapter(viewModel)
-        binding.recyclerPuzzle.setOnScrollChangeListener { _, _, _, _, _ ->
-            viewModel.onGalleryScrollChange(
-                binding.recyclerPuzzle.layoutManager,
-                linearSnapHelper
-            )
-        }
+        viewModel.puzzle.observe(this, Observer {
+            (binding.recyclerPuzzle.adapter as PuzzleAdapter).submitList(it)
+        })
 
         (binding.recyclerGoal.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.recyclerGoal.setHasFixedSize(true)
@@ -60,7 +62,7 @@ class ProfileFragment: Fragment() {
             }
         })
 
-        viewModel.isGoalExpanded.observe(this, Observer {
+        viewModel.isGoalExpanded.observe(this, Observer { it ->
 
             if (it == true){
 
@@ -87,18 +89,8 @@ class ProfileFragment: Fragment() {
             }
         })
 
-        binding.profilePuzzleReference.setOnClickListener {
-            findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
-                value.message = getString(R.string.profile_puzzle_info)
-            }))
-        }
 
-        viewModel.puzzle.value?.let { puzzleList ->
-            binding.recyclerPuzzle
-                .scrollToPosition(puzzleList.size * 100)
-        }
-
-        viewModel.goal.observe(this, Observer {
+        viewModel.goal.observe(this, Observer { it ->
             if (it.isNotEmpty()){
                 binding.recyclerGoal.adapter = GoalAdapter(viewModel, GoalAdapter.OnClickListener{
                     findNavController().navigate(NavigationDirections.navigateToGoalSettingFragment(it))
