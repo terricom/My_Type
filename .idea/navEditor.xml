@@ -68,13 +68,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="linechartFragment">
+                  <entry key="lineChartFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="744" />
-                            <option name="y" value="12" />
+                            <option name="x" value="102" />
+                            <option name="y" value="-103" />
                           </Point>
                         </option>
                       </LayoutPositions>
