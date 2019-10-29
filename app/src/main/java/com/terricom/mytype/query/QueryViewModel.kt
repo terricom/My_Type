@@ -4,13 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Goal
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
 import com.terricom.mytype.tools.toDemicalPoint
 
-class QueryViewModel: ViewModel(){
+class QueryViewModel(private val firebaseRepository: FirebaseRepository): ViewModel(){
 
     val userUid = UserManager.uid
 

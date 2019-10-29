@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
-import com.terricom.mytype.*
+import com.terricom.mytype.App
+import com.terricom.mytype.R
+import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_CARBON
@@ -26,10 +28,6 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.data.PuzzleImg
-import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.tools.FORMAT_HH_MM_SS_FFFFFFFFF
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
@@ -38,7 +36,7 @@ import java.sql.Timestamp
 import java.util.*
 
 
-class FoodieViewModel: ViewModel() {
+class FoodieViewModel(private val firebaseRepository: FirebaseRepository): ViewModel() {
 
     private var selectedFood = mutableListOf<String>()
     private var selectedNutrition = mutableListOf<String>()

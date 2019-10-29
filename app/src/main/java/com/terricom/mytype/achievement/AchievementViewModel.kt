@@ -8,19 +8,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
-import com.terricom.mytype.data.Goal
-import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.linechart.ChartEntity
 import com.terricom.mytype.tools.*
 import java.sql.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AchievementViewModel: ViewModel() {
+class AchievementViewModel(private val firebaseRepository: FirebaseRepository): ViewModel() {
 
     val userUid = UserManager.uid
 

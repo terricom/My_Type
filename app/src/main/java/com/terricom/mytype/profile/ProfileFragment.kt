@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.terricom.mytype.App
@@ -16,14 +16,13 @@ import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.databinding.FragmentProfileBinding
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 
 
 class ProfileFragment: Fragment() {
 
-    private val viewModel: ProfileViewModel by lazy {
-        ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-    }
+    private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
 
     private lateinit var binding: FragmentProfileBinding
 

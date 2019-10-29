@@ -6,22 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 
 class AchievementFragment: Fragment() {
 
-    val viewModel: AchievementViewModel by lazy {
-        ViewModelProviders.of(this).get(AchievementViewModel::class.java)
-    }
+    private val viewModel by viewModels<AchievementViewModel> { getVmFactory() }
     private val currentCalendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

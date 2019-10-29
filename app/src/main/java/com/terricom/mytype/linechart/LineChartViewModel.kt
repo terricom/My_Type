@@ -15,8 +15,6 @@ import kotlin.collections.ArrayList
 
 class LineChartViewModel: ViewModel() {
 
-    val userUid = UserManager.uid
-
     private val _date = MutableLiveData<String>()
     val date: LiveData<String>
         get() = _date

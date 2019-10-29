@@ -11,15 +11,12 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
-import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.User
-import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.data.tagUserUid
+import com.terricom.mytype.data.*
 import com.terricom.mytype.tools.Logger
 import org.json.JSONException
 import java.io.IOException
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(private val firebaseRepository: FirebaseRepository): ViewModel() {
 
     // Handle leave login
     private val _loginFacebook = MutableLiveData<Boolean>()

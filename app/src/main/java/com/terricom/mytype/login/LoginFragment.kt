@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
@@ -25,13 +25,13 @@ import com.terricom.mytype.*
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentLoginBinding
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginFragment: Fragment() {
 
-    private val viewModel : LoginViewModel by lazy {
-        ViewModelProviders.of(this).get(LoginViewModel::class.java)}
+    private val viewModel by viewModels<LoginViewModel> { getVmFactory() }
 
     private lateinit var binding: FragmentLoginBinding
 

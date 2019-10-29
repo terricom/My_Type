@@ -16,14 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
-import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.diary.DiaryViewModel
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -139,7 +138,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
     }
 
-    val viewModel = DiaryViewModel()
+//    val viewModel = DiaryViewModel(firebaseRepository = FirebaseRepository)
     @SuppressLint("SimpleDateFormat")
     var selectedDayOut = Date()
     val thisMonth: List<String> ?= null

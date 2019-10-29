@@ -37,8 +37,8 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarViewHolder>() {
             listDates[position],
             showingDateCalendar,
             selectedDate,
-            listener,
-            viewModel = DiaryViewModel()
+            listener
+//            viewModel = DiaryViewModel()
         )
     }
 

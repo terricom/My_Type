@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.ItemCalendarDayBinding
-import com.terricom.mytype.diary.DiaryViewModel
 import java.util.*
 
 class CalendarViewHolder(
@@ -27,10 +26,10 @@ class CalendarViewHolder(
     fun myBindView(currentDateInput : Date,
                    showingDate : Calendar,
                    dateSelected : Date?,
-                   listener: CalendarAdapter.ListenerCellSelect? = null,
-                   viewModel: DiaryViewModel
+                   listener: CalendarAdapter.ListenerCellSelect? = null
+//                   , viewModel: DiaryViewModel
     ){
-        binding.viewModel = viewModel
+//        binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.executePendingBindings()
         resetViewDefault()
