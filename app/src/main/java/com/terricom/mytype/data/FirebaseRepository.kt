@@ -10,5 +10,7 @@ interface FirebaseRepository {
 
     suspend fun updatePuzzle(): Int
 
+    suspend fun queryFoodie(key: String, type: String): List<Foodie>
+
 
 }

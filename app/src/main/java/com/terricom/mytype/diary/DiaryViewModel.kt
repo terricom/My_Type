@@ -199,7 +199,7 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
         get() = _listQueryFoodieResult
 
     private fun setQueryResult(queryResult : List<Foodie>, key: String){
-        _listQueryFoodieResult.value = FoodieList(queryResult,key)
+        _listQueryFoodieResult.value = FoodieList(queryResult, key)
     }
 
     fun getTime(timestamp: Date):String{
@@ -232,108 +232,15 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
                 Logger.i("firebaseRepository.updatePuzzle() = ${firebaseRepository.updatePuzzle()}")
             }
         }
-
-//            UserManager.USER_REFERENCE?.let {user ->
-//
-//                user.collection(COLLECTION_FOODIE)
-//                    .orderBy(TIMESTAMP,
-//                        Query.Direction.DESCENDING
-//                    )
-//                    .get()
-//                    .addOnSuccessListener {
-//                        val dates = mutableListOf<String>()
-//                        val items = mutableListOf<Foodie>()
-//                        for (document in it) {
-//
-//                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
-//                                FORMAT_YYYY_MM_DD
-//                            ))
-//                            items.add(document.toObject(Foodie::class.java))
-//                        }
-//                        if (dates.distinct().size % 7 == 0){
-//
-//                            //全新使用者
-//                            user.collection(COLLECTION_PUZZLE)
-//                                .orderBy(TIMESTAMP,
-//                                    Query.Direction.DESCENDING
-//                                )
-//                                .get()
-//                                .addOnSuccessListener {
-//
-//                                    val puzzleAll = mutableListOf<Puzzle>()
-//                                    for (document in it) {
-//
-//                                        puzzleAll.add(document.toObject(Puzzle::class.java))
-//                                        puzzleAll[puzzleAll.lastIndex].docId = document.id
-//                                    }
-//
-//                                    Logger.i("puzzleAll.size = ${puzzleAll.size}")
-//                                    when (dates.size){
-//                                        0 -> {
-//                                            if (UserManager.getPuzzleNewUser == "0"  && puzzleAll.size == 0){
-//
-//                                                UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
-//
-//                                                user.collection(COLLECTION_PUZZLE).document().set(
-//                                                    hashMapOf(
-//                                                        COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
-//                                                        COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
-//                                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(Date().toDateFormat(
-//                                                            FORMAT_YYYY_MM_DD
-//                                                        )),
-//                                                        TIMESTAMP to FieldValue.serverTimestamp()
-//                                                    )
-//                                                )
-//
-//                                                getPuzzleNewUser()
-//                                            } else if (UserManager.getPuzzleNewUser == "1"  && puzzleAll.size == 1){
-//
-//                                                UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
-//                                                getPuzzleNewUser()
-//                                            }
-//                                        }
-//                                        else -> {
-//                                            getPuzzleOldUser()
-//                                        }
-//                                    }
-//                                }
-//                        }
-//                    }
-//
-//                }
-//            }
     }
 
     fun queryFoodie(key: String, type: String) {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {user ->
-
-                user.collection(COLLECTION_FOODIE)
-                    .whereArrayContains(type, key)
-                    .get()
-                    .addOnSuccessListener {
-
-                        val dates = mutableListOf<String>()
-                        val items = mutableListOf<Foodie>()
-                        for (document in it) {
-
-                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
-                                FORMAT_YYYY_MM_DD
-                            ))
-                            items.add(document.toObject(Foodie::class.java))
-                            items[items.lastIndex].docId = document.id
-                        }
-                        if (!items.isNullOrEmpty()){
-
-                            setQueryResult(items.asReversed(), key)
-                        }
-                    }
-            }
+            setQueryResult(firebaseRepository.queryFoodie(key, type), key)
 
         }
-
     }
 
 }

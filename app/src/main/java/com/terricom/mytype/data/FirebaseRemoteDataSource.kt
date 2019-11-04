@@ -10,6 +10,24 @@ import java.util.*
 
 object FirebaseRemoteDataSource: FirebaseDataSource {
 
+    override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
+
+        val foodieListFromFirebase = mutableListOf<Foodie>()
+
+        UserManager.USER_REFERENCE?.let {
+
+            for (foodie in it.collection(FirebaseKey.COLLECTION_FOODIE)
+                .whereArrayContains(type, key)
+                .get().await()){
+
+                foodieListFromFirebase.add(foodie.toObject(Foodie::class.java))
+                foodieListFromFirebase[foodieListFromFirebase.lastIndex].docId = foodie.id
+            }
+
+        }
+        return foodieListFromFirebase
+    }
+
     override suspend fun updatePuzzle(): Int{
 
         val listFromFirebase = mutableListOf<Any>()

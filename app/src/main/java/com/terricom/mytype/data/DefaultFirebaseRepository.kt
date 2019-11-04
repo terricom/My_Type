@@ -3,6 +3,11 @@ package com.terricom.mytype.data
 import java.sql.Timestamp
 
 class DefaultFirebaseRepository(private val firebaseDataSource: FirebaseDataSource): FirebaseRepository {
+
+    override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
+        return firebaseDataSource.queryFoodie(key= key, type= type)
+    }
+
     override suspend fun updatePuzzle(): Int {
         return firebaseDataSource.updatePuzzle()
     }
