@@ -7,8 +7,10 @@ import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_GOAL
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SLEEP
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_HH_MM
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
@@ -20,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.util.*
 
-class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewModel() {
+class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     val outlineProvider = CardAvatarOutlineProvider()
 
@@ -118,7 +120,7 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
 
         coroutineScope.launch {
 
-            val shape = firebaseRepository.getObjects(
+            val shape = myTypeRepository.getObjects(
                 COLLECTION_SHAPE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
@@ -135,7 +137,7 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
                 setDataShapeFromFIrebase(shape[0] as Shape)
             }
 
-            val sleep = firebaseRepository.getObjects(
+            val sleep = myTypeRepository.getObjects(
                 COLLECTION_SLEEP,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
@@ -152,7 +154,7 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
                 setDataSleepFromFirebase(sleep[0] as Sleep)
             }
 
-            val foodieList = firebaseRepository.getObjects(
+            val foodieList = myTypeRepository.getObjects(
                 COLLECTION_FOODIE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
@@ -212,7 +214,7 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
 
             coroutineScope.launch {
 
-                firebaseRepository.deleteObjects(COLLECTION_FOODIE, foodie)
+                myTypeRepository.deleteObjects(COLLECTION_FOODIE, foodie)
 
                 callDeleteAction()
             }
@@ -225,11 +227,11 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
 
             coroutineScope.launch {
 
-                when(firebaseRepository.updatePuzzle()){
+                when(myTypeRepository.updatePuzzle()){
                     0 -> getPuzzleNewUser()
                     1 -> getPuzzleOldUser()
                 }
-                Logger.i("firebaseRepository.updatePuzzle() = ${firebaseRepository.updatePuzzle()}")
+                Logger.i("myTypeRepository.updatePuzzle() = ${myTypeRepository.updatePuzzle()}")
             }
         }
     }
@@ -238,9 +240,25 @@ class DiaryViewModel(private val firebaseRepository: FirebaseRepository): ViewMo
 
         coroutineScope.launch {
 
-            setQueryResult(firebaseRepository.queryFoodie(key, type), key)
+            setQueryResult(myTypeRepository.queryFoodie(key, type), key)
 
         }
+    }
+
+    fun getGoal(){
+
+        coroutineScope.launch {
+
+            val goalList = myTypeRepository.getObjects(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+
+            when(myTypeRepository.isGoalInLocal((goalList[0] as Goal).docId)){
+
+                false -> myTypeRepository.insertGoal(goalList[0] as Goal)
+                true -> myTypeRepository.updateGoal(goalList[0] as Goal)
+            }
+            Logger.i("myTypeRepository.isGoalInLocal((goalList[0] as Goal) = ${myTypeRepository.isGoalInLocal((goalList[0] as Goal).docId)}")
+        }
+
     }
 
 }

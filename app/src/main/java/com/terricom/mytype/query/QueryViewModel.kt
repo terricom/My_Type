@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.*
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.toDemicalPoint
 
-class QueryViewModel(private val firebaseRepository: FirebaseRepository): ViewModel(){
+class QueryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(){
 
     val userUid = UserManager.uid
 

@@ -24,7 +24,6 @@ const val tagUserMail = "mail"
 const val tagPuzzleNew = "times"
 const val tagPuzzleOld = "puzzle"
 
-
 object UserManager {
 
     var prefs : SharedPreferences? = App.instance?.getSharedPreferences(tagUserToken, 0)

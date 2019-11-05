@@ -39,7 +39,8 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
-        //觀察用戶得到拼圖後會跳 dialog
+        viewModel.getGoal()
+
         viewModel.isGetPuzzle.observe(this, Observer {
 
             when (it){

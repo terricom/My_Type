@@ -1,6 +1,9 @@
-package com.terricom.mytype.data
+package com.terricom.mytype.data.source.remote
 
+import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FieldValue
+import com.terricom.mytype.data.*
+import com.terricom.mytype.data.source.MyTypeDataSource
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.toDateFormat
@@ -8,7 +11,27 @@ import kotlinx.coroutines.tasks.await
 import java.sql.Timestamp
 import java.util.*
 
-object FirebaseRemoteDataSource: FirebaseDataSource {
+object MyTypeRemoteDataSource: MyTypeDataSource {
+
+    override suspend fun isGoalInLocal(id: String): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun insertGoal(goal: Goal) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun updateGoal(goal: Goal) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun clearGoal() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getGoal(): LiveData<List<Goal>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
 

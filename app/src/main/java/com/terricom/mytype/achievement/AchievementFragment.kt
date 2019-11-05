@@ -15,6 +15,7 @@ import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDemicalPoint
 import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 
@@ -28,6 +29,12 @@ class AchievementFragment: Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        viewModel.goal.observe(this, Observer {
+            viewModel.goalWeight.value = it[0].weight.toDemicalPoint(1)
+            viewModel.goalBodyFat.value = it[0].bodyFat.toDemicalPoint(1)
+            viewModel.goalMuscle.value = it[0].muscle.toDemicalPoint(1)
+        })
 
         binding.recyclerShape.adapter = ShapeAdapter(viewModel, ShapeAdapter.OnClickListener{
             findNavController().navigate(NavigationDirections.navigateToShapeRecordFragment(it))
@@ -60,7 +67,7 @@ class AchievementFragment: Fragment() {
 
         viewModel.currentDate.observe(this, Observer {
 
-            viewModel.getAndSetDataShapeOfThisMonth()
+//            viewModel.getAndSetDataShapeOfThisMonth()
 
             viewModel.dataShapeFromFirebase.observe(this, Observer {
 
@@ -120,7 +127,6 @@ class AchievementFragment: Fragment() {
 
         if (!isConnected()){
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-            //告訴使用者網路無法使用
         }
 
         return binding.root

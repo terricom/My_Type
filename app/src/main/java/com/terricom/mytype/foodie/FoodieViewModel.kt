@@ -28,6 +28,7 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_HH_MM_SS_FFFFFFFFF
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
@@ -36,7 +37,7 @@ import java.sql.Timestamp
 import java.util.*
 
 
-class FoodieViewModel(private val firebaseRepository: FirebaseRepository): ViewModel() {
+class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     private var selectedFood = mutableListOf<String>()
     private var selectedNutrition = mutableListOf<String>()

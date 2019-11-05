@@ -138,7 +138,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
     }
 
-//    val viewModel = DiaryViewModel(firebaseRepository = FirebaseRepository)
+//    val viewModel = DiaryViewModel(myTypeRepository = MyTypeRepository)
     @SuppressLint("SimpleDateFormat")
     var selectedDayOut = Date()
     val thisMonth: List<String> ?= null

@@ -5,6 +5,6 @@ import com.terricom.mytype.App
 import com.terricom.mytype.factory.ViewModelFactory
 
 fun Fragment.getVmFactory(): ViewModelFactory {
-    val repository = (requireContext().applicationContext as App).firebaseRepository
+    val repository = (requireContext().applicationContext as App).myTypeRepository
     return ViewModelFactory(repository)
 }
