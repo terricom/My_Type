@@ -9,6 +9,10 @@ class DefaultMyTypeRepository(private val myTypeRemoteDataSource: MyTypeDataSour
                               private val myTypeLocalDataSource: MyTypeDataSource
 ): MyTypeRepository {
 
+    override suspend fun setOrUpdateObjects(collection: String, any: Any, documentId: String) {
+        return myTypeRemoteDataSource.setOrUpdateObjects(collection = collection, any = any, documentId = documentId)
+    }
+
     override suspend fun isGoalInLocal(id: String): Boolean {
         return myTypeLocalDataSource.isGoalInLocal(id = id)
     }

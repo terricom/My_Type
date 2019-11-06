@@ -3,6 +3,8 @@ package com.terricom.mytype.data.source.remote
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FieldValue
 import com.terricom.mytype.data.*
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
+import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
 import com.terricom.mytype.data.source.MyTypeDataSource
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
@@ -265,9 +267,89 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 }
             }
 
+            COLUMN_USER_FOOD_LIST -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    val foodList = it.get().await()[COLUMN_USER_FOOD_LIST]
+                    for (food in foodList as List<String>){
+                        listFromFirebase.add(food)
+                    }
+                }
+            }
+
+            COLUMN_USER_NUTRITION_LIST -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    val nutritionList = it.get().await()[COLUMN_USER_NUTRITION_LIST]
+                    for (nutrition in nutritionList as List<String>){
+                        listFromFirebase.add(nutrition)
+                    }
+                }
+            }
         }
 
         Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
         return listFromFirebase
+    }
+
+    override suspend fun setOrUpdateObjects(
+        collection: String,
+        any: Any,
+        documentId: String
+    ) {
+
+        when(collection){
+            FirebaseKey.COLLECTION_GOAL -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    when(documentId){
+                        "" -> it.collection(collection).document().set(any)
+                        else -> it.collection(collection).document(documentId).update(any as HashMap<String, Any>)
+                    }
+                }
+            }
+
+            FirebaseKey.COLLECTION_FOODIE -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    when(documentId){
+                        "" -> it.collection(collection).document().set(any)
+                        else -> it.collection(collection).document(documentId).update(any as HashMap<String, Any>)
+                    }
+                }
+            }
+
+            FirebaseKey.COLLECTION_SHAPE -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    when(documentId){
+                        "" -> it.collection(collection).document().set(any)
+                        else -> it.collection(collection).document(documentId).update(any as HashMap<String, Any>)
+                    }
+                }
+            }
+
+            COLUMN_USER_FOOD_LIST -> {
+
+                UserManager.USER_REFERENCE?.let {
+                    it.update(COLUMN_USER_FOOD_LIST, any)
+                }
+            }
+
+            COLUMN_USER_NUTRITION_LIST -> {
+
+                UserManager.USER_REFERENCE?.let {
+                    it.update(COLUMN_USER_NUTRITION_LIST, any)
+                }
+            }
+
+        }
+
+        Logger.i("getListFromFirebase = $collection -> $any")
     }
 }

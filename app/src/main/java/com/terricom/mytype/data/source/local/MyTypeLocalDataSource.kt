@@ -10,6 +10,9 @@ import kotlinx.coroutines.withContext
 import java.sql.Timestamp
 
 class MyTypeLocalDataSource(val context: Context) : MyTypeDataSource{
+    override suspend fun setOrUpdateObjects(collection: String, any: Any, documentId: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override suspend fun getObjects(
         collection: String,

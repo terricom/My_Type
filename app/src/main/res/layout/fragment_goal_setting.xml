@@ -68,6 +68,7 @@
                     android:paddingTop="@dimen/elevation_all"
                     android:paddingRight="@dimen/elevation_all"
                     android:paddingBottom="@dimen/elevation_all"
+                    android:singleLine="true"
                     android:text="@={viewModel.cheerUp}"
                     android:textAlignment="viewStart"
                     android:textColor="@color/colorWhite"

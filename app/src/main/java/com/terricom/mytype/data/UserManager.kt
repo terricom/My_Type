@@ -23,6 +23,7 @@ const val tagUserPhoto = "pic"
 const val tagUserMail = "mail"
 const val tagPuzzleNew = "times"
 const val tagPuzzleOld = "puzzle"
+const val tagGoalId = "goalId"
 
 object UserManager {
 
@@ -117,6 +118,17 @@ object UserManager {
 
         return (!userToken.isNullOrEmpty())
     }
+
+    var localGoalId: String? = null
+        get(){
+            return prefs?.getString(
+                tagGoalId, "")
+        }
+        set(value){
+            field = prefs?.edit()?.putString(
+                tagGoalId,value)?.apply().toString()
+            Log.i("UserManager.goalId", value!!.toString())
+        }
 
     var USER_REFERENCE: DocumentReference ?= null
 

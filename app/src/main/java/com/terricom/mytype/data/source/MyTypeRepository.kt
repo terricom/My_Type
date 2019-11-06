@@ -24,4 +24,7 @@ interface MyTypeRepository {
     suspend fun clearGoal()
 
     suspend fun isGoalInLocal(id: String): Boolean
+
+    suspend fun setOrUpdateObjects(collection: String, any: Any, documentId: String)
+
 }

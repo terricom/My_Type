@@ -166,8 +166,11 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                 )
             )
 
-            if (foodieList.isNotEmpty()){
+            if (foodieList.isEmpty()){
+                setDataFoodieFromFirebase(emptyList())
+                _status.value = true
 
+            } else {
                 for(foodie in foodieList as List<Foodie>){
 
                     totalWater = totalWater.plus(foodie.water ?:0f)
@@ -179,12 +182,9 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                 }
 
                 setDataFoodieFromFirebase(foodieList)
-            } else {
-                setDataFoodieFromFirebase(emptyList())
+                _status.value = true
             }
             updatePuzzle()
-            _status.value = true
-
         }
 
     }
@@ -250,15 +250,18 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
         coroutineScope.launch {
 
             val goalList = myTypeRepository.getObjects(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+            if (UserManager.localGoalId == ""){
 
-            when(myTypeRepository.isGoalInLocal((goalList[0] as Goal).docId)){
+                if (goalList.isNotEmpty()){
+                    UserManager.localGoalId = (goalList.first() as Goal).docId
+                }
+            }
+
+            when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
 
                 false -> myTypeRepository.insertGoal(goalList[0] as Goal)
-                true -> myTypeRepository.updateGoal(goalList[0] as Goal)
+                goalList.isNotEmpty() -> myTypeRepository.updateGoal(goalList[0] as Goal)
             }
-            Logger.i("myTypeRepository.isGoalInLocal((goalList[0] as Goal) = ${myTypeRepository.isGoalInLocal((goalList[0] as Goal).docId)}")
         }
-
     }
-
 }

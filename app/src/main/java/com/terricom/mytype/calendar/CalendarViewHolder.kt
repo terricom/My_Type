@@ -27,9 +27,7 @@ class CalendarViewHolder(
                    showingDate : Calendar,
                    dateSelected : Date?,
                    listener: CalendarAdapter.ListenerCellSelect? = null
-//                   , viewModel: DiaryViewModel
     ){
-//        binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.executePendingBindings()
         resetViewDefault()
@@ -88,9 +86,7 @@ class CalendarViewHolder(
                 , R.drawable.calendar_date,null)
 
             itemView.setOnClickListener{
-                listener?.let { eventHandler ->
-                    eventHandler.onDateSelect(currentDateInput)
-                }
+                listener?.onDateSelect(currentDateInput)
             }
         }
 
