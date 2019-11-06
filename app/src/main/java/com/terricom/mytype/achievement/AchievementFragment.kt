@@ -6,22 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
 import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDemicalPoint
 import kotlinx.android.synthetic.main.fragment_achievement.*
 import java.util.*
 
 class AchievementFragment: Fragment() {
 
-    val viewModel: AchievementViewModel by lazy {
-        ViewModelProviders.of(this).get(AchievementViewModel::class.java)
-    }
+    private val viewModel by viewModels<AchievementViewModel> { getVmFactory() }
     private val currentCalendar = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -29,6 +29,12 @@ class AchievementFragment: Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        viewModel.goal.observe(this, Observer {
+            viewModel.goalWeight.value = it[0].weight.toDemicalPoint(1)
+            viewModel.goalBodyFat.value = it[0].bodyFat.toDemicalPoint(1)
+            viewModel.goalMuscle.value = it[0].muscle.toDemicalPoint(1)
+        })
 
         binding.recyclerShape.adapter = ShapeAdapter(viewModel, ShapeAdapter.OnClickListener{
             findNavController().navigate(NavigationDirections.navigateToShapeRecordFragment(it))
@@ -61,7 +67,7 @@ class AchievementFragment: Fragment() {
 
         viewModel.currentDate.observe(this, Observer {
 
-            viewModel.getAndSetDataShapeOfThisMonth()
+//            viewModel.getAndSetDataShapeOfThisMonth()
 
             viewModel.dataShapeFromFirebase.observe(this, Observer {
 
@@ -121,7 +127,6 @@ class AchievementFragment: Fragment() {
 
         if (!isConnected()){
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-            //告訴使用者網路無法使用
         }
 
         return binding.root

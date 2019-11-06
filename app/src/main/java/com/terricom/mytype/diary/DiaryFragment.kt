@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.App
 import com.terricom.mytype.MessageDialog
@@ -17,18 +17,13 @@ import com.terricom.mytype.calendar.CalendarComponentLayout
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
-import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
-import com.terricom.mytype.tools.Logger
-import com.terricom.mytype.tools.isConnected
-import com.terricom.mytype.tools.toDateFormat
+import com.terricom.mytype.tools.*
 
 
 class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAndFragment
 {
 
-    private val viewModel: DiaryViewModel by lazy {
-        ViewModelProviders.of(this).get(DiaryViewModel::class.java)
-    }
+    private val viewModel by viewModels<DiaryViewModel> { getVmFactory() }
     private lateinit var binding :FragmentDiaryBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +39,8 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
             findNavController().navigate(NavigationDirections.navigateToFoodieFragment(foodie))
         })
 
-        //觀察用戶得到拼圖後會跳 dialog
+        viewModel.getGoal()
+
         viewModel.isGetPuzzle.observe(this, Observer {
 
             when (it){

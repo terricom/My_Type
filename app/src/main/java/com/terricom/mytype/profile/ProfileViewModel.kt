@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.Goal
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
+import com.terricom.mytype.data.source.MyTypeRepository
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     val userName = UserManager.name
     val userPic = UserManager.picture

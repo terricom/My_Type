@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -35,6 +36,7 @@ import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
+import com.terricom.mytype.diary.DiaryViewModel
 import com.terricom.mytype.tools.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
@@ -44,9 +46,7 @@ import java.util.*
 
 class FoodieFragment: Fragment() {
 
-    private val viewModel: FoodieViewModel by lazy {
-        ViewModelProviders.of(this).get(FoodieViewModel::class.java)
-    }
+    private val viewModel by viewModels<FoodieViewModel> { getVmFactory() }
     private lateinit var binding: FragmentFoodieRecordBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

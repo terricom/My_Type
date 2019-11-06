@@ -359,7 +359,7 @@ class FoodieAdapter(
                         it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.VISIBLE
                         it.findViewById<ImageView>(R.id.add2Garbage).setOnClickListener { garbage ->
 
-                            viewModel.delete(header.foodie)
+                            viewModel.deleteFoodie(header.foodie)
                             garbage.findViewById<ImageView>(R.id.add2Garbage).visibility = View.INVISIBLE
                             it.findViewById<ImageView>(R.id.background_add2Garbage).visibility = View.INVISIBLE
                         }

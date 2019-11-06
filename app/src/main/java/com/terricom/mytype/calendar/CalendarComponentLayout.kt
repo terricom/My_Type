@@ -13,25 +13,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
-import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.R
-import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
-import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_USERS
 import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.UserManager
-import com.terricom.mytype.diary.DiaryViewModel
+import com.terricom.mytype.data.source.MyTypeRepository
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSelect {
-
 
     companion object {
         const val MAX_DAY_COUNT = 35
@@ -50,6 +48,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
+    private var myTypeRepository: MyTypeRepository? = null
 
     constructor(context: Context?) : super(context) {
         initView(context)
@@ -107,6 +106,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
                 true
             ))
             getThisMonth()
+            myTypeRepository = (it.applicationContext as App).myTypeRepository
         }
 
     }
@@ -139,12 +139,8 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
     }
 
-    val viewModel = DiaryViewModel()
     @SuppressLint("SimpleDateFormat")
     var selectedDayOut = Date()
-    val thisMonth: List<String> ?= null
-
-    val userUid = UserManager.uid
 
     private val _recordedDate = MutableLiveData<List<String>>()
     val recordedDate : LiveData<List<String>>
@@ -162,61 +158,42 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
         _date.value = date
     }
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     @SuppressLint("StringFormatMatches")
     fun getThisMonth() {
-        if (UserManager.isLogin()){
 
-            UserManager.uid?.let {it ->
+        coroutineScope.launch {
 
-                FirebaseFirestore.getInstance().collection(COLLECTION_USERS)
-                    .document(it).collection(COLLECTION_FOODIE)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(
-                        FirebaseKey.TIMESTAMP, Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_dayend,
-                                App.applicationContext().getString(R.string.year_month_date,
-                                "${currentDateCalendar.get(Calendar.YEAR)}",
-                                        "${currentDateCalendar.get(Calendar.MONTH)+1}",
-                                        "${getThisMonthLastDate()}"
-                                )
-                            )
+            val foodieList = myTypeRepository?.getObjects(COLLECTION_FOODIE,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        App.applicationContext().getString(R.string.year_month_date,
+                            "${currentDateCalendar.get(Calendar.YEAR)}",
+                            "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                            "01"
                         )
                     )
-                    .whereGreaterThanOrEqualTo(
-                        FirebaseKey.TIMESTAMP, Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_daybegin,
-                                App.applicationContext().getString(R.string.year_month_date,
-                                    "${currentDateCalendar.get(Calendar.YEAR)}",
-                                    "${currentDateCalendar.get(Calendar.MONTH)+1}",
-                                    "01"
-                                    )
-                                )
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        App.applicationContext().getString(R.string.year_month_date,
+                            "${currentDateCalendar.get(Calendar.YEAR)}",
+                            "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                            "${getThisMonthLastDate()}"
                         )
                     )
-                    .get()
-                    .addOnSuccessListener { it ->
-                        val items = mutableListOf<Foodie>()
-                        val dates = mutableListOf<String>()
-                        items.clear()
-                        dates.clear()
-
-                        for (document in it) {
-
-                            items.add(document.toObject(Foodie::class.java))
-                            items[items.lastIndex].docId = document.id
-                            document.toObject(Foodie::class.java).timestamp?.let {
-                                dates.add(it.toDateFormat(FORMAT_YYYY_MM_DD))
-                            }
-                        }
-
-                        when (items.size){
-                            0 -> setRecordedDate(listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)))
-                            else -> setRecordedDate(dates)
-                        }
-                    }
+                )
+            )
+            val dates = mutableListOf<String>()
+            for (foodie in foodieList as List<Foodie>){
+                dates.add(foodie.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
             }
-
+            when (foodieList.size){
+                0 -> setRecordedDate(listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)))
+                else -> setRecordedDate(dates)
+            }
         }
     }
 

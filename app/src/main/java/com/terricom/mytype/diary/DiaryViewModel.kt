@@ -3,25 +3,26 @@ package com.terricom.mytype.diary
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
-import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_IMGURL
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_POSITION
-import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATES
-import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_GOAL
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SHAPE
+import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_SLEEP
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_HH_MM
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.toDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.util.*
 
-class DiaryViewModel: ViewModel() {
+class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     val outlineProvider = CardAvatarOutlineProvider()
 
@@ -109,216 +110,114 @@ class DiaryViewModel: ViewModel() {
     init {
         calendarClickedAgain()
         finishCallDeleteAction()
-        updatePuzzle()
     }
+
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
 
     fun getAndSetFoodieShapeSleepToday() {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {user ->
+            val shape = myTypeRepository.getObjects(
+                COLLECTION_SHAPE,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                )
+            )
 
-                user.collection(FirebaseKey.COLLECTION_SHAPE)
-                    .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_dayend,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .whereGreaterThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_daybegin,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .get()
-                    .addOnSuccessListener {
+            if (shape.isNotEmpty()){
 
-                        val items = mutableListOf<Shape>()
-                        for (document in it) {
-
-                            val convertDate = java.sql.Date(document.toObject(Shape::class.java).timestamp!!.time)
-                            if (convertDate.toString() == date.value.toDateFormat(FORMAT_YYYY_MM_DD)){
-
-                                items.add(document.toObject(Shape::class.java))
-                                items[items.lastIndex].docId = document.id
-                            }
-                        }
-                        if (items.size != 0){
-
-                            setDataShapeFromFIrebase(items[0])
-                        }
-                    }
-
-                user.collection(FirebaseKey.COLLECTION_SLEEP)
-                    .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_dayend,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .whereGreaterThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_daybegin,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .get()
-                    .addOnSuccessListener {
-
-                        val items = mutableListOf<Sleep>()
-                        for (document in it) {
-
-                            val convertDate = java.sql.Date(document.toObject(Sleep::class.java).wakeUp!!.time)
-                            if (convertDate.toString() == date.value.toDateFormat(FORMAT_YYYY_MM_DD)){
-
-                                items.add(document.toObject(Sleep::class.java))
-                                items[items.lastIndex].docId = document.id
-                            }
-
-                        }
-                        if (items.size != 0){
-
-                            setDataSleepFromFirebase(items[0])
-                        }
-                    }
-
-                user.collection(COLLECTION_FOODIE)
-                    .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_dayend,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .whereGreaterThanOrEqualTo(TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_daybegin,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                        )
-                    )
-                    .get()
-                    .addOnSuccessListener {
-
-                        val items = mutableListOf<Foodie>()
-                        val dates = mutableListOf<String>()
-                        for (document in it) {
-
-                            val convertDate = java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time)
-                            if (convertDate.toString() == date.value.toDateFormat(FORMAT_YYYY_MM_DD)){
-                                items.add(document.toObject(Foodie::class.java))
-                                items[items.lastIndex].docId = document.id
-                                dates.add(document.toObject(Foodie::class.java).timestamp.toDateFormat(
-                                    FORMAT_YYYY_MM_DD)
-                                )
-                            }
-                        }
-
-                        _totalWater.value = 0f
-                        _totalOil.value = 0f
-                        _totalVegetable.value = 0f
-                        _totalProtein.value = 0f
-                        _totalFruit.value = 0f
-                        _totalCarbon.value = 0f
-
-                        for (foo in items){
-
-                            _totalWater.value = _totalWater.value!!.plus(foo.water ?: 0f)
-                            _totalOil.value = _totalOil.value!!.plus(foo.oil ?: 0f)
-                            _totalVegetable.value = _totalVegetable.value!!.plus(foo.vegetable ?: 0f)
-                            _totalProtein.value = _totalProtein.value!!.plus(foo.protein ?: 0f)
-                            _totalCarbon.value = _totalCarbon.value!!.plus(foo.carbon ?: 0f)
-                            _totalFruit.value = _totalFruit.value!!.plus(foo.fruit ?:0f)
-                        }
-                        setDataFoodieFromFirebase(items)
-                        _status.value = true
-                    }
+                setDataShapeFromFIrebase(shape[0] as Shape)
             }
+
+            val sleep = myTypeRepository.getObjects(
+                COLLECTION_SLEEP,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                )
+            )
+
+            if (sleep.isNotEmpty()){
+
+                setDataSleepFromFirebase(sleep[0] as Sleep)
+            }
+
+            val foodieList = myTypeRepository.getObjects(
+                COLLECTION_FOODIE,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                )
+            )
+
+            if (foodieList.isEmpty()){
+                setDataFoodieFromFirebase(emptyList())
+                _status.value = true
+
+            } else {
+                for(foodie in foodieList as List<Foodie>){
+
+                    totalWater = totalWater.plus(foodie.water ?:0f)
+                    totalFruit = totalFruit.plus(foodie.fruit ?: 0f)
+                    totalOil = totalOil.plus(foodie.oil ?: 0f)
+                    totalVegetable = totalVegetable.plus(foodie.vegetable ?: 0f)
+                    totalProtein = totalProtein.plus(foodie.protein ?: 0f)
+                    totalCarbon = totalCarbon.plus(foodie.carbon ?: 0f)
+                }
+
+                setDataFoodieFromFirebase(foodieList)
+                _status.value = true
+            }
+            updatePuzzle()
         }
+
     }
 
-    private val _totalWater = MutableLiveData<Float>()
-    private val _totalOil = MutableLiveData<Float>()
-    private val _totalVegetable = MutableLiveData<Float>()
-    private val _totalProtein = MutableLiveData<Float>()
-    private val _totalFruit = MutableLiveData<Float>()
-    private val _totalCarbon = MutableLiveData<Float>()
-
-
-    val totalWater: LiveData<Float>
-        get() = _totalWater
-
-    val totalOil: LiveData<Float>
-        get() = _totalOil
-
-    val totalVegetable: LiveData<Float>
-        get() = _totalVegetable
-
-    val totalProtein: LiveData<Float>
-        get() = _totalProtein
-
-    val totalFruit: LiveData<Float>
-        get() = _totalFruit
-
-    val totalCarbon: LiveData<Float>
-        get() = _totalCarbon
+    var totalWater = 0.0f
+    var totalOil = 0.0f
+    var totalVegetable = 0.0f
+    var totalProtein = 0.0f
+    var totalFruit = 0.0f
+    var totalCarbon = 0.0f
 
     private val _listQueryFoodieResult = MutableLiveData<FoodieList>()
     val listQueryFoodieResult : LiveData<FoodieList>
         get() = _listQueryFoodieResult
 
     private fun setQueryResult(queryResult : List<Foodie>, key: String){
-        _listQueryFoodieResult.value = FoodieList(queryResult,key)
+        _listQueryFoodieResult.value = FoodieList(queryResult, key)
     }
 
     fun getTime(timestamp: Date):String{
             return java.sql.Date(timestamp.time).toDateFormat(FORMAT_HH_MM)
     }
 
-    fun delete(foodie: Foodie){
+    fun deleteFoodie(foodie: Foodie){
+
         if (UserManager.isLogin()){
 
-            UserManager.USER_REFERENCE?.let { user ->
+            coroutineScope.launch {
 
-                user.collection(COLLECTION_FOODIE)
-                    .orderBy(
-                        TIMESTAMP,
-                        Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(
-                        TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_dayend,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD)
-                            )
-                        )
-                    )
-                    .whereGreaterThanOrEqualTo(
-                        TIMESTAMP,
-                        Timestamp.valueOf(
-                            App.applicationContext().getString(R.string.timestamp_daybegin,
-                                date.value.toDateFormat(FORMAT_YYYY_MM_DD)
-                            )
-                        )
-                    )
-                    .get()
-                    .addOnSuccessListener {
-                        for (diary in it){
-                            if (diary.id == foodie.docId){
+                myTypeRepository.deleteObjects(COLLECTION_FOODIE, foodie)
 
-                                user.collection(COLLECTION_FOODIE).document(foodie.docId).delete()
-                                    .addOnSuccessListener {
-                                        callDeleteAction()
-                                    }
-                                    .addOnFailureListener {
-                                            e -> Logger.i("Error deleting document exception = $e")
-                                    }
-                            }
-                        }
-                    }
+                callDeleteAction()
             }
-
         }
     }
 
@@ -326,107 +225,43 @@ class DiaryViewModel: ViewModel() {
 
         if (UserManager.isLogin()){
 
-            UserManager.USER_REFERENCE?.let {user ->
+            coroutineScope.launch {
 
-                user.collection(COLLECTION_FOODIE)
-                    .orderBy(TIMESTAMP,
-                        Query.Direction.DESCENDING
-                    )
-                    .get()
-                    .addOnSuccessListener {
-                        val dates = mutableListOf<String>()
-                        val items = mutableListOf<Foodie>()
-                        for (document in it) {
-
-                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
-                                FORMAT_YYYY_MM_DD
-                            ))
-                            items.add(document.toObject(Foodie::class.java))
-                        }
-                        if (dates.distinct().size % 7 == 0){
-
-                            //全新使用者
-                            user.collection(COLLECTION_PUZZLE)
-                                .orderBy(TIMESTAMP,
-                                    Query.Direction.DESCENDING
-                                )
-                                .get()
-                                .addOnSuccessListener {
-
-                                    val puzzleAll = mutableListOf<Puzzle>()
-                                    for (document in it) {
-
-                                        puzzleAll.add(document.toObject(Puzzle::class.java))
-                                        puzzleAll[puzzleAll.lastIndex].docId = document.id
-                                    }
-
-                                    Logger.i("puzzleAll.size = ${puzzleAll.size}")
-                                    when (dates.size){
-                                        0 -> {
-                                            if (UserManager.getPuzzleNewUser == "0"  && puzzleAll.size == 0){
-
-                                                UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
-
-                                                user.collection(COLLECTION_PUZZLE).document().set(
-                                                    hashMapOf(
-                                                        COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
-                                                        COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[0].value,
-                                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(Date().toDateFormat(
-                                                            FORMAT_YYYY_MM_DD
-                                                        )),
-                                                        TIMESTAMP to FieldValue.serverTimestamp()
-                                                    )
-                                                )
-
-                                                getPuzzleNewUser()
-                                            } else if (UserManager.getPuzzleNewUser == "1"  && puzzleAll.size == 1){
-
-                                                UserManager.getPuzzleNewUser = UserManager.getPuzzleNewUser.toString().toInt().plus(1).toString()
-                                                getPuzzleNewUser()
-                                            }
-                                        }
-                                        else -> {
-                                            getPuzzleOldUser()
-                                        }
-                                    }
-                                }
-                        }
-                    }
-
+                when(myTypeRepository.updatePuzzle()){
+                    0 -> getPuzzleNewUser()
+                    1 -> getPuzzleOldUser()
                 }
+                Logger.i("myTypeRepository.updatePuzzle() = ${myTypeRepository.updatePuzzle()}")
             }
+        }
     }
 
     fun queryFoodie(key: String, type: String) {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {user ->
-
-                user.collection(COLLECTION_FOODIE)
-                    .whereArrayContains(type, key)
-                    .get()
-                    .addOnSuccessListener {
-
-                        val dates = mutableListOf<String>()
-                        val items = mutableListOf<Foodie>()
-                        for (document in it) {
-
-                            dates.add(java.sql.Date(document.toObject(Foodie::class.java).timestamp!!.time).toDateFormat(
-                                FORMAT_YYYY_MM_DD
-                            ))
-                            items.add(document.toObject(Foodie::class.java))
-                            items[items.lastIndex].docId = document.id
-                        }
-                        if (!items.isNullOrEmpty()){
-
-                            setQueryResult(items.asReversed(), key)
-                        }
-                    }
-            }
+            setQueryResult(myTypeRepository.queryFoodie(key, type), key)
 
         }
-
     }
 
+    fun getGoal(){
+
+        coroutineScope.launch {
+
+            val goalList = myTypeRepository.getObjects(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+            if (UserManager.localGoalId == ""){
+
+                if (goalList.isNotEmpty()){
+                    UserManager.localGoalId = (goalList.first() as Goal).docId
+                }
+            }
+
+            when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
+
+                false -> myTypeRepository.insertGoal(goalList[0] as Goal)
+                goalList.isNotEmpty() -> myTypeRepository.updateGoal(goalList[0] as Goal)
+            }
+        }
+    }
 }

@@ -7,22 +7,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentGoalSettingBinding
 import com.terricom.mytype.shaperecord.ShapeCalendarFragment
 import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 import kotlinx.android.synthetic.main.fragment_shape_record_calendar.view.*
 import java.util.*
 
 class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
-    private val viewModel: GoalSettingViewModel by lazy {
-        ViewModelProviders.of(this).get(GoalSettingViewModel::class.java)
-    }
+    private val viewModel by viewModels<GoalSettingViewModel> { getVmFactory() }
 
     private lateinit var binding : FragmentGoalSettingBinding
 
@@ -120,6 +119,9 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             }
         }
 
+        viewModel.goal.observe(this, Observer {
+            viewModel.deadline = (it[0]).deadline
+        })
 
         viewModel.isAddGoal2Firebase.observe(this, Observer {
             if (it == true){
