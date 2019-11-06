@@ -9,13 +9,20 @@ import androidx.lifecycle.ViewModel
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.firebase.firestore.FirebaseFirestore
 import com.terricom.mytype.App
-import com.terricom.mytype.data.*
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.User
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.data.source.MyTypeRepository
+import com.terricom.mytype.data.tagUserUid
 import com.terricom.mytype.tools.Logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import java.io.IOException
+import java.sql.Timestamp
 
 class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
@@ -87,9 +94,11 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
         _loginFacebook.value = false
     }
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
     fun checkUser(uid: String){
 
-        //發文功能
         val userData = hashMapOf(
             FirebaseKey.COLUMN_USER_NAME to UserManager.name,
             FirebaseKey.COLUMN_USER_PICTURE to UserManager.picture,
@@ -98,42 +107,75 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
             FirebaseKey.COLUMN_USER_NUTRITION_LIST to listOf<String>()
         )
 
-        FirebaseFirestore.getInstance()
-            .collection(FirebaseKey.COLLECTION_USERS)
-            .get()
-            .addOnSuccessListener { result->
-                val items = mutableListOf<User>()
-                for (doc in result){
-                    //老用戶登入
-                    if (doc.id == uid ){
-                        var pref: SharedPreferences? = null
-                        pref = App.instance?.getSharedPreferences(tagUserUid, 0)
-                        pref?.let {
-                            it.edit().putString(uid, "")
-                        }
-                        UserManager.uid = uid
-                        items.add(doc.toObject(User::class.java))
-                        _user.value = doc.toObject(User::class.java)
+        coroutineScope.launch {
 
+            val userAll = myTypeRepository.getObjects(FirebaseKey.COLLECTION_USERS, Timestamp(946656000), Timestamp(4701859200))
+            for (user in userAll as List<User>){
+
+                if (user.user_uid == uid){
+
+                    var pref: SharedPreferences? = null
+                    pref = App.instance?.getSharedPreferences(tagUserUid, 0)
+                    pref?.let {
+                        it.edit().putString(uid, "")
                     }
-                }
-                //全新用戶
-                if (items.isEmpty()){
-                    FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(uid).set(userData)
-                    _user.value = User(
-                        UserManager.mail,
-                        UserManager.name,
-                        UserManager.picture,
-                        listOf(),
-                        listOf(),
-                        listOf(),
-                        listOf(),
-                        listOf(),
-                        listOf(),
-                        listOf()
-                    )
+                    UserManager.uid = uid
+                    _user.value = user
                 }
             }
+            if (userAll.isEmpty()){
+                myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_USERS, userData, uid)
+                _user.value = User(
+                    UserManager.mail,
+                    UserManager.name,
+                    UserManager.picture,
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf()
+                )
+            }
+
+        }
+//        FirebaseFirestore.getInstance()
+//            .collection(FirebaseKey.COLLECTION_USERS)
+//            .get()
+//            .addOnSuccessListener { result->
+//                val items = mutableListOf<User>()
+//                for (doc in result){
+//                    //老用戶登入
+//                    if (doc.id == uid ){
+//                        var pref: SharedPreferences? = null
+//                        pref = App.instance?.getSharedPreferences(tagUserUid, 0)
+//                        pref?.let {
+//                            it.edit().putString(uid, "")
+//                        }
+//                        UserManager.uid = uid
+//                        items.add(doc.toObject(User::class.java))
+//                        _user.value = doc.toObject(User::class.java)
+//
+//                    }
+//                }
+//                //全新用戶
+//                if (items.isEmpty()){
+//                    FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(uid).set(userData)
+//                    _user.value = User(
+//                        UserManager.mail,
+//                        UserManager.name,
+//                        UserManager.picture,
+//                        listOf(),
+//                        listOf(),
+//                        listOf(),
+//                        listOf(),
+//                        listOf(),
+//                        listOf(),
+//                        listOf()
+//                    )
+//                }
+//            }
     }
 
     companion object {

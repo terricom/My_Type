@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import com.terricom.mytype.*
+import androidx.fragment.app.viewModels
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.calendar.SpaceItemDecoration
-import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
-import com.terricom.mytype.tools.isConnected
-import com.terricom.mytype.tools.toDateFormat
+import com.terricom.mytype.tools.*
 import kotlinx.android.synthetic.main.fragment_linechart.*
 import java.sql.Timestamp
 import java.util.*
@@ -19,9 +18,7 @@ import java.util.*
 
 class LineChartFragment: Fragment() {
 
-    private val viewModel: LineChartViewModel by lazy {
-        ViewModelProviders.of(this).get(LineChartViewModel::class.java)
-    }
+    private val viewModel by viewModels<LineChartViewModel> { getVmFactory() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = com.terricom.mytype.databinding.FragmentLinechartBinding.inflate(inflater)
@@ -58,6 +55,17 @@ class LineChartFragment: Fragment() {
                     FORMAT_YYYY_MM_DD
                 ))).time.plus(604800000L*(currentPosition))))
         }
+
+        viewModel.
+            goal.observe(this, androidx.lifecycle.Observer {
+
+            viewModel.goalWater.value = it[0].water.toDemicalPoint(1)
+            viewModel.goalCarbon.value = it[0].carbon.toDemicalPoint(1)
+            viewModel.goalFruit.value = it[0].fruit.toDemicalPoint(1)
+            viewModel.goalOil.value = it[0].oil.toDemicalPoint(1)
+            viewModel.goalProtein.value = it[0].protein.toDemicalPoint(1)
+            viewModel.goalVegetable.value = it[0].vegetable.toDemicalPoint(1)
+        })
 
         viewModel.recordDate.observe(this, androidx.lifecycle.Observer {
             if (it != null){
@@ -125,7 +133,6 @@ class LineChartFragment: Fragment() {
 
         if (!isConnected()){
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-            //告訴使用者網路無法使用
         }
 
         return binding.root

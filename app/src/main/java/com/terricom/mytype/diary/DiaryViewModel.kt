@@ -250,17 +250,19 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
         coroutineScope.launch {
 
             val goalList = myTypeRepository.getObjects(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
-            if (UserManager.localGoalId == ""){
-
-                if (goalList.isNotEmpty()){
-                    UserManager.localGoalId = (goalList.first() as Goal).docId
-                }
-            }
 
             when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
 
-                false -> myTypeRepository.insertGoal(goalList[0] as Goal)
-                goalList.isNotEmpty() -> myTypeRepository.updateGoal(goalList[0] as Goal)
+                false -> {
+                    if (goalList.isNotEmpty()){
+                        myTypeRepository.insertGoal(goalList[0] as Goal)
+                        UserManager.localGoalId = (goalList.first() as Goal).docId
+                    }
+                }
+                goalList.isNotEmpty() -> {
+                    myTypeRepository.updateGoal(goalList[0] as Goal)
+                    UserManager.localGoalId = (goalList.first() as Goal).docId
+                }
             }
         }
     }

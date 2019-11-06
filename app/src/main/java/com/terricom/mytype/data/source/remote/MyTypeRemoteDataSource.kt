@@ -2,6 +2,8 @@ package com.terricom.mytype.data.source.remote
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
@@ -188,7 +190,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     for (goal in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP)
+                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                         .get().await()){
 
                         listFromFirebase.add(goal.toObject(Goal::class.java))
@@ -203,7 +205,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     for (foodie in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP)
+                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                         .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
                         .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
                         .get().await()){
@@ -220,7 +222,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     for (shape in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP)
+                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                         .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
                         .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
                         .get().await()){
@@ -238,7 +240,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     for (sleep in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP)
+                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                         .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
                         .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
                         .get().await()){
@@ -256,7 +258,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     for (puzzle in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP)
+                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
                         .get().await()){
 
                         listFromFirebase.add(puzzle.toObject(Puzzle::class.java))
@@ -264,6 +266,15 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             puzzle.id
                     }
 
+                }
+            }
+
+            FirebaseKey.COLLECTION_USERS -> {
+
+                for (user in FirebaseFirestore.getInstance().collection(collection).get().await()){
+                    listFromFirebase.add(user.toObject(User::class.java))
+                    (listFromFirebase[listFromFirebase.lastIndex] as User).user_uid =
+                        user.id
                 }
             }
 
@@ -332,6 +343,11 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                         else -> it.collection(collection).document(documentId).update(any as HashMap<String, Any>)
                     }
                 }
+            }
+
+            FirebaseKey.COLLECTION_USERS -> {
+
+                FirebaseFirestore.getInstance().collection(collection).document(documentId).set(any)
             }
 
             COLUMN_USER_FOOD_LIST -> {

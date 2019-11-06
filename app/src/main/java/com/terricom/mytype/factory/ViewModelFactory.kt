@@ -7,6 +7,7 @@ import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.diary.DiaryViewModel
 import com.terricom.mytype.foodie.FoodieViewModel
 import com.terricom.mytype.goalsetting.GoalSettingViewModel
+import com.terricom.mytype.linechart.LineChartViewModel
 import com.terricom.mytype.login.LoginViewModel
 import com.terricom.mytype.profile.ProfileViewModel
 import com.terricom.mytype.query.QueryViewModel
@@ -39,6 +40,9 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(GoalSettingViewModel::class.java) ->
                     GoalSettingViewModel(myTypeRepository)
+
+                isAssignableFrom(LineChartViewModel::class.java) ->
+                    LineChartViewModel(myTypeRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

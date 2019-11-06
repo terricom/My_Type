@@ -36,7 +36,7 @@ data class Goal (
     @ColumnInfo(name = "goal_muscle")
     val muscle: Float? = null,
     @ColumnInfo(name = "goal_cheer_up")
-    val cheerUp: String ="",
+    val cheerUp: String? ="",
     @ColumnInfo(name = "goal_doc_id")
     var docId: String = ""
 ): Parcelable
