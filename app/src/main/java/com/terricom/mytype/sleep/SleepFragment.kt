@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
 import com.terricom.mytype.tools.FORMAT_HH_MM
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 import com.terricom.mytype.tools.toDateFormat
 import org.threeten.bp.Duration
@@ -25,9 +26,8 @@ import java.util.*
 class SleepFragment: Fragment() {
 
     private lateinit var binding: FragmentSleepRecordBinding
-    private val viewModel: SleepViewModel by lazy{
-        ViewModelProviders.of(this).get(SleepViewModel::class.java)
-    }
+    private val viewModel by viewModels<SleepViewModel> { getVmFactory() }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

@@ -3,13 +3,18 @@ package com.terricom.mytype.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.*
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Puzzle
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.data.source.MyTypeRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.sql.Timestamp
 
 class ProfileViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
@@ -88,93 +93,42 @@ class ProfileViewModel(private val myTypeRepository: MyTypeRepository): ViewMode
         _isPuzzleGot.value = true
     }
 
-    private val _snapPosition = MutableLiveData<Int>()
-    private val snapPosition: LiveData<Int>
-        get() = _snapPosition
-
-    fun onGalleryScrollChange(
-        layoutManager: RecyclerView.LayoutManager?, linearSnapHelper: LinearSnapHelper
-    ) {
-        val snapView = linearSnapHelper.findSnapView(layoutManager)
-        snapView?.let {
-            layoutManager?.getPosition(snapView)?.let {
-                if (it != snapPosition.value) {
-                    _snapPosition.value = it
-                }
-            }
-        }
-    }
-
     init {
-        getAndSetGoalFromFirebase()
-        getAndSetPuzzleFromFirebase()
         closeGoal()
     }
 
-    private fun getAndSetPuzzleFromFirebase(){
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-        if (UserManager.isLogin()){
+    fun getAndSetPuzzleFromFirebase(){
 
-            UserManager.USER_REFERENCE?.let {userDocument ->
+        coroutineScope.launch {
 
-                userDocument.collection(FirebaseKey.COLLECTION_PUZZLE)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener {
-                        val items = mutableListOf<Puzzle>()
-
-                        for (document in it) {
-                            items.add(document.toObject(Puzzle::class.java))
-                            items[items.size-1].docId = document.id
-                        }
-                        if (items.isNullOrEmpty()){
-
-                            getNoPuzzle()
-
-                        }else {
-
-                            setPuzzle(items)
-                            getPuzzle()
-                            _status.value = true
-
-                        }
-                    }
+            val puzzleList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_PUZZLE, Timestamp(946656000), Timestamp(4701859200))
+            if (puzzleList.isNullOrEmpty()){
+                getNoPuzzle()
+            }else {
+                setPuzzle(puzzleList as List<Puzzle>)
+                getPuzzle()
+                _status.value = true
             }
         }
     }
 
+    fun getAndSetGoalFromFirebase() {
 
-    private fun getAndSetGoalFromFirebase() {
+        coroutineScope.launch {
 
-        if (UserManager.isLogin()){
-
-            UserManager.USER_REFERENCE?.let {userDocument ->
-
-                userDocument.collection(FirebaseKey.COLLECTION_GOAL)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener {
-
-                        val items = mutableListOf<Goal>()
-
-                        for (document in it) {
-                            items.add(document.toObject(Goal::class.java))
-                            items[items.size-1].docId = document.id
-                        }
-
-                        if (items.isNullOrEmpty()){
-                            cheerUp.value = App.applicationContext().getString(R.string.login_greet)
-                            getNoGoal()
-                        }else {
-
-                            cheerUp.value = items[0].cheerUp
-                            setGoal(items)
-                            getGoal()
-                            _status.value = true
-                        }
-                    }
+            val goalList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+            if (goalList.isNullOrEmpty()){
+                cheerUp.value = App.applicationContext().getString(R.string.login_greet)
+                getNoGoal()
+            }else {
+                cheerUp.value = (goalList[0] as Goal).cheerUp
+                setGoal(goalList as List<Goal>)
+                getGoal()
+                _status.value = true
             }
         }
     }
-
 }

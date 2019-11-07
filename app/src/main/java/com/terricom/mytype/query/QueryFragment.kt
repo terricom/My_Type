@@ -13,6 +13,7 @@ import com.terricom.mytype.NavigationDirections
 import com.terricom.mytype.R
 import com.terricom.mytype.databinding.FragmentQueryBinding
 import com.terricom.mytype.tools.getVmFactory
+import com.terricom.mytype.tools.toDemicalPoint
 
 class QueryFragment: Fragment() {
 
@@ -28,7 +29,25 @@ class QueryFragment: Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val listFoodie = QueryFragmentArgs.fromBundle(arguments!!).selectedProperty
+        viewModel.goal.observe(this, Observer {
+
+            if (it.isNotEmpty()){
+
+                viewModel.goalWater.value = it[0].water.toDemicalPoint(1)
+                viewModel.goalCarbon.value = it[0].carbon.toDemicalPoint(1)
+                viewModel.goalFruit.value = it[0].fruit.toDemicalPoint(1)
+                viewModel.goalOil.value = it[0].oil.toDemicalPoint(1)
+                viewModel.goalProtein.value = it[0].protein.toDemicalPoint(1)
+                viewModel.goalVegetable.value = it[0].vegetable.toDemicalPoint(1)
+            }else {
+                viewModel.goalWater.value = "0.0"
+                viewModel.goalCarbon.value = "0.0"
+                viewModel.goalFruit.value = "0.0"
+                viewModel.goalOil.value = "0.0"
+                viewModel.goalProtein.value = "0.0"
+                viewModel.goalVegetable.value = "0.0"
+            }
+        })
 
         QueryFragmentArgs.fromBundle(arguments!!).selectedProperty?.let {listFoodie ->
 

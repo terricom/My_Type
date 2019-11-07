@@ -11,6 +11,8 @@ import com.terricom.mytype.linechart.LineChartViewModel
 import com.terricom.mytype.login.LoginViewModel
 import com.terricom.mytype.profile.ProfileViewModel
 import com.terricom.mytype.query.QueryViewModel
+import com.terricom.mytype.shaperecord.ShapeRecordViewModel
+import com.terricom.mytype.sleep.SleepViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
@@ -43,6 +45,12 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(LineChartViewModel::class.java) ->
                     LineChartViewModel(myTypeRepository)
+
+                isAssignableFrom(ShapeRecordViewModel::class.java) ->
+                    ShapeRecordViewModel(myTypeRepository)
+
+                isAssignableFrom(SleepViewModel::class.java) ->
+                    SleepViewModel(myTypeRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

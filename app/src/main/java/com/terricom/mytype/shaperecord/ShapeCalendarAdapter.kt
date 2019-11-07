@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.App
 import com.terricom.mytype.databinding.ItemCalendarSquareBinding
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
@@ -42,7 +43,7 @@ class ShapeCalendarAdapter(
             showingDateCalendar,
             selectedDate,
             listener,
-            viewModel = ShapeRecordViewModel()
+            viewModel = ShapeRecordViewModel((context.applicationContext as App).myTypeRepository)
         )
     }
 

@@ -345,6 +345,17 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 }
             }
 
+            FirebaseKey.COLLECTION_SLEEP -> {
+
+                UserManager.USER_REFERENCE?.let {
+
+                    when(documentId){
+                        "" -> it.collection(collection).document().set(any)
+                        else -> it.collection(collection).document(documentId).update(any as HashMap<String, Any>)
+                    }
+                }
+            }
+
             FirebaseKey.COLLECTION_USERS -> {
 
                 FirebaseFirestore.getInstance().collection(collection).document(documentId).set(any)
@@ -363,9 +374,6 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                     it.update(COLUMN_USER_NUTRITION_LIST, any)
                 }
             }
-
         }
-
-        Logger.i("getListFromFirebase = $collection -> $any")
     }
 }

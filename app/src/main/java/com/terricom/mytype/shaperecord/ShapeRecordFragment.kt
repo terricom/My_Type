@@ -7,17 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
+import com.terricom.mytype.tools.Logger
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 
 class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
-    private val viewModel: ShapeRecordViewModel by lazy {
-        ViewModelProviders.of(this).get(ShapeRecordViewModel::class.java)
-    }
+    private val viewModel by viewModels<ShapeRecordViewModel> { getVmFactory() }
+
     private lateinit var binding: FragmentShapeRecordBinding
 
 
@@ -30,6 +31,7 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
+            Logger.i("binding.smartCustomCalendar.selectDateOut.observe = $it")
             viewModel.setDate(it)
         })
 
@@ -41,9 +43,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 binding.smartCustomCalendar.getAndSetDataShape()
                 binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
                     binding.smartCustomCalendar.updateCalendar()
-                })
-                binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-                    binding.smartCustomCalendar.filterDate(it)
                 })
 
                 binding.buttonShaperecordSave.setOnClickListener {
@@ -64,7 +63,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
                             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
                             it.background = App.applicationContext().getDrawable(R.color.colorMyType)
-                            //告訴使用者網路無法使用
                         }
                     }else if ((viewModel.weight.value ?: 0.0f)
                             .plus(viewModel.bodyWater.value ?: 0.0f)
@@ -92,7 +90,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 viewModel.tdee.value = shape.tdee
                 binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
 
-                binding.smartCustomCalendar.filterDate(shape.timestamp)
                 binding.smartCustomCalendar.getAndSetDataShape()
                 binding.smartCustomCalendar.setSelectDate(shape.timestamp)
 
@@ -180,9 +177,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
     }
 
     override fun onCalendarNextPressed() {
-        binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.filterDate(it)
-        })
         binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
             binding.smartCustomCalendar.updateCalendar()
@@ -191,9 +185,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
     }
 
     override fun onCalendarPreviousPressed() {
-        binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            binding.smartCustomCalendar.filterDate(it)
-        })
         binding.smartCustomCalendar.getAndSetDataShape()
         binding.smartCustomCalendar.recordedDate.observe(this, androidx.lifecycle.Observer {
             binding.smartCustomCalendar.updateCalendar()
