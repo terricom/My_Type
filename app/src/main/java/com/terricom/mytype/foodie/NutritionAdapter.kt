@@ -1,14 +1,17 @@
 package com.terricom.mytype.foodie
 
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.databinding.ItemFoodieEditNewNutritionBinding
 import com.terricom.mytype.databinding.ItemFoodieNutritionBinding
 import kotlinx.coroutines.CoroutineScope
@@ -16,18 +19,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-const val IMAGEVIEW_TAG_N = "icon bitmap"
-private val NUTRITIONLIST = 0
-private val EDIT_NUTRITION = 1
+private const val NUTRITION_LIST = 0
+private const val EDIT_NUTRITION = 1
 
 class NutritionAdapter(val viewModel: FoodieViewModel
-//                       , private val onTouchListener: MyTouchListener
-//                       ,private val onLongClickListenerNu: LongClickListenerNu
                     ,private val onClickListener: OnClickListener
-)
-
-    : ListAdapter<DataItemNu, RecyclerView.ViewHolder>(DiffCallback) {
+) : ListAdapter<DataItemNu, RecyclerView.ViewHolder>(DiffCallback) {
 
     var addOrRemove : Boolean = true
 
@@ -39,10 +36,10 @@ class NutritionAdapter(val viewModel: FoodieViewModel
 
     fun submitNutritions(list : List<String>?) {
         adapterScope.launch {
-            val newList = mutableListOf<com.terricom.mytype.foodie.DataItemNu>()
+            val newList = mutableListOf<DataItemNu>()
             if (list != null) {
                 for (nutrition in list) {
-                    newList.add(com.terricom.mytype.foodie.DataItemNu.NutritionList(nutrition, viewModel))
+                    newList.add(DataItemNu.NutritionList(nutrition, viewModel))
                 }
             }
             withContext(Dispatchers.Main) {
@@ -53,18 +50,18 @@ class NutritionAdapter(val viewModel: FoodieViewModel
 
     fun submitNutritionsWithEdit(list : List<String>?) {
         adapterScope.launch {
-            val newList = mutableListOf<com.terricom.mytype.foodie.DataItemNu>()
-            if (list != null && list.contains("新增營養")) {
+            val newList = mutableListOf<DataItemNu>()
+            if (list != null && list.contains(App.applicationContext().getString(R.string.diary_add_nutrition))) {
                 for (nutrition in list) {
-                    if (nutrition != "新增營養"){
-                        newList.add(com.terricom.mytype.foodie.DataItemNu.NutritionList(nutrition, viewModel))
+                    if (nutrition != App.applicationContext().getString(R.string.diary_add_nutrition)){
+                        newList.add(DataItemNu.NutritionList(nutrition, viewModel))
                     }
                 }
-                newList.add(com.terricom.mytype.foodie.DataItemNu.EditNutrition(viewModel))
-            } else if (list != null && !list.contains("新增營養")){
+                newList.add(DataItemNu.EditNutrition(viewModel))
+            } else if (list != null && !list.contains(App.applicationContext().getString(R.string.diary_add_nutrition))){
                 for (nutrition in list) {
-                    if (nutrition != "新增營養"){
-                        newList.add(com.terricom.mytype.foodie.DataItemNu.NutritionList(nutrition, viewModel))
+                    if (nutrition != App.applicationContext().getString(R.string.diary_add_nutrition)){
+                        newList.add(DataItemNu.NutritionList(nutrition, viewModel))
                     }
                 }
             }
@@ -114,18 +111,15 @@ class NutritionAdapter(val viewModel: FoodieViewModel
 
             binding.lifecycleOwner =this
             binding.viewModel = viewModel
-            Logger.i("binding.food.text =${binding.nutrition.text}")
             binding.nutrition.setOnKeyListener(object : View.OnKeyListener {
                 override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                    if (event.action === KeyEvent.ACTION_DOWN) {
+                    if (event.action == KeyEvent.ACTION_DOWN) {
                         when (keyCode) {
                             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
                                 viewModel.addToNutritionList(binding.nutrition.text.toString())
                                 binding.nutrition.setText("")
                                 v.nextFocusDownId = R.id.nutrition
                                 return true
-                            }
-                            else -> {
                             }
                         }
                     }
@@ -154,36 +148,32 @@ class NutritionAdapter(val viewModel: FoodieViewModel
         }
     }
 
-        override fun getItemViewType(position: Int): Int =
-               when (getItem(position)) {
-                       is DataItemNu.NutritionList -> NUTRITIONLIST
-                      is DataItemNu.EditNutrition -> EDIT_NUTRITION
-                       else -> throw IllegalArgumentException()
-                  }
+    override fun getItemViewType(position: Int): Int =
+           when (getItem(position)) {
+                   is DataItemNu.NutritionList -> NUTRITION_LIST
+                  is DataItemNu.EditNutrition -> EDIT_NUTRITION
+                   else -> throw IllegalArgumentException()
+           }
 
 
-
-companion object DiffCallback : DiffUtil.ItemCallback<DataItemNu>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<DataItemNu>() {
         override fun areItemsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
             return (oldItem == newItem)
         }
 
         override fun areContentsTheSame(oldItem: DataItemNu, newItem: DataItemNu): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
     }
 
-    /**
-     * Create new [RecyclerView] item views (invoked by the layout manager)
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when(viewType) {
-        NUTRITIONLIST -> NutritionViewHolder(ItemFoodieNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        NUTRITION_LIST -> NutritionViewHolder(ItemFoodieNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         EDIT_NUTRITION -> EditNutritionViewHolder(ItemFoodieEditNewNutritionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         else -> throw IllegalArgumentException()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //// to pass onClicklistener into adapter in CartFragment
+        // to pass onClicklistener into adapter in CartFragment
         val nutrition = getItem(position)
         when (holder) {
             is NutritionViewHolder -> {
@@ -236,6 +226,4 @@ sealed class DataItemNu {
     }
 
     abstract val id: String
-
-
 }

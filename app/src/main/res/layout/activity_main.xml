@@ -43,7 +43,7 @@
                 app:srcCompat="@color/colorShadow" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fabLayout3"
+                android:id="@+id/fabLayout_sleep"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
@@ -53,7 +53,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab3"
+                    android:id="@+id/fab_sleep"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     app:backgroundTint="@color/colorMyType"
@@ -79,14 +79,14 @@
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/fab3"
-                    app:layout_constraintStart_toEndOf="@+id/fab3"
-                    app:layout_constraintTop_toTopOf="@+id/fab3" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fab_sleep"
+                    app:layout_constraintStart_toEndOf="@+id/fab_sleep"
+                    app:layout_constraintTop_toTopOf="@+id/fab_sleep" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fabLayout2"
+                android:id="@+id/fabLayout_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
@@ -96,7 +96,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab2"
+                    android:id="@+id/fab_shape"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     app:backgroundTint="@color/colorMyType"
@@ -122,14 +122,14 @@
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/fab2"
-                    app:layout_constraintStart_toEndOf="@+id/fab2"
-                    app:layout_constraintTop_toTopOf="@+id/fab2" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fab_shape"
+                    app:layout_constraintStart_toEndOf="@+id/fab_shape"
+                    app:layout_constraintTop_toTopOf="@+id/fab_shape" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fabLayout1"
+                android:id="@+id/fabLayout_foodie"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
@@ -139,7 +139,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab1"
+                    android:id="@+id/fab_foodie"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     app:backgroundTint="@color/colorMyType"
@@ -165,14 +165,14 @@
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/fab1"
-                    app:layout_constraintStart_toEndOf="@+id/fab1"
-                    app:layout_constraintTop_toTopOf="@+id/fab1" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fab_foodie"
+                    app:layout_constraintStart_toEndOf="@+id/fab_foodie"
+                    app:layout_constraintTop_toTopOf="@+id/fab_foodie" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fabLayout4"
+                android:id="@+id/fabLayout_goal"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="2dp"
@@ -182,7 +182,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fab">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab4"
+                    android:id="@+id/fab_goal"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     app:backgroundTint="@color/colorMyType"
@@ -208,9 +208,9 @@
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/fab4"
-                    app:layout_constraintStart_toEndOf="@+id/fab4"
-                    app:layout_constraintTop_toTopOf="@+id/fab4" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fab_goal"
+                    app:layout_constraintStart_toEndOf="@+id/fab_goal"
+                    app:layout_constraintTop_toTopOf="@+id/fab_goal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

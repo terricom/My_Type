@@ -28,18 +28,18 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
         _date.value = date
     }
 
-    var weight = MutableLiveData<Float>()
-    var bodyWater = MutableLiveData<Float>()
-    var bodyFat = MutableLiveData<Float>()
-    var muscle = MutableLiveData<Float>()
-    var tdee = MutableLiveData<Float>()
-    var bodyAge = MutableLiveData<Float>()
+    var weight = MutableLiveData<String>()
+    var bodyWater = MutableLiveData<String>()
+    var bodyFat = MutableLiveData<String>()
+    var muscle = MutableLiveData<String>()
+    var tdee = MutableLiveData<String>()
+    var bodyAge = MutableLiveData<String>()
 
     fun convertStringToFloat(string: String): Float {
         return try {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
-            0.0f
+            0f
         }
     }
 
@@ -69,12 +69,12 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
 
         val shapeContent = hashMapOf(
             FirebaseKey.TIMESTAMP to Timestamp(date.value!!.time),
-            FirebaseKey.COLUMN_SHAPE_WEIGHT to weight.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_WATER to bodyWater.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_FAT to bodyFat.value,
-            FirebaseKey.COLUMN_SHAPE_MUSCLE to muscle.value,
-            FirebaseKey.COLUMN_SHAPE_TDEE to tdee.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_AGE to bodyAge.value
+            FirebaseKey.COLUMN_SHAPE_WEIGHT to (weight.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_WATER to (bodyWater.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_FAT to (bodyFat.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_MUSCLE to (muscle.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_TDEE to (tdee.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_AGE to (bodyAge.value ?: "0.0").toFloat()
         )
 
         coroutineScope.launch {
@@ -109,7 +109,7 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
                 App.applicationContext().getString(
                     R.string.timestamp_daybegin,
                     date.value.toDateFormat(FORMAT_YYYY_MM_DD))
-            ),
+                ),
                 Timestamp.valueOf(
                     App.applicationContext().getString(
                         R.string.timestamp_dayend,
@@ -123,11 +123,11 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
     }
 
     fun clearData(){
-        weight.value = 0.0f
-        bodyAge.value = 0.0f
-        bodyFat.value = 0.0f
-        bodyWater.value = 0.0f
-        tdee.value = 0.0f
-        muscle.value = 0.0f
+        weight.value = ""
+        bodyAge.value = ""
+        bodyFat.value = ""
+        bodyWater.value = ""
+        tdee.value = ""
+        muscle.value = ""
     }
 }

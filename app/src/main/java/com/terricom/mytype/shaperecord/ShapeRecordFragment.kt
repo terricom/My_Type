@@ -11,9 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentShapeRecordBinding
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDemicalPoint
 
 class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
 
@@ -31,7 +31,6 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
         binding.smartCustomCalendar.setEventHandler(this)
         binding.smartCustomCalendar.selectDateOut.observe(this, androidx.lifecycle.Observer {
-            Logger.i("binding.smartCustomCalendar.selectDateOut.observe = $it")
             viewModel.setDate(it)
         })
 
@@ -48,12 +47,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 binding.buttonShaperecordSave.setOnClickListener {
 
                     it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
-                    if ((viewModel.weight.value ?: 0.0f)
-                            .plus(viewModel.bodyWater.value ?: 0.0f)
-                            .plus(viewModel.bodyFat.value ?: 0.0f)
-                            .plus(viewModel.tdee.value ?: 0.0f)
-                            .plus(viewModel.muscle.value ?: 0.0f)
-                            .plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
+                    if (((viewModel.weight.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyWater.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyAge.value ?: "0.0").toFloat())
+                            .plus((viewModel.tdee.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat()) != 0.0f){
 
                         if (isConnected()) {
 
@@ -64,12 +63,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
                             it.background = App.applicationContext().getDrawable(R.color.colorMyType)
                         }
-                    }else if ((viewModel.weight.value ?: 0.0f)
-                            .plus(viewModel.bodyWater.value ?: 0.0f)
-                            .plus(viewModel.bodyFat.value ?: 0.0f)
-                            .plus(viewModel.tdee.value ?: 0.0f)
-                            .plus(viewModel.muscle.value ?: 0.0f)
-                            .plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
+                    }else if (((viewModel.weight.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyWater.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat())
+                            .plus((viewModel.tdee.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyAge.value ?: "0.0").toFloat()) == 0.0f){
 
                         Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
                         it.background = App.applicationContext().getDrawable(R.color.colorMyType)
@@ -82,12 +81,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                 binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.shaperecord_edit_accumulation)
 
                 viewModel.setDate(shape.timestamp)
-                viewModel.weight.value = shape.weight
-                viewModel.bodyFat.value = shape.bodyFat
-                viewModel.muscle.value = shape.muscle
-                viewModel.bodyAge.value = shape.bodyAge
-                viewModel.bodyWater.value = shape.bodyWater
-                viewModel.tdee.value = shape.tdee
+                viewModel.weight.value = shape.weight.toDemicalPoint(1)
+                viewModel.bodyFat.value = shape.bodyFat.toDemicalPoint(1)
+                viewModel.muscle.value = shape.muscle.toDemicalPoint(1)
+                viewModel.bodyAge.value = shape.bodyAge.toDemicalPoint(1)
+                viewModel.bodyWater.value = shape.bodyWater.toDemicalPoint(1)
+                viewModel.tdee.value = shape.tdee.toDemicalPoint(1)
                 binding.textShapeSave.setText(App.applicationContext().getString(R.string.add_new_confirm))
 
                 binding.smartCustomCalendar.getAndSetDataShape()
@@ -102,12 +101,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
                     it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
 
-                    if ((viewModel.weight.value ?: 0.0f)
-                            .plus(viewModel.bodyWater.value ?: 0.0f)
-                            .plus(viewModel.bodyFat.value ?: 0.0f)
-                            .plus(viewModel.tdee.value ?: 0.0f)
-                            .plus(viewModel.muscle.value ?: 0.0f)
-                            .plus(viewModel.bodyAge.value ?: 0.0f) != 0.0f){
+                    if (((viewModel.weight.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyWater.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyAge.value ?: "0.0").toFloat())
+                            .plus((viewModel.tdee.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat()) != 0.0f){
 
                         if (isConnected()) {
 
@@ -119,12 +118,12 @@ class ShapeRecordFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
                             it.background = App.applicationContext().getDrawable(R.color.colorMyType)
                             //告訴使用者網路無法使用
                         }
-                    }else if ((viewModel.weight.value ?: 0.0f)
-                            .plus(viewModel.bodyWater.value ?: 0.0f)
-                            .plus(viewModel.bodyFat.value ?: 0.0f)
-                            .plus(viewModel.tdee.value ?: 0.0f)
-                            .plus(viewModel.muscle.value ?: 0.0f)
-                            .plus(viewModel.bodyAge.value ?: 0.0f) == 0.0f){
+                    }else if (((viewModel.weight.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyWater.value ?: "0.0").toFloat() )
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyAge.value ?: "0.0").toFloat())
+                            .plus((viewModel.tdee.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat()) != 0.0f){
 
                         Toast.makeText(App.applicationContext(),resources.getText(R.string.shaperecord_input_hint), Toast.LENGTH_SHORT).show()
                         it.background = App.applicationContext().getDrawable(R.color.colorMyType)

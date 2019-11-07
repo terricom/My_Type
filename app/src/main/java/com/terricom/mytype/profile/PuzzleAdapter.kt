@@ -83,7 +83,7 @@ class PuzzleAdapter(
             return oldItem === newItem
         }
         override fun areContentsTheSame(oldItem: Puzzle, newItem: Puzzle): Boolean {
-            return oldItem == newItem
+            return oldItem.docId == newItem.docId
         }
     }
 
