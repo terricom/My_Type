@@ -33,6 +33,9 @@ class ProfileFragment: Fragment() {
 
         binding.recyclerPuzzle.adapter = PuzzleAdapter(viewModel)
 
+        viewModel.getAndSetGoalFromFirebase()
+        viewModel.getAndSetPuzzleFromFirebase()
+
         binding.profilePuzzleReference.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.MESSAGE.apply {
                 value.message = getString(R.string.profile_puzzle_info)
@@ -101,7 +104,6 @@ class ProfileFragment: Fragment() {
 
         if (!isConnected()){
             Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-            //告訴使用者網路無法使用
         }
 
         viewModel.isGoalGot.observe(this, Observer {

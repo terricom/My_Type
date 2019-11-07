@@ -4,17 +4,21 @@ import androidx.databinding.InverseMethod
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.Query
+import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
-import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.toDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.util.*
 
-class ShapeRecordViewModel: ViewModel() {
+class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     private val _date = MutableLiveData<Date>()
     val date: LiveData<Date>
@@ -24,29 +28,20 @@ class ShapeRecordViewModel: ViewModel() {
         _date.value = date
     }
 
-    var weight = MutableLiveData<Float>()
-    var bodyWater = MutableLiveData<Float>()
-    var bodyFat = MutableLiveData<Float>()
-    var muscle = MutableLiveData<Float>()
-    var tdee = MutableLiveData<Float>()
-    var bodyAge = MutableLiveData<Float>()
+    var weight = MutableLiveData<String>()
+    var bodyWater = MutableLiveData<String>()
+    var bodyFat = MutableLiveData<String>()
+    var muscle = MutableLiveData<String>()
+    var tdee = MutableLiveData<String>()
+    var bodyAge = MutableLiveData<String>()
 
     fun convertStringToFloat(string: String): Float {
         return try {
             string.toFloat()
         } catch (nfe: NumberFormatException) {
-            0.0f
+            0f
         }
     }
-
-    private val _recordedDates = MutableLiveData<List<String>>()
-    private val recordedDates : LiveData<List<String>>
-        get() = _recordedDates
-
-    private fun getRecordedDates(list: List<String>){
-        _recordedDates.value = list
-    }
-
 
     private val _isAddDataShape = MutableLiveData<Boolean>()
     val isAddDataShape : LiveData<Boolean>
@@ -67,80 +62,72 @@ class ShapeRecordViewModel: ViewModel() {
     @InverseMethod("convertStringToFloat")
     fun floatToString(value:Float) = value.toString()
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     fun addOrUpdateShape2Firebase(docId: String){
 
-        Logger.i("currentDate.value = ${date.value}")
-        //發文功能
         val shapeContent = hashMapOf(
             FirebaseKey.TIMESTAMP to Timestamp(date.value!!.time),
-            FirebaseKey.COLUMN_SHAPE_WEIGHT to weight.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_WATER to bodyWater.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_FAT to bodyFat.value,
-            FirebaseKey.COLUMN_SHAPE_MUSCLE to muscle.value,
-            FirebaseKey.COLUMN_SHAPE_TDEE to tdee.value,
-            FirebaseKey.COLUMN_SHAPE_BODY_AGE to bodyAge.value
+            FirebaseKey.COLUMN_SHAPE_WEIGHT to (weight.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_WATER to (bodyWater.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_FAT to (bodyFat.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_MUSCLE to (muscle.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_TDEE to (tdee.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_SHAPE_BODY_AGE to (bodyAge.value ?: "0.0").toFloat()
         )
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {userDocument ->
-
-                recordedDates.value?.let {
-
-                    when (it.contains(date.value.toDateFormat(FORMAT_YYYY_MM_DD))){
+            when(docId){
+                "" -> {
+                    when(cleanDates.contains(date.value.toDateFormat(FORMAT_YYYY_MM_DD))){
 
                         true -> addShapeFail()
                         false -> {
-
-                            when (docId){
-                                "" -> userDocument.collection(FirebaseKey.COLLECTION_SHAPE).document().set(shapeContent)
-                                else -> userDocument.collection(FirebaseKey.COLLECTION_SHAPE).document(docId).set(shapeContent)
-                            }
+                            myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SHAPE, shapeContent, docId)
                             addShapeSuccess()
                         }
                     }
                 }
-
+                else -> {
+                    myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SHAPE, shapeContent, docId)
+                    addShapeSuccess()
+                }
             }
         }
     }
 
+    private val cleanDates = mutableListOf<String>()
+
     fun getRecordedDates() {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {userDocument ->
-
-                userDocument.collection(FirebaseKey.COLLECTION_SHAPE)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener {
-                        val items = mutableListOf<Shape>(
-                        )
-                        val cleanDates = mutableListOf<String>()
-                        for (document in it) {
-
-                            items.add(document.toObject(Shape::class.java))
-                            items[items.size-1].docId = document.id
-                            cleanDates.add(document.toObject(Shape::class.java).timestamp.toDateFormat(
-                                FORMAT_YYYY_MM_DD))
-                        }
-                        getRecordedDates(cleanDates.distinct())
-                    }
+            val shapeList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_SHAPE,
+                Timestamp.valueOf(
+                App.applicationContext().getString(
+                    R.string.timestamp_daybegin,
+                    date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(
+                        R.string.timestamp_dayend,
+                        date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                )
+            )
+            for (shape in shapeList as List<Shape>){
+                cleanDates.add(shape.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
             }
         }
     }
 
     fun clearData(){
-        weight.value = 0.0f
-        bodyAge.value = 0.0f
-        bodyFat.value = 0.0f
-        bodyWater.value = 0.0f
-        tdee.value = 0.0f
-        muscle.value = 0.0f
+        weight.value = ""
+        bodyAge.value = ""
+        bodyFat.value = ""
+        bodyWater.value = ""
+        tdee.value = ""
+        muscle.value = ""
     }
-
-
-
 }

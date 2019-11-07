@@ -3,17 +3,23 @@ package com.terricom.mytype.linechart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.*
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.FoodieSum
+import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-class LineChartViewModel: ViewModel() {
+class LineChartViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     private val _date = MutableLiveData<String>()
     val date: LiveData<String>
@@ -40,6 +46,8 @@ class LineChartViewModel: ViewModel() {
         _recordDate.value = date
 
     }
+
+    val goal: LiveData<List<Goal>> = myTypeRepository.getGoal()
 
     private val _chartListDate = MutableLiveData<ArrayList<String>>()
     val chartListDate : LiveData<ArrayList<String>>
@@ -90,241 +98,222 @@ class LineChartViewModel: ViewModel() {
         setDate(Date())
     }
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
     fun getThisMonth() {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            getGoal()
-
-            UserManager.USER_REFERENCE?.let { userDocumnet ->
-
-                userDocumnet.collection(FirebaseKey.COLLECTION_FOODIE)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.ASCENDING)
-                    .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp(Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                            recordDate.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                    ).time))
-                    .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp(Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                            recordDate.value.toDateFormat(FORMAT_YYYY_MM_DD))
-                    ).time.minus(604800000L)))
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        val items = mutableListOf<Foodie>()
-                        val dateList = mutableListOf<String>()
-
-                        for (document in querySnapshot) {
-
-                            items.add(document.toObject(Foodie::class.java))
-                            items[items.lastIndex].docId = document.id
-                            dateList.add(document.toObject(Foodie::class.java).timestamp.toDateFormat(
-                                FORMAT_MM_DD
-                            ))
-                        }
-
-                        getFoodieChartList(items)
-                    }
+            val foodieList = myTypeRepository.getObjects(
+                FirebaseKey.COLLECTION_FOODIE,
+                Timestamp(
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(
+                            R.string.timestamp_dayend,
+                            recordDate.value.toDateFormat(FORMAT_YYYY_MM_DD)
+                        )
+                    ).time.minus(604800000L)
+                ),
+                Timestamp(
+                    Timestamp.valueOf(
+                        App.applicationContext().getString(
+                            R.string.timestamp_dayend,
+                            recordDate.value.toDateFormat(FORMAT_YYYY_MM_DD)
+                        )
+                    ).time
+                )
+            )
+            val dateList = mutableListOf<String>()
+            for (foodie in foodieList as List<Foodie>) {
+                dateList.add(foodie.timestamp.toDateFormat(FORMAT_MM_DD))
             }
-        }
-    }
+            val waterListTemp = mutableListOf<Float>()
+            val oilListTemp = mutableListOf<Float>()
+            val vegetableListTemp = mutableListOf<Float>()
+            val proteinListTemp = mutableListOf<Float>()
+            val fruitListTemp = mutableListOf<Float>()
+            val carbonListTemp = mutableListOf<Float>()
+            val dateListClean = mutableListOf<String>()
 
-    fun getFoodieChartList(listFoodie : List<Foodie>){
+            val waterList = mutableListOf<Float>()
+            val oilList = mutableListOf<Float>()
+            val vegetableList = mutableListOf<Float>()
+            val proteinList = mutableListOf<Float>()
+            val fruitList = mutableListOf<Float>()
+            val carbonList = mutableListOf<Float>()
+            val foodieSum = mutableListOf<FoodieSum>()
 
-        val dateList = mutableListOf<String>()
-        val dateListClean = mutableListOf<String>()
+            for (eachDay in dateList.distinct()) {
 
-        val waterListTemp= mutableListOf<Float>()
-        val oilListTemp= mutableListOf<Float>()
-        val vegetableListTemp= mutableListOf<Float>()
-        val proteinListTemp= mutableListOf<Float>()
-        val fruitListTemp= mutableListOf<Float>()
-        val carbonListTemp= mutableListOf<Float>()
+                waterListTemp.clear()
+                oilListTemp.clear()
+                vegetableListTemp.clear()
+                proteinListTemp.clear()
+                fruitListTemp.clear()
+                carbonListTemp.clear()
 
-        val waterList = mutableListOf<Float>()
-        val oilList = mutableListOf<Float>()
-        val vegetableList = mutableListOf<Float>()
-        val proteinList = mutableListOf<Float>()
-        val fruitList = mutableListOf<Float>()
-        val carbonList = mutableListOf<Float>()
-        val foodieSum = mutableListOf<FoodieSum>()
+                for (i in 0 until foodieList.size) {
+                    if (foodieList[i].timestamp.toDateFormat(FORMAT_MM_DD) == eachDay) {
 
-        for (foodie in listFoodie){
-            dateList.add(foodie.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
-        }
-
-        for (eachDay in dateList.distinct()){
-
-            waterListTemp.clear()
-            oilListTemp.clear()
-            vegetableListTemp.clear()
-            proteinListTemp.clear()
-            fruitListTemp.clear()
-            carbonListTemp.clear()
-
-            for (i in 0 until listFoodie.size){
-
-                if (listFoodie[i].timestamp.toDateFormat(FORMAT_YYYY_MM_DD) == eachDay){
-
-                    dateListClean.add(listFoodie[i].timestamp.toDateFormat(
-                        FORMAT_YYYY_MM_DD
-                    ))
-                    listFoodie[i].water?.let {
-                        waterListTemp.add(it)
-                    }
-                    listFoodie[i].oil?.let {
-                        oilListTemp.add(it)
-                    }
-                    listFoodie[i].vegetable?.let {
-                        vegetableListTemp.add(it)
-                    }
-                    listFoodie[i].protein?.let {
-                        proteinListTemp.add(it)
-                    }
-                    listFoodie[i].fruit?.let {
-                        fruitListTemp.add(it)
-                    }
-                    listFoodie[i].carbon?.let {
-                        carbonListTemp.add(it)
+                        dateListClean.add(
+                            foodieList[i].timestamp.toDateFormat(
+                                FORMAT_YYYY_MM_DD
+                            )
+                        )
+                        foodieList[i].water?.let {
+                            waterListTemp.add(it)
+                        }
+                        foodieList[i].oil?.let {
+                            oilListTemp.add(it)
+                        }
+                        foodieList[i].vegetable?.let {
+                            vegetableListTemp.add(it)
+                        }
+                        foodieList[i].protein?.let {
+                            proteinListTemp.add(it)
+                        }
+                        foodieList[i].fruit?.let {
+                            fruitListTemp.add(it)
+                        }
+                        foodieList[i].carbon?.let {
+                            carbonListTemp.add(it)
+                        }
                     }
                 }
+                waterList.add(waterListTemp.sum())
+                oilList.add(oilListTemp.sum())
+                vegetableList.add(vegetableListTemp.sum())
+                proteinList.add(proteinListTemp.sum())
+                fruitList.add(fruitListTemp.sum())
+                carbonList.add(carbonListTemp.sum())
+                foodieSum.add(
+                    FoodieSum(
+                        dateListClean[dateListClean.size - 1],
+                        waterListTemp.sum(),
+                        oilListTemp.sum(),
+                        vegetableListTemp.sum(),
+                        proteinListTemp.sum(),
+                        fruitListTemp.sum(),
+                        carbonListTemp.sum()
+                    )
+                )
             }
-            dateListClean.distinct()
-            waterList.add(waterListTemp.sum())
-            oilList.add(oilListTemp.sum())
-            vegetableList.add(vegetableListTemp.sum())
-            proteinList.add(proteinListTemp.sum())
-            fruitList.add(fruitListTemp.sum())
-            carbonList.add(carbonListTemp.sum())
-            foodieSum.add(FoodieSum(
-                dateListClean[dateListClean.size-1],
-                waterListTemp.sum(),
-                oilListTemp.sum(),
-                vegetableListTemp.sum(),
-                proteinListTemp.sum(),
-                fruitListTemp.sum(),
-                carbonListTemp.sum()
-            ))
+            setFoodieSum(foodieSum)
+
+            if (waterList.size > 0) {
+
+                diffWater.value =
+                    waterList[waterList.lastIndex]
+                        .minus(goalWater.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                diffWaterNum.value =
+                    waterList[waterList.lastIndex]
+                        .minus(goalWater.value.toFloatFormat())
+
+            }
+
+            if (fruitList.size > 0) {
+
+                diffFruit.value =
+                    fruitList[fruitList.lastIndex]
+                        .minus(goalFruit.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                diffFruitNum.value =
+                    fruitList[fruitList.lastIndex]
+                        .minus(goalFruit.value.toFloatFormat())
+
+            }
+            if (oilList.size > 0) {
+
+                diffOil.value =
+                    oilList[oilList.lastIndex]
+                        .minus(goalOil.value.toFloatFormat()).toDemicalPoint(1)
+
+                diffOilNum.value =
+                    oilList[oilList.lastIndex]
+                        .minus(goalOil.value.toFloatFormat())
+            }
+            if (proteinList.size > 0) {
+
+                diffProtein.value =
+                    proteinList[proteinList.lastIndex]
+                        .minus(goalProtein.value.toFloatFormat()).toDemicalPoint(1)
+
+                diffProteinNum.value =
+                    proteinList[proteinList.lastIndex]
+                        .minus(goalProtein.value.toFloatFormat())
+            }
+            if (vegetableList.size > 0) {
+
+                diffVegetable.value =
+                    vegetableList[vegetableList.lastIndex]
+                        .minus(goalVegetable.value.toFloatFormat()).toDemicalPoint(1)
+
+                diffVegetableNum.value =
+                    vegetableList[vegetableList.lastIndex]
+                        .minus(goalVegetable.value.toFloatFormat())
+            }
+            if (carbonList.size > 0) {
+
+                diffCarbon.value =
+                    carbonList[carbonList.lastIndex]
+                        .minus(goalCarbon.value.toFloatFormat()).toDemicalPoint(1)
+
+                diffCarbonNum.value =
+                    carbonList[carbonList.lastIndex]
+                        .minus(goalCarbon.value.toFloatFormat())
+            }
+
+            fireDateBack(ArrayList(dateList.distinct()))
+
+            val chartList = mutableListOf<ChartEntity>()
+
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorWater),
+                    waterList.toFloatArray()
+                )
+            )
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorOil),
+                    oilList.toFloatArray()
+                )
+            )
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorVegetable),
+                    vegetableList.toFloatArray()
+                )
+            )
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorProtein),
+                    proteinList.toFloatArray()
+                )
+            )
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorFruit),
+                    fruitList.toFloatArray()
+                )
+            )
+            chartList.add(
+                ChartEntity(
+                    App.applicationContext().getColor(R.color.colorCarbon),
+                    carbonList.toFloatArray()
+                )
+            )
+
+            setListDates(chartList.toCollection(ArrayList()))
+            _status.value = true
+            _listDates.value = null
 
         }
-        setFoodieSum(foodieSum)
-        if (waterList.size > 0){
-
-            diffWater.value =
-                waterList[waterList.lastIndex]
-                    .minus(goalWater.value.toFloatFormat()).toDemicalPoint(1)
-
-
-            diffWaterNum.value =
-                waterList[waterList.lastIndex]
-                    .minus(goalWater.value.toFloatFormat())
-
-        }
-        if (fruitList.size > 0){
-
-            diffFruit.value =
-                fruitList[fruitList.lastIndex]
-                    .minus(goalFruit.value.toFloatFormat()).toDemicalPoint(1)
-
-
-            diffFruitNum.value =
-                fruitList[fruitList.lastIndex]
-                    .minus(goalFruit.value.toFloatFormat())
-
-        }
-        if (oilList.size > 0){
-
-            diffOil.value =
-                oilList[oilList.lastIndex]
-                    .minus(goalOil.value.toFloatFormat()).toDemicalPoint(1)
-
-            diffOilNum.value =
-                oilList[oilList.lastIndex]
-                    .minus(goalOil.value.toFloatFormat())
-        }
-        if (proteinList.size > 0){
-
-            diffProtein.value =
-                proteinList[proteinList.lastIndex]
-                    .minus(goalProtein.value.toFloatFormat()).toDemicalPoint(1)
-
-            diffProteinNum.value =
-                proteinList[proteinList.lastIndex]
-                    .minus(goalProtein.value.toFloatFormat())
-        }
-        if (vegetableList.size > 0){
-
-            diffVegetable.value =
-                vegetableList[vegetableList.lastIndex]
-                    .minus(goalVegetable.value.toFloatFormat()).toDemicalPoint(1)
-
-            diffVegetableNum.value =
-                vegetableList[vegetableList.lastIndex]
-                    .minus(goalVegetable.value.toFloatFormat())
-        }
-        if (carbonList.size > 0){
-
-            diffCarbon.value =
-                carbonList[carbonList.lastIndex]
-                    .minus(goalCarbon.value.toFloatFormat()).toDemicalPoint(1)
-
-            diffCarbonNum.value =
-                carbonList[carbonList.lastIndex]
-                    .minus(goalCarbon.value.toFloatFormat())
-        }
-
-        fireDateBack(ArrayList(dateList.distinct()))
-
-        val chartList = mutableListOf<ChartEntity>()
-
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorWater), waterList.toFloatArray()))
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorOil), oilList.toFloatArray()))
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorVegetable), vegetableList.toFloatArray()))
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorProtein), proteinList.toFloatArray()))
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorFruit), fruitList.toFloatArray()))
-        chartList.add(ChartEntity(App.applicationContext().getColor(R.color.colorCarbon), carbonList.toFloatArray()))
-
-        setListDates(chartList.toCollection(ArrayList()))
-        _status.value = true
-        _listDates.value = null
-
     }
 
-    private fun getGoal() {
-
-        if (UserManager.isLogin()){
-
-            UserManager.USER_REFERENCE?.let { userDocument ->
-
-                userDocument.collection(FirebaseKey.COLLECTION_GOAL)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener {
-                        val items = mutableListOf<Goal>()
-                        if (it.isEmpty){
-                        }else {
-                            for (document in it) {
-                                items.add(document.toObject(Goal::class.java))
-                                items[items.size-1].docId = document.id
-                            }
-                            if (items.size > 0 ){
-                                goalWater.value = items[0].water.toDemicalPoint(1)
-                                goalCarbon.value = items[0].carbon.toDemicalPoint(1)
-                                goalOil.value = items[0].oil.toDemicalPoint(1)
-                                goalFruit.value = items[0].fruit.toDemicalPoint(1)
-                                goalProtein.value = items[0].protein.toDemicalPoint(1)
-                                goalVegetable.value = items[0].vegetable.toDemicalPoint(1)
-                            } else if (items.size == 0){
-                                goalWater.value = 0.0f.toDemicalPoint(1)
-                                goalCarbon.value = 0.0f.toDemicalPoint(1)
-                                goalOil.value = 0.0f.toDemicalPoint(1)
-                                goalFruit.value = 0.0f.toDemicalPoint(1)
-                                goalProtein.value = 0.0f.toDemicalPoint(1)
-                                goalVegetable.value = 0.0f.toDemicalPoint(1)
-                            }
-                        }
-                    }
-            }
-        }
-    }
 
 }

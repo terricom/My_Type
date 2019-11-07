@@ -207,7 +207,7 @@ class AchievementViewModel(private val myTypeRepository: MyTypeRepository): View
 
             if (shapeListTemp.size != 0){
 
-                setDataShapeFromFirebase(shapeListTemp)
+                setDataShapeFromFirebase(shapeListTemp.distinct())
             }
             _listOfChartEntities.value = null
         }

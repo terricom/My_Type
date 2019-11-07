@@ -13,15 +13,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Shape
-import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.toDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +37,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         const val NUM_DAY_OF_WEEK = 7
     }
 
-    public val DEFAULT_DATE_FORMAT = App.applicationContext().getString(R.string.simpledateformat_yyyy_MM)
+    private val DEFAULT_DATE_FORMAT = App.applicationContext().getString(R.string.simpledateformat_yyyy_MM)
 
     private var dateFormat = DEFAULT_DATE_FORMAT
 
@@ -50,8 +52,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
 
-    val viewModel = ShapeRecordViewModel()
-
+    val viewModel = ShapeRecordViewModel(myTypeRepository = (context.applicationContext as App).myTypeRepository)
 
     constructor(context: Context?) : super(context) {
         initView(context)
@@ -155,66 +156,38 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         _recordedDate.value = recordedDate
     }
 
-    private val _dataShapeFromFirebase = MutableLiveData<List<Shape>>()
-    private val dataShapeFromFirebase : LiveData<List<Shape>>
-        get() = _dataShapeFromFirebase
-
-    private fun setDataShapeFromFirebase (shape: List<Shape>){
-        _dataShapeFromFirebase.value = shape
-    }
-    private val _currentDate = MutableLiveData<Date>()
-    val currentDate : LiveData<Date>
-        get() = _currentDate
-
-    fun filterDate(dato: Date){
-        Logger.i("CalendarViewHolder setCurrentDate = ${dato}")
-        _currentDate.value = dato
-    }
-
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     @SuppressLint("StringFormatMatches")
     fun getAndSetDataShape() {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {userDocument ->
+            val shapeList = (context.applicationContext as App).myTypeRepository.getObjects(
+                FirebaseKey.COLLECTION_SHAPE,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_daybegin,
+                        App.applicationContext().getString(R.string.year_month_date,
+                            "${currentDateCalendar.get(Calendar.YEAR)}",
+                            "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                            "01"))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(R.string.timestamp_dayend,
+                        App.applicationContext().getString(R.string.year_month_date,
+                            "${currentDateCalendar.get(Calendar.YEAR)}",
+                            "${currentDateCalendar.get(Calendar.MONTH)+1}",
+                            "${getLastMonthLastDate()}"))
+                )
+            )
+            val dates = mutableListOf<String>()
 
-                userDocument.collection(FirebaseKey.COLLECTION_SHAPE)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_dayend,
-                            App.applicationContext().getString(R.string.year_month_date,
-                                "${currentDateCalendar.get(Calendar.YEAR)}",
-                                "${currentDateCalendar.get(Calendar.MONTH)+1}",
-                                "${getLastMonthLastDate()}"))
-                    ))
-                    .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, Timestamp.valueOf(
-                        App.applicationContext().getString(R.string.timestamp_daybegin,
-                            App.applicationContext().getString(R.string.year_month_date,
-                                "${currentDateCalendar.get(Calendar.YEAR)}",
-                                "${currentDateCalendar.get(Calendar.MONTH)+1}",
-                                "01"))
-                    ))
-                    .get()
-                    .addOnSuccessListener {
-                        val items = mutableListOf<Shape>()
-                        val dates = mutableListOf<String>()
-                        items.clear()
-                        dates.clear()
-                        for (document in it) {
+            for (shape in shapeList as List<Shape>){
 
-                            items.add(document.toObject(Shape::class.java))
-                            items[items.size-1].docId = document.id
-                            document.toObject(Shape::class.java).timestamp?.let {
-                                dates.add(it.toDateFormat(FORMAT_YYYY_MM_DD))
-                            }
-                        }
-
-                        setDataShapeFromFirebase(items)
-                        setRecordedDate(dates)
-                        Logger.i("fireFoodieM =${dataShapeFromFirebase.value} setRecordedDate dates = ${recordedDate.value}")
-                    }
+                dates.add(shape.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
             }
+            setRecordedDate(dates)
         }
     }
 
@@ -240,7 +213,6 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
         setSelectDate(Date())
     }
 
-
     override fun onDateSelect(selectDate: Date) {
         Logger.i("onDateSelect = $selectDate")
         val tempAdapter = gridRecycler.adapter as ShapeCalendarAdapter
@@ -249,7 +221,6 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
         val tempCalendar = Calendar.getInstance()
         tempCalendar.time = selectDate
-        filterDate(selectDate)
         tempAdapter.recordedDates = recordedDate.value!!
         setSelectDate(selectDate)
         setHeader(tempCalendar)

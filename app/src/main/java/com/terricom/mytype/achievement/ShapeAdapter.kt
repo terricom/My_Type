@@ -9,9 +9,9 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.databinding.ItemAchievementShapeBinding
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
 import com.terricom.mytype.tools.toDemicalPoint
 
@@ -80,7 +80,7 @@ class ShapeAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Shape, newItem: Shape): Boolean {
-            return oldItem == newItem
+            return oldItem.docId == newItem.docId
         }
     }
 

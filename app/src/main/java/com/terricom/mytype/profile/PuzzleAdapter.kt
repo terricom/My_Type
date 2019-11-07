@@ -134,11 +134,12 @@ class PuzzleAdapter(
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<DataItem>() {
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem.id == newItem.id
+        }
+
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem === newItem
-        }
-        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem == newItem
         }
     }
 

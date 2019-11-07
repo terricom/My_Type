@@ -3,14 +3,14 @@ package com.terricom.mytype.query
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.Query
-import com.terricom.mytype.data.*
+import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.Goal
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.toDemicalPoint
 
-class QueryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(){
+class QueryViewModel(myTypeRepository: MyTypeRepository): ViewModel(){
 
-    val userUid = UserManager.uid
+    val goal: LiveData<List<Goal>> = myTypeRepository.getGoal()
 
     private val _queryFoodie = MutableLiveData<List<Foodie>>()
     val queryFoodie: LiveData<List<Foodie>>
@@ -26,11 +26,6 @@ class QueryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
     val goalOil = MutableLiveData<String>()
     val goalProtein = MutableLiveData<String>()
     val goalCarbon = MutableLiveData<String>()
-
-    init {
-        getGoalFromFirebase()
-    }
-
 
     fun calculateAverage(listFoodie: List<Foodie>) {
 
@@ -71,53 +66,5 @@ class QueryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
     val averageProtein = MutableLiveData<String>()
     val averageFruit = MutableLiveData<String>()
     val averageCarbon = MutableLiveData<String>()
-
-
-
-    private fun getGoalFromFirebase() {
-
-        if (UserManager.isLogin()){
-
-            UserManager.USER_REFERENCE?.let {userDocument ->
-
-                userDocument.collection(FirebaseKey.COLLECTION_GOAL)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener {
-
-                        val items = mutableListOf<Goal>()
-
-                        for (document in it) {
-
-                            items.add(document.toObject(Goal::class.java))
-                            items[items.size-1].docId = document.id
-                        }
-
-                        when (items.size){
-
-                            0 -> {
-
-                                goalWater.value = 0.0f.toDemicalPoint(1)
-                                goalCarbon.value = 0.0f.toDemicalPoint(1)
-                                goalOil.value = 0.0f.toDemicalPoint(1)
-                                goalFruit.value = 0.0f.toDemicalPoint(1)
-                                goalProtein.value = 0.0f.toDemicalPoint(1)
-                                goalVegetable.value = 0.0f.toDemicalPoint(1)
-                            }
-
-                            else -> {
-
-                                goalWater.value = items[0].water.toDemicalPoint(1)
-                                goalCarbon.value = items[0].carbon.toDemicalPoint(1)
-                                goalOil.value = items[0].oil.toDemicalPoint(1)
-                                goalFruit.value = items[0].fruit.toDemicalPoint(1)
-                                goalProtein.value = items[0].protein.toDemicalPoint(1)
-                                goalVegetable.value = items[0].vegetable.toDemicalPoint(1)
-                            }
-                        }
-                    }
-            }
-        }
-    }
 
 }

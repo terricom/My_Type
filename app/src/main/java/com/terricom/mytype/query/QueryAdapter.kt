@@ -54,7 +54,7 @@ class QueryAdapter(val viewModel: QueryViewModel
         }
 
         override fun areContentsTheSame(oldItem: Foodie, newItem: Foodie): Boolean {
-            return oldItem == newItem
+            return oldItem.docId == newItem.docId
         }
     }
 

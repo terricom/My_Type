@@ -88,7 +88,7 @@ class GoalAdapter(
             return oldItem === newItem
         }
         override fun areContentsTheSame(oldItem: Goal, newItem: Goal): Boolean {
-            return oldItem == newItem
+            return oldItem.docId == newItem.docId
         }
     }
 

@@ -89,18 +89,26 @@ class GoalSettingViewModel(private val myTypeRepository: MyTypeRepository): View
 
         coroutineScope.launch {
 
-            when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
+            when(documentId){
+                "" -> {
+                    when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
 
-                true -> {
-                    when (deadline!!.after(Date())){
-                        true -> addGoal2FirebaseFail()
+                        true -> {
+                            when (deadline!!.after(Date())){
+                                true -> addGoal2FirebaseFail()
+                                false -> {
+                                    myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_GOAL, goalContent, documentId)
+                                    addGoal2FirebaseSuccess()
+                                }
+                            }
+                        }
                         false -> {
                             myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_GOAL, goalContent, documentId)
                             addGoal2FirebaseSuccess()
                         }
                     }
                 }
-                false -> {
+                else -> {
                     myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_GOAL, goalContent, documentId)
                     addGoal2FirebaseSuccess()
                 }

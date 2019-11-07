@@ -14,5 +14,6 @@ data class User (
     val Goal: List<Goal> ?= null,
     val Puzzle : List<Puzzle> ?= null,
     val food_list: List<String> ?= null,
-    val nutrition_list: List<String> ?= null
+    val nutrition_list: List<String> ?= null,
+    var user_uid: String ?= null
 ): Parcelable

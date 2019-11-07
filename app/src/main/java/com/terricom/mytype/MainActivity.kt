@@ -108,7 +108,7 @@ class MainActivity : BaseActivity(){
                 closeFABMenu()
             }
         }
-        binding.fab1.setOnClickListener {
+        binding.fabFoodie.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment(
                 Foodie()
             ))
@@ -116,7 +116,7 @@ class MainActivity : BaseActivity(){
             closeFABMenu()
         }
 
-        binding.fab2.setOnClickListener {
+        binding.fabShape.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment(
                 Shape()
             ))
@@ -124,7 +124,7 @@ class MainActivity : BaseActivity(){
             closeFABMenu()
 
         }
-        binding.fab3.setOnClickListener {
+        binding.fabSleep.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment(
                 Sleep()
             ))
@@ -132,7 +132,7 @@ class MainActivity : BaseActivity(){
             closeFABMenu()
 
         }
-        binding.fabLayout3.setOnClickListener {
+        binding.fabLayoutSleep.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToSleepFragment(
                 Sleep()
             ))
@@ -140,7 +140,7 @@ class MainActivity : BaseActivity(){
             closeFABMenu()
 
         }
-        binding.fab4.setOnClickListener {
+        binding.fabGoal.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment(
                 Goal()
             ))
@@ -148,7 +148,7 @@ class MainActivity : BaseActivity(){
             closeFABMenu()
 
         }
-        binding.fabLayout4.setOnClickListener {
+        binding.fabLayoutGoal.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToGoalSettingFragment(
                 Goal()
             ))
@@ -157,13 +157,13 @@ class MainActivity : BaseActivity(){
 
         }
 
-        binding.fabLayout1.setOnClickListener {
+        binding.fabLayoutFoodie.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToFoodieFragment(Foodie()))
             binding.fabShadow.visibility = View.GONE
             closeFABMenu()
 
         }
-        binding.fabLayout2.setOnClickListener {
+        binding.fabLayoutShape.setOnClickListener {
             findNavController(R.id.myNavHostFragment).navigate(NavigationDirections.navigateToShapeRecordFragment(
                 Shape()
             ))
@@ -243,41 +243,41 @@ class MainActivity : BaseActivity(){
 
     private fun hideFABView(){
         binding.fab.visibility = View.GONE
-        binding.fabLayout1.visibility = View.GONE
-        binding.fabLayout2.visibility = View.GONE
-        binding.fabLayout3.visibility = View.GONE
-        binding.fabLayout4.visibility = View.GONE
+        binding.fabLayoutFoodie.visibility = View.GONE
+        binding.fabLayoutShape.visibility = View.GONE
+        binding.fabLayoutSleep.visibility = View.GONE
+        binding.fabLayoutGoal.visibility = View.GONE
 
-        binding.fab1.visibility = View.INVISIBLE
-        binding.fab2.visibility = View.INVISIBLE
-        binding.fab3.visibility = View.INVISIBLE
-        binding.fab4.visibility = View.INVISIBLE
+        binding.fabFoodie.visibility = View.INVISIBLE
+        binding.fabShape.visibility = View.INVISIBLE
+        binding.fabSleep.visibility = View.INVISIBLE
+        binding.fabGoal.visibility = View.INVISIBLE
 
     }
 
 
     private fun showFABMenu() {
-        when (fabLayout1.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
-            else -> fabLayout1.visibility = View.VISIBLE
+        when (fabLayout_foodie.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_foodie.visibility = View.INVISIBLE
+            else -> fabLayout_foodie.visibility = View.VISIBLE
         }
-        when (fabLayout2.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout2.visibility = View.INVISIBLE
-            else -> fabLayout2.visibility = View.VISIBLE
+        when (fabLayout_shape.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_shape.visibility = View.INVISIBLE
+            else -> fabLayout_shape.visibility = View.VISIBLE
         }
-        when (fabLayout3.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout3.visibility = View.INVISIBLE
-            else -> fabLayout3.visibility = View.VISIBLE
+        when (fabLayout_sleep.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_sleep.visibility = View.INVISIBLE
+            else -> fabLayout_sleep.visibility = View.VISIBLE
         }
-        when (fabLayout4.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
-            else -> fabLayout4.visibility = View.VISIBLE
+        when (fabLayout_goal.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_foodie.visibility = View.INVISIBLE
+            else -> fabLayout_goal.visibility = View.VISIBLE
         }
         isFABOpen = true
-        fabLayout1.animate().translationY(-resources.getDimension(R.dimen.standard_55))
-        fabLayout2.animate().translationY(-resources.getDimension(R.dimen.standard_105))
-        fabLayout3.animate().translationY(-resources.getDimension(R.dimen.standard_155))
-        fabLayout4.animate().translationY(-resources.getDimension(R.dimen.standard_205))
+        fabLayout_foodie.animate().translationY(-resources.getDimension(R.dimen.standard_55))
+        fabLayout_shape.animate().translationY(-resources.getDimension(R.dimen.standard_105))
+        fabLayout_sleep.animate().translationY(-resources.getDimension(R.dimen.standard_155))
+        fabLayout_goal.animate().translationY(-resources.getDimension(R.dimen.standard_205))
         fab.animate().rotation(45.0f)
         fab_custom_pic.animate().rotation(45.0f)
         binding.fabShadow.visibility = View.VISIBLE
@@ -286,45 +286,45 @@ class MainActivity : BaseActivity(){
 
     fun closeFABMenu() {
 
-        fab1.visibility = View.VISIBLE
-        fab2.visibility = View.VISIBLE
-        fab3.visibility = View.VISIBLE
-        fab4.visibility = View.VISIBLE
+        fab_foodie.visibility = View.VISIBLE
+        fab_shape.visibility = View.VISIBLE
+        fab_sleep.visibility = View.VISIBLE
+        fab_goal.visibility = View.VISIBLE
 
-        when (fabLayout1.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
-            else -> fabLayout1.visibility = View.VISIBLE
+        when (fabLayout_foodie.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_foodie.visibility = View.INVISIBLE
+            else -> fabLayout_foodie.visibility = View.VISIBLE
         }
-        when (fabLayout2.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout2.visibility = View.INVISIBLE
-            else -> fabLayout2.visibility = View.VISIBLE
+        when (fabLayout_shape.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_shape.visibility = View.INVISIBLE
+            else -> fabLayout_shape.visibility = View.VISIBLE
         }
-        when (fabLayout3.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout3.visibility = View.INVISIBLE
-            else -> fabLayout3.visibility = View.VISIBLE
+        when (fabLayout_sleep.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_sleep.visibility = View.INVISIBLE
+            else -> fabLayout_sleep.visibility = View.VISIBLE
         }
-        when (fabLayout4.y){
-            resources.getDimension(R.dimen.standard_0) -> fabLayout1.visibility = View.INVISIBLE
-            else -> fabLayout4.visibility = View.VISIBLE
+        when (fabLayout_goal.y){
+            resources.getDimension(R.dimen.standard_0) -> fabLayout_foodie.visibility = View.INVISIBLE
+            else -> fabLayout_goal.visibility = View.VISIBLE
         }
 
         isFABOpen = false
         binding.fabShadow.visibility = View.GONE
         fab.animate().rotation(90.0f)
         fab_custom_pic.animate().rotation(90.0f)
-        fabLayout1.animate().translationY(resources.getDimension(R.dimen.standard_0))
-        fabLayout2.animate().translationY(resources.getDimension(R.dimen.standard_0))
-        fabLayout3.animate().translationY(resources.getDimension(R.dimen.standard_0))
-        fabLayout4.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout_foodie.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout_shape.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout_sleep.animate().translationY(resources.getDimension(R.dimen.standard_0))
+        fabLayout_goal.animate().translationY(resources.getDimension(R.dimen.standard_0))
 
     }
 
     fun backFromEditPage(){
 
-        fabLayout1.visibility = View.INVISIBLE
-        fabLayout2.visibility = View.INVISIBLE
-        fabLayout3.visibility = View.INVISIBLE
-        fabLayout4.visibility = View.INVISIBLE
+        fabLayout_foodie.visibility = View.INVISIBLE
+        fabLayout_shape.visibility = View.INVISIBLE
+        fabLayout_sleep.visibility = View.INVISIBLE
+        fabLayout_goal.visibility = View.INVISIBLE
         isFABOpen = false
 
     }

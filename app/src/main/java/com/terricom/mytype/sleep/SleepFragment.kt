@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.terricom.mytype.*
 import com.terricom.mytype.databinding.FragmentSleepRecordBinding
 import com.terricom.mytype.tools.FORMAT_HH_MM
+import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
 import com.terricom.mytype.tools.toDateFormat
 import org.threeten.bp.Duration
@@ -25,9 +26,8 @@ import java.util.*
 class SleepFragment: Fragment() {
 
     private lateinit var binding: FragmentSleepRecordBinding
-    private val viewModel: SleepViewModel by lazy{
-        ViewModelProviders.of(this).get(SleepViewModel::class.java)
-    }
+    private val viewModel by viewModels<SleepViewModel> { getVmFactory() }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -54,7 +54,6 @@ class SleepFragment: Fragment() {
                         viewModel.addOrUpdateSleepHr("")
                     }else{
                         Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-                        //告訴使用者網路無法使用
                     }
                 }
             }
@@ -96,9 +95,7 @@ class SleepFragment: Fragment() {
         binding.buttonBack2Main.setOnClickListener {
             findNavController().navigate(NavigationDirections.navigateToDiaryFragment())
             (activity as MainActivity).back2DiaryFragment()
-
         }
-
 
         viewModel.addSleepResult.observe(this, androidx.lifecycle.Observer {
             if (it == true){
@@ -110,8 +107,6 @@ class SleepFragment: Fragment() {
                 binding.buttonSleepSave.background  = App.applicationContext().getDrawable(R.color.colorMyType)
             }
         })
-
-
 
         return binding.root
     }
@@ -189,7 +184,6 @@ class SleepFragment: Fragment() {
             viewModel.setWakeTime(timeStampWake)
             viewModel.setSleepHr(java.sql.Date(Timestamp.valueOf(newBedDate).time), java.sql.Date(Timestamp.valueOf(newWakeDate).time))
         }
-
     }
 
     override fun onStop() {
@@ -197,8 +191,4 @@ class SleepFragment: Fragment() {
         (activity as MainActivity).backFromEditPage()
 
     }
-
-
-
-
 }

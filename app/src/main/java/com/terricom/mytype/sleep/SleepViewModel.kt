@@ -3,32 +3,24 @@ package com.terricom.mytype.sleep
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.Query
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.Sleep
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.*
 
-class SleepViewModel: ViewModel() {
+class SleepViewModel(private val myTypeRepository: MyTypeRepository): ViewModel() {
 
     private val wakeUp = MutableLiveData<Timestamp>()
     private val goToSleep = MutableLiveData<Timestamp>()
     private val sleepHr = MutableLiveData<Float>()
-
-    private val _sleepToday = MutableLiveData<List<Sleep>>()
-    private val sleepToday : LiveData<List<Sleep>>
-        get() = _sleepToday
-
-    private fun setSleepToday(sleepToday: List<Sleep>){
-        _sleepToday.value = sleepToday
-    }
 
     fun setWakeTime(time: Timestamp){
         wakeUp.value = time
@@ -55,9 +47,8 @@ class SleepViewModel: ViewModel() {
         _addSleepResult.value = false
     }
 
-    init {
-        checkSleepRecord()
-    }
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     fun addOrUpdateSleepHr(docId: String){
 
@@ -68,64 +59,36 @@ class SleepViewModel: ViewModel() {
             FirebaseKey.TIMESTAMP to Timestamp(Date().time)
         )
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            UserManager.USER_REFERENCE?.let {userDocument ->
+            val sleepList = myTypeRepository.getObjects(
+                FirebaseKey.COLLECTION_SLEEP,
+                Timestamp.valueOf(
+                    App.applicationContext().getString(
+                        R.string.timestamp_daybegin,
+                        Date().toDateFormat(FORMAT_YYYY_MM_DD))
+                ),
+                Timestamp.valueOf(
+                    App.applicationContext().getString(
+                        R.string.timestamp_dayend,
+                        Date().toDateFormat(FORMAT_YYYY_MM_DD))
+                ))
 
-                when (docId){
-
-                    "" ->{
-                        if (sleepToday.value.isNullOrEmpty()){
-
-                            userDocument.collection(FirebaseKey.COLLECTION_SLEEP).document().set(sleepContent)
+            when(docId){
+                "" -> {
+                    when (sleepList.isEmpty()){
+                        true -> {
+                            myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
                             addSleepSuccess()
-                        } else {
-
-                            addSleepFail()
                         }
+                        false -> addSleepFail()
                     }
-                    else -> {
-                        userDocument.collection(FirebaseKey.COLLECTION_SLEEP).document(docId).set(sleepContent)
-                        addSleepSuccess()
-                    }
-
+                }
+                else -> {
+                    myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
+                    addSleepSuccess()
                 }
             }
         }
     }
-
-
-    private fun checkSleepRecord(): Boolean {
-        val items = mutableListOf<Sleep>()
-        val tempCalendar = Calendar.getInstance()
-        tempCalendar.time = Date()
-        val localDateStart: LocalDate = LocalDate.parse(Date().toDateFormat(FORMAT_YYYY_MM_DD))
-        localDateStart.atTime(LocalTime.MIDNIGHT)
-        val localDateEnd : LocalDate = LocalDate.parse(Date().toDateFormat(FORMAT_YYYY_MM_DD))
-        localDateEnd.atTime(LocalTime.MAX)
-
-        if (UserManager.isLogin()){
-
-            UserManager.USER_REFERENCE?.let { userDocument ->
-
-                userDocument.collection(FirebaseKey.COLLECTION_SLEEP)
-                    .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                    .whereGreaterThanOrEqualTo(
-                        FirebaseKey.TIMESTAMP,
-                        Timestamp.valueOf(App.applicationContext().getString(R.string.timestamp_daybegin, "$localDateStart"))
-                    )
-                    .get()
-                    .addOnSuccessListener {
-                        for (document in it) {
-                            items.add(document.toObject(Sleep::class.java))
-                            items[items.size-1].docId = document.id
-                        }
-                        setSleepToday(items)
-                    }
-            }
-        }
-
-        return items.size != 0
-    }
-
 }
