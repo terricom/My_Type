@@ -105,6 +105,8 @@
     <string name="foodie_choose_from_gallery">選擇相片</string>
     <string name="foodie_cancel">取消</string>
     <string name="foodie_add_photo_title">新增照片</string>
+    <string name="goal_hint_over_eat">有飲食指標超過囉～再檢查一下！</string>
+    <string name="goal_setting_hint_over_shape">雖然肌肉量和體脂率都無法破百，但體重可以嗯嗯</string>
     <string name="profile_hint_add_goal">目前尚未新增目標\n點選下方按鈕去設定\n每日的飲食目標喔！</string>
     <string name="profile_hint_add_goal_postit">目前尚未新增目標\n點選下方按鈕可以\n設定每日的飲食目標喔！</string>
     <string name="shaperecord_input_hint">無法新增空白的成果，請再確認喔！</string>

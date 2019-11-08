@@ -34,15 +34,15 @@ class GoalSettingViewModel(private val myTypeRepository: MyTypeRepository): View
     }
 
     val cheerUp = MutableLiveData<String>()
-    val water =  MutableLiveData<Float>()
-    val oil = MutableLiveData<Float>()
-    val vegetable = MutableLiveData<Float>()
-    val protein = MutableLiveData<Float>()
-    val fruit = MutableLiveData<Float>()
-    val carbon = MutableLiveData<Float>()
-    var weight = MutableLiveData<Float>()
-    var bodyFat = MutableLiveData<Float>()
-    var muscle = MutableLiveData<Float>()
+    val water =  MutableLiveData<String>()
+    val oil = MutableLiveData<String>()
+    val vegetable = MutableLiveData<String>()
+    val protein = MutableLiveData<String>()
+    val fruit = MutableLiveData<String>()
+    val carbon = MutableLiveData<String>()
+    var weight = MutableLiveData<String>()
+    var bodyFat = MutableLiveData<String>()
+    var muscle = MutableLiveData<String>()
 
     fun setDate(date: Date){
         _date.value = date
@@ -75,16 +75,16 @@ class GoalSettingViewModel(private val myTypeRepository: MyTypeRepository): View
         val goalContent = hashMapOf(
             FirebaseKey.TIMESTAMP to FieldValue.serverTimestamp(),
             FirebaseKey.COLUMN_GOAL_DEADLINE to Timestamp(date.value!!.time),
-            FirebaseKey.COLUMN_GOAL_WATER to water.value,
-            FirebaseKey.COLUMN_GOAL_OIL to oil.value,
-            FirebaseKey.COLUMN_GOAL_VEGETABLE to vegetable.value,
-            FirebaseKey.COLUMN_GOAL_PROTEIN to protein.value,
-            FirebaseKey.COLUMN_GOAL_FRUIT to fruit.value,
-            FirebaseKey.COLUMN_GOAL_CARBON to carbon.value,
-            FirebaseKey.COLUMN_GOAL_WEIGHT to weight.value,
-            FirebaseKey.COLUMN_GOAL_BODY_FAT to bodyFat.value,
-            FirebaseKey.COLUMN_GOAL_MUSCLE to muscle.value,
-            FirebaseKey.COLUMN_GOAL_CHEER_UP to cheerUp.value
+            FirebaseKey.COLUMN_GOAL_WATER to (water.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_OIL to (oil.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_VEGETABLE to (vegetable.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_PROTEIN to (protein.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_FRUIT to (fruit.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_CARBON to (carbon.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_WEIGHT to (weight.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_BODY_FAT to (bodyFat.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_MUSCLE to (muscle.value ?: "0.0").toFloat(),
+            FirebaseKey.COLUMN_GOAL_CHEER_UP to (cheerUp.value ?: "0.0").toFloat()
         )
 
         coroutineScope.launch {

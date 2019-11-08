@@ -16,6 +16,7 @@ import com.terricom.mytype.shaperecord.ShapeCalendarFragment
 import com.terricom.mytype.tools.Logger
 import com.terricom.mytype.tools.getVmFactory
 import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDemicalPoint
 import kotlinx.android.synthetic.main.fragment_shape_record_calendar.view.*
 
 class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalendarAndFragment {
@@ -41,15 +42,15 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
             binding.shapeRecordTitle.text = App.applicationContext().getString(R.string.goal_title_adjust_goal)
             binding.smartCustomCalendar.toNext.visibility = View.VISIBLE
             viewModel.setDate(goal.deadline)
-            viewModel.water.value = goal.water
-            viewModel.fruit.value = goal.fruit
-            viewModel.protein.value = goal.protein
-            viewModel.vegetable.value = goal.vegetable
-            viewModel.oil.value = goal.oil
-            viewModel.carbon.value = goal.carbon
-            viewModel.weight.value = goal.weight
-            viewModel.bodyFat.value = goal.bodyFat
-            viewModel.muscle.value = goal.muscle
+            viewModel.water.value = goal.water.toDemicalPoint(1)
+            viewModel.fruit.value = goal.fruit.toDemicalPoint(1)
+            viewModel.protein.value = goal.protein.toDemicalPoint(1)
+            viewModel.vegetable.value = goal.vegetable.toDemicalPoint(1)
+            viewModel.oil.value = goal.oil.toDemicalPoint(1)
+            viewModel.carbon.value = goal.carbon.toDemicalPoint(1)
+            viewModel.weight.value = goal.weight.toDemicalPoint(1)
+            viewModel.bodyFat.value = goal.bodyFat.toDemicalPoint(1)
+            viewModel.muscle.value = goal.muscle.toDemicalPoint(1)
             viewModel.cheerUp.value = goal.cheerUp
 
             binding.smartCustomCalendar.setEventHandler(this)
@@ -70,13 +71,43 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
                 if (isConnected()){
 
-                    it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
-                    viewModel.addGoal(goal.docId)
+                    if (((viewModel.water.value ?: "0.0").toFloat()).plus((viewModel.fruit.value ?: "0.0").toFloat())
+                            .plus((viewModel.vegetable.value ?: "0.0").toFloat())
+                            .plus((viewModel.oil.value ?: "0.0").toFloat())
+                            .plus((viewModel.protein.value ?: "0.0").toFloat())
+                            .plus((viewModel.carbon.value ?: "0.0").toFloat())
+                            .plus((viewModel.weight.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat()) == 0f){
+
+                        Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goalsetting_input_hint), Toast.LENGTH_SHORT).show()
+                    }
+
+                    else if ((viewModel.water.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.oil.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.vegetable.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.protein.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.carbon.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.fruit.value ?: "0.0").toFloat()>10){
+
+                        Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goal_hint_over_eat), Toast.LENGTH_SHORT).show()
+
+                    }else if ((viewModel.weight.value ?: "0.0").toFloat()>200 ||
+                        (viewModel.muscle.value ?: "0.0").toFloat()>100 ||
+                        (viewModel.bodyFat.value ?: "0.0").toFloat()>100) {
+
+                        Toast.makeText(
+                            App.applicationContext(),
+                            App.applicationContext().getText(R.string.goal_setting_hint_over_shape),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }else {
+                        viewModel.addGoal(goal.docId)
+                    }
                 } else {
                     Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
                 }
-
-
             }
 
         }else {
@@ -93,19 +124,39 @@ class GoalSettingFragment: Fragment(), ShapeCalendarFragment.EventBetweenCalenda
 
                 if (isConnected()) {
 
-                    if ((viewModel.water.value ?: 0f).plus(viewModel.fruit.value ?: 0f)
-                            .plus(viewModel.vegetable.value ?: 0f)
-                            .plus(viewModel.oil.value ?: 0f)
-                            .plus(viewModel.protein.value ?: 0f)
-                            .plus(viewModel.carbon.value ?: 0f)
-                            .plus(viewModel.weight.value ?: 0f)
-                            .plus(viewModel.muscle.value ?: 0f)
-                            .plus(viewModel.bodyFat.value ?: 0f) != 0f){
+                    if (((viewModel.water.value ?: "0.0").toFloat()).plus((viewModel.fruit.value ?: "0.0").toFloat())
+                            .plus((viewModel.vegetable.value ?: "0.0").toFloat())
+                            .plus((viewModel.oil.value ?: "0.0").toFloat())
+                            .plus((viewModel.protein.value ?: "0.0").toFloat())
+                            .plus((viewModel.carbon.value ?: "0.0").toFloat())
+                            .plus((viewModel.weight.value ?: "0.0").toFloat())
+                            .plus((viewModel.muscle.value ?: "0.0").toFloat())
+                            .plus((viewModel.bodyFat.value ?: "0.0").toFloat()) == 0f){
 
-                    viewModel.addGoal("")
-                    }
-                    else {
                         Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goalsetting_input_hint), Toast.LENGTH_SHORT).show()
+                    }
+
+                    else if ((viewModel.water.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.oil.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.vegetable.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.protein.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.carbon.value ?: "0.0").toFloat()>10 ||
+                        (viewModel.fruit.value ?: "0.0").toFloat()>10){
+
+                        Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goal_hint_over_eat), Toast.LENGTH_SHORT).show()
+
+                    }else if ((viewModel.weight.value ?: "0.0").toFloat()>200 ||
+                        (viewModel.muscle.value ?: "0.0").toFloat()>100 ||
+                        (viewModel.bodyFat.value ?: "0.0").toFloat()>100) {
+
+                        Toast.makeText(
+                            App.applicationContext(),
+                            App.applicationContext().getText(R.string.goal_setting_hint_over_shape),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }else {
+                        viewModel.addGoal("")
                     }
                 }else{
 

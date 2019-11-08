@@ -123,7 +123,7 @@ class LineChartViewModel(private val myTypeRepository: MyTypeRepository): ViewMo
                         )
                     ).time
                 )
-            )
+            ).reversed()
             val dateList = mutableListOf<String>()
             for (foodie in foodieList as List<Foodie>) {
                 dateList.add(foodie.timestamp.toDateFormat(FORMAT_MM_DD))

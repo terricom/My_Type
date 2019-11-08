@@ -27,7 +27,6 @@ import androidx.core.content.FileProvider.getUriForFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -36,7 +35,6 @@ import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentFoodieRecordBinding
-import com.terricom.mytype.diary.DiaryViewModel
 import com.terricom.mytype.tools.*
 import kotlinx.android.synthetic.main.fragment_foodie_record.*
 import java.io.*
@@ -56,7 +54,7 @@ class FoodieFragment: Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        //處理從其他 Fragment 帶 Argument 過來的情況
+        //Handle the Foodie Argument from other Fragment
 
         arguments?.let {
             foodie = FoodieFragmentArgs.fromBundle(it).selectedProperty
@@ -72,12 +70,12 @@ class FoodieFragment: Fragment() {
                     viewModel.getHistoryFoodie(foodie)
                     binding.foodieTitle.text = App.applicationContext().getString(R.string.foodie_edit_foodie)
 
-                    viewModel.water.value = foodie.water
-                    viewModel.fruit.value = foodie.fruit
-                    viewModel.protein.value = foodie.protein
-                    viewModel.vegetable.value = foodie.vegetable
-                    viewModel.oil.value = foodie.oil
-                    viewModel.carbon.value = foodie.carbon
+                    viewModel.water.value = foodie.water.toDemicalPoint(1)
+                    viewModel.fruit.value = foodie.fruit.toDemicalPoint(1)
+                    viewModel.protein.value = foodie.protein.toDemicalPoint(1)
+                    viewModel.vegetable.value = foodie.vegetable.toDemicalPoint(1)
+                    viewModel.oil.value = foodie.oil.toDemicalPoint(1)
+                    viewModel.carbon.value = foodie.carbon.toDemicalPoint(1)
 
                     foodie.foods?.let {foods ->
 
@@ -209,9 +207,29 @@ class FoodieFragment: Fragment() {
             if (isConnected()) {
 
                 //沒有輸入營養素則無法送出食記
-                if ((viewModel.water.value ?: 0.0f).plus(viewModel.fruit.value ?: 0.0f)
-                        .plus(viewModel.vegetable.value ?: 0.0f).plus(viewModel.oil.value ?: 0.0f)
-                        .plus(viewModel.protein.value ?: 0.0f).plus(viewModel.carbon.value ?: 0.0f) != 0.0f){
+                if (((viewModel.water.value ?: "0.0").toFloat())
+                        .plus((viewModel.fruit.value ?: "0.0").toFloat())
+                        .plus((viewModel.vegetable.value ?: "0.0").toFloat())
+                        .plus((viewModel.oil.value ?: "0.0").toFloat())
+                        .plus((viewModel.protein.value  ?: "0.0").toFloat())
+                        .plus((viewModel.carbon.value  ?: "0.0").toFloat()) == 0.0f) {
+
+                    Toast.makeText(
+                        App.applicationContext(),
+                        resources.getText(R.string.foodie_input_hint),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else if ((viewModel.water.value ?: "0.0").toFloat()>10 ||
+                    (viewModel.oil.value ?: "0.0").toFloat()>10 ||
+                    (viewModel.vegetable.value ?: "0.0").toFloat()>10 ||
+                    (viewModel.protein.value ?: "0.0").toFloat()>10 ||
+                    (viewModel.carbon.value ?: "0.0").toFloat()>10 ||
+                    (viewModel.fruit.value ?: "0.0").toFloat()>10){
+
+                    Toast.makeText(App.applicationContext(), App.applicationContext().getText(R.string.goal_hint_over_eat), Toast.LENGTH_SHORT).show()
+
+                } else {
 
                     it.background = App.applicationContext().getDrawable(R.color.colorSecondary)
 
@@ -221,9 +239,9 @@ class FoodieFragment: Fragment() {
 
                     foodie?.let {foodie ->
                         if (foodie.timestamp != null){
-                            viewModel.adjustOldFoodie()
+                            viewModel.addNewFoodie(foodie.docId)
                         } else {
-                            viewModel.addNewFoodie()
+                            viewModel.addNewFoodie("")
                         }
                     }
 
@@ -231,14 +249,10 @@ class FoodieFragment: Fragment() {
                     viewModel.clearData()
 
                     findNavController().navigate(NavigationDirections.navigateToMessageDialog(MessageDialog.MessageType.ADDED_SUCCESS))
-
-                } else {
-                    Toast.makeText(App.applicationContext(),resources.getText(R.string.foodie_input_hint), Toast.LENGTH_SHORT).show()
                 }
 
             } else {
                 Toast.makeText(App.applicationContext(),resources.getText(R.string.network_check), Toast.LENGTH_SHORT).show()
-                //告訴使用者網路無法使用
             }
 
         }
@@ -323,7 +337,7 @@ class FoodieFragment: Fragment() {
             viewModel.addToFoodList(it) //點選後加入清單
         })
 
-        // 加入從 Firebase 拿到的歷史清單，若歷史清單尚未建立則加上新增的選項
+        // Add the history of food list from Firebase
         viewModel.userFoodList.observe(this, Observer {
 
             if (it.isNullOrEmpty()){

@@ -186,7 +186,6 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
             }
             updatePuzzle()
         }
-
     }
 
     var totalWater = 0.0f

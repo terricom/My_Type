@@ -108,7 +108,7 @@ class AchievementViewModel(private val myTypeRepository: MyTypeRepository): View
             )
 
             val dateList = mutableListOf<String>()
-            for (shape in shapeList){
+            for (shape in shapeList.asReversed()){
 
                 dateList.add((shape as Shape).timestamp.toDateFormat(FORMAT_MM_DD))
             }

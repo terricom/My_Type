@@ -131,12 +131,12 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
         addSelectedNutritionList(selectedNutrition)
     }
 
-    val water =  MutableLiveData<Float>()
-    val oil = MutableLiveData<Float>()
-    val vegetable = MutableLiveData<Float>()
-    val protein = MutableLiveData<Float>()
-    val fruit = MutableLiveData<Float>()
-    val carbon = MutableLiveData<Float>()
+    val water =  MutableLiveData<String>()
+    val oil = MutableLiveData<String>()
+    val vegetable = MutableLiveData<String>()
+    val protein = MutableLiveData<String>()
+    val fruit = MutableLiveData<String>()
+    val carbon = MutableLiveData<String>()
     val memo = MutableLiveData<String>()
 
     private var viewModelJob = Job()
@@ -220,7 +220,7 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
         _isUploadPhoto.value = true
     }
 
-    fun addNewFoodie(){
+    fun addNewFoodie(docId: String){
 
         if (selectedFood.contains(App.applicationContext().getString(R.string.foodie_add_food))) {
             selectedFood.remove(App.applicationContext().getString(R.string.foodie_add_food))}
@@ -234,13 +234,17 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
                     FORMAT_HH_MM_SS_FFFFFFFFF
                 )}"
             ),
-            COLUMN_FOODIE_WATER to water.value,
-            COLUMN_FOODIE_OIL to oil.value,
-            COLUMN_FOODIE_VEGETABLE to vegetable.value,
-            COLUMN_FOODIE_PROTEIN to protein.value,
-            COLUMN_FOODIE_FRUIT to fruit.value,
-            COLUMN_FOODIE_CARBON to carbon.value,
-            COLUMN_FOODIE_PHOTO to photoUri.value.toString(),
+            COLUMN_FOODIE_WATER to (water.value ?: "0.0").toFloat(),
+            COLUMN_FOODIE_OIL to (oil.value ?: "0.0").toFloat(),
+            COLUMN_FOODIE_VEGETABLE to (vegetable.value ?: "0.0").toFloat(),
+            COLUMN_FOODIE_PROTEIN to (protein.value ?: "0.0").toFloat(),
+            COLUMN_FOODIE_FRUIT to (fruit.value ?: "0.0").toFloat(),
+            COLUMN_FOODIE_CARBON to (carbon.value ?: "0.0").toFloat(),
+            if (isUploadPhoto.value == true) {
+                COLUMN_FOODIE_PHOTO to photoUri.value.toString()
+            } else {
+                COLUMN_FOODIE_PHOTO to getHistoryFoodie.value!!.photo
+            },
             COLUMN_FOODIE_FOODS to selectedFood.distinct(),
             COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
             COLUMN_FOODIE_MEMO to memo.value
@@ -248,45 +252,7 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
 
         coroutineScope.launch {
 
-            myTypeRepository.setOrUpdateObjects(COLLECTION_FOODIE, foodieContent, "")
-            updatePuzzle()
-        }
-    }
-
-    fun adjustOldFoodie(){
-
-        if (selectedFood.contains(App.applicationContext().getString(R.string.foodie_add_food))) {
-
-            selectedFood.remove(App.applicationContext().getString(R.string.foodie_add_food))}
-
-        if (selectedNutrition.contains(App.applicationContext().getString(R.string.diary_add_nutrition))) {
-
-            selectedNutrition.remove(App.applicationContext().getString(R.string.diary_add_nutrition))}
-
-        val foodieContent = hashMapOf(
-
-            TIMESTAMP to Timestamp.valueOf("${date.value.toDateFormat(FORMAT_YYYY_MM_DD)} ${time.value.toDateFormat(
-                FORMAT_HH_MM_SS_FFFFFFFFF
-            )}"),
-            COLUMN_FOODIE_WATER to water.value,
-            COLUMN_FOODIE_OIL to oil.value,
-            COLUMN_FOODIE_VEGETABLE to vegetable.value,
-            COLUMN_FOODIE_PROTEIN to protein.value,
-            COLUMN_FOODIE_FRUIT to fruit.value,
-            COLUMN_FOODIE_CARBON to carbon.value,
-            COLUMN_FOODIE_FOODS to selectedFood.distinct(),
-            COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
-            COLUMN_FOODIE_MEMO to memo.value,
-            if (isUploadPhoto.value == true) {
-                COLUMN_FOODIE_PHOTO to photoUri.value.toString()
-            } else {
-                COLUMN_FOODIE_PHOTO to getHistoryFoodie.value!!.photo
-            }
-        )
-
-        coroutineScope.launch {
-
-            myTypeRepository.setOrUpdateObjects(COLLECTION_FOODIE, foodieContent, getHistoryFoodie.value!!.docId)
+            myTypeRepository.setOrUpdateObjects(COLLECTION_FOODIE, foodieContent, docId)
             updatePuzzle()
         }
     }
@@ -344,12 +310,12 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
 
 
     fun clearData(){
-        water.value = 0.0f
-        oil.value = 0.0f
-        vegetable.value = 0.0f
-        protein.value = 0.0f
-        fruit.value = 0.0f
-        carbon.value = 0.0f
+        water.value = ""
+        oil.value = ""
+        vegetable.value = ""
+        protein.value = ""
+        fruit.value = ""
+        carbon.value = ""
     }
 
 

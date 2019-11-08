@@ -17,7 +17,10 @@ import com.terricom.mytype.calendar.CalendarComponentLayout
 import com.terricom.mytype.calendar.SpaceItemDecoration
 import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.databinding.FragmentDiaryBinding
-import com.terricom.mytype.tools.*
+import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
+import com.terricom.mytype.tools.getVmFactory
+import com.terricom.mytype.tools.isConnected
+import com.terricom.mytype.tools.toDateFormat
 
 
 class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAndFragment
@@ -78,6 +81,7 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
         viewModel.isCallDeleteAction.observe(this, Observer {
             if (it == true){
                 viewModel.getAndSetFoodieShapeSleepToday()
+
             }
         })
 
@@ -107,23 +111,6 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
                             binding.diaryCalendar.updateCalendar()
                         }
                     }
-                })
-
-                viewModel.dataSleepFromFirebase.observe(this, Observer {
-
-                    it?.let {
-                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.dataFoodieFromFirebase.value)
-                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-                    }
-
-                })
-                viewModel.dataShapeFromFirebase.observe(this, Observer {
-
-                    it?.let {
-                        (binding.recyclerView.adapter as FoodieAdapter).diarySubmitList(viewModel.dataFoodieFromFirebase.value)
-                        (binding.recyclerView.adapter as FoodieAdapter).notifyDataSetChanged()
-                    }
-
                 })
                 viewModel.dataFoodieFromFirebase.observe(this, Observer {
 
@@ -178,7 +165,6 @@ class DiaryFragment: Fragment(), CalendarComponentLayout.EventBetweenCalendarAnd
         }
 
         viewModel.setCurrentDate(binding.diaryCalendar.selectedDayOut)
-        Logger.i("binding.diaryCalendar.selectedDayOut = ${binding.diaryCalendar.selectedDayOut}")
 
         return binding.root
     }
