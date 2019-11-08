@@ -7,7 +7,7 @@ import java.util.*
 @Parcelize
 data class Foodie (
     val timestamp: Date? = null,
-    val photo: String = "",
+    val photo: String? = "",
     var foods: List<String>? = null,
     val water: Float? = null,
     val oil: Float? = null,
@@ -17,7 +17,7 @@ data class Foodie (
     val carbon: Float? = null,
     var nutritions: List<String>? = null,
     var docId: String = "",
-    val memo: String = ""
+    val memo: String? = ""
 ): Parcelable
 
 @Parcelize

@@ -12,20 +12,18 @@ import com.terricom.mytype.tools.Logger
 
 
 @BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String) {
-    imgUrl?.let {
+fun bindImage(imgView: ImageView, imgUrl: String?) {
 
-        val imgUri = if (imgUrl == "null" || imgUrl == "") PlaceHolder.values().toList().shuffled().first().value.toUri().buildUpon().scheme("https").build() else imgUrl.toUri().buildUpon().scheme("https").build()
-        Logger.i("bindImage imgUri =$imgUri")
-        Glide.with(imgView.context)
-            .load(imgUri)
-            .apply(
-                RequestOptions()
-                    .placeholder(
-                        R.drawable.icon_placeholder)
-                    .error(R.drawable.icon_placeholder_error))
-            .into(imgView)
-    }
+    val imgUri = if (imgUrl == "null" || imgUrl == "" || imgUrl == null) PlaceHolder.values().toList().shuffled().first().value.toUri().buildUpon().scheme("https").build() else imgUrl.toUri().buildUpon().scheme("https").build()
+    Logger.i("bindImage imgUri =$imgUri")
+    Glide.with(imgView.context)
+        .load(imgUri)
+        .apply(
+            RequestOptions()
+                .placeholder(
+                    R.drawable.icon_placeholder)
+                .error(R.drawable.icon_placeholder_error))
+        .into(imgView)
 }
 
 @BindingAdapter("loadingStatus")

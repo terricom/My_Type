@@ -243,7 +243,9 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
             if (isUploadPhoto.value == true) {
                 COLUMN_FOODIE_PHOTO to photoUri.value.toString()
             } else {
-                COLUMN_FOODIE_PHOTO to getHistoryFoodie.value!!.photo
+                COLUMN_FOODIE_PHOTO to getHistoryFoodie.value?.apply {
+                    this.photo
+                }
             },
             COLUMN_FOODIE_FOODS to selectedFood.distinct(),
             COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
