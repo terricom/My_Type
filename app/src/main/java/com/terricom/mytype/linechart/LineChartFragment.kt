@@ -59,12 +59,14 @@ class LineChartFragment: Fragment() {
         viewModel.
             goal.observe(this, androidx.lifecycle.Observer {
 
-            viewModel.goalWater.value = it[0].water.toDemicalPoint(1)
-            viewModel.goalCarbon.value = it[0].carbon.toDemicalPoint(1)
-            viewModel.goalFruit.value = it[0].fruit.toDemicalPoint(1)
-            viewModel.goalOil.value = it[0].oil.toDemicalPoint(1)
-            viewModel.goalProtein.value = it[0].protein.toDemicalPoint(1)
-            viewModel.goalVegetable.value = it[0].vegetable.toDemicalPoint(1)
+            if (it.isNotEmpty()){
+                viewModel.goalWater.value = it[0].water.toDemicalPoint(1)
+                viewModel.goalCarbon.value = it[0].carbon.toDemicalPoint(1)
+                viewModel.goalFruit.value = it[0].fruit.toDemicalPoint(1)
+                viewModel.goalOil.value = it[0].oil.toDemicalPoint(1)
+                viewModel.goalProtein.value = it[0].protein.toDemicalPoint(1)
+                viewModel.goalVegetable.value = it[0].vegetable.toDemicalPoint(1)
+            }
         })
 
         viewModel.recordDate.observe(this, androidx.lifecycle.Observer {
