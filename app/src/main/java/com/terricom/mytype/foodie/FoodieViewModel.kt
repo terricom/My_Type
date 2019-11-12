@@ -240,12 +240,10 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
             COLUMN_FOODIE_PROTEIN to (protein.value ?: "0.0").toFloat(),
             COLUMN_FOODIE_FRUIT to (fruit.value ?: "0.0").toFloat(),
             COLUMN_FOODIE_CARBON to (carbon.value ?: "0.0").toFloat(),
-            if (isUploadPhoto.value == true) {
-                COLUMN_FOODIE_PHOTO to photoUri.value.toString()
+            COLUMN_FOODIE_PHOTO to if (isUploadPhoto.value == true) {
+                photoUri.value.toString()
             } else {
-                COLUMN_FOODIE_PHOTO to getHistoryFoodie.value?.apply {
-                    this.photo
-                }
+                getHistoryFoodie.value?.photo
             },
             COLUMN_FOODIE_FOODS to selectedFood.distinct(),
             COLUMN_FOODIE_NUTRITIONS to selectedNutrition.distinct(),
