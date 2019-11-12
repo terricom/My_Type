@@ -31,9 +31,11 @@ class AchievementFragment: Fragment() {
         binding.lifecycleOwner = this
 
         viewModel.goal.observe(this, Observer {
-            viewModel.goalWeight.value = it[0].weight.toDemicalPoint(1)
-            viewModel.goalBodyFat.value = it[0].bodyFat.toDemicalPoint(1)
-            viewModel.goalMuscle.value = it[0].muscle.toDemicalPoint(1)
+            if (it.isNotEmpty()){
+                viewModel.goalWeight.value = it[0].weight.toDemicalPoint(1)
+                viewModel.goalBodyFat.value = it[0].bodyFat.toDemicalPoint(1)
+                viewModel.goalMuscle.value = it[0].muscle.toDemicalPoint(1)
+            }
         })
 
         binding.recyclerShape.adapter = ShapeAdapter(viewModel, ShapeAdapter.OnClickListener{
@@ -66,8 +68,6 @@ class AchievementFragment: Fragment() {
         }
 
         viewModel.currentDate.observe(this, Observer {
-
-//            viewModel.getAndSetDataShapeOfThisMonth()
 
             viewModel.dataShapeFromFirebase.observe(this, Observer {
 
