@@ -112,8 +112,7 @@ object UserManager {
 
         Logger.i("UserManager uid = $uid")
         uid?.let {
-            USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS)
-                .document(it)
+            USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(it)
         }
 
         return (!userToken.isNullOrEmpty())

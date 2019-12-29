@@ -283,8 +283,10 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     val foodList = it.get().await()[COLUMN_USER_FOOD_LIST]
-                    for (food in foodList as List<String>){
-                        listFromFirebase.add(food)
+                    if (foodList != null) {
+                        for (food in foodList as List<String>){
+                            listFromFirebase.add(food)
+                        }
                     }
                 }
             }
@@ -294,8 +296,10 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                 UserManager.USER_REFERENCE?.let {
 
                     val nutritionList = it.get().await()[COLUMN_USER_NUTRITION_LIST]
-                    for (nutrition in nutritionList as List<String>){
-                        listFromFirebase.add(nutrition)
+                    if (nutritionList != null) {
+                        for (nutrition in nutritionList as List<String>){
+                            listFromFirebase.add(nutrition)
+                        }
                     }
                 }
             }

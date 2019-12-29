@@ -191,4 +191,10 @@
 
     <string name="sleep_adjust_title">修改睡眠</string>
 
+    <string name="foodie_foodlist_bento">便當</string>
+    <string name="foodie_foodlist_sandwich">三明治</string>
+    <string name="foodie_foodlist_pasta">義大利麵</string>
+    <string name="foodie_nutritionlist_vitaminb">B群</string>
+    <string name="foodie_nutritionlist_lutein">葉黃素</string>
+
 </resources>

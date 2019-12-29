@@ -10,6 +10,7 @@ import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.terricom.mytype.App
+import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.User
 import com.terricom.mytype.data.UserManager
@@ -103,17 +104,15 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
             FirebaseKey.COLUMN_USER_NAME to UserManager.name,
             FirebaseKey.COLUMN_USER_PICTURE to UserManager.picture,
             FirebaseKey.COLUMN_USER_EMAIL to UserManager.mail,
-            FirebaseKey.COLUMN_USER_FOOD_LIST to listOf<String>(),
-            FirebaseKey.COLUMN_USER_NUTRITION_LIST to listOf<String>()
+            FirebaseKey.COLUMN_USER_FOOD_LIST to listOf<String>(App.applicationContext().getString(R.string.foodie_foodlist_bento), App.applicationContext().getString(R.string.foodie_foodlist_pasta), App.applicationContext().getString(R.string.foodie_foodlist_sandwich)),
+            FirebaseKey.COLUMN_USER_NUTRITION_LIST to listOf<String>(App.applicationContext().getString(R.string.foodie_nutritionlist_vitaminb), App.applicationContext().getString(R.string.foodie_nutritionlist_lutein))
         )
 
         coroutineScope.launch {
 
             val userAll = myTypeRepository.getObjects(FirebaseKey.COLLECTION_USERS, Timestamp(946656000), Timestamp(4701859200))
-            for (user in userAll as List<User>){
-
-                if (user.user_uid == uid){
-
+            for (user in userAll as List<User>) {
+                if (user.user_uid == uid) {
                     var pref: SharedPreferences? = null
                     pref = App.instance?.getSharedPreferences(tagUserUid, 0)
                     pref?.let {
@@ -123,7 +122,8 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                     _user.value = user
                 }
             }
-            if (userAll.isEmpty()){
+
+            if (userAll.none { it.user_uid == uid }){
                 myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_USERS, userData, uid)
                 _user.value = User(
                     UserManager.mail,
@@ -135,47 +135,12 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                     listOf(),
                     listOf(),
                     listOf(),
-                    listOf()
+                    listOf(),
+                    uid
                 )
             }
 
         }
-//        FirebaseFirestore.getInstance()
-//            .collection(FirebaseKey.COLLECTION_USERS)
-//            .get()
-//            .addOnSuccessListener { result->
-//                val items = mutableListOf<User>()
-//                for (doc in result){
-//                    //老用戶登入
-//                    if (doc.id == uid ){
-//                        var pref: SharedPreferences? = null
-//                        pref = App.instance?.getSharedPreferences(tagUserUid, 0)
-//                        pref?.let {
-//                            it.edit().putString(uid, "")
-//                        }
-//                        UserManager.uid = uid
-//                        items.add(doc.toObject(User::class.java))
-//                        _user.value = doc.toObject(User::class.java)
-//
-//                    }
-//                }
-//                //全新用戶
-//                if (items.isEmpty()){
-//                    FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(uid).set(userData)
-//                    _user.value = User(
-//                        UserManager.mail,
-//                        UserManager.name,
-//                        UserManager.picture,
-//                        listOf(),
-//                        listOf(),
-//                        listOf(),
-//                        listOf(),
-//                        listOf(),
-//                        listOf(),
-//                        listOf()
-//                    )
-//                }
-//            }
     }
 
     companion object {
