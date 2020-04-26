@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.*
 import kotlinx.coroutines.CoroutineScope
@@ -107,7 +108,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         coroutineScope.launch {
 
-            val foodieList = myTypeRepository!!.getObjects(
+            val foodieResult = myTypeRepository?.getObjects<Foodie>(
                 FirebaseKey.COLLECTION_FOODIE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(
@@ -121,89 +122,97 @@ class AlarmReceiver : BroadcastReceiver() {
                 )
             )
 
-            for (foodie in foodieList as List<Foodie>){
-                totalWater = totalWater.plus(foodie.water ?: 0f)
-                totalOil = totalOil.plus(foodie.oil ?: 0f)
-                totalVegetable = totalVegetable.plus(foodie.vegetable ?: 0f)
-                totalProtein = totalProtein.plus(foodie.protein ?: 0f)
-                totalFruit = totalFruit.plus(foodie.fruit ?: 0f)
-                totalCarbon = totalCarbon.plus(foodie.carbon ?: 0f)
-            }
+            when (foodieResult) {
+                is Result.Success -> {
+                    for (foodie in foodieResult.data){
+                        totalWater = totalWater.plus(foodie.water ?: 0f)
+                        totalOil = totalOil.plus(foodie.oil ?: 0f)
+                        totalVegetable = totalVegetable.plus(foodie.vegetable ?: 0f)
+                        totalProtein = totalProtein.plus(foodie.protein ?: 0f)
+                        totalFruit = totalFruit.plus(foodie.fruit ?: 0f)
+                        totalCarbon = totalCarbon.plus(foodie.carbon ?: 0f)
+                    }
 
-            val goalList = myTypeRepository!!.getObjects(
-                FirebaseKey.COLLECTION_GOAL,
-                Timestamp(946656000), Timestamp(4701859200)
-            )
+                    val goalResult = myTypeRepository?.getObjects<Goal>(
+                        FirebaseKey.COLLECTION_GOAL,
+                        Timestamp(946656000), Timestamp(4701859200)
+                    )
 
-            when (goalList.isEmpty()){
-                true -> {
-                    goalWater.value = 0.0f.toDemicalPoint(1)
-                    goalVegetable.value = 0.0f.toDemicalPoint(1)
-                    goalFruit.value= 0.0f.toDemicalPoint(1)
-                    goalCarbon.value = 0.0f.toDemicalPoint(1)
-                    goalOil.value = 0.0f.toDemicalPoint(1)
-                    goalProtein.value = 0.0f.toDemicalPoint(1)
-                }
-                false -> {
-                    goalWater.value = (goalList[0] as Goal).water.toDemicalPoint(1)
-                    goalVegetable.value = (goalList[0] as Goal).vegetable.toDemicalPoint(1)
-                    goalFruit.value= (goalList[0] as Goal).fruit.toDemicalPoint(1)
-                    goalCarbon.value = (goalList[0] as Goal).carbon.toDemicalPoint(1)
-                    goalOil.value = (goalList[0] as Goal).oil.toDemicalPoint(1)
-                    goalProtein.value = (goalList[0] as Goal).protein.toDemicalPoint(1)
-                }
-            }
-
-            textTitle = App.applicationContext().getString(R.string.notification_title)
-            textContent =
-                App.applicationContext().getString(R.string.notification_today_goal)+
-                        if (goalWater.value.toFloatFormat() > totalWater) {
-                            App.applicationContext().getString(
-                                R.string.notification_goal_water,
-                                "${abs(goalWater.value.toFloatFormat().minus(totalWater))}")
-                        }else {App.applicationContext().getString(R.string.notification_goal_water_reach,
-                            "${abs(goalWater.value.toFloatFormat().minus(totalWater))}")
-                        }+"   "+
-                        if (goalOil.value.toFloatFormat() > totalOil){
-                            App.applicationContext().getString(R.string.notification_goal_oil,
-                                "${abs(goalOil.value.toFloatFormat().minus(totalOil))}")
-                        }else {
-                            App.applicationContext().getString(R.string.notification_goal_oil_reach,
-                                "${abs(goalOil.value.toFloatFormat().minus(totalOil))}")
-                        }+
-                        if (goalVegetable.value.toFloatFormat() > totalVegetable){
-                            App.applicationContext().getString(R.string.notification_goal_vegetable,
-                                "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable))}")
-                        }else {
-                            App.applicationContext().getString(R.string.notification_goal_vegetable_reach,
-                                "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable))}")
-                        }+"       "+
-                        if (goalProtein.value.toFloatFormat() > totalProtein){
-                            App.applicationContext().getString(R.string.notification_goal_protein,
-                                "${abs(goalProtein.value.toFloatFormat().minus(totalProtein))}")
-                        }else {
-                            App.applicationContext().getString(R.string.notification_goal_protein_reach,
-                                "${abs(goalProtein.value.toFloatFormat().minus(totalProtein))}")
-                        }+
-                        if (goalFruit.value.toFloatFormat() > totalFruit){
-                            App.applicationContext().getString(R.string.notification_goal_fruit,
-                                "${abs(goalFruit.value.toFloatFormat().minus(totalFruit))}")
-                        }else {
-                            App.applicationContext().getString(R.string.notification_goal_fruit_reach,
-                                "${abs(goalFruit.value.toFloatFormat().minus(totalFruit))}")
-                        }+"       "+
-                        if (goalCarbon.value.toFloatFormat() > totalCarbon){
-                            App.applicationContext().getString(R.string.notification_goal_carbon,
-                                "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon))}")
-                        }else {
-                            App.applicationContext().getString(R.string.notification_goal_carbon_reach,
-                                "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon))}")
+                    if (goalResult is Result.Success) {
+                        when (goalResult.data.isEmpty()){
+                            true -> {
+                                goalWater.value = 0.0f.toDemicalPoint(1)
+                                goalVegetable.value = 0.0f.toDemicalPoint(1)
+                                goalFruit.value= 0.0f.toDemicalPoint(1)
+                                goalCarbon.value = 0.0f.toDemicalPoint(1)
+                                goalOil.value = 0.0f.toDemicalPoint(1)
+                                goalProtein.value = 0.0f.toDemicalPoint(1)
+                            }
+                            false -> {
+                                goalWater.value = goalResult.data[0].water.toDemicalPoint(1)
+                                goalVegetable.value = goalResult.data[0].vegetable.toDemicalPoint(1)
+                                goalFruit.value= goalResult.data[0].fruit.toDemicalPoint(1)
+                                goalCarbon.value = goalResult.data[0].carbon.toDemicalPoint(1)
+                                goalOil.value = goalResult.data[0].oil.toDemicalPoint(1)
+                                goalProtein.value = goalResult.data[0].protein.toDemicalPoint(1)
+                            }
                         }
 
-            if (textTitle.equals(App.applicationContext().getString(R.string.notification_title))){
+                        textTitle = App.applicationContext().getString(R.string.notification_title)
+                        textContent =
+                            App.applicationContext().getString(R.string.notification_today_goal)+
+                                    if (goalWater.value.toFloatFormat() > totalWater) {
+                                        App.applicationContext().getString(
+                                            R.string.notification_goal_water,
+                                            "${abs(goalWater.value.toFloatFormat().minus(totalWater))}")
+                                    }else {App.applicationContext().getString(R.string.notification_goal_water_reach,
+                                        "${abs(goalWater.value.toFloatFormat().minus(totalWater))}")
+                                    }+"   "+
+                                    if (goalOil.value.toFloatFormat() > totalOil){
+                                        App.applicationContext().getString(R.string.notification_goal_oil,
+                                            "${abs(goalOil.value.toFloatFormat().minus(totalOil))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_oil_reach,
+                                            "${abs(goalOil.value.toFloatFormat().minus(totalOil))}")
+                                    }+
+                                    if (goalVegetable.value.toFloatFormat() > totalVegetable){
+                                        App.applicationContext().getString(R.string.notification_goal_vegetable,
+                                            "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_vegetable_reach,
+                                            "${abs(goalVegetable.value.toFloatFormat().minus(totalVegetable))}")
+                                    }+"       "+
+                                    if (goalProtein.value.toFloatFormat() > totalProtein){
+                                        App.applicationContext().getString(R.string.notification_goal_protein,
+                                            "${abs(goalProtein.value.toFloatFormat().minus(totalProtein))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_protein_reach,
+                                            "${abs(goalProtein.value.toFloatFormat().minus(totalProtein))}")
+                                    }+
+                                    if (goalFruit.value.toFloatFormat() > totalFruit){
+                                        App.applicationContext().getString(R.string.notification_goal_fruit,
+                                            "${abs(goalFruit.value.toFloatFormat().minus(totalFruit))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_fruit_reach,
+                                            "${abs(goalFruit.value.toFloatFormat().minus(totalFruit))}")
+                                    }+"       "+
+                                    if (goalCarbon.value.toFloatFormat() > totalCarbon){
+                                        App.applicationContext().getString(R.string.notification_goal_carbon,
+                                            "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon))}")
+                                    }else {
+                                        App.applicationContext().getString(R.string.notification_goal_carbon_reach,
+                                            "${abs(goalCarbon.value.toFloatFormat().minus(totalCarbon))}")
+                                    }
 
-                createNotificationChannel()
+                        if (textTitle.equals(App.applicationContext().getString(R.string.notification_title))){
+
+                            createNotificationChannel()
+                        }
+                    }
+                }
             }
+
+
         }
     }
 

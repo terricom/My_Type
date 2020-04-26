@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FieldValue
 import com.terricom.mytype.App
 import com.terricom.mytype.R
+import com.terricom.mytype.data.*
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_PUZZLE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_FOODIE_CARBON
@@ -26,10 +27,6 @@ import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_PUZZLE_RECORDEDDATE
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_FOOD_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.COLUMN_USER_NUTRITION_LIST
 import com.terricom.mytype.data.FirebaseKey.Companion.TIMESTAMP
-import com.terricom.mytype.data.Foodie
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.data.PuzzleImg
-import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_HH_MM_SS_FFFFFFFFF
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
@@ -261,47 +258,53 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
 
         coroutineScope.launch {
 
-            val foodieAll = myTypeRepository.getObjects(COLLECTION_FOODIE, Timestamp(946656000), Timestamp(4701859200))
+            val foodieResult = myTypeRepository.getObjects<Foodie>(COLLECTION_FOODIE, Timestamp(946656000), Timestamp(4701859200))
             val dates = mutableListOf<String>()
-            for (foodie in foodieAll as List<Foodie>){
-                dates.add(foodie.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
-            }
-            if (dates.distinct().size %7 == 0){
+            if (foodieResult is Result.Success) {
+                foodieResult.data.forEach {
+                    dates.add(it.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
+                }
+                if (dates.distinct().size %7 == 0){
 
-                val puzzleAll = myTypeRepository.getObjects(COLLECTION_PUZZLE, Timestamp(946656000), Timestamp(4701859200))
+                    val puzzleResult = myTypeRepository.getObjects<Puzzle>(COLLECTION_PUZZLE, Timestamp(946656000), Timestamp(4701859200))
 
-                if(!(puzzleAll[0] as Puzzle).recordedDates!!.contains(date.value.toDateFormat(FORMAT_YYYY_MM_DD))){
-                    UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
-                    when(puzzleAll.size){
-                        0 -> { }
-                        else -> {
-                            when((puzzleAll[0] as Puzzle).position!!.sum()){
-                                105 -> {
-                                    val newPuzzle = hashMapOf(
-                                        COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
-                                        COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[ puzzleAll.size ].value,
-                                        COLUMN_PUZZLE_RECORDEDDATES to listOf(date.value.toDateFormat(
-                                            FORMAT_YYYY_MM_DD
-                                        )),
-                                        TIMESTAMP to FieldValue.serverTimestamp()
-                                    )
-                                    myTypeRepository.setOrUpdateObjects(COLLECTION_PUZZLE, newPuzzle, "")
-                                }
+                    if (puzzleResult is Result.Success) {
+
+                        if(!puzzleResult.data[0].recordedDates!!.contains(date.value.toDateFormat(FORMAT_YYYY_MM_DD))){
+                            UserManager.getPuzzleOldUser = UserManager.getPuzzleOldUser.toString().toInt().plus(1).toString()
+                            when(puzzleResult.data.size){
+                                0 -> { }
                                 else -> {
-                                    val positionList = (puzzleAll[0] as Puzzle).position!!.toMutableList()
-                                    val recordedDatesList = (puzzleAll[0] as Puzzle).recordedDates!!.toMutableList()
+                                    when(puzzleResult.data[0].position!!.sum()){
+                                        105 -> {
+                                            val newPuzzle = hashMapOf(
+                                                COLUMN_PUZZLE_POSITION to listOf((0..14).random()),
+                                                COLUMN_PUZZLE_IMGURL to PuzzleImg.values()[ puzzleResult.data.size ].value,
+                                                COLUMN_PUZZLE_RECORDEDDATES to listOf(date.value.toDateFormat(
+                                                    FORMAT_YYYY_MM_DD
+                                                )),
+                                                TIMESTAMP to FieldValue.serverTimestamp()
+                                            )
+                                            myTypeRepository.setOrUpdateObjects(COLLECTION_PUZZLE, newPuzzle, "")
+                                        }
+                                        else -> {
+                                            val positionList = puzzleResult.data[0].position!!.toMutableList()
+                                            val recordedDatesList = puzzleResult.data[0].recordedDates!!.toMutableList()
 
-                                    positionList.add((1..15).minus(positionList).random())
-                                    recordedDatesList.add(date.value.toDateFormat(FORMAT_YYYY_MM_DD))
+                                            positionList.add((1..15).minus(positionList).random())
+                                            recordedDatesList.add(date.value.toDateFormat(FORMAT_YYYY_MM_DD))
 
-                                    myTypeRepository.setOrUpdateObjects(COLLECTION_PUZZLE, mapOf(
-                                        COLUMN_PUZZLE_POSITION to positionList,
-                                        COLUMN_PUZZLE_RECORDEDDATES to recordedDatesList,
-                                        TIMESTAMP to FieldValue.serverTimestamp()
-                                    ), (puzzleAll[0] as Puzzle).docId)
+                                            myTypeRepository.setOrUpdateObjects(COLLECTION_PUZZLE, mapOf(
+                                                COLUMN_PUZZLE_POSITION to positionList,
+                                                COLUMN_PUZZLE_RECORDEDDATES to recordedDatesList,
+                                                TIMESTAMP to FieldValue.serverTimestamp()
+                                            ), puzzleResult.data[0].docId)
+                                        }
+                                    }
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -332,12 +335,15 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
 
         coroutineScope.launch {
 
-            getHistoryUserFoodList(myTypeRepository.getObjects(
-                COLUMN_USER_FOOD_LIST,
-                Timestamp(946656000), Timestamp(4701859200)) as List<String>)
-            getHistoryUserNutritionList(myTypeRepository.getObjects(
-                COLUMN_USER_NUTRITION_LIST,
-                Timestamp(946656000), Timestamp(4701859200)) as List<String>)
+            val foodListResult = myTypeRepository.getObjects<String>(COLUMN_USER_FOOD_LIST, Timestamp(946656000), Timestamp(4701859200))
+            if (foodListResult is Result.Success) {
+                getHistoryUserFoodList(foodListResult.data)
+            }
+
+            val nutritionListResult = myTypeRepository.getObjects<String>(COLUMN_USER_NUTRITION_LIST, Timestamp(946656000), Timestamp(4701859200))
+            if (nutritionListResult is Result.Success) {
+                getHistoryUserNutritionList(nutritionListResult.data)
+            }
         }
     }
 

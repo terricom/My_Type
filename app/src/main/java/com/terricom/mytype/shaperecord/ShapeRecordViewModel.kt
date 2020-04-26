@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
@@ -104,7 +105,7 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
 
         coroutineScope.launch {
 
-            val shapeList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_SHAPE,
+            val shapeResult = myTypeRepository.getObjects<Shape>(FirebaseKey.COLLECTION_SHAPE,
                 Timestamp.valueOf(
                 App.applicationContext().getString(
                     R.string.timestamp_daybegin,
@@ -116,8 +117,10 @@ class ShapeRecordViewModel(private val myTypeRepository: MyTypeRepository): View
                         date.value.toDateFormat(FORMAT_YYYY_MM_DD))
                 )
             )
-            for (shape in shapeList as List<Shape>){
-                cleanDates.add(shape.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
+
+            if (shapeResult is Result.Success) {
+                shapeResult.data.forEach {
+                    cleanDates.add(it.timestamp.toDateFormat(FORMAT_YYYY_MM_DD)) }
             }
         }
     }

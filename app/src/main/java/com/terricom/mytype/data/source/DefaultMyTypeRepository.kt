@@ -3,6 +3,7 @@ package com.terricom.mytype.data.source
 import androidx.lifecycle.LiveData
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Result
 import java.sql.Timestamp
 
 class DefaultMyTypeRepository(private val myTypeRemoteDataSource: MyTypeDataSource,
@@ -33,7 +34,7 @@ class DefaultMyTypeRepository(private val myTypeRemoteDataSource: MyTypeDataSour
         return myTypeLocalDataSource.getGoal()
     }
 
-    override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
+    override suspend fun queryFoodie(key: String, type: String): Result<List<Foodie>> {
         return myTypeRemoteDataSource.queryFoodie(key= key, type= type)
     }
 
@@ -45,7 +46,7 @@ class DefaultMyTypeRepository(private val myTypeRemoteDataSource: MyTypeDataSour
         return myTypeRemoteDataSource.deleteObjects(collection= collection, any = any )
     }
 
-    override suspend fun getObjects(collection: String, start: Timestamp, end: Timestamp): List<Any> {
+    override suspend fun <T: Any> getObjects(collection: String, start: Timestamp, end: Timestamp): Result<List<T>> {
         return myTypeRemoteDataSource.getObjects(collection= collection, start = start, end = end)
     }
 

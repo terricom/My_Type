@@ -8,6 +8,7 @@ import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
 import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.linechart.ChartEntity
@@ -95,7 +96,7 @@ class AchievementViewModel(private val myTypeRepository: MyTypeRepository): View
 
         coroutineScope.launch {
 
-            val shapeList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_SHAPE,
+            val shapeResult = myTypeRepository.getObjects<Shape>(FirebaseKey.COLLECTION_SHAPE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                     "${currentDate.value.toDateFormat(FORMAT_YYYY_MM)}-01"
@@ -108,108 +109,113 @@ class AchievementViewModel(private val myTypeRepository: MyTypeRepository): View
             )
 
             val dateList = mutableListOf<String>()
-            for (shape in shapeList.asReversed()){
+            when (shapeResult) {
+                is Result.Success -> {
+                    for (shape in shapeResult.data.asReversed()){
 
-                dateList.add((shape as Shape).timestamp.toDateFormat(FORMAT_MM_DD))
-            }
-            setRecordedDatesOfThisMonth(ArrayList(dateList.distinct()))
+                        dateList.add(shape.timestamp.toDateFormat(FORMAT_MM_DD))
+                    }
+                    setRecordedDatesOfThisMonth(ArrayList(dateList.distinct()))
 
-            val weightList = mutableListOf<Float>()
-            val bodyFatList = mutableListOf<Float>()
-            val muscleList = mutableListOf<Float>()
+                    val weightList = mutableListOf<Float>()
+                    val bodyFatList = mutableListOf<Float>()
+                    val muscleList = mutableListOf<Float>()
 
-            val weightListTemp = mutableListOf<Float>()
-            val bodyFatListTemp = mutableListOf<Float>()
-            val muscleListTemp = mutableListOf<Float>()
-            val shapeListTemp = mutableListOf<Shape>()
+                    val weightListTemp = mutableListOf<Float>()
+                    val bodyFatListTemp = mutableListOf<Float>()
+                    val muscleListTemp = mutableListOf<Float>()
+                    val shapeListTemp = mutableListOf<Shape>()
 
-            for (eachDay in dateList.distinct()){
+                    for (eachDay in dateList.distinct()){
 
-                weightListTemp.clear()
-                bodyFatListTemp.clear()
-                muscleListTemp.clear()
+                        weightListTemp.clear()
+                        bodyFatListTemp.clear()
+                        muscleListTemp.clear()
 
-                for (i in 0 until shapeList.size){
+                        for (i in 0 until shapeResult.data.size){
 
-                    if ((shapeList[i] as Shape).timestamp?.toDateFormat(FORMAT_MM_DD) == eachDay){
+                            if (shapeResult.data[i].timestamp?.toDateFormat(FORMAT_MM_DD) == eachDay){
 
-                        (shapeList[i] as Shape).let {shape ->
+                                shapeResult.data[i].let { shape ->
 
-                            shapeListTemp.add(shape)
+                                    shapeListTemp.add(shape)
 
-                            shape.weight?.let {
-                                weightListTemp.add(it)
-                            }
-                            shape.bodyFat?.let {
-                                bodyFatListTemp.add(it)
-                            }
-                            shape.muscle?.let {
-                                muscleListTemp.add(it)
+                                    shape.weight?.let {
+                                        weightListTemp.add(it)
+                                    }
+                                    shape.bodyFat?.let {
+                                        bodyFatListTemp.add(it)
+                                    }
+                                    shape.muscle?.let {
+                                        muscleListTemp.add(it)
+                                    }
+                                }
                             }
                         }
+
+                        weightList.add(weightListTemp[0])
+                        bodyFatList.add(bodyFatListTemp[0])
+                        muscleList.add(muscleListTemp[0])
                     }
+
+                    if (weightList.size > 0) {
+
+                        diffWeight.value =
+                            weightList[weightList.lastIndex]
+                                .minus(goalWeight.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                        diffWeightNumber.value =
+                            weightList[weightList.lastIndex]
+                                .minus(goalWeight.value.toFloatFormat())
+                    }
+
+                    if (bodyFatList.size > 0) {
+
+                        diffBodyFat.value =
+                            bodyFatList[bodyFatList.lastIndex]
+                                .minus(goalBodyFat.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                        diffBodyFatNumber.value =
+                            bodyFatList[bodyFatList.lastIndex]
+                                .minus(goalBodyFat.value.toFloatFormat())
+
+                    }
+                    if (muscleList.size >0) {
+
+                        diffMuscle.value =
+                            muscleList[muscleList.lastIndex]
+                                .minus(goalMuscle.value.toFloatFormat()).toDemicalPoint(1)
+
+
+                        diffMuscleNumber.value =
+                            muscleList[muscleList.lastIndex]
+                                .minus(goalMuscle.value.toFloatFormat())
+                    }
+
+                    val chartList = mutableListOf<ChartEntity>()
+
+                    chartList.clear()
+
+                    chartList.add(ChartEntity(App.applicationContext()
+                        .getColor(R.color.colorPinky), weightList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext()
+                        .getColor(R.color.colorButton), bodyFatList.toFloatArray()))
+                    chartList.add(ChartEntity(App.applicationContext()
+                        .getColor(R.color.blue_facebook), muscleList.toFloatArray()))
+
+                    setListDates(chartList.toCollection(ArrayList()))
+                    _status.value = true
+
+                    if (shapeListTemp.size != 0){
+
+                        setDataShapeFromFirebase(shapeListTemp.distinct())
+                    }
+                    _listOfChartEntities.value = null
                 }
-
-                weightList.add(weightListTemp[0])
-                bodyFatList.add(bodyFatListTemp[0])
-                muscleList.add(muscleListTemp[0])
             }
 
-            if (weightList.size > 0) {
-
-                diffWeight.value =
-                    weightList[weightList.lastIndex]
-                        .minus(goalWeight.value.toFloatFormat()).toDemicalPoint(1)
-
-
-                diffWeightNumber.value =
-                    weightList[weightList.lastIndex]
-                        .minus(goalWeight.value.toFloatFormat())
-            }
-
-            if (bodyFatList.size > 0) {
-
-                diffBodyFat.value =
-                    bodyFatList[bodyFatList.lastIndex]
-                        .minus(goalBodyFat.value.toFloatFormat()).toDemicalPoint(1)
-
-
-                diffBodyFatNumber.value =
-                    bodyFatList[bodyFatList.lastIndex]
-                        .minus(goalBodyFat.value.toFloatFormat())
-
-            }
-            if (muscleList.size >0) {
-
-                diffMuscle.value =
-                    muscleList[muscleList.lastIndex]
-                        .minus(goalMuscle.value.toFloatFormat()).toDemicalPoint(1)
-
-
-                diffMuscleNumber.value =
-                    muscleList[muscleList.lastIndex]
-                        .minus(goalMuscle.value.toFloatFormat())
-            }
-
-            val chartList = mutableListOf<ChartEntity>()
-
-            chartList.clear()
-
-            chartList.add(ChartEntity(App.applicationContext()
-                .getColor(R.color.colorPinky), weightList.toFloatArray()))
-            chartList.add(ChartEntity(App.applicationContext()
-                .getColor(R.color.colorButton), bodyFatList.toFloatArray()))
-            chartList.add(ChartEntity(App.applicationContext()
-                .getColor(R.color.blue_facebook), muscleList.toFloatArray()))
-
-            setListDates(chartList.toCollection(ArrayList()))
-            _status.value = true
-
-            if (shapeListTemp.size != 0){
-
-                setDataShapeFromFirebase(shapeListTemp.distinct())
-            }
-            _listOfChartEntities.value = null
         }
     }
 

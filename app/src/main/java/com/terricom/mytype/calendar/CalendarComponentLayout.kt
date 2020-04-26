@@ -17,6 +17,7 @@ import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey.Companion.COLLECTION_FOODIE
 import com.terricom.mytype.data.Foodie
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
@@ -166,7 +167,7 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
 
         coroutineScope.launch {
 
-            val foodieList = myTypeRepository?.getObjects(COLLECTION_FOODIE,
+            val foodieResult = myTypeRepository?.getObjects<Foodie>(COLLECTION_FOODIE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                         App.applicationContext().getString(R.string.year_month_date,
@@ -187,12 +188,14 @@ class CalendarComponentLayout : ConstraintLayout, CalendarAdapter.ListenerCellSe
                 )
             )
             val dates = mutableListOf<String>()
-            for (foodie in foodieList as List<Foodie>){
-                dates.add(foodie.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
-            }
-            when (foodieList.size){
-                0 -> setRecordedDate(listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)))
-                else -> setRecordedDate(dates)
+            if (foodieResult is Result.Success) {
+                foodieResult.data.forEach {
+                    dates.add(it.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
+                }
+                when (foodieResult.data.size){
+                    0 -> setRecordedDate(listOf(Date().toDateFormat(FORMAT_YYYY_MM_DD)))
+                    else -> setRecordedDate(dates)
+                }
             }
         }
     }

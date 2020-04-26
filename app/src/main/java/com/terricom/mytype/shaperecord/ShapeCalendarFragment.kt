@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.Shape
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.Logger
@@ -164,7 +165,7 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
 
         coroutineScope.launch {
 
-            val shapeList = (context.applicationContext as App).myTypeRepository.getObjects(
+            val shapeResult = (context.applicationContext as App).myTypeRepository.getObjects<Shape>(
                 FirebaseKey.COLLECTION_SHAPE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
@@ -183,11 +184,10 @@ class ShapeCalendarFragment: ConstraintLayout, ShapeCalendarAdapter.ListenerCell
             )
             val dates = mutableListOf<String>()
 
-            for (shape in shapeList as List<Shape>){
-
-                dates.add(shape.timestamp.toDateFormat(FORMAT_YYYY_MM_DD))
+            if (shapeResult is Result.Success) {
+                shapeResult.data.forEach { dates.add(it.timestamp.toDateFormat(FORMAT_YYYY_MM_DD)) }
+                setRecordedDate(dates)
             }
-            setRecordedDate(dates)
         }
     }
 

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.terricom.mytype.App
 import com.terricom.mytype.R
 import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.Result
+import com.terricom.mytype.data.Sleep
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.FORMAT_YYYY_MM_DD
 import com.terricom.mytype.tools.toDateFormat
@@ -61,7 +63,7 @@ class SleepViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
         coroutineScope.launch {
 
-            val sleepList = myTypeRepository.getObjects(
+            val sleepResult = myTypeRepository.getObjects<Sleep>(
                 FirebaseKey.COLLECTION_SLEEP,
                 Timestamp.valueOf(
                     App.applicationContext().getString(
@@ -74,19 +76,21 @@ class SleepViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                         Date().toDateFormat(FORMAT_YYYY_MM_DD))
                 ))
 
-            when(docId){
-                "" -> {
-                    when (sleepList.isEmpty()){
-                        true -> {
-                            myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
-                            addSleepSuccess()
+            if (sleepResult is Result.Success) {
+                when(docId){
+                    "" -> {
+                        when (sleepResult.data.isEmpty()){
+                            true -> {
+                                myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
+                                addSleepSuccess()
+                            }
+                            false -> addSleepFail()
                         }
-                        false -> addSleepFail()
                     }
-                }
-                else -> {
-                    myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
-                    addSleepSuccess()
+                    else -> {
+                        myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_SLEEP, sleepContent, docId)
+                        addSleepSuccess()
+                    }
                 }
             }
         }

@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.Goal
-import com.terricom.mytype.data.Puzzle
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
 import com.terricom.mytype.data.source.MyTypeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -104,13 +101,13 @@ class ProfileViewModel(private val myTypeRepository: MyTypeRepository): ViewMode
 
         coroutineScope.launch {
 
-            val puzzleList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_PUZZLE, Timestamp(946656000), Timestamp(4701859200))
-            if (puzzleList.isNullOrEmpty()){
-                getNoPuzzle()
-            }else {
-                setPuzzle(puzzleList as List<Puzzle>)
-                getPuzzle()
-                _status.value = true
+            when (val puzzleResult = myTypeRepository.getObjects<Puzzle>(FirebaseKey.COLLECTION_PUZZLE, Timestamp(946656000), Timestamp(4701859200))) {
+                is Result.Success -> {
+                    setPuzzle(puzzleResult.data)
+                    getPuzzle()
+                    _status.value = true
+                }
+                else -> getNoPuzzle()
             }
         }
     }
@@ -119,15 +116,19 @@ class ProfileViewModel(private val myTypeRepository: MyTypeRepository): ViewMode
 
         coroutineScope.launch {
 
-            val goalList = myTypeRepository.getObjects(FirebaseKey.COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
-            if (goalList.isNullOrEmpty()){
-                cheerUp.value = App.applicationContext().getString(R.string.login_greet)
-                getNoGoal()
-            }else {
-                cheerUp.value = (goalList[0] as Goal).cheerUp
-                setGoal(goalList as List<Goal>)
-                getGoal()
-                _status.value = true
+            val goalResult = myTypeRepository.getObjects<Goal>(FirebaseKey.COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+
+            when (goalResult) {
+                is Result.Success -> {
+                    cheerUp.value = goalResult.data[0].cheerUp
+                    setGoal(goalResult.data)
+                    getGoal()
+                    _status.value = true
+                }
+                else -> {
+                    cheerUp.value = App.applicationContext().getString(R.string.login_greet)
+                    getNoGoal()
+                }
             }
         }
     }

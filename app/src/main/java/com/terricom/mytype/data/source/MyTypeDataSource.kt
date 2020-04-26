@@ -3,13 +3,14 @@ package com.terricom.mytype.data.source
 import androidx.lifecycle.LiveData
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Result
 import java.sql.Timestamp
 
-interface MyTypeDataSource{
+interface MyTypeDataSource {
 
-    suspend fun queryFoodie(key: String, type: String): List<Foodie>
+    suspend fun queryFoodie(key: String, type: String): Result<List<Foodie>>
 
-    suspend fun getObjects(collection: String, start: Timestamp, end: Timestamp): List<Any>
+    suspend fun <T: Any> getObjects(collection: String, start: Timestamp, end: Timestamp): Result<List<T>>
 
     suspend fun deleteObjects(collection: String, any: Any)
 

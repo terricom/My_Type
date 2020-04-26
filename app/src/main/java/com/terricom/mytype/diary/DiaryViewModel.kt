@@ -38,7 +38,7 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
     val dataFoodieFromFirebase : LiveData<List<Foodie>>
         get() = _dataFoodieFromFirebase
 
-    private fun setDataFoodieFromFirebase (foo: List<Foodie>){
+    private fun setDataFoodieFromFirebase (foo: List<Foodie>?){
         _dataFoodieFromFirebase.value = foo
     }
 
@@ -46,7 +46,7 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
     val dataShapeFromFirebase : LiveData<Shape>
         get() = _dataShapeFromFirebase
 
-    private fun setDataShapeFromFIrebase (shape: Shape){
+    private fun setDataShapeFromFIrebase (shape: Shape?){
         _dataShapeFromFirebase.value = shape
     }
 
@@ -54,7 +54,7 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
     val dataSleepFromFirebase : LiveData<Sleep>
         get() = _dataSleepFromFirebase
 
-    private fun setDataSleepFromFirebase (sleep: Sleep){
+    private fun setDataSleepFromFirebase (sleep: Sleep?){
         _dataSleepFromFirebase.value = sleep
     }
 
@@ -120,8 +120,7 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
         coroutineScope.launch {
 
-            val shape = myTypeRepository.getObjects(
-                COLLECTION_SHAPE,
+            val shapeResult = myTypeRepository.getObjects<Shape>(COLLECTION_SHAPE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                         date.value.toDateFormat(FORMAT_YYYY_MM_DD))
@@ -132,13 +131,11 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                 )
             )
 
-            if (shape.isNotEmpty()){
-
-                setDataShapeFromFIrebase(shape[0] as Shape)
+            when (shapeResult) {
+                is Result.Success -> setDataShapeFromFIrebase(shapeResult.data.firstOrNull())
             }
 
-            val sleep = myTypeRepository.getObjects(
-                COLLECTION_SLEEP,
+            val sleepResult = myTypeRepository.getObjects<Sleep>(COLLECTION_SLEEP,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
                         date.value.toDateFormat(FORMAT_YYYY_MM_DD))
@@ -149,12 +146,11 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                 )
             )
 
-            if (sleep.isNotEmpty()){
-
-                setDataSleepFromFirebase(sleep[0] as Sleep)
+            when (sleepResult) {
+                is Result.Success -> setDataSleepFromFirebase(sleepResult.data.firstOrNull())
             }
 
-            val foodieList = myTypeRepository.getObjects(
+            val foodieResult = myTypeRepository.getObjects<Foodie>(
                 COLLECTION_FOODIE,
                 Timestamp.valueOf(
                     App.applicationContext().getString(R.string.timestamp_daybegin,
@@ -166,23 +162,19 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
                 )
             )
 
-            if (foodieList.isEmpty()){
-                setDataFoodieFromFirebase(emptyList())
-                _status.value = true
-
-            } else {
-                for(foodie in foodieList as List<Foodie>){
-
-                    totalWater = totalWater.plus(foodie.water ?:0f)
-                    totalFruit = totalFruit.plus(foodie.fruit ?: 0f)
-                    totalOil = totalOil.plus(foodie.oil ?: 0f)
-                    totalVegetable = totalVegetable.plus(foodie.vegetable ?: 0f)
-                    totalProtein = totalProtein.plus(foodie.protein ?: 0f)
-                    totalCarbon = totalCarbon.plus(foodie.carbon ?: 0f)
+            when (foodieResult) {
+                is Result.Success -> {
+                    foodieResult.data.forEach { foodie ->
+                        totalWater = totalWater.plus(foodie.water ?:0f)
+                        totalFruit = totalFruit.plus(foodie.fruit ?: 0f)
+                        totalOil = totalOil.plus(foodie.oil ?: 0f)
+                        totalVegetable = totalVegetable.plus(foodie.vegetable ?: 0f)
+                        totalProtein = totalProtein.plus(foodie.protein ?: 0f)
+                        totalCarbon = totalCarbon.plus(foodie.carbon ?: 0f)
+                    }
+                    setDataFoodieFromFirebase(foodieResult.data)
+                    _status.value = true
                 }
-
-                setDataFoodieFromFirebase(foodieList)
-                _status.value = true
             }
             updatePuzzle()
         }
@@ -239,8 +231,9 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
         coroutineScope.launch {
 
-            setQueryResult(myTypeRepository.queryFoodie(key, type), key)
-
+            when (val result = myTypeRepository.queryFoodie(key, type)) {
+                is Result.Success -> setQueryResult(result.data, key)
+            }
         }
     }
 
@@ -248,19 +241,22 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
         coroutineScope.launch {
 
-            val goalList = myTypeRepository.getObjects(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))
+            when (val result = myTypeRepository.getObjects<Goal>(COLLECTION_GOAL, Timestamp(946656000), Timestamp(4701859200))) {
+                is Result.Success -> {
 
-            when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
+                    when(myTypeRepository.isGoalInLocal(UserManager.localGoalId!!)){
 
-                false -> {
-                    if (goalList.isNotEmpty()){
-                        myTypeRepository.insertGoal(goalList[0] as Goal)
-                        UserManager.localGoalId = (goalList.first() as Goal).docId
+                        false -> {
+                            if (result.data.isNotEmpty()){
+                                myTypeRepository.insertGoal(result.data[0])
+                                UserManager.localGoalId = result.data.first().docId
+                            }
+                        }
+                        result.data.isNotEmpty() -> {
+                            myTypeRepository.updateGoal(result.data[0])
+                            UserManager.localGoalId = result.data.first().docId
+                        }
                     }
-                }
-                goalList.isNotEmpty() -> {
-                    myTypeRepository.updateGoal(goalList[0] as Goal)
-                    UserManager.localGoalId = (goalList.first() as Goal).docId
                 }
             }
         }

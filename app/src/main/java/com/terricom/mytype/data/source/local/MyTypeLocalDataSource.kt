@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import com.terricom.mytype.data.Foodie
 import com.terricom.mytype.data.Goal
+import com.terricom.mytype.data.Result
 import com.terricom.mytype.data.source.MyTypeDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,11 +15,11 @@ class MyTypeLocalDataSource(val context: Context) : MyTypeDataSource{
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun getObjects(
+    override suspend fun <T: Any> getObjects(
         collection: String,
         start: Timestamp,
         end: Timestamp
-    ): List<Any> {
+    ): Result<List<T>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -30,7 +31,7 @@ class MyTypeLocalDataSource(val context: Context) : MyTypeDataSource{
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
+    override suspend fun queryFoodie(key: String, type: String): Result<List<Foodie>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -1,6 +1,7 @@
 package com.terricom.mytype.data.source.remote
 
 import androidx.lifecycle.LiveData
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -14,6 +15,8 @@ import com.terricom.mytype.tools.toDateFormat
 import kotlinx.coroutines.tasks.await
 import java.sql.Timestamp
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 object MyTypeRemoteDataSource: MyTypeDataSource {
 
@@ -37,23 +40,33 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun queryFoodie(key: String, type: String): List<Foodie> {
+    override suspend fun queryFoodie(key: String, type: String): Result<List<Foodie>> =
 
-        val foodieListFromFirebase = mutableListOf<Foodie>()
+        suspendCoroutine { continuation ->
 
-        UserManager.USER_REFERENCE?.let {
+            val foodieListFromFirebase = mutableListOf<Foodie>()
 
-            for (foodie in it.collection(FirebaseKey.COLLECTION_FOODIE)
-                .whereArrayContains(type, key)
-                .get().await()){
+            UserManager.USER_REFERENCE?.collection(FirebaseKey.COLLECTION_FOODIE)?.whereArrayContains(type, key)?.get()?.addOnCompleteListener { task ->
 
-                foodieListFromFirebase.add(foodie.toObject(Foodie::class.java))
-                foodieListFromFirebase[foodieListFromFirebase.lastIndex].docId = foodie.id
+                if (task.isSuccessful) {
+                    task.result?.forEach { foodie ->
+                        foodieListFromFirebase.add(foodie.toObject(Foodie::class.java))
+                        foodieListFromFirebase[foodieListFromFirebase.lastIndex].docId = foodie.id
+                    }
+                    continuation.resume(Result.Success(foodieListFromFirebase))
+                } else {
+                    if (task.exception == null) {
+                        continuation.resume(Result.Fail(""))
+                    } else {
+                        task.exception?.apply {
+                            Crashlytics.logException(Exception("queryFoodie exception: ${this.message}"))
+                            continuation.resume(Result.Error(this))
+                        }
+                    }
+                }
+
             }
-
         }
-        return foodieListFromFirebase
-    }
 
     override suspend fun updatePuzzle(): Int{
 
@@ -176,129 +189,164 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
         }
     }
 
-    override suspend fun getObjects(
+    override suspend fun <T: Any> getObjects(
         collection: String,
         start: Timestamp,
         end: Timestamp
-    ): List<Any> {
+    ): Result<List<T>> =
+        suspendCoroutine { continuation ->
 
-        val listFromFirebase = mutableListOf<Any>()
+        val listFromFirebase = mutableListOf<T>()
 
         when(collection){
             FirebaseKey.COLLECTION_GOAL -> {
 
-                UserManager.USER_REFERENCE?.let {
-
-                    for (goal in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                        .get().await()){
-
-                        listFromFirebase.add(goal.toObject(Goal::class.java))
-                        (listFromFirebase[listFromFirebase.lastIndex] as Goal).docId =
-                            goal.id
+                UserManager.USER_REFERENCE?.collection(collection)?.orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(Goal::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as Goal).docId = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
+                        }
                     }
                 }
             }
 
             FirebaseKey.COLLECTION_FOODIE -> {
 
-                UserManager.USER_REFERENCE?.let {
-
-                    for (foodie in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                        .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
-                        .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
-                        .get().await()){
-
-                        listFromFirebase.add(foodie.toObject(Foodie::class.java))
-                        (listFromFirebase[listFromFirebase.lastIndex] as Foodie).docId =
-                            foodie.id
+                UserManager.USER_REFERENCE?.collection(collection)?.orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)?.whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)?.whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(Foodie::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as Foodie).docId = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
+                        }
                     }
                 }
             }
 
             FirebaseKey.COLLECTION_SHAPE -> {
 
-                UserManager.USER_REFERENCE?.let {
-
-                    for (shape in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                        .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
-                        .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
-                        .get().await()){
-
-                        listFromFirebase.add(shape.toObject(Shape::class.java))
-                        (listFromFirebase[listFromFirebase.lastIndex] as Shape).docId =
-                            shape.id
-                    }
-
-                }
-            }
-
-            FirebaseKey.COLLECTION_SLEEP -> {
-
-                UserManager.USER_REFERENCE?.let {
-
-                    for (sleep in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                        .whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)
-                        .whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)
-                        .get().await()){
-
-                        listFromFirebase.add(sleep.toObject(Sleep::class.java))
-                        (listFromFirebase[listFromFirebase.lastIndex] as Sleep).docId =
-                            sleep.id
-                    }
-
-                }
-            }
-
-            FirebaseKey.COLLECTION_PUZZLE -> {
-
-                UserManager.USER_REFERENCE?.let {
-
-                    for (puzzle in it.collection(collection)
-                        .orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)
-                        .get().await()){
-
-                        listFromFirebase.add(puzzle.toObject(Puzzle::class.java))
-                        (listFromFirebase[listFromFirebase.lastIndex] as Puzzle).docId =
-                            puzzle.id
-                    }
-
-                }
-            }
-
-            FirebaseKey.COLLECTION_USERS -> {
-
-                for (user in FirebaseFirestore.getInstance().collection(collection).get().await()){
-                    listFromFirebase.add(user.toObject(User::class.java))
-                    (listFromFirebase[listFromFirebase.lastIndex] as User).user_uid =
-                        user.id
-                }
-            }
-
-            COLUMN_USER_FOOD_LIST -> {
-
-                UserManager.USER_REFERENCE?.let {
-
-                    val foodList = it.get().await()[COLUMN_USER_FOOD_LIST]
-                    if (foodList != null) {
-                        for (food in foodList as List<String>){
-                            listFromFirebase.add(food)
+                UserManager.USER_REFERENCE?.collection(collection)?.orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)?.whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)?.whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(Shape::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as Shape).docId = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
                         }
                     }
                 }
             }
 
-            COLUMN_USER_NUTRITION_LIST -> {
+            FirebaseKey.COLLECTION_SLEEP -> {
 
-                UserManager.USER_REFERENCE?.let {
+                UserManager.USER_REFERENCE?.collection(collection)?.orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)?.whereGreaterThanOrEqualTo(FirebaseKey.TIMESTAMP, start)?.whereLessThanOrEqualTo(FirebaseKey.TIMESTAMP, end)?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(Sleep::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as Sleep).docId = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
+                        }
+                    }
+                }
+            }
 
-                    val nutritionList = it.get().await()[COLUMN_USER_NUTRITION_LIST]
-                    if (nutritionList != null) {
-                        for (nutrition in nutritionList as List<String>){
-                            listFromFirebase.add(nutrition)
+            FirebaseKey.COLLECTION_PUZZLE -> {
+
+                UserManager.USER_REFERENCE?.collection(collection)?.orderBy(FirebaseKey.TIMESTAMP, Query.Direction.DESCENDING)?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(Puzzle::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as Puzzle).docId = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
+                        }
+                    }
+                }
+            }
+
+            FirebaseKey.COLLECTION_USERS -> {
+
+                FirebaseFirestore.getInstance().collection(collection).get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.forEach {
+                            listFromFirebase.add(it.toObject(User::class.java) as T)
+                            (listFromFirebase[listFromFirebase.lastIndex] as User).user_uid = it.id
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
+                        }
+                    }
+                }
+            }
+
+            COLUMN_USER_FOOD_LIST, COLUMN_USER_NUTRITION_LIST -> {
+
+                UserManager.USER_REFERENCE?.get()?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        task.result?.get(collection)?.apply {
+                            listFromFirebase.addAll(this as List<T>)
+                        }
+                        continuation.resume(Result.Success(listFromFirebase))
+                    } else {
+                        if (task.exception == null) {
+                            continuation.resume(Result.Fail(""))
+                        } else {
+                            task.exception?.apply {
+                                Crashlytics.logException(Exception("getObjects $collection exception: ${this.message}"))
+                                continuation.resume(Result.Error(this))
+                            }
                         }
                     }
                 }
@@ -306,7 +354,6 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
         }
 
         Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
-        return listFromFirebase
     }
 
     override suspend fun setOrUpdateObjects(

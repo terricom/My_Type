@@ -11,11 +11,8 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.terricom.mytype.App
 import com.terricom.mytype.R
-import com.terricom.mytype.data.FirebaseKey
-import com.terricom.mytype.data.User
-import com.terricom.mytype.data.UserManager
+import com.terricom.mytype.data.*
 import com.terricom.mytype.data.source.MyTypeRepository
-import com.terricom.mytype.data.tagUserUid
 import com.terricom.mytype.tools.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -110,34 +107,38 @@ class LoginViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
         coroutineScope.launch {
 
-            val userAll = myTypeRepository.getObjects(FirebaseKey.COLLECTION_USERS, Timestamp(946656000), Timestamp(4701859200))
-            for (user in userAll as List<User>) {
-                if (user.user_uid == uid) {
-                    var pref: SharedPreferences? = null
-                    pref = App.instance?.getSharedPreferences(tagUserUid, 0)
-                    pref?.let {
-                        it.edit().putString(uid, "")
-                    }
-                    UserManager.uid = uid
-                    _user.value = user
-                }
-            }
+            val userResult = myTypeRepository.getObjects<User>(FirebaseKey.COLLECTION_USERS, Timestamp(946656000), Timestamp(4701859200))
 
-            if (userAll.none { it.user_uid == uid }){
-                myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_USERS, userData, uid)
-                _user.value = User(
-                    UserManager.mail,
-                    UserManager.name,
-                    UserManager.picture,
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    listOf(),
-                    uid
-                )
+            if (userResult is Result.Success) {
+                for (user in userResult.data) {
+                    if (user.user_uid == uid) {
+                        var pref: SharedPreferences? = null
+                        pref = App.instance?.getSharedPreferences(tagUserUid, 0)
+                        pref?.let {
+                            it.edit().putString(uid, "")
+                        }
+                        UserManager.uid = uid
+                        _user.value = user
+                    }
+                }
+
+                if (userResult.data.none { it.user_uid == uid }){
+                    myTypeRepository.setOrUpdateObjects(FirebaseKey.COLLECTION_USERS, userData, uid)
+                    _user.value = User(
+                        UserManager.mail,
+                        UserManager.name,
+                        UserManager.picture,
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        listOf(),
+                        uid
+                    )
+                }
+
             }
 
         }
