@@ -2,6 +2,9 @@ package com.terricom.mytype
 
 import android.app.Application
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
+import com.terricom.mytype.data.FirebaseKey
+import com.terricom.mytype.data.UserManager
 import com.terricom.mytype.data.source.MyTypeRepository
 import com.terricom.mytype.tools.ServiceLocator
 
@@ -23,6 +26,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
+        UserManager.uid?.let { FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(it) }
     }
 }

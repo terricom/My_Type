@@ -323,9 +323,7 @@ class FoodieViewModel(private val myTypeRepository: MyTypeRepository): ViewModel
 
 
     init {
-        if (UserManager.isLogin()){
-            getFoodAndNutritionList()
-        }
+        getFoodAndNutritionList()
         setCurrentDate(Date())
         editDateClicked()
         editTimeClicked()

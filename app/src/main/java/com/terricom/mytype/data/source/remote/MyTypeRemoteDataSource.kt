@@ -207,6 +207,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(Goal::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as Goal).docId = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -229,6 +230,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(Foodie::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as Foodie).docId = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -251,6 +253,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(Shape::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as Shape).docId = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -273,6 +276,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(Sleep::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as Sleep).docId = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -295,6 +299,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(Puzzle::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as Puzzle).docId = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -317,6 +322,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                             listFromFirebase.add(it.toObject(User::class.java) as T)
                             (listFromFirebase[listFromFirebase.lastIndex] as User).user_uid = it.id
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -338,6 +344,7 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
                         task.result?.get(collection)?.apply {
                             listFromFirebase.addAll(this as List<T>)
                         }
+                        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
                         continuation.resume(Result.Success(listFromFirebase))
                     } else {
                         if (task.exception == null) {
@@ -353,7 +360,6 @@ object MyTypeRemoteDataSource: MyTypeDataSource {
             }
         }
 
-        Logger.i("getListFromFirebase = $collection -> $listFromFirebase")
     }
 
     override suspend fun setOrUpdateObjects(

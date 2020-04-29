@@ -111,10 +111,6 @@ object UserManager {
     fun isLogin(): Boolean{
 
         Logger.i("UserManager uid = $uid")
-        uid?.let {
-            USER_REFERENCE = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(it)
-        }
-
         return (!userToken.isNullOrEmpty())
     }
 
@@ -129,6 +125,6 @@ object UserManager {
             Log.i("UserManager.goalId", value!!.toString())
         }
 
-    var USER_REFERENCE: DocumentReference ?= null
+    var USER_REFERENCE: DocumentReference = FirebaseFirestore.getInstance().collection(FirebaseKey.COLLECTION_USERS).document(uid ?: "")
 
 }

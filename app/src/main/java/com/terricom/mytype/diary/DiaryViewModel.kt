@@ -201,29 +201,23 @@ class DiaryViewModel(private val myTypeRepository: MyTypeRepository): ViewModel(
 
     fun deleteFoodie(foodie: Foodie){
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            coroutineScope.launch {
+            myTypeRepository.deleteObjects(COLLECTION_FOODIE, foodie)
 
-                myTypeRepository.deleteObjects(COLLECTION_FOODIE, foodie)
-
-                callDeleteAction()
-            }
+            callDeleteAction()
         }
     }
 
     private fun updatePuzzle() {
 
-        if (UserManager.isLogin()){
+        coroutineScope.launch {
 
-            coroutineScope.launch {
-
-                when(myTypeRepository.updatePuzzle()){
-                    0 -> getPuzzleNewUser()
-                    1 -> getPuzzleOldUser()
-                }
-                Logger.i("myTypeRepository.updatePuzzle() = ${myTypeRepository.updatePuzzle()}")
+            when(myTypeRepository.updatePuzzle()){
+                0 -> getPuzzleNewUser()
+                1 -> getPuzzleOldUser()
             }
+            Logger.i("myTypeRepository.updatePuzzle() = ${myTypeRepository.updatePuzzle()}")
         }
     }
 
